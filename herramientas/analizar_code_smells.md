@@ -1,9 +1,8 @@
-# 🔍 Herramienta: Analizar Code Smells
+# 🛠️ Herramienta: Analizar Code Smells
 
-> **Versión:** 1.0  
-> **Fecha de Creación:** 6 de octubre de 2025  
-> **Autor:** Sistema de Herramientas ArchDev Pro  
-> **Estado:** Activa
+> **Versión:** 2.0  
+> **Fecha de Actualización:** 11 de octubre de 2025  
+> **Estado:** Activa - Reestructurada según plantilla estándar
 
 ---
 
@@ -47,13 +46,51 @@ Analizar código Java automáticamente para identificar **code smells**, violaci
 ## 👥 Roles Autorizados
 
 - ✅ **ArchDev Pro** (principal - invoca automáticamente en Flujo 1)
-- ✅ **Onad** (consulta para decisiones estratégicas)
+- ✅ **Arquitecto Onad** (consulta para decisiones estratégicas)
 
 ---
 
 ## 🔄 Proceso Paso a Paso
 
-### 1️⃣ Parsing y Análisis Estático (AST)
+### 1️⃣ Configuración Inicial y Selección de Modo
+
+- **Presentar opciones de ejecución al usuario:**
+  - **Modo Automático (Default):** Ejecutar análisis con configuración estándar optimizada
+  - **Modo Personalizado:** Configurar parámetros específicos según necesidades del proyecto
+
+- **Si elige Modo Automático, aplicar configuración por defecto:**
+  ```
+  ⚙️ Configuración Automática del Análisis:
+  - tipo_proyecto: spring-boot ✓
+  - version_java: 17 ✓
+  - nivel_analisis: exhaustivo ✓
+  - patrones_arquitectonicos: [] (detectar automáticamente) ✓
+  
+  ✨ Iniciando análisis de code smells con configuración optimizada...
+  ```
+
+- **Si elige Modo Personalizado, mostrar configuración disponible:**
+  ```
+  🔧 Configuración Personalizada del Análisis:
+  
+  📦 Tipo de proyecto:
+  • spring-boot (análisis optimizado para Spring Boot) ← por defecto
+  • maven (proyecto Maven estándar), gradle (proyecto Gradle), standalone (Java puro)
+  
+  ☕ Versión de Java:
+  • 17 (LTS recomendado) ← por defecto
+  • 8 (legacy), 11 (LTS), 21 (LTS más reciente)
+  
+  🔍 Nivel de análisis:
+  • exhaustivo (análisis completo - 2-5min) ← por defecto
+  • basico (métricas principales - 30s), moderado (análisis estándar - 1min)
+  
+  🏗️ Patrones arquitectónicos:
+  • [] (detectar automáticamente) ← por defecto
+  • clean-architecture, hexagonal, mvc, microservicios
+  ```
+
+### 2️⃣ Parsing y Análisis Estático (AST)
 
 - **Parsear código Java a Abstract Syntax Tree (AST):**
   - Utilizar librerías como JavaParser o Eclipse JDT para generar representación estructurada del código.
@@ -66,7 +103,7 @@ Analizar código Java automáticamente para identificar **code smells**, violaci
   - Número de dependencias (imports)
   - Número de métodos y campos por clase
 
-### 2️⃣ Detección de Code Smells
+### 3️⃣ Detección de Code Smells
 
 Aplicar reglas de detección basadas en umbrales configurables:
 
@@ -87,7 +124,7 @@ Aplicar reglas de detección basadas en umbrales configurables:
   - Métrica que lo respalda
   - Principios SOLID violados
 
-### 3️⃣ Análisis de Principios SOLID
+### 4️⃣ Análisis de Principios SOLID
 
 - **SRP (Single Responsibility):** Detectar múltiples razones de cambio (ej. validación + persistencia + notificación en misma clase).
 - **OCP (Open/Closed):** Detectar if/else o switch extensos que deberían ser Strategy Pattern.
@@ -95,7 +132,7 @@ Aplicar reglas de detección basadas en umbrales configurables:
 - **ISP (Interface Segregation):** Detectar interfaces con > 7 métodos (God Interface).
 - **DIP (Dependency Inversion):** Detectar dependencias concretas en lugar de abstracciones.
 
-### 4️⃣ Cálculo de Priorización (ROI Score)
+### 5️⃣ Cálculo de Priorización (ROI Score)
 
 Calcular el ROI Score para cada code smell detectado:
 
@@ -111,7 +148,7 @@ Donde:
 - Ordenar todas las recomendaciones por ROI Score descendente.
 - Agrupar code smells relacionados que puedan resolverse juntos.
 
-### 5️⃣ Generación del Reporte
+### 6️⃣ Generación del Reporte
 
 - Ensamblar el reporte completo en formato JSON estructurado.
 - Incluir métricas generales, lista de code smells priorizados, y recomendaciones concretas.
@@ -142,6 +179,7 @@ Donde:
 {
   "analisis_completado": true,
   "archivo_analizado": "UserService.java",
+  "codigo_fuente_original": "/** CÓDIGO COMPLETO AQUÍ PARA REFERENCIA DE SOLUCIONAR_SMELLS */",
   "timestamp": "2025-10-06T14:30:00Z",
   "metricas_generales": {
     "lineas_codigo": 450,
@@ -158,6 +196,7 @@ Donde:
       "severidad": "CRITICA",
       "linea_inicio": 1,
       "linea_fin": 450,
+      "codigo_afectado": "/** FRAGMENTO ESPECÍFICO DEL CODE SMELL */",
       "descripcion": "La clase UserService tiene múltiples responsabilidades: validación, persistencia, notificación y logging",
       "impacto": {
         "mantenibilidad": "ALTO",
@@ -172,117 +211,62 @@ Donde:
         "esfuerzo_estimado_horas": 5,
         "prioridad": 1,
         "roi_score": 9.5,
+        "automatizable": true,
+        "nivel_complejidad": "MEDIO",
         "pasos": [
           "Extraer validación a EmailValidator y PasswordValidator",
           "Extraer persistencia a UserRepository (interfaz + implementación)",
           "Extraer notificaciones a UserNotificationService",
           "Aplicar Event-Driven para desacoplar notificaciones"
-        ]
+        ],
+        "clases_a_crear": [
+          {
+            "nombre": "UserValidator",
+            "tipo": "@Component",
+            "responsabilidad": "Validaciones de usuario"
+          },
+          {
+            "nombre": "UserRepository", 
+            "tipo": "@Repository",
+            "responsabilidad": "Persistencia de usuarios"
+          },
+          {
+            "nombre": "UserNotificationService",
+            "tipo": "@Service", 
+            "responsabilidad": "Notificaciones de usuario"
+          }
+        ],
+        "dependencias_requeridas": ["spring-boot-starter-validation", "spring-boot-starter-mail"]
       }
     }
   ],
-  "patrones_detectados": [
-    {
-      "patron": "SERVICE_LAYER",
-      "calidad": "PARCIAL",
-      "observaciones": "El service existe pero tiene demasiadas responsabilidades. Considerar dividir en UserCommandService y UserQueryService (CQRS)."
-    }
-  ],
-  "recomendaciones_priorizadas": [
-    {
-      "prioridad": 1,
-      "titulo": "Refactorizar God Object aplicando SRP",
-      "justificacion": "Alta deuda técnica (8h estimadas), dificulta testing (cobertura actual ~30%) y mantenimiento",
-      "impacto_estimado": "Reducción 60% complejidad, +40% cobertura de tests, mejora mantenibilidad de BAJO a MEDIO",
-      "code_smell_ids": ["CS001"]
-    }
-  ],
-  "metricas_objetivo_post_refactoring": {
-    "lineas_codigo_max_clase": 150,
-    "complejidad_ciclomatica_max": 10,
-    "nivel_mantenibilidad_objetivo": "ALTO",
-    "cobertura_tests_objetivo": 85
+  "contexto_proyecto": {
+    "tipo_proyecto": "spring-boot",
+    "version_java": "17",
+    "patrones_detectados": ["SERVICE_LAYER", "REPOSITORY"],
+    "dependencias_principales": ["spring-boot", "jpa", "lombok"]
+  },
+  "compatibilidad_solucionar_smells": {
+    "version_requerida": "1.0+",
+    "smells_automatizables": ["CS001", "CS002", "CS003"],
+    "smells_manuales": [],
+    "estimacion_total_automatizada": "13 horas"
   }
 }
 ```
+
+**Notificación de confirmación:**
+- Resumen de la estimación total y nivel de confianza
+- Lista de elementos que requieren validación con Product Owner  
+- Próximos pasos sugeridos para la planificación del sprint
+- **🆕 Opciones de integración:** "¿Deseas ejecutar `solucionar_smells` automáticamente para aplicar estas correcciones?"
 
 ---
 
 ## 💡 Ejemplo de Uso
 
-**Entrada:**
-```java
-// UserService.java (450 líneas)
-@Service
-public class UserService {
-    private JdbcTemplate jdbcTemplate; // Acoplamiento con infraestructura
-    
-    public User registerUser(String email, String password) {
-        // Validación mezclada
-        if (!email.contains("@")) {
-            throw new IllegalArgumentException("Email inválido");
-        }
-        
-        // Persistencia directa
-        jdbcTemplate.update("INSERT INTO users...", email, password);
-        
-        // Notificaciones mezcladas
-        sendEmail(email, "Bienvenido!");
-        
-        // ... 400 líneas más ...
-    }
-}
-```
-
-**Parámetros:**
-- archivo_java: UserService.java
-- nivel_analisis: exhaustivo
-- tipo_proyecto: spring-boot
-- version_java: 17
-
-**Salida esperada (resumida):**
-```markdown
-### 🔍 Análisis Completado: UserService.java
-
-**Métricas Generales:**
-- 📏 Líneas de código: **450** (⚠️ Supera límite recomendado: 150)
-- 🔢 Complejidad ciclomática: **28** (🔴 Crítico - límite: 10)
-- 📊 Nivel de mantenibilidad: **BAJO**
-- ⏱️ Deuda técnica estimada: **8 horas**
-
----
-
-### 🚨 3 Code Smells Detectados (ordenados por impacto)
-
-#### 🔴 #1. God Object (Severidad: CRÍTICA) | ROI Score: 9.5
-**Ubicación:** Líneas 1-450  
-**Problema:** Múltiples responsabilidades (validación + persistencia + notificación)
-
-**Impacto:**
-- 🔴 Testabilidad: ALTO (cobertura actual ~30%)
-- 🔴 Mantenibilidad: ALTO (dificulta cambios)
-- 🟡 Escalabilidad: MEDIO
-
-**Principios violados:** SRP, OCP
-
-**Refactoring sugerido:** Extract Class + Repository Pattern  
-**Esfuerzo estimado:** 5 horas
-
-**Pasos concretos:**
-1. Extraer validación → `EmailValidator` y `PasswordValidator`
-2. Extraer persistencia → `UserRepository` (interfaz + implementación)
-3. Extraer notificaciones → `UserNotificationService`
-4. Aplicar Event-Driven para desacoplar notificaciones
-
----
-
-### 🎯 Recomendación Prioritaria
-
-Te sugiero empezar por el **Code Smell #1 (God Object)** ya que:
-- Tiene el ROI más alto (9.5)
-- Mejorará cobertura de tests de 30% a ~70%
-- Reducirá complejidad en 60%
-```
+Para ver un ejemplo detallado de uso de esta herramienta, consulta:
+📁 **Archivo de ejemplo:** `ejemplos/herramientas/analizar_code_smells_ejemplo.md`
 
 ---
 
@@ -299,23 +283,12 @@ Te sugiero empezar por el **Code Smell #1 (God Object)** ya que:
 - PMD (detección de code smells)
 - SonarQube API (análisis avanzado)
 
-### Limitaciones Conocidas
+### Herramientas Complementarias
 
-- Solo analiza código Java (no Kotlin, Groovy, etc.)
-- Requiere código sintácticamente correcto (no funciona con errores de compilación)
-- Análisis de "Feature Envy" puede generar falsos positivos en DTOs
-
-### Futuras Mejoras
-
-- Machine Learning para mejorar detección de patrones
-- Soporte multi-lenguaje (Kotlin, TypeScript)
-- Integración con Git para análisis de evolución histórica de deuda técnica
-
-### Relación con Otras Herramientas
-
-**Herramientas que la invocan:**
-- `refactorizar` (automáticamente en Paso 1 de su flujo)
-- `define_arquitectura` (para análisis inicial de código legacy)
+**Integración con otras herramientas del sistema:**
+- `refactorizar` - Invoca automáticamente esta herramienta en Paso 1 de su flujo
+- `define_arquitectura` - Utiliza análisis para evaluación inicial de código legacy
+- `tomar_contexto` - Proporciona contexto del proyecto para análisis más preciso
 
 **Flujo de integración:**
 ```
@@ -330,7 +303,14 @@ Usuario aprueba code smell a refactorizar
 [refactorizar] continúa con Paso 2 (Planificación)
 ```
 
-### Métricas de Éxito de la Herramienta
+### Limitaciones Conocidas
+
+- Solo analiza código Java (no Kotlin, Groovy, etc.)
+- Requiere código sintácticamente correcto (no funciona con errores de compilación)
+- Análisis de "Feature Envy" puede generar falsos positivos en DTOs
+- Análisis estático únicamente (no ejecuta el código)
+
+### Métricas de Evaluación
 
 | Criterio | Objetivo | Medición |
 |----------|----------|----------|
@@ -339,10 +319,26 @@ Usuario aprueba code smell a refactorizar
 | **Priorización** | 80%+ de casos ordenados correctamente | Feedback de usuarios expertos |
 | **Reducción de tiempo** | De 30 min manual a 2 min automatizado | Comparación antes/después |
 
----
+### Futuras Mejoras
 
-## 📅 Historial de Versiones
+- **Machine Learning:** Mejorar detección de patrones complejos
+- **Multi-lenguaje:** Soporte para Kotlin, TypeScript, C#
+- **Análisis histórico:** Integración con Git para evolución de deuda técnica
+- **IDE Integration:** Plugin directo para IntelliJ IDEA y VS Code
 
-| Versión | Fecha | Cambios |
-|---------|-------|---------|
-| 1.0 | 2025-10-06 | Creación inicial de la herramienta |
+### Casos de Uso por Contexto
+
+**Proyectos Legacy:**
+- Identificación de hot spots para modernización
+- Priorización de refactoring por ROI
+- Assessment de calidad de código antes de migración
+
+**Proyectos Nuevos:**
+- Code review automatizado en CI/CD
+- Enforcement de estándares de calidad
+- Training y mentoring de desarrolladores junior
+
+**Enterprise/Scale:**
+- Análisis masivo de múltiples módulos
+- Dashboards de calidad de código
+- Métricas de deuda técnica organizacional

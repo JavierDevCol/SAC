@@ -99,19 +99,8 @@
 
 ## 💡 Ejemplo de Uso
 
-**Entrada:**
-```
-[Fragmento de código o descripción de entrada ejemplo]
-```
-
-**Parámetros:**
-- nivel_detalle: completo
-- incluir_validacion: true
-
-**Salida esperada:**
-```
-[Fragmento de salida ejemplo]
-```
+Para ver un ejemplo detallado de uso de esta herramienta, consulta:
+📁 **Archivo de ejemplo:** `ejemplos/herramientas/[nombre-herramienta]_ejemplo.md`
 
 ---
 

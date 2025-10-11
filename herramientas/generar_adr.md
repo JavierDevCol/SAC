@@ -283,7 +283,7 @@ Notificar al usuario:
 
 **Para ver ejemplos completos de ADRs generados con esta herramienta, consulta:**
 
-📁 **`ejemplos/adr/`**
+📁 **`ejemplos/herramientas/adr/`**
 - `adr_001_seleccion_microservicios.md` (Formato Nygard)
 - `adr_002_migracion_eventos.md` (Formato MADR)
 - `adr_003_adopcion_kubernetes.md` (Formato Y-Statement)

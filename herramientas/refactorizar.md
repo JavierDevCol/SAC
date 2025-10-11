@@ -134,14 +134,29 @@ Mostrar al usuario:
 #### 1.3 Selección del Problema
 
 **Pregunta obligatoria:**
-> "He detectado **X code smells críticos**. Te recomiendo empezar por **[Problema #1]** por su alto impacto/ROI (Score: 9.5). ¿Deseas que proceda con este refactoring o prefieres otro de la lista?"
+> "He detectado **X code smells críticos**. Te recomiendo empezar por **[Problema #1]** por su alto impacto/ROI (Score: 9.5). 
+> 
+> **🔧 Opciones de Refactoring:**
+> 
+> 1. **🤖 Automático** - Ejecutar `solucionar_smells` para correcciones automatizables
+>    - ⚡ Tiempo: 1-3 horas (85% automatizado)
+>    - 🎯 Ideal para: Code smells estándar, proyectos con tiempo limitado
+>    - ✅ Incluye: Código refactorizado + tests + validación automática
+> 
+> 2. **🧠 Guiado** - Continuar con planificación manual paso a paso  
+>    - 📚 Tiempo: 4-8 horas (proceso educativo completo)
+>    - 🎯 Ideal para: Aprendizaje, casos complejos, decisiones arquitectónicas
+>    - ✅ Incluye: Análisis detallado + planificación estratégica + implementación supervisada
+> 
+> **¿Cuál método prefieres para este refactoring?**"
 
-#### 1.4 Análisis Manual Complementario (Opcional)
+**Si usuario elige "Automático":**
+- Ejecutar `solucionar_smells` con el reporte JSON generado
+- Al completar, ofrecer continuar con más code smells o finalizar
+- Si hay code smells no automatizables, continuar con flujo manual para esos casos
 
-Si el usuario solicita análisis adicional más allá del reporte automático, realizar revisión manual enfocada en:
-- 🎯 Lógica de negocio específica del dominio
-- ⚡ Oportunidades de optimización de rendimiento no detectadas
-- 🏗️ Patrones arquitectónicos personalizados del proyecto
+**Si usuario elige "Guiado":**
+- Continuar con Paso 2 (Planificación manual) del flujo tradicional
 
 ---
 

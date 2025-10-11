@@ -310,7 +310,7 @@ Proponer plan de implementación de los primeros 3 meses (sprints o fases).
 
 **Para ver un ejemplo completo de uso de esta herramienta, consulta:**
 
-📁 **`ejemplos/arquitectura/ecommerce_mvp_completo.md`**
+📁 **`ejemplos/herramientas/ecommerce_mvp_completo.md`**
 
 Este ejemplo muestra:
 - Contexto inicial de un proyecto e-commerce
