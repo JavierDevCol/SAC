@@ -20,7 +20,26 @@ Guiar al usuario en un proceso estructurado de **refactorización de código Jav
 
 ---
 
-## 🔗 Integración con Análisis Automático
+## 🔗 Integración con Otras Herramientas
+
+### Herramientas que Invoca
+
+| Herramienta | Cuándo se Invoca | Propósito |
+|-------------|------------------|-----------|
+| **`analizar_code_smells`** | Paso 1 - Al iniciar el refactoring (si `ejecutar_analisis_automatico: true`) | Identificar automáticamente code smells y priorizarlos por ROI |
+| **`solucionar_smells`** | Cuando el usuario elige "Modo Automático" | Ejecutar correcciones automatizables de code smells detectados |
+| **`crear_pruebas`** | Paso 4 - Después del refactoring (si `generar_tests_post_refactoring: true`) | Generar suite de tests unitarios para el código refactorizado |
+
+### Herramientas que la Invocan
+
+| Herramienta/Rol | Cuándo | Propósito |
+|-----------------|--------|-----------|
+| **ArchDev Pro** | Cuando se detecta código con code smells o deuda técnica | Mejorar la calidad del código existente |
+| **`define_arquitectura`** | Durante reestructuración arquitectónica | Refactorizar código para ajustarse a nueva arquitectura definida |
+
+---
+
+## 🤖 Integración Automática Avanzada
 
 **🆕 Novedad v2.0:** Esta herramienta ahora ejecuta automáticamente `analizar_code_smells` en el **Paso 1** para acelerar el análisis inicial y priorizar refactorings por impacto/ROI.
 

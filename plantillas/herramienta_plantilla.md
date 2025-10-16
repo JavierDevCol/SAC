@@ -16,6 +16,22 @@
 
 ---
 
+## 🔗 Integración con Otras Herramientas
+
+### Herramientas que Invoca
+
+| Herramienta | Cuándo se Invoca | Propósito |
+|-------------|------------------|-----------|
+| **`nombre_herramienta`** | [Momento de invocación] | [Razón de la invocación] |
+
+### Herramientas que la Invocan
+
+- **[Nombre de Herramienta/Rol]** (descripción breve de cuándo/por qué)
+
+*Nota: Si la herramienta no invoca ni es invocada por otras, indicar "Esta herramienta funciona de manera independiente".*
+
+---
+
 ## 📥 Entradas Requeridas (Contexto)
 
 **Principal:**
@@ -99,8 +115,25 @@
 
 ## 💡 Ejemplo de Uso
 
+**IMPORTANTE:** Esta sección debe **SIEMPRE** referenciar a un archivo de ejemplo externo, nunca incluir el ejemplo completo aquí.
+
+### Estructura Estándar
+
+Todas las herramientas deben seguir este formato para la sección de ejemplos:
+
+```markdown
 Para ver un ejemplo detallado de uso de esta herramienta, consulta:
 📁 **Archivo de ejemplo:** `ejemplos/herramientas/[nombre-herramienta]_ejemplo.md`
+```
+
+### Directrices
+
+1. **📁 Ubicación:** Todos los archivos de ejemplo deben estar en `ejemplos/herramientas/`
+2. **🏷️ Nomenclatura:** Usar el formato `[nombre-herramienta]_ejemplo.md`
+3. **🔗 Referencia:** Siempre usar el emoji 📁 antes de "Archivo de ejemplo:"
+4. **❌ Prohibido:** NO incluir ejemplos completos directamente en esta sección
+5. **✅ Contenido del archivo de ejemplo:** Debe incluir casos de uso reales, entradas, salidas esperadas y contexto práctico
+
 
 ---
 

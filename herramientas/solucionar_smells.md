@@ -18,6 +18,25 @@ Ejecutar automáticamente las correcciones de code smells identificados por `ana
 
 ---
 
+## 🔗 Integración con Otras Herramientas
+
+### Herramientas que Invoca
+
+| Herramienta | Cuándo se Invoca | Propósito |
+|-------------|------------------|-----------|
+| **`tomar_contexto`** | Al inicio del proceso (opcional) | Obtener contexto del proyecto para decisiones de refactoring apropiadas |
+| **`crear_pruebas`** | Después de generar código refactorizado (si `generar_tests=true`) | Generar/actualizar tests para el código refactorizado |
+
+### Herramientas que la Invocan
+
+| Herramienta/Rol | Cuándo | Propósito |
+|-----------------|--------|-----------|
+| **`refactorizar`** | Cuando el usuario elige "Modo Automático" | Ejecutar correcciones automatizables de code smells detectados |
+| **ArchDev Pro** | Para automatizar refactoring de code smells identificados | Reducir deuda técnica de manera eficiente |
+| **`analizar_code_smells`** | Al finalizar análisis (sugerencia opcional) | Ofrecer solución automática de smells detectados |
+
+---
+
 ## 📥 Entradas Requeridas (Contexto)
 
 **Principal:**

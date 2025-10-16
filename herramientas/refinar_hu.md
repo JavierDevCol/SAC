@@ -18,6 +18,24 @@ Analizar una Historia de Usuario (HU) y producir preguntas de clarificación, cr
 
 ---
 
+## 🔗 Integración con Otras Herramientas
+
+### Herramientas que Invoca
+
+| Herramienta | Cuándo se Invoca | Propósito |
+|-------------|------------------|-----------|
+| **`tomar_contexto`** | Al inicio del análisis (opcional) | Obtener contexto arquitectónico del proyecto para estimaciones más precisas |
+
+### Herramientas que la Invocan
+
+| Herramienta/Rol | Cuándo | Propósito |
+|-----------------|--------|-----------|
+| **Refinador HU** | Durante sesiones de backlog grooming | Refinar historias de usuario antes de planning poker |
+| **ArchDev Pro** | Al analizar impacto técnico de features | Evaluar complejidad arquitectónica y desglose técnico |
+| **Product Owner** | En preparación de sprint planning | Clarificar y mejorar criterios de aceptación |
+
+---
+
 ## 📥 Entradas Requeridas (Contexto)
 
 **Principal:**

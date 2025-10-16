@@ -18,6 +18,24 @@ Analizar automáticamente un `git diff` y generar mensajes de commit claros, est
 
 ---
 
+## 🔗 Integración con Otras Herramientas
+
+### Herramientas que Invoca
+
+*Esta herramienta funciona de manera independiente y no invoca otras herramientas del sistema.*
+
+### Herramientas que la Invocan
+
+| Herramienta/Rol | Cuándo | Propósito |
+|-----------------|--------|-----------|
+| **Artesano de Commits** | Después de realizar cambios en el código | Generar mensaje de commit estandarizado y semánticamente correcto |
+| **ArchDev Pro** | Al finalizar implementación de features o refactoring | Documentar cambios arquitectónicos con commits claros |
+| **`refactorizar`** | Al completar proceso de refactorización | Generar commit que documenta las mejoras realizadas |
+| **`crear_pruebas`** | Después de generar tests | Crear commit específico para los tests añadidos |
+| **Arquitecto DevOps** | Al modificar infraestructura o pipelines | Documentar cambios de CI/CD y configuración |
+
+---
+
 ## 📥 Entradas Requeridas (Contexto)
 
 **Principal:**

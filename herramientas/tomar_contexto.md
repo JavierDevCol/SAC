@@ -18,6 +18,27 @@ Realizar un análisis profundo y automatizado de un proyecto de software para ex
 
 ---
 
+## 🔗 Integración con Otras Herramientas
+
+### Herramientas que Invoca
+
+*Esta herramienta funciona de manera independiente y no invoca otras herramientas del sistema.*
+
+### Herramientas que la Invocan
+
+| Herramienta/Rol | Cuándo | Propósito |
+|-----------------|--------|-----------|
+| **`diagnosticar_devops`** | Al inicio del diagnóstico DevOps | Obtener contexto del proyecto para análisis contextualizado |
+| **`define_arquitectura`** | Al evaluar arquitecturas | Usar patrones detectados para documentación arquitectónica |
+| **`analizar_code_smells`** | Antes de analizar código | Aplicar reglas específicas del stack tecnológico detectado |
+| **`refinar_hu`** | Al refinar historias de usuario | Obtener contexto arquitectónico para estimaciones precisas |
+| **`solucionar_smells`** | Durante refactoring | Obtener contexto del proyecto para decisiones de refactoring apropiadas |
+| **`verifica_pruebas`** | Al validar pruebas | Adaptar estrategias de testing al stack detectado |
+| **`crear_pruebas`** | Al generar tests | Generar tests apropiados para el framework identificado |
+| **`generar_commit`** | Al crear mensajes de commit | Mejorar scope y contexto basado en componentes del proyecto |
+
+---
+
 ## 📥 Entradas Requeridas (Contexto)
 
 **Principal:**

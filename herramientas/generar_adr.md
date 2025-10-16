@@ -19,6 +19,23 @@ Generar documentación formal de decisiones arquitectónicas siguiendo estándar
 
 ---
 
+## 🔗 Integración con Otras Herramientas
+
+### Herramientas que Invoca
+
+*Esta herramienta funciona de manera independiente y no invoca otras herramientas del sistema.*
+
+### Herramientas que la Invocan
+
+| Herramienta/Rol | Cuándo | Propósito |
+|-----------------|--------|-----------|
+| **`define_arquitectura`** | Al finalizar análisis arquitectónico y obtener aprobación del usuario | Documentar formalmente la decisión arquitectónica en un ADR |
+| **ArchDev Pro** | Cuando se toma una decisión técnica importante | Documentar decisiones arquitectónicas significativas del proyecto |
+| **Arquitecto Onad** | Para decisiones estratégicas de alto nivel | Registrar decisiones que afectan múltiples proyectos o la organización |
+| **Arquitecto DevOps** | Para decisiones de infraestructura críticas | Documentar elecciones de tecnologías de infraestructura y deployment |
+
+---
+
 ## 📥 Entradas Requeridas (Contexto)
 
 **Principal:**

@@ -18,6 +18,24 @@ Realizar un diagnóstico integral y estructurado de pipelines CI/CD, infraestruc
 
 ---
 
+## 🔗 Integración con Otras Herramientas
+
+### Herramientas que Invoca
+
+| Herramienta | Cuándo se Invoca | Propósito |
+|-------------|------------------|-----------|
+| **`tomar_contexto`** | Al inicio del diagnóstico (opcional) | Obtener información del proyecto (stack, arquitectura, dependencias) para contextualizar el análisis |
+
+### Herramientas que la Invocan
+
+| Herramienta/Rol | Cuándo | Propósito |
+|-----------------|--------|-----------|
+| **Arquitecto DevOps** | Al iniciar un nuevo proyecto o revisión periódica | Evaluación completa del estado DevOps y generación de roadmap de mejoras |
+| **ArchDev Pro** | Durante definición de arquitectura | Evaluar restricciones de infraestructura que afectan decisiones arquitectónicas |
+| **`define_arquitectura`** | Cuando se necesitan restricciones de infraestructura | Obtener información sobre capacidades y limitaciones actuales de DevOps/infraestructura |
+
+---
+
 ## 📥 Entradas Requeridas (Contexto)
 
 **Principal:**

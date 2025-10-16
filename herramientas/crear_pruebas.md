@@ -16,6 +16,22 @@ Diseñar y generar código para diferentes tipos de pruebas (unitarias, de integ
 
 ---
 
+## 🔗 Integración con Otras Herramientas
+
+### Herramientas que Invoca
+
+*Esta herramienta funciona de manera independiente y no invoca otras herramientas del sistema.*
+
+### Herramientas que la Invocan
+
+| Herramienta/Rol | Cuándo | Propósito |
+|-----------------|--------|-----------|
+| **ArchDev Pro** | Después de crear/refactorizar código | Generar pruebas para validar el código nuevo o refactorizado |
+| **`verifica_pruebas`** | Antes de validación | Puede sugerir ejecutar `crear_pruebas` si detecta cobertura insuficiente |
+| **Usuario directo** | Cuando necesita tests | Creación manual de pruebas para código existente |
+
+---
+
 ## 📥 Entradas Requeridas (Contexto)
 
 **Principal:**

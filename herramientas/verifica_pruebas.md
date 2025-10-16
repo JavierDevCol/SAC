@@ -18,6 +18,26 @@ Ejecutar, analizar y corregir automáticamente las pruebas unitarias de un proye
 
 ---
 
+## 🔗 Integración con Otras Herramientas
+
+### Herramientas que Invoca
+
+| Herramienta | Cuándo se Invoca | Propósito |
+|-------------|------------------|-----------|
+| **`tomar_contexto`** | Al inicio de la verificación (opcional) | Obtener información del proyecto (gestor de build, framework de pruebas, comandos) |
+| **`crear_pruebas`** | Cuando no existen pruebas o la cobertura es muy baja | Generar pruebas faltantes para mejorar la cobertura |
+
+### Herramientas que la Invocan
+
+| Herramienta/Rol | Cuándo | Propósito |
+|-----------------|--------|-----------|
+| **ArchDev Pro** | Después de cambios en código o refactoring | Validar que los cambios no rompieron las pruebas existentes |
+| **`refactorizar`** | Al finalizar proceso de refactorización | Verificar que el código refactorizado pasa todas las pruebas |
+| **Artesano de Commits** | Antes de realizar commits | Asegurar que las pruebas pasan antes de commitear cambios |
+| **Arquitecto DevOps** | En pipelines CI/CD | Validación automática de pruebas en procesos de integración continua |
+
+---
+
 ## 📥 Entradas Requeridas (Contexto)
 
 **Principal:**
