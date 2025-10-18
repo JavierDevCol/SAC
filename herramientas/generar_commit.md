@@ -1,8 +1,8 @@
 # 🛠️ Herramienta: Generar Commit
 
-> **Versión:** 2.0  
-> **Fecha de Actualización:** 10 de octubre de 2025  
-> **Estado:** Activa - Reestructurada según plantilla estándar
+> **Versión:** 2.1  
+> **Fecha de Actualización:** 18 de octubre de 2025  
+> **Estado:** Activa - Modificada para captura automática de git diff
 
 ---
 
@@ -38,9 +38,9 @@ Analizar automáticamente un `git diff` y generar mensajes de commit claros, est
 
 ## 📥 Entradas Requeridas (Contexto)
 
-**Principal:**
-- Resultado de `git diff` (staged o unstaged) con los cambios a documentar
-- Lista de archivos modificados para inferir el alcance del cambio
+**Principal (obtenidas automáticamente):**
+- Resultado de `git diff` ejecutado automáticamente y guardado en `cochas/artifacts/diff.txt`
+- Lista de archivos modificados extraída del diff para inferir el alcance del cambio
 
 **Secundario (Opcional):**
 - Branch name actual (para inferir tipo de trabajo: feature/, bugfix/, hotfix/)
@@ -73,6 +73,28 @@ Analizar automáticamente un `git diff` y generar mensajes de commit claros, est
 ---
 
 ## 🔄 Proceso Paso a Paso
+
+### 0️⃣ Captura Automática del Git Diff
+
+- **Verificar existencia del directorio `cochas/artifacts/`:**
+  - Si no existe, crearlo automáticamente
+  
+- **Ejecutar comando git diff y guardar resultado:**
+  ```cmd
+  git diff > cochas/artifacts/diff.txt
+  ```
+  
+- **Validar la captura:**
+  - Verificar que el archivo `cochas/artifacts/diff.txt` se creó correctamente
+  - Comprobar que el archivo no esté vacío
+  
+- **Manejo de errores en la captura:**
+  - Si el comando git falla, informar que no se está en un repositorio git válido
+  - Si el archivo está vacío, proceder al paso 1️⃣ y manejar como "sin cambios detectados"
+  
+- **Leer contenido del archivo diff.txt:**
+  - Cargar todo el contenido del archivo en memoria para análisis
+  - Preparar el contenido para el parsing en el siguiente paso
 
 ### 1️⃣ Selección de Modo de Operación (Opcional)
 
@@ -111,10 +133,10 @@ Analizar automáticamente un `git diff` y generar mensajes de commit claros, est
 
 ### 2️⃣ Análisis del Contexto de Cambios
 
-- Parsear el `git diff` para identificar archivos modificados, líneas añadidas/eliminadas y patrones de cambio
-- Extraer información del branch name para inferir el tipo de trabajo (feature/, bugfix/, hotfix/, etc.)
+- Parsear el contenido de `cochas/artifacts/diff.txt` para identificar archivos modificados, líneas añadidas/eliminadas y patrones de cambio
+- Extraer información del branch name (ejecutar `git branch --show-current`) para inferir el tipo de trabajo (feature/, bugfix/, hotfix/)
 - Analizar la estructura de archivos afectados para determinar el alcance del cambio (frontend, backend, config, tests)
-- Identificar si hay cambios en archivos críticos (package.json, pom.xml, Dockerfile) que sugieran cambios de dependencias o configuración
+- Identificar si hay cambios en archivos críticos (package.json, pom.xml, Dockerfile, build.gradle) que sugieran cambios de dependencias o configuración
 
 ### 3️⃣ Clasificación Automática del Tipo de Commit
 
@@ -164,7 +186,10 @@ Analizar automáticamente un `git diff` y generar mensajes de commit claros, est
 
 | Situación | Acción |
 |-----------|--------|
-| Git diff vacío o sin cambios detectados | Informar al usuario que no hay cambios para documentar y sugerir verificar el estado del repositorio |
+| No se está en un repositorio git válido | Informar al usuario que el comando `git diff` falló y verificar que está en un directorio con repositorio git inicializado |
+| Git diff vacío o sin cambios detectados | Informar al usuario que no hay cambios para documentar y sugerir verificar el estado del repositorio con `git status` |
+| No se puede crear el directorio cochas/artifacts/ | Informar del error de permisos y solicitar que el usuario cree el directorio manualmente |
+| Error al escribir el archivo diff.txt | Verificar permisos de escritura en la carpeta cochas/artifacts/ e informar al usuario del problema |
 | Diff contiene solo cambios binarios (imágenes, archivos compilados) | Generar commit básico tipo `chore` con descripción genérica de actualización de recursos |
 | Branch name no sigue convenciones estándar | Usar detección automática basado solo en el contenido del diff, ignorar información del branch |
 | Archivos modificados pertenecen a múltiples módulos/componentes | Sugerir dividir en múltiples commits o usar alcance más genérico como `global` o `multi` |

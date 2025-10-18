@@ -163,105 +163,192 @@ Para profundizar en aspectos específicos del sistema, consulta estas guías:
 ia_prompts/
 ├── README.md                          ← Este archivo
 ├── core-cochas.md                     ← Núcleo del orquestador
-├── guia_comandos.md                   ← Guía detallada de comandos
+├── guia_comandos.md                   ← Guía de comandos del sistema
 ├── guia_roles_activos.md              ← Guía de roles disponibles
-├── guia_ciclo_vida_tareas.md          ← Guía del flujo de tareas
-├── guia_creacion_roles.md             ← Guía para crear roles
-├── README_PLANTILLA.md                ← Sistema de plantillas
-├── estructura_directorio.md           ← Documentación de estructura
+├── guia_ciclo_vida_tareas.md          ← Ciclo de vida de tareas
+├── guia_creacion_roles.md             ← Crear roles personalizados
 │
 ├── personas/                          ← Roles/Agentes disponibles
-│   ├── roles-activos.md              ← Lista oficial de roles
-│   ├── arquitecto_onad.md
-│   ├── archdev_pro.md
-│   ├── arquitecto_devops.md
-│   ├── refinador_hu.md
-│   └── artesano_de_commits.md
+│   ├── roles-activos.md               ← Registro central de roles
+│   ├── arquitecto_onad.md             ← Arquitecto estratégico
+│   ├── archdev_pro.md                 ← Desarrollador pragmático
+│   ├── arquitecto_devops.md           ← Especialista en infraestructura
+│   ├── refinador_hu.md                ← Refinador de historias
+│   └── artesano_de_commits.md         ← Especialista en commits
 │
 ├── herramientas/                      ← Herramientas ejecutables
-│   ├── herramientas-activas.md       ← Lista oficial de herramientas
-│   ├── tomar_contexto.md
-│   ├── define_arquitectura.md
-│   ├── refactorizar.md
-│   ├── crear_pruebas.md
-│   ├── diagnosticar_devops.md
-│   └── [más herramientas...]
+│   ├── herramientas-activas.md        ← Registro central de herramientas
+│   ├── tomar_contexto.md              ← Análisis profundo del proyecto
+│   ├── refactorizar.md                ← Mejora de código
+│   ├── define_arquitectura.md         ← Diseño arquitectónico
+│   ├── crear_pruebas.md               ← Generación de tests
+│   ├── analizar_code_smells.md        ← Detección de problemas
+│   ├── solucionar_smells.md           ← Solución de code smells
+│   ├── verifica_pruebas.md            ← Validación de tests
+│   ├── diagnosticar_devops.md         ← Análisis de infraestructura
+│   ├── refinar_hu.md                  ← Refinamiento de historias
+│   ├── generar_commit.md              ← Mensajes de commit profesionales
+│   ├── generar_adr.md                 ← Documentación de decisiones
+│   └── asignar_responsable.md         ← Asignación inteligente de roles
 │
-├── artefactos/                        ← Archivos generados (se crean automáticamente)
-│   ├── session_state.json            ← Estado persistente de la sesión
-│   ├── contexto_proyecto.md          ← Análisis del proyecto
-│   └── backlog_desarrollo.md         ← Tareas de desarrollo
+├── help/                              ← Ayuda y referencias
+│   └── estructura_session_state.md    ← Estructura del estado de sesión
 │
-├── help/                              ← Documentación de soporte
-│   └── estructura_session_state.md
+├── ejemplos/                          ← Ejemplos de uso
+│   └── herramientas/                  ← Ejemplos de herramientas en acción
 │
-└── ejemplos/                          ← Casos de uso reales
-    ├── README.md
-    └── herramientas/
-        └── [ejemplos de uso...]
+└── [EN EL PROYECTO DEL USUARIO]
+    └── cochas/                        ← Carpeta del sistema (auto-creada)
+        ├── session/                   ← Estado temporal (en .gitignore)
+        │   ├── session_state.json     ← Estado de la sesión
+        │   └── exports/               ← Backups exportados
+        └── artifacts/                 ← Documentación del proyecto
+            ├── contexto_proyecto.md   ← Análisis del proyecto
+            ├── backlog_desarrollo.md  ← Backlog de tareas
+            └── adr/                   ← Architecture Decision Records
 ```
 
 ---
 
-## 🎯 Casos de Uso Comunes
+## 🚀 Inicio Rápido
 
-### Caso 1: Analizar un Proyecto Nuevo
+### Paso 1: Activar el Orquestador
+
+Carga el archivo `core-cochas.md` en tu herramienta de IA (Claude, GPT-4, etc.)
+
+### Paso 2: Ver Roles Disponibles
+
 ```bash
-/cochas +ONAD              # Activar arquitecto
-> tomar_contexto           # Analizar proyecto
-> define_arquitectura      # Diseñar arquitectura
+/cochas list
 ```
 
-### Caso 2: Refactorizar Código
+Verás una lista de todos los roles disponibles con sus comandos de activación.
+
+### Paso 3: Activar un Rol
+
 ```bash
-/cochas +ARCHDEV           # Activar desarrollador
-> analizar_code_smells     # Detectar problemas
-> solucionar_smells        # Aplicar soluciones
-> crear_pruebas            # Generar tests
+/cochas +ONAD
 ```
 
-### Caso 3: Preparar Deployment
+O alternativamente:
+
 ```bash
-/cochas +DEVOPS            # Activar DevOps
-> diagnosticar_devops      # Analizar infraestructura
-# Seguir recomendaciones del diagnóstico
+/cochas switch ONAD
 ```
 
-### Caso 4: Crear Commit Profesional
+### Paso 4: Usar Herramientas
+
+Una vez activado un rol, puedes ejecutar sus herramientas:
+
 ```bash
-/cochas +ARTESANO          # Activar artesano
-> generar_commit           # Generar mensaje de commit
+> tomar_contexto
 ```
 
-### Caso 5: No Sé Qué Rol Usar
+O alternativamente:
+
 ```bash
-/cochas assign "Necesito optimizar la base de datos"
-# El sistema te recomendará el rol más adecuado
+-> define_arquitectura
+```
+
+### Paso 5: Ver el Estado
+
+```bash
+/cochas status
+```
+
+Te mostrará:
+- Rol activo actual
+- Estado del contexto del proyecto
+- Tareas completadas
+- Historial de la sesión
+
+---
+
+## 📋 Flujo de Trabajo Típico
+
+### Escenario 1: Nuevo Proyecto
+
+```bash
+# 1. Activar el arquitecto estratégico
+/cochas +ONAD
+
+# 2. Analizar el proyecto (automático al saludar a ONAD)
+# Se crea automáticamente cochas/artifacts/contexto_proyecto.md
+
+# 3. Diseñar la arquitectura
+> define_arquitectura
+
+# 4. Cambiar al desarrollador
+/cochas +ARCHDEV
+
+# 5. Implementar código
+> refactorizar
+
+# 6. Crear tests
+> crear_pruebas
+```
+
+### Escenario 2: Refactoring de Código Existente
+
+```bash
+# 1. Activar el desarrollador pragmático
+/cochas +ARCHDEV
+
+# 2. Analizar problemas de código
+> analizar_code_smells
+
+# 3. Solucionar los problemas detectados
+> solucionar_smells
+
+# 4. Validar con tests
+> verifica_pruebas
+```
+
+### Escenario 3: Sprint Planning
+
+```bash
+# 1. Activar el refinador de historias
+/cochas +REFINADOR
+
+# 2. Refinar historias de usuario
+> refinar_hu
+
+# 3. Cambiar al arquitecto para validación técnica
+/cochas +ONAD
+# Revisar viabilidad arquitectónica de las historias
+
+# 4. Cambiar al desarrollador para estimación
+/cochas +ARCHDEV
+# Estimar esfuerzo de implementación
 ```
 
 ---
 
-## 🔍 Características Avanzadas
+## 🔄 Gestión del Estado
 
-### Estado Persistente
-El sistema mantiene memoria entre sesiones:
-- Último rol activo
-- Historial de tareas completadas
-- Contexto del proyecto analizado
-- Log de eventos importantes
+### Persistencia Automática
 
-### Validación Secuencial de Tareas
-Las tareas siguen un flujo de validación:
-1. **Pendiente** `[ ]` - Requiere refinamiento
-2. **Refinada** `[R]` - Refinada por Refinador HU
-3. **Aprobada** `[A]` - Aprobada por Arquitecto Onad
-4. **Completada** `[X]` - Implementada por ArchDev Pro
+El sistema mantiene el estado en:
+- **`cochas/session/session_state.json`** - Estado de la sesión actual
+- **`cochas/artifacts/contexto_proyecto.md`** - Contexto del proyecto analizado
+- **`cochas/artifacts/backlog_desarrollo.md`** - Backlog de tareas de desarrollo
 
-### Sugerencias Proactivas
-El orquestador monitorea la conversación y sugiere:
-- Cambios de rol cuando detecta necesidades específicas
-- Herramientas relevantes según el contexto
-- Validaciones automáticas de integridad
+### Comandos de Estado
+
+```bash
+# Ver estado actual
+/cochas status
+
+# Ver historial completo
+/cochas history
+
+# Exportar estado (backup)
+/cochas export
+# Crea: cochas/session/exports/session_state_export_[fecha].json
+
+# Reiniciar sesión (confirmación requerida)
+/cochas reset
+```
 
 ---
 
@@ -308,3 +395,4 @@ Consulta la **[Guía de Creación de Roles](guia_creacion_roles.md)** para apren
 **¡Listo para empezar!** 🚀
 
 Usa `/cochas help` para ver todos los comandos disponibles y comenzar tu primera sesión.
+````
