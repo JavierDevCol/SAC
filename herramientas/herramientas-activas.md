@@ -12,9 +12,12 @@ Esta es la lista oficial de herramientas disponibles en el orquestador. Cada her
 | Solucionar Smells | solucionar_smells | ARCHDEV | herramientas/solucionar_smells.md |
 | Crear Pruebas | crear_pruebas | ARCHDEV | herramientas/crear_pruebas.md |
 | Verificar Pruebas | verifica_pruebas | ARCHDEV | herramientas/verifica_pruebas.md |
+| Ejecutar Plan | ejecutar_plan | ARCHDEV | herramientas/ejecutar_plan.md |
 | Generar Commit | generar_commit | ARTESANO | herramientas/generar_commit.md |
 | Diagnosticar DevOps | diagnosticar_devops | DEVOPS | herramientas/diagnosticar_devops.md |
 | Refinar HU | refinar_hu | REFINADOR | herramientas/refinar_hu.md |
+| Validar HU | validar_hu | ONAD | herramientas/validar_hu.md |
+| Planificar HU | planificar_hu | ONAD | herramientas/planificar_hu.md |
 | Asignar Responsable | asignar_responsable | ORQUESTADOR | herramientas/asignar_responsable.md |
 
 ---

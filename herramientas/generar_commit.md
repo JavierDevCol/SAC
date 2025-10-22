@@ -39,7 +39,7 @@ Analizar automáticamente un `git diff` y generar mensajes de commit claros, est
 ## 📥 Entradas Requeridas (Contexto)
 
 **Principal (obtenidas automáticamente):**
-- Resultado de `git diff` ejecutado automáticamente y guardado en `cochas/artifacts/diff.txt`
+- Ejecutar `git diff > cochas/artifacts/diff.txt`. 
 - Lista de archivos modificados extraída del diff para inferir el alcance del cambio
 
 **Secundario (Opcional):**
@@ -77,31 +77,31 @@ Analizar automáticamente un `git diff` y generar mensajes de commit claros, est
 ### 0️⃣ Captura Automática del Git Diff
 
 - **Verificar existencia del directorio `cochas/artifacts/`:**
-  - Si no existe, crearlo automáticamente
-  
+    - Si no existe, crearlo automáticamente
+
 - **Ejecutar comando git diff y guardar resultado:**
   ```cmd
   git diff > cochas/artifacts/diff.txt
   ```
-  
+
 - **Validar la captura:**
-  - Verificar que el archivo `cochas/artifacts/diff.txt` se creó correctamente
-  - Comprobar que el archivo no esté vacío
-  
+    - Verificar que el archivo `cochas/artifacts/diff.txt` se creó correctamente
+    - Comprobar que el archivo no esté vacío
+
 - **Manejo de errores en la captura:**
-  - Si el comando git falla, informar que no se está en un repositorio git válido
-  - Si el archivo está vacío, proceder al paso 1️⃣ y manejar como "sin cambios detectados"
-  
+    - Si el comando git falla, informar que no se está en un repositorio git válido
+    - Si el archivo está vacío, proceder al paso 1️⃣ y manejar como "sin cambios detectados"
+
 - **Leer contenido del archivo diff.txt:**
-  - Cargar todo el contenido del archivo en memoria para análisis
-  - Preparar el contenido para el parsing en el siguiente paso
+    - Cargar todo el contenido del archivo en memoria para análisis
+    - Preparar el contenido para el parsing en el siguiente paso
 
 ### 1️⃣ Selección de Modo de Operación (Opcional)
 
 - **Presentar opciones al usuario:**
-  - **Modo Automático**: Generar commit inmediatamente con configuración por defecto
-  - **Modo Configuración**: Mostrar parámetros disponibles para personalizar la generación
-  
+    - **Modo Automático**: Generar commit inmediatamente con configuración por defecto
+    - **Modo Configuración**: Mostrar parámetros disponibles para personalizar la generación
+
 - **Si elige Modo Configuración, mostrar formulario interactivo:**
   ```
   🔧 Configuración de Generación de Commit:
@@ -128,7 +128,7 @@ Analizar automáticamente un `git diff` y generar mensajes de commit claros, est
   • 50 (estándar Git) ← por defecto
   • 72 (máximo recomendado)
   ```
-  
+
 - **Capturar preferencias del usuario o usar valores por defecto si elige Modo Automático**
 
 ### 2️⃣ Análisis del Contexto de Cambios
@@ -141,22 +141,22 @@ Analizar automáticamente un `git diff` y generar mensajes de commit claros, est
 ### 3️⃣ Clasificación Automática del Tipo de Commit
 
 - Aplicar reglas de detección basadas en patrones del diff:
-  - `feat`: Nuevos archivos de funcionalidad, nuevos métodos públicos, nuevas rutas API
-  - `fix`: Cambios en bloques try-catch, correcciones de bugs reportados, hotfixes
-  - `refactor`: Renombrado de métodos/clases, extracción de código, cambios de estructura sin nueva funcionalidad
-  - `test`: Archivos en carpetas de test, nuevos casos de prueba
-  - `docs`: Archivos .md, comentarios de documentación, README
-  - `style`: Cambios de formato, espacios, lint fixes
-  - `ci/build`: Archivos de CI/CD, Docker, scripts de build
+    - `feat`: Nuevos archivos de funcionalidad, nuevos métodos públicos, nuevas rutas API
+    - `fix`: Cambios en bloques try-catch, correcciones de bugs reportados, hotfixes
+    - `refactor`: Renombrado de métodos/clases, extracción de código, cambios de estructura sin nueva funcionalidad
+    - `test`: Archivos en carpetas de test, nuevos casos de prueba
+    - `docs`: Archivos .md, comentarios de documentación, README
+    - `style`: Cambios de formato, espacios, lint fixes
+    - `ci/build`: Archivos de CI/CD, Docker, scripts de build
 - Si el parámetro `tipo_commit` está forzado, usar ese valor en lugar de la detección automática
 
 ### 4️⃣ Determinación del Alcance (Scope)
 
 - Analizar la estrategia definida en `formato_alcance`:
-  - **auto**: Inferir automáticamente basado en la estructura del proyecto
-  - **archivo**: Usar el nombre del archivo principal modificado
-  - **modulo**: Detectar el módulo/paquete afectado (ej: auth, payment, user)
-  - **componente**: Identificar el componente arquitectónico (api, service, repository, etc.)
+    - **auto**: Inferir automáticamente basado en la estructura del proyecto
+    - **archivo**: Usar el nombre del archivo principal modificado
+    - **modulo**: Detectar el módulo/paquete afectado (ej: auth, payment, user)
+    - **componente**: Identificar el componente arquitectónico (api, service, repository, etc.)
 - Generar alcance conciso y descriptivo (máximo 15 caracteres)
 
 ### 5️⃣ Construcción del Título del Commit

@@ -131,6 +131,7 @@ Si falta alguno de estos tres pilares, el código está incompleto.
 | `crear_pruebas` | Promover TDD estricto. Usar Testcontainers para integración. Cubrir casos de borde y escenarios de fallo. Generar código de tests completo y ejecutable. |
 | `define_arquitectura` | Implementar la arquitectura decidida (no diseñarla). Traducir diagramas a estructura de paquetes, clases e interfaces concretas. |
 | `tomar_contexto` | Analizar la estructura del proyecto para identificar patrones actuales y oportunidades de refactoring táctico. |
+| `ejecutar_plan` | Ejecutar planes de implementación generados por ONAD de forma estricta y literal. Modificar código, crear tests, ejecutar builds. Detenerse inmediatamente ante errores y solicitar confirmación antes de comandos Git. |
 
 ---
 
@@ -140,6 +141,7 @@ Si falta alguno de estos tres pilares, el código está incompleto.
 - `crear_pruebas`
 - `define_arquitectura`
 - `tomar_contexto`
+- `ejecutar_plan`
 
 ---
 

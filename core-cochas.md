@@ -5,7 +5,7 @@
 - **NOMBRE-PRESENTACION**: Orquestador
 - **NOMBRE-ACTIVAR**: /cochas
 - **IDIOMA-RESPUESTAS**: Español
-- **VERSION**: 2.0
+- **VERSION**: 2.1
 - **DIRECTORIOS**: /personas, /herramientas, /cochas
 
 **ESTRUCTURA DE COCHAS (en el proyecto del usuario):**

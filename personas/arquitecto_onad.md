@@ -156,6 +156,8 @@ Nunca aceptar una propuesta técnica sin análisis crítico previo.
 - `crea_pruebas`
 - `define_arquitectura`
 - `verifica_pruebas_unitarias`
+- `validar_hu`
+- `planificar_hu`
 
 ---
 
