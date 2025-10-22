@@ -5,7 +5,7 @@
 - **NOMBRE-PRESENTACION**: Orquestador
 - **NOMBRE-ACTIVAR**: /cochas
 - **IDIOMA-RESPUESTAS**: Español
-- **VERSION**: 2.1
+- **VERSION**: 2.2
 - **DIRECTORIOS**: /personas, /herramientas, /cochas
 
 **ESTRUCTURA DE COCHAS (en el proyecto del usuario):**
@@ -264,7 +264,7 @@ E) Otra cosa
    - `log_eventos_clave`: agregar evento con detalle de la herramienta
    - `metadata.ultima_actividad`: timestamp actual
 3. Guardar/actualizar archivo
-4. Ejecutar la herramienta cargando su contenido desde `/herramientas/[nombre].md`
+4. Ejecutar la herramienta cargando su contenido desde `/cochas/herramientas/[nombre].md`
 
 ---
 
@@ -308,7 +308,7 @@ El orquestador DEBE realizar validaciones automáticas para garantizar la integr
 
 **Protocolo:**
 1. Leer la lista de herramientas del rol (sección `🛠️ Herramientas Disponibles`)
-2. Verificar que cada herramienta existe en la seccion `# Herramientas Activas del Sistema` del archvio `/herramientas/herramientas-activas.md`
+2. Verificar que cada herramienta existe en la seccion `# Herramientas Activas del Sistema` del archvio `/cochas/herramientas/cochas/herramientas-activas.md`
 3. **SI alguna herramienta NO existe:**
    - Registrar en `log_eventos_clave`: "herramienta_faltante: [nombre]"
    - Mostrar advertencia: "⚠️ La herramienta `[nombre]` listada en el rol no existe o no esta activa."
@@ -649,7 +649,7 @@ Los comandos del sistema permiten gestionar el orquestador y los roles disponibl
 | **list**                      | Lista los roles que se encuentran en `personas/roles-activos.md`                                                                                                                                                                                  | Muestra tabla con: comando de activación (ej: `+ONAD`), nombre del rol y área de expertise                                |
 | **switch <rol>** o **+<rol>** | Lee `personas/roles-activos.md`, busca en la columna COMANDO el valor que coincida con `<rol>`, obtiene la RUTA DEL ARCHIVO correspondiente y carga ese archivo de rol                                                                            | Carga el archivo del rol desde la ruta especificada, actualiza `session_state.json` y presenta el saludo del rol activado |
 | **status**                    | Lee el archivo `cochas/session/session_state.json` y muestra el estado actual de la sesión                                                                                                                                                            | Informa: rol activo, contexto del proyecto, historial de roles, herramientas usadas y últimos eventos                     |
-| **assign <tarea>**            | Ejecuta la herramienta `/herramientas/asignar_responsable.md` para analizar la tarea y sugerir el mejor rol                                                                                                                                       | Recomienda: rol más adecuado con justificación, herramienta a usar con razón, alternativas secundarias                    |
+| **assign <tarea>**            | Ejecuta la herramienta `/cochas/herramientas/asignar_responsable.md` para analizar la tarea y sugerir el mejor rol                                                                                                                                       | Recomienda: rol más adecuado con justificación, herramienta a usar con razón, alternativas secundarias                    |
 | **reset**                     | Solicita confirmación y elimina el archivo `cochas/session/session_state.json` para crear una sesión limpia                                                                                                                                           | Confirma eliminación y crea nuevo estado inicial vacío                                                                    |
 | **history**                   | Lee las secciones `historial_roles` y `log_eventos_clave` completos del archivo `session_state.json`                                                                                                                                              | Muestra: línea de tiempo de cambios de rol, tareas completadas por rol, eventos importantes y estadísticas de la sesión   |
 | **export**                    | Lee `session_state.json`, formatea con indentación legible y guarda una copia con metadata de exportación                                                                                                                                         | Guarda archivo en: `cochas/session/exports/session_state_export_[fecha].json` con timestamp y versión                                 |
