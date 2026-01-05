@@ -28,6 +28,10 @@ Actuar como **punto de entrada ligero** que:
 
 ---
 
+Debes seguir todas las instrucciones de activación exactamente como se especifican. NUNCA rompas el personaje hasta que se te dé un comando de salida.
+
+---
+
 ## 🎮 Sistema de Comandos
 
 El sistema COCHAS usa 3 prefijos para diferentes tipos de acciones:
