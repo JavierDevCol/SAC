@@ -162,6 +162,108 @@ Crear las siguientes carpetas si no existen (extraídas de `CONFIG_INIT.yaml`):
 
 ---
 
+### Paso 3.5: Validar Estructura de Carpetas (OBLIGATORIO)
+
+> ⚠️ **Este paso es OBLIGATORIO** y debe ejecutarse SIEMPRE después de crear/verificar carpetas.
+
+#### Objetivo
+Validar activamente que la estructura de carpetas sea correcta y que los archivos estén en su ubicación esperada según `CONFIG_INIT.yaml`.
+
+#### Proceso de Validación
+
+```
+PARA CADA carpeta definida en CONFIG_INIT.yaml:
+    VERIFICAR si la carpeta existe físicamente
+    REGISTRAR estado: ✅ Existe | ❌ Faltante
+
+PARA artifacts/:
+    ESCANEAR archivos en la raíz de artifacts/
+    DETECTAR archivos "huérfanos" que deberían estar en subcarpetas:
+        - HU-*.md → Deberían estar en artifacts/HU/
+        - PLAN_*.md, PLAN_IMPLEMENTACION_*.md → Deberían estar en artifacts/planes_de_desarrollo/
+        - ANALISIS_*.md → Deberían estar en artifacts/analisis/
+        - ADR-*.md → Deberían estar en artifacts/ADR/
+        - EJECUCION_*.md → Deberían estar en artifacts/ejecuciones/
+        - *_code_smells.md → Deberían estar en artifacts/code_smells/
+    REGISTRAR archivos mal ubicados con su ubicación esperada
+```
+
+#### Reporte de Estado (SIEMPRE mostrar)
+
+```
+📊 **VALIDACIÓN DE ESTRUCTURA COCHAS v3.1**
+============================================
+
+📁 **Estado de Carpetas:**
+| Carpeta | Estado | Ruta |
+|---------|--------|------|
+| artifacts/ | ✅ OK | .cochas/artifacts/ |
+| artifacts/HU/ | ✅ OK | .cochas/artifacts/HU/ |
+| artifacts/HU/refinamientos/ | ❌ FALTANTE | .cochas/artifacts/HU/refinamientos/ |
+| artifacts/ADR/ | ✅ OK | .cochas/artifacts/ADR/ |
+| artifacts/analisis/ | ❌ FALTANTE | .cochas/artifacts/analisis/ |
+| artifacts/planes_de_desarrollo/ | ❌ FALTANTE | .cochas/artifacts/planes_de_desarrollo/ |
+| artifacts/ejecuciones/ | ❌ FALTANTE | .cochas/artifacts/ejecuciones/ |
+| artifacts/code_smells/ | ❌ FALTANTE | .cochas/artifacts/code_smells/ |
+| artifacts/architecture/ | ❌ FALTANTE | .cochas/artifacts/architecture/ |
+| session/ | ✅ OK | .cochas/session/ |
+| plantillas/ | ✅ OK | .cochas/plantillas/ |
+
+📄 **Archivos Mal Ubicados:** (X encontrados)
+| Archivo | Ubicación Actual | Ubicación Esperada |
+|---------|------------------|-------------------|
+| HU-001-login.md | artifacts/ | artifacts/HU/ |
+| HU-002-registro.md | artifacts/ | artifacts/HU/ |
+| PLAN_IMPLEMENTACION_HU001.md | artifacts/ | artifacts/planes_de_desarrollo/ |
+| ANALISIS_TECNICO_AUTH.md | artifacts/ | artifacts/analisis/ |
+
+🔴 **ESTADO GENERAL: INCOMPLETO**
+   - Carpetas faltantes: X
+   - Archivos mal ubicados: X
+
+💡 **Acciones Recomendadas:**
+   1. Crear carpetas faltantes (automático si confirmas)
+   2. Mover archivos a su ubicación correcta (requiere confirmación)
+
+¿Deseas que corrija la estructura? (s/n)
+   - `s` = Crear carpetas faltantes + mover archivos
+   - `n` = Solo crear carpetas faltantes
+   - `cancelar` = No hacer cambios
+```
+
+#### Estados Posibles del Reporte
+
+| Estado | Significado | Acción |
+|--------|-------------|--------|
+| 🟢 **CORRECTO** | Todas las carpetas existen y no hay archivos mal ubicados | Continuar normalmente |
+| 🟡 **PARCIAL** | Carpetas faltantes pero sin archivos mal ubicados | Crear carpetas automáticamente |
+| 🔴 **INCOMPLETO** | Carpetas faltantes Y/O archivos mal ubicados | Solicitar confirmación para corregir |
+
+#### Patrones de Detección de Archivos
+
+| Patrón de Archivo | Carpeta Destino |
+|-------------------|-----------------|
+| `HU-*.md` | `artifacts/HU/` |
+| `REFINAMIENTO_*.md` | `artifacts/HU/refinamientos/` |
+| `ADR-*.md`, `ADR_*.md` | `artifacts/ADR/` |
+| `ANALISIS_*.md`, `ANALISIS-*.md` | `artifacts/analisis/` |
+| `PLAN_*.md`, `PLAN_IMPLEMENTACION_*.md` | `artifacts/planes_de_desarrollo/` |
+| `EJECUCION_*.md`, `EJECUCION-*.md` | `artifacts/ejecuciones/` |
+| `*_code_smells.md`, `*_smells.md` | `artifacts/code_smells/` |
+| `contexto_proyecto.md` | `artifacts/` (ubicación correcta) |
+| `backlog_desarrollo.md` | `artifacts/` (ubicación correcta) |
+
+#### Archivos Permitidos en artifacts/ (raíz)
+
+Los siguientes archivos SÍ pueden estar en la raíz de `artifacts/`:
+- `contexto_proyecto.md`
+- `backlog_desarrollo.md`
+- `reglas_arquitectonicas.md`
+- Archivos `BORRADOR_*.md` (temporales)
+- Archivos `diagrama_*.md` (diagramas generales)
+
+---
+
 ### Paso 4: Confirmar Inicialización
 
 ```
