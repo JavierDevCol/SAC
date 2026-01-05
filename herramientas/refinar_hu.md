@@ -18,6 +18,10 @@ Analizar una Historia de Usuario (HU) y producir preguntas de clarificación, cr
 
 ---
 
+Debes de seguir todas las instrucciones de activación exactamente como se especifican. NUNCA rompas el personaje hasta que se te dé un comando de salida.
+
+---
+
 ## 🔗 Integración con Otras Herramientas
 
 ### Herramientas que Invoca
@@ -209,6 +213,184 @@ Analizar una Historia de Usuario (HU) y producir preguntas de clarificación, cr
 - **Validar consistencia entre estimación y desglose técnico**
 - **Generar recomendaciones para próximos pasos**
 - **Destacar elementos que requieren validación con Product Owner**
+
+### 9️⃣ Persistencia del Refinamiento y Actualización de Estado
+
+Este paso guarda el refinamiento como artefacto persistente y actualiza el estado de la HU.
+
+#### **9.1. Generar Archivo de Refinamiento**
+
+**Guardar en:** `{{hu_refinamiento_location}}/[ID-HU]_refinamiento_[concepto-principal].md`
+
+**Nomenclatura del archivo:**
+- `[ID-HU]`: Identificador de la HU (ej. `ARCHDEV-001`)
+- `[concepto-principal]`: Descripción corta del objetivo principal (snake_case)
+
+**Ejemplos:**
+```
+ARCHDEV-001_refinamiento_agregar_email_cliente.md
+ARCHDEV-002_refinamiento_migracion_flyway.md
+ARCHDEV-003_refinamiento_api_autenticacion.md
+```
+
+#### **9.2. Actualizar Estado de la HU en el Backlog**
+
+**Cambiar estado:** `[ ] Pendiente` → `[R] Refinada`
+
+**⚠️ IMPORTANTE:** Usar la estructura exacta de `{{backlog_desarrollo_plantilla}}` para mantener coherencia.
+
+**Actualizar `{{backlog_location}}` con la estructura estándar para estado [R]:**
+
+```markdown
+### [ID-HU]: [Título de la HU]
+- **Estado:** [R] Refinada
+- **Origen:** [ID origen - mantener valor existente]
+- **Prioridad:** [Alta | Media | Baja - mantener valor existente]
+- **Refinamiento:** `{{hu_refinamiento_location}}/[ID-HU]_refinamiento_[concepto].md`
+- **Fecha refinamiento:** [timestamp]
+- **Estimación:** [X] SP / [Y] horas
+
+**Descripción:**
+[Mantener descripción existente]
+
+**Criterios de Aceptación:**
+- [ ] CA1: [descripción del criterio]
+- [ ] CA2: [descripción del criterio]
+- [ ] CA3: [descripción del criterio]
+
+**Dependencias Técnicas:**
+- [Dependencia 1]
+- [Dependencia 2]
+```
+
+**Campos obligatorios para estado [R]:**
+| Campo | Fuente | Acción |
+|-------|--------|--------|
+| `Estado` | Herramienta | Cambiar a `[R] Refinada` |
+| `Origen` | Existente | **Mantener sin modificar** |
+| `Prioridad` | Existente | **Mantener sin modificar** |
+| `Refinamiento` | Herramienta | Agregar ruta del artefacto |
+| `Fecha refinamiento` | Herramienta | Agregar timestamp actual |
+| `Estimación` | Herramienta | Agregar SP y horas |
+| `Descripción` | Existente | **Mantener sin modificar** |
+| `Criterios de Aceptación` | Herramienta | Agregar/actualizar CAs refinados |
+| `Dependencias Técnicas` | Herramienta | Agregar si se identificaron |
+
+**❌ NO agregar campos que no estén en la plantilla.**
+**❌ NO eliminar campos existentes.**
+
+#### **9.3. Actualizar Session State**
+
+**Actualizar `{{session_state_location}}`:**
+
+1. **Actualizar/crear entrada en `tablero_tareas`:**
+```json
+{
+  "id": "[ID-HU]",
+  "titulo": "[Título de la HU]",
+  "estado": "[R]",
+  "refinamiento": {
+    "archivo": "{{hu_refinamiento_location}}/[ID-HU]_refinamiento_[concepto].md",
+    "fecha": "[timestamp]",
+    "estimacion_sp": [X],
+    "estimacion_horas": [Y],
+    "completado": true
+  },
+  "plan_implementacion": null,
+  "ejecucion": null,
+  "bloqueado": false,
+  "dependencias": ["[ID-HU-dependencia]"]
+}
+```
+
+2. **Agregar evento a `log_eventos_clave`:**
+```json
+{
+  "timestamp": "[timestamp_actual]",
+  "rol": "Refinador HU",
+  "herramienta": "refinar_hu",
+  "tipo": "hu_refinada",
+  "id_hu": "[ID-HU]",
+  "detalle": "HU refinada con [X] criterios de aceptación, estimación: [Y] SP"
+}
+```
+
+3. **Actualizar metadata:**
+   - Incrementar `metadata.total_artefactos_generados`
+   - Actualizar `metadata.ultima_actividad`
+
+#### **9.4. Detectar Bloqueos**
+
+**SI se identificaron dependencias críticas no resueltas:**
+
+1. Cambiar estado a `[B] Bloqueada` en lugar de `[R] Refinada`
+2. Registrar motivo del bloqueo:
+
+```json
+{
+  "id": "[ID-HU]",
+  "estado": "[B]",
+  "bloqueado": true,
+  "bloqueo": {
+    "motivo": "Dependencia de [ID-HU-dependencia] no completada",
+    "tipo": "DEPENDENCIA_HU",
+    "fecha": "[timestamp]",
+    "accion_requerida": "Completar [ID-HU-dependencia] primero"
+  }
+}
+```
+
+**Tipos de bloqueo:**
+- `DEPENDENCIA_HU` - Requiere otra HU completada
+- `DEPENDENCIA_EXTERNA` - Requiere sistema/API externa
+- `DECISION_PENDIENTE` - Requiere decisión arquitectónica
+- `RECURSO_NO_DISPONIBLE` - Falta infraestructura o acceso
+
+#### **9.5. Confirmación al Usuario**
+
+```markdown
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ REFINAMIENTO COMPLETADO: [ID-HU]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📄 Artefacto guardado:
+   {{hu_refinamiento_location}}/[ID-HU]_refinamiento_[concepto].md
+
+📊 Resumen:
+- Criterios de Aceptación: [X] (mejorados) + [Y] (nuevos)
+- Estimación: [Z] Story Points / [W] horas
+- Riesgos identificados: [N]
+- Dependencias: [M]
+
+📋 Estado actualizado:
+- Anterior: [ ] Pendiente
+- Actual: [R] Refinada
+
+💡 Siguiente paso:
+   Ejecutar `validar-hu [ID-HU]` para aprobación arquitectónica
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+**Si quedó bloqueada:**
+```markdown
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+⚠️ REFINAMIENTO COMPLETADO CON BLOQUEO: [ID-HU]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📄 Artefacto guardado:
+   {{hu_refinamiento_location}}/[ID-HU]_refinamiento_[concepto].md
+
+🚫 Estado: [B] Bloqueada
+   Motivo: [descripción del bloqueo]
+   Acción requerida: [qué debe resolverse]
+
+💡 Una vez resuelto el bloqueo:
+   1. Actualizar estado manualmente o re-ejecutar refinamiento
+   2. Ejecutar `validar-hu [ID-HU]`
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
 
 ---
 

@@ -1,34 +1,57 @@
 # 🛠️ Herramienta: Planificar Implementación de HU
 
-**Comando:** `planificar-hu`  
-**Versión:** 1.0  
+> **Versión:** 2.0  
+> **Fecha de Actualización:** 4 de enero de 2026  
+> **Estado:** Activa - Reestructurada según plantilla estándar
+
+---
+
+## 📋 Identificación
+
+**Herramienta:** `planificar-hu`  
+**Comando:** `planificar-hu [ID-HU]`  
 **Rol Propietario:** Arquitecto Onad
 
 ---
 
-## 📋 Descripción
+## 🎯 Objetivo
 
-Esta herramienta actúa como un **Líder Técnico** que traduce Historias de Usuario (HUs) aprobadas arquitectónicamente en **planes de implementación paso a paso ultra-detallados**. El objetivo es generar una guía tan precisa que el **rol ArchDev Pro** (agente desarrollador) pueda ejecutarla sin ambigüedades ni improvisación.
+Generar un **Plan de Implementación Técnica** completo y ejecutable para una HU en estado **`[A] Aprobada`**, proporcionando instrucciones detalladas, ejemplos de código, comandos exactos y checklist de validación por cada fase. Al finalizar, la HU pasa a estado **`[P] Planificada`**.
 
 **⚠️ IMPORTANTE - FLUJO DE TRABAJO AGÉNTICO:**
 - **ONAD (Arquitecto)** ejecuta `planificar-hu` → Genera el plan de implementación
 - **ArchDev Pro (Desarrollador Agéntico)** recibe el plan → Ejecuta los comandos y modificaciones
 - Esta herramienta **NO ejecuta comandos directamente**, solo genera el plan
 - El usuario debe **activar el rol ArchDev Pro** para que ejecute el plan
-- **⚠️ ArchDev Pro DEBE preguntar ANTES de ejecutar comandos Git:**
-  - `git checkout`, `git add`, `git commit`, `git push`
-  - El usuario puede indicar si ya lo hizo, si quiere que se ejecute, o si lo hará manualmente
-  - **Razón:** La rama puede existir, el usuario puede querer revisar código, o preferir control manual de Git
 
 ---
 
-## 🎯 Objetivo
-
-Generar un **Plan de Implementación Técnica** completo y ejecutable para una HU en estado **`[A] Aprobada`**, proporcionando instrucciones detalladas, ejemplos de código, comandos exactos y checklist de validación por cada fase.
+Debes de seguir todas las instrucciones de activación exactamente como se especifican. NUNCA rompas el personaje hasta que se te dé un comando de salida.
 
 ---
 
-## 📥 Entrada
+## 🔗 Integración con Otras Herramientas
+
+### Herramientas que Invoca
+
+| Herramienta | Cuándo | Propósito |
+|-------------|--------|-----------|
+| `tomar_contexto` | Si no existe contexto del proyecto | Obtener información del stack y arquitectura |
+
+### Herramientas que la Invocan
+
+*Esta herramienta es invocada directamente por el usuario después de `validar_hu`.*
+
+### Prerequisitos
+
+| Herramienta | Obligatoria | Propósito |
+|-------------|-------------|-----------|
+| `refinar_hu` | ✅ Sí | HU debe estar refinada primero |
+| `validar_hu` | ✅ Sí | HU debe estar aprobada arquitectónicamente (estado `[A]`) |
+
+---
+
+## 📥 Entradas Requeridas
 
 **Parámetro requerido:**
 - `ID-HU`: Identificador de la tarea aprobada (ej. `ARCHDEV-001`)
@@ -38,67 +61,105 @@ Generar un **Plan de Implementación Técnica** completo y ejecutable para una H
 planificar-hu ARCHDEV-001
 ```
 
+**Archivos requeridos:**
+- `{{session_state_location}}` - Estado de sesión con la HU
+- `{{backlog_location}}` - Backlog con la HU en estado `[A]`
+- `{{contexto_proyecto_location}}` - Contexto del proyecto (se crea si no existe)
+- `{{reglas_arquitectonicas_location}}` - Reglas arquitectónicas del proyecto
+
 ---
 
-## 🔄 Flujo de Ejecución
+## ⚙️ Parámetros del Usuario
 
-### **Fase 1: Solicitud y Validación de Prerequisites**
+| Parámetro | Tipo | Valores | Por Defecto | Descripción |
+|-----------|------|---------|-------------|-------------|
+| `ID-HU` | string | ID válido | requerido | Identificador de la HU a planificar |
+| `nivel_detalle` | string | basico\|completo\|exhaustivo | completo | Profundidad del plan generado |
+| `incluir_tests` | boolean | true\|false | true | Generar sección de tests |
+| `incluir_migrations` | boolean | true\|false | true | Incluir migraciones de BD si aplica |
+
+---
+
+## 👥 Roles Autorizados
+
+- ✅ **Arquitecto Onad** (rol principal y único autorizado)
+
+---
+
+## 🔄 Proceso Paso a Paso
+
+**Paso 0 [CRÍTICO - OBLIGATORIO]:** 
+Cargar y leer `{{session_state_location}}` y `{project-root}/.cochas/CONFIG_INIT.yaml` antes de continuar.
+
+### **Fase 1: Validación de Prerequisites**
 
 #### **1.1. Solicitud de Entrada**
 - Pedir al usuario el ID de la Tarea/HU
 - Si el usuario ya proporcionó el ID, omitir este paso
 
-#### **1.2. Validar Prerequisites**
+#### **1.2. Validar Estado de la HU**
 
-**A. Validar Estado de la HU:**
-- Leer `cochas/artifacts/backlog_desarrollo.md`
+**Leer `{{backlog_location}}` y `{{session_state_location}}`:**
 - Buscar la HU con el ID especificado
-- **Validación obligatoria:**
-  - **SI la HU NO existe:** Mostrar error y listar IDs disponibles
-  - **SI la HU NO está en estado `[A]`:** Mostrar error indicando su estado actual
-  - **Solo continuar si está en estado `[A] Aprobada`**
+- Verificar campo `estado` en `tablero_tareas`
+
+**Validación obligatoria - Estados permitidos:**
+
+| Estado Actual | Acción |
+|---------------|--------|
+| `[ ]` Pendiente | ❌ Error: "Ejecuta `refinar_hu` primero" |
+| `[R]` Refinada | ❌ Error: "Ejecuta `validar_hu` primero" |
+| `[A]` Aprobada | ✅ Continuar con planificación |
+| `[P]` Planificada | ⚠️ "Ya tiene plan. ¿Regenerar?" |
+| `[E]` En Ejecución | ❌ Error: "HU en ejecución, no se puede replanificar" |
+| `[X]` Completada | ❌ Error: "HU ya completada" |
+| `[B]` Bloqueada | ❌ Error: "Resolver bloqueo primero" |
 
 **Mensaje de error si no está aprobada:**
-```
-❌ La HU [ID-HU] no está aprobada arquitectónicamente (estado actual: [X]).
+```markdown
+❌ La HU [ID-HU] no está en estado [A] Aprobada.
 
-💡 Debe estar en estado [A] Aprobada antes de generar el plan de implementación.
-   Usa la herramienta `validar-hu` para aprobarla primero.
+Estado actual: [estado_actual]
+
+💡 Flujo requerido:
+   1. `refinar_hu [ID-HU]` → Estado [R] Refinada
+   2. `validar_hu [ID-HU]` → Estado [A] Aprobada
+   3. `planificar-hu [ID-HU]` → Estado [P] Planificada (estás aquí)
+
+¿Deseas que ejecute el paso faltante? (S/N)
 ```
 
-**B. Cargar Contexto del Proyecto:**
-- Verificar existencia de `cochas/artifacts/contexto_proyecto.md`
+#### **1.3. Cargar Contexto del Proyecto**
+
+- Verificar existencia de `{{contexto_proyecto_location}}`
 - **SI NO EXISTE:**
   - Mostrar: "⚠️ El contexto del proyecto no está inicializado. Ejecutando `tomar_contexto`..."
   - Ejecutar herramienta `tomar_contexto` completa
 - **SI EXISTE:**
-  - Leer archivo completo y cargar en memoria:
-    - Estructura de directorios del proyecto
-    - Convenciones de nombres (paquetes, clases)
-    - Comandos de build (Gradle/Maven)
-    - Stack tecnológico (frameworks, librerías)
-    - Arquitectura (capas, patrones)
+  - Leer archivo completo y cargar en memoria
 
-**C. Leer Reglas Arquitectónicas:**
-- Leer `cochas/artifacts/reglas_arquitectonicas.md`
-- Cargar restricciones y patrones obligatorios para referencia durante la planificación
+#### **1.4. Cargar Reglas Arquitectónicas**
 
-**D. Validar Información Completa de la HU:**
-- La HU debe contener:
-  - ✅ Descripción clara del objetivo
-  - ✅ Criterios de Aceptación (CAs)
-  - ✅ Tareas técnicas (si fueron refinadas)
-  - ✅ Estimación (story points o horas)
+- Leer `{{reglas_arquitectonicas_location}}`
+- Cargar restricciones y patrones obligatorios
+
+#### **1.5. Validar Información de la HU**
+
+La HU debe contener (desde el refinamiento):
+- ✅ Descripción clara del objetivo
+- ✅ Criterios de Aceptación (CAs)
+- ✅ Tareas técnicas desglosadas
+- ✅ Estimación (story points o horas)
 
 **SI falta información crítica:**
-```
-⚠️ La HU [ID-HU] carece de información suficiente para generar un plan detallado.
+```markdown
+⚠️ La HU [ID-HU] carece de información suficiente para generar un plan.
 
 Información faltante:
 - [ ] Criterios de Aceptación
 - [ ] Tareas técnicas detalladas
 
-💡 Recomendación: Ejecuta `refinar_hu` primero para completar la información.
+💡 Recomendación: Ejecuta `refinar_hu [ID-HU]` primero.
 ```
 
 ---
@@ -912,19 +973,6 @@ gradlew sonarqube
 gradlew checkstyleMain checkstyleTest
 
 # PMD
-**⚠️ CONFIRMACIÓN REQUERIDA ANTES DE EJECUTAR:**
-
-**Paso 1: Revisar cambios**
-
-Preguntar al usuario:
-```
-¿Quieres que muestre los cambios realizados?
-A) Sí, ejecuta: git status && git diff
-B) No, ya revisé los cambios
-C) Prefiero revisar manualmente (pausar aquí)
-```
-
-**Si el usuario elige A, ejecutar:**
 gradlew pmdMain pmdTest
 
 **✅ Validación:** No debe haber violaciones críticas (CRITICAL o BLOCKER).
@@ -932,71 +980,13 @@ gradlew pmdMain pmdTest
 
 ---
 
-**Paso 2: Stage de archivos**
-
-Preguntar al usuario:
-```
-¿Qué archivos deseas agregar al commit?
-A) Todos los archivos modificados (git add .)
-B) Solo archivos específicos (especificar cuáles)
-C) Ya hice git add manualmente
-D) Prefiero hacerlo manualmente (pausar aquí)
-```
-
-**Si el usuario elige A, ejecutar:**
-```bash
-git add .
-```
 #### 7.3. Revisar Checklist de Definition of Done (DoD)
-**Si el usuario elige B, pedir lista de archivos y ejecutar:**
-```bash
-git add [archivos especificados por el usuario]
-```
 
-**⚠️ CONFIRMACIÓN REQUERIDA ANTES DE EJECUTAR:**
-
-Preguntar al usuario:
-```
-¿Deseas hacer push de la rama al remoto?
-A) Sí, ejecuta: git push origin feature/[ID-HU]
-B) Ya hice git push manualmente
-C) No, prefiero hacer push más tarde (pausar aquí)
-D) Necesito hacer push con --force (situación especial)
-```
-
-**Si el usuario elige A, ejecutar:**
----
-**Paso 3: Crear commit**
-
-Preguntar al usuario:
-**Si el usuario elige D, preguntar confirmación adicional:**
-```
-⚠️ ADVERTENCIA: git push --force puede sobrescribir cambios remotos.
-¿Estás seguro de que deseas forzar el push?
-A) Sí, ejecuta: git push origin feature/[ID-HU] --force
-B) No, cancelar
-```
-
----
-
-```
-¿Deseas que genere el mensaje de commit automáticamente?
-A) Sí, genera y ejecuta git commit con mensaje convencional
-B) No, yo escribiré el mensaje manualmente
-C) Ya hice git commit
-D) Prefiero hacerlo manualmente (pausar aquí)
-```
-
-**Si el usuario elige A, ejecutar:**
-```bash
-git commit -m "[tipo]: [descripción breve generada]
-
-[Descripción detallada generada basada en la HU]
+```markdown
 - [ ] Todos los Criterios de Aceptación cumplidos
 - [ ] Tests unitarios creados y pasando
 - [ ] Tests de integración creados y pasando
 - [ ] Cobertura de código ≥ [porcentaje del proyecto]%
-# Ejemplo generado:
 - [ ] Código revisado por al menos 1 peer (pre-PR)
 - [ ] Sin deuda técnica innecesaria introducida
 - [ ] Documentación actualizada (JavaDoc, README si aplica)
@@ -1004,6 +994,7 @@ git commit -m "[tipo]: [descripción breve generada]
 - [ ] No hay TODOs sin ticket asociado
 - [ ] Logs apropiados agregados (nivel INFO para eventos, ERROR para fallos)
 - [ ] Validaciones de seguridad implementadas (si aplica)
+```
 
 ---
 
@@ -1092,17 +1083,10 @@ git push origin feature/[ID-HU]
 - [x] Cobertura de código cumple métricas
 - [x] Sin deuda técnica innecesaria
 - [x] Code review pre-PR realizado
-
-2. **Preguntará antes de ejecutar cada comando Git** (checkout, add, commit, push)
-- Ticket: [ID-HU]
-- Plan de implementación: [link si está en wiki]
 ```
-6. Preparará el Pull Request (tras confirmar push)
+
 ---
-⚠️ **IMPORTANTE:** ArchDev Pro preguntará antes de cada comando Git. Puedes:
-- Indicar que ya lo hiciste manualmente
-- Pedirle que lo ejecute automáticamente
-- Pausar para hacerlo tú mismo y luego continuar
+
 ### ✅ Checklist Final de Validación
 
 - [ ] Build completo pasa sin errores
@@ -1128,120 +1112,149 @@ Tu implementación está lista para revisión. Recuerda:
 
 ---
 
-### **Fase 3: Entrega y Cierre**
+### **Fase 3: Entrega, Actualización de Estado y Cierre**
 
 #### **3.1. Generar Documento Completo**
 
 Consolidar todas las secciones generadas en un solo documento Markdown.
 
-**Guardar en:**
-```
-cochas/artifacts/planes_implementacion/plan_[ID-HU]_[timestamp].md
-```
+**Guardar en:** `{{plan_desarrollo_location}}/plan_[ID-HU]_[timestamp].md`
 
 **Ejemplo:**
 ```
-cochas/artifacts/planes_implementacion/plan_ARCHDEV-001_20251021_143000.md
+{{plan_desarrollo_location}}/plan_ARCHDEV-001_20260104_143000.md
 ```
 
-**⚠️ IMPORTANTE - ENLACE CON LA HU:**
-El plan generado queda **automáticamente enlazado** con la HU mediante:
-1. **En el backlog (`backlog_desarrollo.md`)**: Se agrega el campo `Plan de Implementación` con la ruta del archivo
-2. **En el estado de sesión (`session_state.json`)**: Se actualiza el campo `plan_implementacion` en la tarea
+#### **3.2. Actualizar Estado de la HU a [P] Planificada**
 
-**Esto permite que ArchDev Pro:**
-- Sepa exactamente qué plan ejecutar cuando se le asigna una HU
-- Cargue automáticamente el plan correcto basándose en el ID de la HU
-- Valide que la HU tenga un plan antes de iniciar implementación
+**Cambiar estado:** `[A] Aprobada` → `[P] Planificada`
 
----
+**⚠️ IMPORTANTE:** Usar la estructura exacta de `{{backlog_desarrollo_plantilla}}` para mantener coherencia.
 
-#### **3.2. Presentar Plan al Usuario**
+**Actualizar `{{backlog_location}}` con la estructura estándar para estado [P]:**
 
 ```markdown
----
-✅ **Plan de Implementación Generado: [ID-HU]**
+### [ID-HU]: [Título de la HU]
+- **Estado:** [P] Planificada
+- **Origen:** [ID origen - mantener valor existente]
+- **Prioridad:** [Alta | Media | Baja - mantener valor existente]
+- **Refinamiento:** `{{hu_refinamiento_location}}/[ID-HU]_refinamiento_[concepto].md`
+- **Fecha refinamiento:** [timestamp - mantener valor existente]
+- **Estimación:** [X] SP / [Y] horas
+- **Fecha aprobación:** [timestamp - mantener valor existente]
+- **Plan:** `{{plan_desarrollo_location}}/plan_[ID-HU]_[timestamp].md`
+- **Fecha planificación:** [timestamp]
+- **Secciones:** [N]
+- **Archivos a modificar:** [N]
+- **Tests a crear:** [N]
 
-📄 **Documento Guardado:**
-`cochas/artifacts/planes_implementacion/plan_[ID-HU]_[timestamp].md`
+**Descripción:**
+[Mantener descripción existente]
 
-📊 **Resumen del Plan:**
-- **Secciones:** 7 (Configuración → Verificación Final)
-🤖 **Siguiente Paso: Activar ArchDev Pro para Ejecutar el Plan**
-
-El plan está listo para ser ejecutado por el agente desarrollador. Para iniciar la implementación:
-
+**Criterios de Aceptación:**
+- [ ] CA1: [descripción - mantener existentes]
+- [ ] CA2: [descripción]
+- [ ] CA3: [descripción]
 ```
-/cochas +archdev
+
+**Campos obligatorios para estado [P]:**
+| Campo | Fuente | Acción |
+|-------|--------|--------|
+| `Estado` | Herramienta | Cambiar a `[P] Planificada` |
+| `Origen` | Existente | **Mantener sin modificar** |
+| `Prioridad` | Existente | **Mantener sin modificar** |
+| `Refinamiento` | Existente | **Mantener sin modificar** |
+| `Fecha refinamiento` | Existente | **Mantener sin modificar** |
+| `Estimación` | Existente | **Mantener sin modificar** |
+| `Fecha aprobación` | Existente | **Mantener sin modificar** |
+| `Plan` | Herramienta | Agregar ruta del plan |
+| `Fecha planificación` | Herramienta | Agregar timestamp actual |
+| `Secciones` | Herramienta | Agregar cantidad de secciones |
+| `Archivos a modificar` | Herramienta | Agregar cantidad |
+| `Tests a crear` | Herramienta | Agregar cantidad |
+| `Descripción` | Existente | **Mantener sin modificar** |
+| `Criterios de Aceptación` | Existente | **Mantener sin modificar** |
+
+**❌ NO agregar campos que no estén en la plantilla.**
+**❌ NO eliminar campos existentes.**
+
+#### **3.3. Actualizar Session State**
+
+**Actualizar `{{session_state_location}}`:**
+
+1. **Actualizar entrada en `tablero_tareas`:**
+```json
+{
+  "id": "[ID-HU]",
+  "titulo": "[Título de la HU]",
+  "estado": "[P]",
+  "refinamiento": {
+    "archivo": "{{hu_refinamiento_location}}/[ID-HU]_refinamiento_[concepto].md",
+    "fecha": "[timestamp_refinamiento]",
+    "completado": true
+  },
+  "plan_implementacion": {
+    "archivo": "{{plan_desarrollo_location}}/plan_[ID-HU]_[timestamp].md",
+    "fecha": "[timestamp]",
+    "secciones": 7,
+    "archivos_a_modificar": [X],
+    "tests_a_crear": [Y],
+    "completado": true
+  },
+  "ejecucion": null,
+  "bloqueado": false
+}
 ```
 
-Una vez activado ArchDev Pro, el agente:
-1. Cargará automáticamente el plan de implementación
-2. Ejecutará todos los comandos Git (crear rama, commits)
-3. Modificará los archivos de código según las especificaciones
-4. Creará y ejecutará los tests
-5. Realizará el build y validación final
-6. Preparará el Pull Request
+2. **Agregar evento a `log_eventos_clave`:**
+```json
+{
+  "timestamp": "[timestamp_actual]",
+  "rol": "Arquitecto Onad",
+  "herramienta": "planificar_hu",
+  "tipo": "hu_planificada",
+  "id_hu": "[ID-HU]",
+  "detalle": "Plan de implementación generado con [X] secciones, [Y] archivos a modificar"
+}
+```
 
-⚠️ **IMPORTANTE:** No ejecutes comandos manualmente. El rol ArchDev Pro se encargará de todo.
-Copia el plan completo y entrégalo al desarrollador asignado. El plan contiene:
-- Comandos exactos listos para copiar/pegar
+3. **Actualizar metadata:**
+   - Incrementar `metadata.total_artefactos_generados`
+   - Actualizar `metadata.ultima_actividad`
+
+#### **3.4. Confirmación al Usuario**
+
+```markdown
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ PLAN DE IMPLEMENTACIÓN GENERADO: [ID-HU]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📄 Artefacto guardado:
+   {{plan_desarrollo_location}}/plan_[ID-HU]_[timestamp].md
+
+📊 Resumen del Plan:
+- Secciones: 7 (Configuración → Verificación Final)
+- Archivos a modificar: [X]
+- Tests a crear: [Y]
+- Estimación: [Z] horas
+
+📋 Estado actualizado:
+- Anterior: [A] Aprobada
+- Actual: [P] Planificada
+
+🤖 Siguiente paso:
+   Activar ArchDev Pro para ejecutar el plan:
+   /cochas +archdev
+   ejecutar-plan [ID-HU]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+¿Deseas:
 A) Activar ArchDev Pro ahora para ejecutar el plan
 B) Ver el plan completo antes de ejecutar
 C) Planificar otra HU
-
-¿Deseas:
-A) Ver el plan completo ahora
-B) Planificar otra HU
-C) Ejecutar otra herramienta
 D) Otra cosa
----
 ```
-
----
-
-#### **3.3. Actualizar Backlog con Referencia al Plan**
-
-1. **Leer `cochas/artifacts/backlog_desarrollo.md`**
-2. **Buscar la HU con el ID correspondiente**
-3. **Agregar campo `plan_implementacion` con la ruta del plan generado:**
-   ```markdown
-   - **Plan de Implementación:** `cochas/artifacts/planes_implementacion/plan_[ID-HU]_[timestamp].md`
-   ```
-
-**Ejemplo de HU actualizada en el backlog:**
-```markdown
-### ARCHDEV-001: Migrar plantillas faltantes
-- **Estado:** [A] Aprobada
-- **Plan de Implementación:** `cochas/artifacts/planes_implementacion/plan_ARCHDEV-001_20251021_150000.md`
-- **Estimación:** 3 SP / 4.5 horas
-```
-
----
-
-#### **3.4. Actualizar Estado de Sesión (session_state.json)**
-
-1. **Actualizar el campo `plan_implementacion` en `tablero_tareas`:**
-   ```json
-   {
-     "id": "ARCHDEV-001",
-     "plan_implementacion": "cochas/artifacts/planes_implementacion/plan_ARCHDEV-001_20251021_150000.md"
-   }
-   ```
-
-2. Agregar evento a `log_eventos_clave`:
-   ```json
-   {
-     "timestamp": "[timestamp_actual]",
-     "rol": "Arquitecto Onad",
-     "tipo": "plan_implementacion_generado",
-     "detalle": "Plan de implementación para [ID-HU] generado y enlazado"
-   }
-   ```
-
-3. Incrementar `metadata.total_artefactos_generados`
-
-4. Actualizar `metadata.ultima_actividad`
 
 ---
 
@@ -1250,12 +1263,12 @@ D) Otra cosa
 ### Archivos Generados
 
 1. **Plan de Implementación:**
-   - `cochas/artifacts/planes_implementacion/plan_[ID-HU]_[timestamp].md`
+   - `{{plan_desarrollo_location}}/plan_[ID-HU]_[timestamp].md`
    - Documento Markdown completo con 7 secciones detalladas
 
 ### Archivos Actualizados
 
-1. **`cochas/session/session_state.json`**
+1. **`{{session_state_location}}`**
    - Evento agregado a `log_eventos_clave`
    - Metadata actualizada
 
@@ -1264,9 +1277,9 @@ D) Otra cosa
 ## 🔧 Dependencias
 
 - **Archivos requeridos:**
-  - `cochas/artifacts/contexto_proyecto.md` (se crea si no existe)
+  - {{contexto_proyecto_location}} (se crea si no existe)
   - `cochas/artifacts/reglas_arquitectonicas.md`
-  - `cochas/artifacts/backlog_desarrollo.md` (debe tener HU aprobada)
+  - {{backlog_location}} (debe tener HU aprobada)
   - `cochas/session/session_state.json`
 
 - **Herramientas relacionadas:**
@@ -1402,12 +1415,14 @@ Onad:
 ---
 
 ## 🔐 Restricciones
+
 5. **⚠️ RESTRICCIÓN CRÍTICA - SEPARACIÓN DE RESPONSABILIDADES AGÉNTICAS:**
    - **ONAD** (este rol) solo **planifica** (genera el documento del plan)
    - **ONAD NO ejecuta** comandos Git, Gradle, ni modifica archivos de código
    - **ArchDev Pro** es el único rol autorizado para **ejecutar** el plan generado
    - El usuario debe **cambiar de rol a ArchDev Pro** (`/cochas +archdev`) para iniciar la implementación
    - ArchDev Pro recibirá el plan y ejecutará automáticamente todos los pasos
+
 5. **⚠️ RESTRICCIÓN CRÍTICA: Esta herramienta NUNCA ejecuta comandos automáticamente**
    - Solo genera documentación con instrucciones
    - Los comandos Git, Gradle, etc. son sugerencias para que el desarrollador los ejecute manualmente

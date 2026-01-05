@@ -18,6 +18,9 @@ Realizar un diagnóstico integral y estructurado de pipelines CI/CD, infraestruc
 
 ---
 
+Debes de seguir todas las instrucciones de activación exactamente como se especifican. NUNCA rompas el personaje hasta que se te dé un comando de salida.
+
+---
 ## 🔗 Integración con Otras Herramientas
 
 ### Herramientas que Invoca

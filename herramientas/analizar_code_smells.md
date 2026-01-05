@@ -1,14 +1,16 @@
 # 🛠️ Herramienta: Analizar Code Smells
 
-> **Versión:** 2.0  
-> **Fecha de Actualización:** 11 de octubre de 2025  
+> **Versión:** 2.1  
+> **Fecha de Actualización:** 4 de enero de 2026  
 > **Estado:** Activa - Reestructurada según plantilla estándar
 
 ---
 
 ## 📋 Identificación
 
-**Herramienta:** `analizar_code_smells`
+**Herramienta:** `analizar_code_smells`  
+**Comando:** `analizar-smells [archivo.java|paquete]`  
+**Rol Propietario:** ArchDev Pro
 
 ---
 
@@ -18,16 +20,56 @@ Analizar código Java automáticamente para identificar **code smells**, violaci
 
 ---
 
+Debes de seguir todas las instrucciones de activación exactamente como se especifican. NUNCA rompas el personaje hasta que se te dé un comando de salida.
+
+---
+
 ## 📥 Entradas Requeridas (Contexto)
 
-**Principal:**
-- El código fuente Java a analizar (clase completa preferiblemente, o archivo `.java`).
-- Puede ser proporcionado como ruta de archivo o contenido directo del código.
+**Parámetro requerido:**
+- `archivo_java`: Código fuente Java a analizar (ruta o contenido)
+
+**Ejemplo de uso:**
+```
+analizar-smells UserService.java
+analizar-smells com.empresa.dominio.servicio
+analizar-smells --contenido "public class MiClase { ... }"
+```
+
+**Archivos requeridos:**
+- `{{session_state_location}}` - Estado de sesión
+- `{{contexto_proyecto_location}}` - Contexto del proyecto (opcional, mejora precisión)
+
+**Archivos generados:**
+- `{{code_smells_reports_location}}/reporte_[archivo]_[timestamp].json` - Reporte de análisis
 
 **Secundario (Opcional):**
-- Contexto del proyecto desde `contexto_proyecto.md` (tipo de proyecto, versión Java, patrones arquitectónicos).
-- Nivel de análisis deseado (básico, moderado o exhaustivo).
-- Umbrales personalizados para detección de code smells (opcional).
+- Umbrales personalizados para detección de code smells
+- Configuración de reglas a ignorar
+
+---
+
+## 🔗 Integración con Otras Herramientas
+
+### Herramientas que Invoca
+
+| Herramienta | Cuándo se Invoca | Propósito |
+|-------------|------------------|-----------|
+| **`tomar_contexto`** | Al inicio si no existe contexto | Obtener información del proyecto (tipo, versión Java, patrones) |
+
+### Herramientas que la Invocan
+
+| Herramienta/Rol | Cuándo | Propósito |
+|-----------------|--------|-----------|
+| **`refactorizar`** | En Paso 1 del flujo de refactorización | Análisis inicial antes de planificar cambios |
+| **ArchDev Pro** | Directamente por comando del usuario | Análisis de calidad de código |
+| **`ejecutar_plan`** | Post-implementación (opcional) | Verificar que no se introdujeron nuevos smells |
+
+### Herramientas que Consume sus Resultados
+
+| Herramienta | Propósito |
+|-------------|-----------|
+| **`solucionar_smells`** | Ejecuta correcciones basadas en el reporte JSON generado |
 
 ---
 
@@ -51,6 +93,9 @@ Analizar código Java automáticamente para identificar **code smells**, violaci
 ---
 
 ## 🔄 Proceso Paso a Paso
+
+**Paso 0 [CRÍTICO - OBLIGATORIO]:** 
+Cargar y leer `{{session_state_location}}` y `{project-root}/.cochas/CONFIG_INIT.yaml` antes de continuar.
 
 ### 1️⃣ Configuración Inicial y Selección de Modo
 
@@ -154,6 +199,106 @@ Donde:
 - Incluir métricas generales, lista de code smells priorizados, y recomendaciones concretas.
 - Calcular métricas objetivo post-refactoring.
 - Generar sugerencias de refactoring con pasos concretos para cada problema.
+
+---
+
+## 🔐 Restricciones
+
+1. **Solo analiza código Java** (no soporta otros lenguajes)
+2. **Requiere código sintácticamente correcto** (debe compilar)
+3. **No ejecuta código** - solo análisis estático
+4. **No modifica archivos** - solo genera reporte
+5. **Archivos > 5000 LOC** requieren confirmación del usuario
+6. **Respeta configuración de umbrales** del proyecto si existe
+
+---
+
+## 📊 Métricas Sugeridas
+
+Trackear en `{{session_state_location}}`:
+
+| Métrica | Descripción |
+|---------|-------------|
+| analisis_ejecutados_total | Total de análisis de code smells realizados |
+| smells_detectados_total | Acumulado de code smells identificados |
+| smells_por_severidad | Distribución por CRÍTICA, ALTA, MEDIA, BAJA |
+| tiempo_promedio_analisis | Tiempo promedio por archivo analizado |
+| tasa_automatizables | % de smells que pueden corregirse automáticamente |
+
+---
+
+## 🔄 Actualización de Session State
+
+### 7️⃣ Persistencia del Reporte y Registro de Eventos
+
+**Guardar reporte en ubicación estándar:**
+```
+{{code_smells_reports_location}}/reporte_[NombreArchivo]_[timestamp].json
+```
+
+**Actualizar `{{session_state_location}}`:**
+
+```json
+{
+  "ultimo_analisis_smells": {
+    "archivo_analizado": "[NombreArchivo].java",
+    "timestamp": "[timestamp]",
+    "ruta_reporte": "{{code_smells_reports_location}}/reporte_[NombreArchivo]_[timestamp].json",
+    "total_smells": [X],
+    "smells_automatizables": [Y],
+    "ids_smells": ["CS001", "CS002", "CS003"]
+  }
+}
+```
+
+**Agregar evento a `log_eventos_clave`:**
+
+```json
+{
+  "timestamp": "[timestamp_actual]",
+  "rol": "[rol_actual]",
+  "herramienta": "analizar_code_smells",
+  "tipo": "analisis_smells_completado",
+  "detalle": "Archivo: [NombreArchivo].java - Smells detectados: [X] total, [Y] automatizables"
+}
+```
+
+**Actualizar metadata:**
+- Incrementar `metadata.total_artefactos_generados`
+- Actualizar `metadata.ultima_actividad`
+
+### 8️⃣ Ofrecer Integración con `solucionar_smells`
+
+Al finalizar el análisis, presentar opciones:
+
+```markdown
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ ANÁLISIS COMPLETADO: [NombreArchivo].java
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📊 Resumen:
+- Code smells detectados: [X] total
+- Automatizables: [Y] ([Z]%)
+- Deuda técnica estimada: [N] horas
+
+📄 Reporte guardado en:
+   {{code_smells_reports_location}}/reporte_[NombreArchivo]_[timestamp].json
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+¿Qué deseas hacer?
+
+A) 🔧 Ejecutar `solucionar-smells CS001` (smell más crítico)
+B) 🔧 Ejecutar `solucionar-smells --aplicar-todos` (todos los automatizables)
+C) 📋 Ver detalle de un smell específico
+D) 📂 Analizar otro archivo
+E) ❌ Finalizar
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+**Si el usuario elige A o B:**
+- Invocar `solucionar_smells` pasando la referencia al reporte desde `{{session_state_location}}.ultimo_analisis_smells`
 
 ---
 

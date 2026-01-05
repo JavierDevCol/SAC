@@ -5,6 +5,10 @@ Analiza una lista de tareas generadas y asigna autom�ticamente el **rol m�s 
 
 ---
 
+Debes de seguir todas las instrucciones de activación exactamente como se especifican. NUNCA rompas el personaje hasta que se te dé un comando de salida.
+
+---
+
 ## Cu�ndo Usar Esta Herramienta
 
 - Despu�s de completar una tarea que gener� m�ltiples subtareas

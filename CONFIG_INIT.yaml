@@ -1,0 +1,41 @@
+hu_story_location: '{project-root}/.cochas/artifacts/HU'
+hu_refinamiento_location: '{project-root}/.cochas/artifacts/HU/refinamientos'
+artifacts_location: '{project-root}/.cochas/artifacts'
+adr_location: '{project-root}/.cochas/artifacts/ADR'
+analisis_location: '{project-root}/.cochas/artifacts/analisis'
+backlog_location: '{project-root}/.cochas/artifacts/backlog_desarrollo.md'
+contexto_proyecto_location: '{project-root}/.cochas/artifacts/contexto_proyecto.md'
+reglas_arquitectonicas_location: '{project-root}/.cochas/artifacts/reglas_arquitectonicas.md'
+plan_desarrollo_location: '{project-root}/.cochas/artifacts/planes_de_desarrollo'
+ejecuciones_location: '{project-root}/.cochas/artifacts/ejecuciones'
+code_smells_reports_location: '{project-root}/.cochas/artifacts/code_smells'
+
+# Session
+session_location: '{project-root}/.cochas/session'
+session_state_location: '{project-root}/.cochas/session/session_state.json'
+
+# Plantillas
+plantillas_location: '{project-root}/.cochas/plantillas'
+contexto_proyecto_plantilla: '{project-root}/.cochas/plantillas/contexto_proyecto_plantilla.md'
+backlog_desarrollo_plantilla: '{project-root}/.cochas/plantillas/backlog_desarrollo_plantilla.md'
+
+# Estados de HU (ciclo de vida)
+# [ ] Pendiente - HU creada, sin analizar
+# [R] Refinada - Analizada con criterios y estimación (por refinar_hu)
+# [A] Aprobada - Validada arquitectónicamente (por validar_hu)
+# [P] Planificada - Tiene plan de implementación (por planificar_hu)
+# [E] En Ejecución - ArchDev ejecutando el plan (por ejecutar_plan)
+# [X] Completada - Implementación terminada (por ejecutar_plan)
+# [B] Bloqueada - Dependencias no resueltas (por cualquier herramienta)
+
+ruta_herramientas: '{project-root}/.cochas/herramientas/herramientas-activas.md'
+
+architecture_sharded_location: '{project-root}/.cochas/artifacts/architecture'
+architecture_file: '{project-root}/.cochas/artifacts/architecture/index.md'
+dod_pivots_location: '{project-root}/.cochas/artifacts/architecture/dod-pivots.md'
+
+# Core Configuration Values
+communication_language: Español
+document_output_language: Español
+user_name: Javier Garcia
+output_folder: '{project-root}/.cochas'

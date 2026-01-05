@@ -1,24 +1,50 @@
 # 🛠️ Herramienta: Validar Aceptación de HU
 
-**Comando:** `validar-hu`  
-**Versión:** 1.0  
-**Rol Propietario:** Arquitecto Onad
+> **Versión:** 2.0  
+> **Fecha de Actualización:** 4 de enero de 2026  
+> **Estado:** Activa - Reestructurada según plantilla estándar
 
 ---
 
-## 📋 Descripción
+## 📋 Identificación
 
-Esta herramienta actúa como el **"Quality Gate" (Control de Calidad) Arquitectónico** final antes de que una Historia de Usuario (HU) sea aprobada para implementación. Utiliza un checklist explícito y el contexto del proyecto para validar coherencia arquitectónica, patrones de diseño y restricciones técnicas.
+**Herramienta:** `validar-hu`  
+**Comando:** `validar-hu [ID-HU]`  
+**Rol Propietario:** Arquitecto Onad
 
 ---
 
 ## 🎯 Objetivo
 
-Validar que una HU en estado **`[R] Refinada`** cumple con los estándares arquitectónicos del proyecto antes de cambiarla a estado **`[A] Aprobada`**. Si no cumple, generar un informe detallado de correcciones necesarias y esperar confirmación del usuario antes de aplicar ajustes.
+Validar que una HU en estado **`[R] Refinada`** cumple con los estándares arquitectónicos del proyecto antes de cambiarla a estado **`[A] Aprobada`**. Si no cumple, generar un informe detallado de correcciones necesarias. Al aprobar, la HU queda lista para `planificar-hu`.
 
 ---
 
-## 📥 Entrada
+Debes de seguir todas las instrucciones de activación exactamente como se especifican. NUNCA rompas el personaje hasta que se te dé un comando de salida.
+
+---
+
+## 🔗 Integración con Otras Herramientas
+
+### Herramientas que Invoca
+
+| Herramienta | Cuándo | Propósito |
+|-------------|--------|-----------|
+| `tomar_contexto` | Si no existe contexto del proyecto | Obtener información del stack y arquitectura |
+
+### Herramientas que la Invocan
+
+*Esta herramienta es invocada directamente por el usuario después de `refinar_hu`.*
+
+### Prerequisitos
+
+| Herramienta | Obligatoria | Propósito |
+|-------------|-------------|-----------|
+| `refinar_hu` | ✅ Sí | HU debe estar refinada primero (estado `[R]`) |
+
+---
+
+## 📥 Entradas Requeridas
 
 **Parámetro requerido:**
 - `ID-HU`: Identificador de la tarea (ej. `ARCHDEV-001`)
@@ -28,178 +54,330 @@ Validar que una HU en estado **`[R] Refinada`** cumple con los estándares arqui
 validar-hu ARCHDEV-001
 ```
 
+**Archivos requeridos:**
+- `{{session_state_location}}` - Estado de sesión con la HU
+- `{{backlog_location}}` - Backlog con la HU en estado `[R]`
+- `{{contexto_proyecto_location}}` - Contexto del proyecto (se crea si no existe)
+- `{{reglas_arquitectonicas_location}}` - Reglas arquitectónicas del proyecto
+
 ---
 
-## 🔄 Flujo de Ejecución
+## ⚙️ Parámetros del Usuario
 
-### **Fase 1: Solicitud y Carga de Contexto**
+| Parámetro | Tipo | Valores | Por Defecto | Descripción |
+|-----------|------|---------|-------------|-------------|
+| `ID-HU` | string | ID válido | requerido | Identificador de la HU a validar |
+| `modo_estricto` | boolean | true\|false | true | Rechazar si hay cualquier ❌ |
+| `incluir_sugerencias` | boolean | true\|false | true | Generar correcciones sugeridas |
 
-1. **Solicitud de Entrada:**
-   - Pedir al usuario el ID de la Tarea/HU que está en estado `[R] Refinada`
-   - Si el usuario ya proporcionó el ID, omitir este paso
+---
 
-2. **Validar Estado de la HU:**
-   - Leer `cochas/artifacts/backlog_desarrollo.md`
-   - Buscar la HU con el ID especificado
-   - **Validación obligatoria:**
-     - **SI la HU NO existe:** Mostrar error y listar IDs disponibles
-     - **SI la HU NO está en estado `[R]`:** Mostrar error indicando su estado actual
-     - **Solo continuar si está en estado `[R] Refinada`**
+## 👥 Roles Autorizados
 
-3. **Carga de Contexto del Proyecto:**
-   - Verificar existencia de `cochas/artifacts/contexto_proyecto.md`
-   - **SI NO EXISTE:**
-     - Mostrar: "⚠️ El contexto del proyecto no está inicializado. Ejecutando `tomar_contexto`..."
-     - Ejecutar herramienta `tomar_contexto` completa
-   - **SI EXISTE:**
-     - Leer archivo completo y cargar en memoria:
-       - Stack tecnológico (lenguaje, frameworks, librerías)
-       - Arquitectura detectada (ej. Hexagonal, capas identificadas)
-       - Componentes core (controladores, servicios, repositorios, modelos)
-       - Migraciones Flyway existentes (si aplica)
-       - Patrones de diseño identificados
+- ✅ **Arquitecto Onad** (rol principal y único autorizado)
 
-4. **Cargar Reglas Arquitectónicas:**
-   - Leer `cochas/artifacts/reglas_arquitectonicas.md`
-   - Cargar en memoria las restricciones y patrones obligatorios del proyecto
+---
+
+## 🔄 Proceso Paso a Paso
+
+**Paso 0 [CRÍTICO - OBLIGATORIO]:** 
+Cargar y leer `{{session_state_location}}` y `{project-root}/.cochas/CONFIG_INIT.yaml` antes de continuar.
+
+### **Fase 1: Solicitud y Validación de Prerequisites**
+
+#### **1.1. Solicitud de Entrada**
+- Pedir al usuario el ID de la Tarea/HU
+- Si el usuario ya proporcionó el ID, omitir este paso
+
+#### **1.2. Validar Estado de la HU**
+
+**Leer `{{backlog_location}}` y `{{session_state_location}}`:**
+- Buscar la HU con el ID especificado
+- Verificar campo `estado` en `tablero_tareas`
+
+**Validación obligatoria - Estados permitidos:**
+
+| Estado Actual | Acción |
+|---------------|--------|
+| `[ ]` Pendiente | ❌ Error: "Ejecuta `refinar_hu` primero" |
+| `[R]` Refinada | ✅ Continuar con validación |
+| `[A]` Aprobada | ⚠️ "Ya está aprobada. ¿Revalidar?" |
+| `[P]` Planificada | ❌ Error: "Ya tiene plan. No se puede revalidar" |
+| `[E]` En Ejecución | ❌ Error: "HU en ejecución" |
+| `[X]` Completada | ❌ Error: "HU ya completada" |
+| `[B]` Bloqueada | ❌ Error: "Resolver bloqueo primero" |
+
+**Mensaje de error si no está refinada:**
+```markdown
+❌ La HU [ID-HU] no está en estado [R] Refinada.
+
+Estado actual: [estado_actual]
+
+💡 Flujo requerido:
+   1. `refinar_hu [ID-HU]` → Estado [R] Refinada
+   2. `validar-hu [ID-HU]` → Estado [A] Aprobada (estás aquí)
+   3. `planificar-hu [ID-HU]` → Estado [P] Planificada
+   4. `ejecutar-plan [ID-HU]` → Estado [E] → [X]
+
+¿Deseas que ejecute el paso faltante? (S/N)
+```
+
+#### **1.3. Cargar Contexto del Proyecto**
+
+- Verificar existencia de `{{contexto_proyecto_location}}`
+- **SI NO EXISTE:**
+  - Mostrar: "⚠️ El contexto del proyecto no está inicializado. Ejecutando `tomar_contexto`..."
+  - Ejecutar herramienta `tomar_contexto` completa
+- **SI EXISTE:**
+  - Leer archivo completo y cargar en memoria
+
+#### **1.4. Cargar Reglas Arquitectónicas**
+
+- Leer `{{reglas_arquitectonicas_location}}`
+- Cargar restricciones y patrones obligatorios
+
+#### **1.5. Cargar Refinamiento de la HU**
+
+- Leer el archivo de refinamiento desde `tablero_tareas[ID-HU].refinamiento.archivo`
+- Ruta esperada: `{{hu_refinamiento_location}}/[ID-HU]_refinamiento_[concepto].md`
+- Cargar criterios de aceptación, estimación y dependencias
 
 ---
 
 ### **Fase 2: Análisis Exhaustivo (Aplicación del Checklist)**
 
-Aplicar el **Checklist de Validación Arquitectónica** (ver sección Checklist más abajo) a la HU.
+Aplicar el **Checklist de Validación Arquitectónica** a la HU.
 
 Para cada ítem del checklist:
-1. **Leer la descripción completa de la HU** desde `backlog_desarrollo.md`
-2. **Evaluar si cumple el criterio** basándose en:
+1. **Leer la descripción completa de la HU** desde `{{backlog_location}}`
+2. **Leer el refinamiento** desde `{{hu_refinamiento_location}}`
+3. **Evaluar si cumple el criterio** basándose en:
    - Contexto del proyecto
    - Reglas arquitectónicas
    - Principios de Clean Architecture / Arquitectura Hexagonal
-3. **Marcar como:**
+4. **Marcar como:**
    - ✅ **CUMPLE** - El criterio se satisface
    - ❌ **NO CUMPLE** - El criterio se viola o es ambiguo
    - ⚠️ **REQUIERE ACLARACIÓN** - Falta información para validar
 
 ---
 
-### **Fase 3: Generación de Informe**
+### **Fase 3: Generación de Informe y Actualización de Estado**
 
 #### **3A. SI TODOS LOS CRITERIOS SON ✅ CUMPLE:**
 
-**Generar informe de aprobación:**
+**Cambiar estado:** `[R] Refinada` → `[A] Aprobada`
+
+**⚠️ IMPORTANTE:** Usar la estructura exacta de `{{backlog_desarrollo_plantilla}}` para mantener coherencia.
+
+**Actualizar `{{backlog_location}}` con la estructura estándar para estado [A]:**
 
 ```markdown
-## ✅ VALIDACIÓN EXITOSA: [ID-HU]
+### [ID-HU]: [Título de la HU]
+- **Estado:** [A] Aprobada
+- **Origen:** [ID origen - mantener valor existente]
+- **Prioridad:** [Alta | Media | Baja - mantener valor existente]
+- **Refinamiento:** `{{hu_refinamiento_location}}/[ID-HU]_refinamiento_[concepto].md`
+- **Fecha refinamiento:** [timestamp - mantener valor existente]
+- **Estimación:** [X] SP / [Y] horas
+- **Fecha aprobación:** [timestamp]
+- **Aprobado por:** Arquitecto Onad
 
-### Resumen
-La HU **[ID-HU]: [Título]** ha pasado todas las validaciones arquitectónicas.
+**Notas de Aprobación:**
+- ✅ [Nota de validación 1]
+- ✅ [Nota de validación 2]
+- ⚠️ [Advertencia o recomendación si aplica]
 
-### Checklist de Validación
-- ✅ Coherencia con Arquitectura Hexagonal
-- ✅ Validación de Persistencia
-- ✅ Análisis de Impacto
-- ✅ Pruebas y Calidad
+**Descripción:**
+[Mantener descripción existente]
 
-### Justificación
-[Explicación breve de por qué la HU es coherente y robusta]
-
-### Acción Automática
-El estado de la HU se actualizará a **[A] Aprobada** automáticamente.
+**Criterios de Aceptación:**
+- [ ] CA1: [descripción - mantener existentes]
+- [ ] CA2: [descripción]
+- [ ] CA3: [descripción]
 ```
 
-**Acciones:**
-1. Actualizar `cochas/artifacts/backlog_desarrollo.md`:
-   - Cambiar estado de `[R] Refinada` → `[A] Aprobada`
-2. Actualizar `cochas/session/session_state.json`:
-   - Agregar evento al `log_eventos_clave`: tipo "hu_aprobada"
-   - Actualizar `tablero_tareas` con el nuevo estado
-3. Mostrar informe al usuario
-4. Preguntar: "¿Deseas validar otra HU o continuar con otra tarea?"
+**Campos obligatorios para estado [A]:**
+| Campo | Fuente | Acción |
+|-------|--------|--------|
+| `Estado` | Herramienta | Cambiar a `[A] Aprobada` |
+| `Origen` | Existente | **Mantener sin modificar** |
+| `Prioridad` | Existente | **Mantener sin modificar** |
+| `Refinamiento` | Existente | **Mantener sin modificar** |
+| `Fecha refinamiento` | Existente | **Mantener sin modificar** |
+| `Estimación` | Existente | **Mantener sin modificar** |
+| `Fecha aprobación` | Herramienta | Agregar timestamp actual |
+| `Aprobado por` | Herramienta | Agregar "Arquitecto Onad" |
+| `Notas de Aprobación` | Herramienta | Agregar notas del checklist |
+| `Descripción` | Existente | **Mantener sin modificar** |
+| `Criterios de Aceptación` | Existente | **Mantener sin modificar** |
+
+**❌ NO agregar campos que no estén en la plantilla.**
+**❌ NO eliminar campos existentes.**
+
+**Actualizar `{{session_state_location}}`:**
+
+1. **Actualizar entrada en `tablero_tareas`:**
+```json
+{
+  "id": "[ID-HU]",
+  "estado": "[A]",
+  "aprobacion": {
+    "fecha": "[timestamp]",
+    "notas": ["Coherencia arquitectónica validada", "Sin conflictos de persistencia"],
+    "checklist_resultado": {
+      "cumple": 12,
+      "no_cumple": 0,
+      "ambiguo": 0
+    }
+  }
+}
+```
+
+2. **Agregar evento a `log_eventos_clave`:**
+```json
+{
+  "timestamp": "[timestamp_actual]",
+  "rol": "Arquitecto Onad",
+  "herramienta": "validar_hu",
+  "tipo": "hu_aprobada",
+  "id_hu": "[ID-HU]",
+  "detalle": "HU aprobada arquitectónicamente. 12/12 criterios cumplidos."
+}
+```
+
+**Confirmación al usuario:**
+```markdown
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ VALIDACIÓN EXITOSA: [ID-HU]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+La HU **[ID-HU]: [Título]** ha pasado todas las validaciones arquitectónicas.
+
+📊 Checklist de Validación:
+- ✅ Coherencia con Arquitectura Hexagonal (4/4)
+- ✅ Validación de Persistencia (4/4)
+- ✅ Análisis de Impacto (4/4)
+- ✅ Pruebas y Calidad (3/3)
+
+📋 Estado actualizado:
+- Anterior: [R] Refinada
+- Actual: [A] Aprobada
+
+💡 Siguiente paso:
+   Ejecutar `planificar-hu [ID-HU]` para generar el plan de implementación
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+¿Deseas:
+A) Ejecutar `planificar-hu [ID-HU]` ahora
+B) Validar otra HU
+C) Ejecutar otra herramienta
+```
 
 ---
 
 #### **3B. SI HAY CRITERIOS ❌ NO CUMPLE o ⚠️ REQUIERE ACLARACIÓN:**
 
+**NO cambiar estado** (permanece en `[R] Refinada`)
+
 **Generar informe de correcciones:**
 
 ```markdown
-## ⚠️ VALIDACIÓN PENDIENTE: [ID-HU]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+⚠️ VALIDACIÓN PENDIENTE: [ID-HU]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-### Resumen
 La HU **[ID-HU]: [Título]** requiere correcciones antes de ser aprobada.
+
+📊 Resumen de Estado:
+- ✅ Criterios Aprobados: [X]
+- ❌ Criterios Rechazados: [Y]
+- ⚠️ Criterios Ambiguos: [Z]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ### Hallazgos y Correcciones Necesarias
 
 #### ❌ [Nombre del Criterio Violado]
+
 **Problema Detectado:**
 [Descripción específica de qué viola la HU]
 
 **Impacto:**
-[Explicar consecuencias: deuda técnica, acoplamiento, violación de principios, etc.]
+[Explicar consecuencias: deuda técnica, acoplamiento, violación de principios]
 
 **Corrección Sugerida:**
 [Explicación detallada de qué debe cambiarse y por qué]
 
-**Ejemplo:**
-[Si aplica, mostrar antes/después o pseudocódigo]
-
 ---
 
 #### ⚠️ [Criterio que Requiere Aclaración]
+
 **Ambigüedad Detectada:**
 [Qué información falta en la HU]
 
 **Pregunta:**
 [Qué necesitas saber para validar este criterio]
 
----
-
-### Resumen de Estado
-- ✅ Criterios Aprobados: [X]
-- ❌ Criterios Rechazados: [Y]
-- ⚠️ Criterios Ambiguos: [Z]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ### Opciones
-A) **Aplicar correcciones sugeridas** - Actualizaré la HU con los cambios propuestos y la aprobaré
-B) **Devolver al refinador_hu** - Cambiaré el estado a `[ ] Pendiente` para que sea refinada nuevamente
-C) **Discutir un hallazgo específico** - Podemos analizar juntos alguna corrección antes de decidir
-D) **Cancelar validación** - Mantener el estado actual sin cambios
+
+A) 🔧 **Aplicar correcciones sugeridas** - Actualizo la HU y la apruebo
+B) 🚫 **Marcar como Bloqueada** - Cambio a estado [B] con motivo documentado
+C) 💬 **Discutir un hallazgo específico** - Analizamos juntos antes de decidir
+D) ❌ **Cancelar validación** - Mantener estado [R] sin cambios
 
 ¿Qué deseas hacer?
 ```
 
-**Esperar respuesta del usuario:**
+**Acciones según respuesta:**
 
 - **SI elige A (Aplicar correcciones):**
-  1. Aplicar las correcciones sugeridas directamente en `backlog_desarrollo.md`
-  2. Actualizar estado a `[A] Aprobada`
-  3. Documentar en `session_state.json` el evento "hu_corregida_y_aprobada"
-  4. Mostrar: "✅ Correcciones aplicadas y HU aprobada."
+  1. Aplicar correcciones en `{{backlog_location}}`
+  2. Actualizar refinamiento en `{{hu_refinamiento_location}}`
+  3. Cambiar estado a `[A] Aprobada`
+  4. Documentar evento "hu_corregida_y_aprobada"
+  5. Mostrar: "✅ Correcciones aplicadas y HU aprobada."
 
-- **SI elige B (Devolver al refinador):**
-  1. Actualizar estado en `backlog_desarrollo.md` a `[ ] Pendiente`
-  2. Agregar un comentario en la HU con el resumen de hallazgos
-  3. Documentar en `session_state.json` el evento "hu_rechazada"
-  4. Mostrar: "↩️ HU devuelta al refinador_hu para correcciones."
+- **SI elige B (Marcar como Bloqueada):**
+  1. Cambiar estado a `[B] Bloqueada`
+  2. Registrar bloqueo:
+  ```json
+  {
+    "id": "[ID-HU]",
+    "estado": "[B]",
+    "bloqueado": true,
+    "bloqueo": {
+      "motivo": "[Resumen de criterios no cumplidos]",
+      "tipo": "DECISION_PENDIENTE",
+      "fecha": "[timestamp]",
+      "accion_requerida": "Resolver hallazgos de validación arquitectónica"
+    }
+  }
+  ```
+  3. Documentar evento "hu_bloqueada"
+  4. Mostrar: "🚫 HU marcada como Bloqueada. Resolver hallazgos para continuar."
 
 - **SI elige C (Discutir):**
   1. Iniciar diálogo interactivo sobre el hallazgo específico
-  2. Al finalizar, volver a presentar las opciones A, B, D
+  2. Al finalizar, volver a presentar opciones A, B, D
 
 - **SI elige D (Cancelar):**
-  1. No realizar cambios
-  2. Mostrar: "❌ Validación cancelada. Estado sin cambios."
+  1. No realizar cambios (permanece en `[R]`)
+  2. Mostrar: "❌ Validación cancelada. Estado [R] sin cambios."
 
 ---
 
 ### **Fase 4: Cierre**
 
-1. **Actualizar Estado de Sesión:**
-   - Agregar tarea completada al `historial_roles` del rol actual
+1. **Actualizar metadata de sesión:**
+   - Incrementar `metadata.total_artefactos_generados` si se aplicaron correcciones
    - Actualizar `metadata.ultima_actividad`
 
 2. **Preguntar al Usuario:**
-   > "¿Deseas validar otra HU, ejecutar otra herramienta, o cambiar de rol?"
+   > "¿Deseas validar otra HU, ejecutar `planificar-hu`, o cambiar de rol?"
 
 ---
 
@@ -210,125 +388,101 @@ Este checklist se aplica a cada HU durante la validación.
 ### 1️⃣ Coherencia con Arquitectura Hexagonal
 
 - [ ] **Los cambios en dominio NO importan clases de infraestructura**
-  - Validar que `co.com.bmm.modelo` o `co.com.bmm.puerto` NO importen clases de frameworks (Spring, JPA, etc.)
-  
 - [ ] **Los puertos (interfaces) están en la capa de dominio**
-  - Validar que interfaces de repositorios, servicios externos estén en paquete `puerto`
-  
 - [ ] **Los adaptadores están en la capa de infraestructura**
-  - Validar que implementaciones concretas (DB, API, MQ) estén en `adaptador`
-
 - [ ] **Los casos de uso NO conocen detalles de infraestructura**
-  - Validar que los casos de uso (`casodeuso`) solo dependan de puertos (interfaces)
-
----
 
 ### 2️⃣ Validación de Persistencia
 
-- [ ] **Las migraciones Flyway son incrementales**
-  - Si la HU propone nuevas migraciones, validar que no conflicten con las existentes
-  - Validar nomenclatura: `V[numero]__[descripcion].sql`
-
+- [ ] **Las migraciones Flyway son incrementales** (nomenclatura `V[numero]__[descripcion].sql`)
 - [ ] **No hay conflictos de versión**
-  - Verificar que el número de versión no esté duplicado
-
 - [ ] **Los cambios de BD están justificados**
-  - Validar que los cambios de esquema respondan a requisitos de negocio, no caprichos técnicos
-
-- [ ] **Se consideran migraciones de rollback**
-  - Para cambios destructivos (drop column/table), verificar que hay plan de contingencia
-
----
+- [ ] **Se consideran migraciones de rollback** (para cambios destructivos)
 
 ### 3️⃣ Análisis de Impacto
 
 - [ ] **No introduce deuda técnica evitable**
-  - Detectar si la HU propone código duplicado, hardcoding, o soluciones rápidas sin justificación
-
-- [ ] **No afecta negativamente el rendimiento**
-  - Validar que no introduce N+1 queries, carga masiva sin paginación, etc.
-
+- [ ] **No afecta negativamente el rendimiento** (N+1, sin paginación)
 - [ ] **No genera acoplamiento entre módulos**
-  - Validar que módulos independientes (ej. OTP, Conversación) sigan desacoplados
-
 - [ ] **Respeta principios SOLID**
-  - Validar Single Responsibility, Open/Closed, Dependency Inversion
-
----
 
 ### 4️⃣ Pruebas y Calidad
 
-- [ ] **La HU incluye criterios de aceptación claros**
-  - Debe tener "Definición de Hecho" (DoD) o criterios verificables
-
-- [ ] **Se especifican casos de prueba**
-  - Debe listar al menos:
-    - Happy path (flujo exitoso)
-    - Edge cases (casos límite)
-    - Error handling (manejo de errores)
-
-- [ ] **Se consideran pruebas de integración**
-  - Para cambios de BD o API, debe especificar pruebas de integración necesarias
-
----
+- [ ] **La HU incluye criterios de aceptación claros** (del refinamiento)
+- [ ] **Se especifican casos de prueba** (happy path, edge cases, errores)
+- [ ] **Se consideran pruebas de integración** (para BD o API)
 
 ### 5️⃣ Coherencia con Reglas del Proyecto
 
-- [ ] **Cumple las reglas documentadas en `reglas_arquitectonicas.md`**
-  - Validar contra las restricciones específicas del proyecto
+- [ ] **Cumple las reglas documentadas en `{{reglas_arquitectonicas_location}}`**
 
 ---
 
-## 📤 Salida
+## ⚠️ Manejo de Errores y Casos Borde
 
-### Archivos Modificados
+| Situación | Acción |
+|-----------|--------|
+| HU no encontrada | Mostrar error y listar IDs disponibles |
+| HU en estado incorrecto | Mostrar flujo requerido y sugerir herramienta correcta |
+| Contexto no existe | Ejecutar `tomar_contexto` automáticamente |
+| Reglas arquitectónicas no existen | Crear archivo base con reglas mínimas |
+| Refinamiento no encontrado | Error: "Ejecuta `refinar_hu` primero" |
+| Múltiples criterios ❌ | Listar todos y ofrecer corregir en lote |
 
-1. **`cochas/artifacts/backlog_desarrollo.md`**
-   - Estado de HU actualizado a `[A] Aprobada` o `[ ] Pendiente` según resultado
+---
 
-2. **`cochas/session/session_state.json`**
-   - Evento agregado a `log_eventos_clave`
-   - Estado de tarea actualizado en `tablero_tareas`
+## 📤 Formato de Salida Esperado
 
-### Respuesta al Usuario
+**Archivos modificados (si aprueba):**
 
-- **Informe de validación** (aprobación o correcciones)
-- **Opciones claras** para siguiente acción
+| Archivo | Cambio |
+|---------|--------|
+| `{{backlog_location}}` | Estado de HU actualizado a `[A]` |
+| `{{session_state_location}}` | `tablero_tareas` y `log_eventos_clave` actualizados |
+
+**Archivos modificados (si bloquea):**
+
+| Archivo | Cambio |
+|---------|--------|
+| `{{backlog_location}}` | Estado de HU actualizado a `[B]` |
+| `{{session_state_location}}` | Bloqueo registrado en `tablero_tareas` |
 
 ---
 
 ## 🔧 Dependencias
 
-- **Archivos requeridos:**
-  - `cochas/artifacts/contexto_proyecto.md` (se crea si no existe)
-  - `cochas/artifacts/reglas_arquitectonicas.md` (se crea si no existe)
-  - `cochas/artifacts/backlog_desarrollo.md` (debe existir con HUs)
-  - `cochas/session/session_state.json`
+**Archivos requeridos:**
+- `{{session_state_location}}` - Estado de sesión
+- `{{backlog_location}}` - Backlog con la HU en estado `[R]`
+- `{{contexto_proyecto_location}}` - Contexto del proyecto
+- `{{reglas_arquitectonicas_location}}` - Reglas arquitectónicas
+- `{{hu_refinamiento_location}}/[ID-HU]_refinamiento_*.md` - Refinamiento de la HU
 
-- **Herramientas relacionadas:**
-  - `tomar_contexto` (si el contexto no está inicializado)
-  - `refinar_hu` (para devolver HUs rechazadas)
+**Herramientas prerequisito:**
+- `refinar_hu` - Debe ejecutarse primero
 
 ---
 
-## 📚 Notas de Implementación
+## 🔐 Restricciones
 
-### Detección de Violaciones Arquitectónicas
+1. **Solo Arquitecto Onad puede ejecutar esta herramienta**
+2. **Solo HUs en estado `[R]` pueden ser validadas**
+3. **No se puede aprobar una HU sin resolver todos los ❌**
+4. **Toda corrección aplicada debe ser documentada en el log**
+5. **El refinamiento debe existir** antes de validar
 
-**Para validar importaciones prohibidas:**
-1. Leer la descripción de cambios propuestos en la HU
-2. Buscar menciones de clases específicas (ej. `@Entity`, `@RestController` en dominio)
-3. Si se mencionan archivos concretos, inferir violaciones por convención de nombres
+---
 
-**Para validar persistencia:**
-1. Buscar en el contexto del proyecto la sección "Migraciones Flyway"
-2. Comparar versiones propuestas con las existentes
-3. Detectar conflictos de nomenclatura o versión
+## 📊 Métricas Sugeridas
 
-**Para validar impacto:**
-1. Analizar descripción textual de la HU
-2. Identificar palabras clave: "nuevo módulo", "refactor completo", "cambio en core"
-3. Aplicar heurísticas de riesgo basadas en alcance
+Trackear en `{{session_state_location}}`:
+
+| Métrica | Descripción |
+|---------|-------------|
+| hus_validadas_total | Total de HUs procesadas por esta herramienta |
+| tasa_aprobacion_directa | % de HUs aprobadas sin correcciones |
+| tasa_bloqueo | % de HUs que terminan en estado [B] |
+| criterios_fallidos_frecuentes | Qué criterios fallan más seguido |
 
 ---
 
@@ -342,17 +496,15 @@ Usuario: validar-hu ARCHDEV-003
 Onad: 
 ✅ VALIDACIÓN EXITOSA: ARCHDEV-003
 
-La HU "Implementar Catalog Service" ha pasado todas las validaciones.
-Todos los criterios del checklist se satisfacen correctamente.
+Checklist: 15/15 criterios cumplidos
+Estado: [R] → [A] Aprobada
 
-Estado actualizado: [A] Aprobada
+💡 Siguiente paso: planificar-hu ARCHDEV-003
 
-¿Deseas validar otra HU?
+¿Ejecutar planificar-hu ahora? (S/N)
 ```
 
----
-
-### Caso 2: HU con Correcciones Menores
+### Caso 2: HU con Correcciones
 
 ```
 Usuario: validar-hu ARCHDEV-005
@@ -360,45 +512,35 @@ Usuario: validar-hu ARCHDEV-005
 Onad:
 ⚠️ VALIDACIÓN PENDIENTE: ARCHDEV-005
 
-Detecté 2 problemas menores:
-
-❌ Criterio: Los puertos deben estar en dominio
-Problema: La HU propone crear "RepositorioNotificacion" en infraestructura
-Corrección: Mover la interfaz a co.com.bmm.puerto y la implementación a adaptador
-
-❌ Criterio: Migraciones Flyway incrementales
-Problema: Propone V003__crear_notificaciones.sql pero ya existe V003__auditoria.sql
-Corrección: Renombrar a V004__crear_notificaciones.sql
+❌ 2 criterios no cumplidos:
+1. Puertos deben estar en dominio
+2. Conflicto de versión Flyway (V003 duplicada)
 
 Opciones:
-A) Aplicar correcciones sugeridas y aprobar
-B) Devolver al refinador_hu
-C) Discutir un hallazgo
+A) Aplicar correcciones y aprobar
+B) Marcar como Bloqueada
+C) Discutir
 D) Cancelar
 
 Usuario: A
 
-Onad: ✅ Correcciones aplicadas y HU aprobada.
+Onad: ✅ Correcciones aplicadas. Estado: [A] Aprobada
 ```
 
----
+### Caso 3: HU en Estado Incorrecto
 
-## 🔐 Restricciones
+```
+Usuario: validar-hu ARCHDEV-001
 
-1. **Solo ONAD puede ejecutar esta herramienta** (validación de autoridad)
-2. **Solo HUs en estado `[R]` pueden ser validadas**
-3. **No se puede aprobar una HU sin resolver todos los ❌**
-4. **Toda corrección aplicada automáticamente debe ser documentada en el log**
+Onad:
+❌ La HU ARCHDEV-001 no está en estado [R] Refinada.
 
----
+Estado actual: [ ] Pendiente
 
-## 📊 Métricas Sugeridas
+💡 Ejecuta primero: refinar_hu ARCHDEV-001
 
-Puedes trackear en `session_state.json`:
-- Total de HUs validadas
-- Tasa de aprobación directa (sin correcciones)
-- Tasa de rechazo (devueltas al refinador)
-- Promedio de correcciones por HU
+¿Ejecutar refinar_hu ahora? (S/N)
+```
 
 ---
 

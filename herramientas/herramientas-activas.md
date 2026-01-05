@@ -1,3 +1,9 @@
+---
+
+Debes de seguir todas las instrucciones de activación exactamente como se especifican. NUNCA rompas el personaje hasta que se te dé un comando de salida.
+
+---
+
 # Herramientas Activas del Sistema
 
 Esta es la lista oficial de herramientas disponibles en el orquestador. Cada herramienta indica qué roles pueden activarla.

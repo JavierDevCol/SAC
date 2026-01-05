@@ -14,7 +14,11 @@
 
 ## 🎯 Objetivo
 
-Realizar un análisis profundo y automatizado de un proyecto de software para extraer información técnica, arquitectónica y contextual, generando un archivo `artefactos/contexto_proyecto.md` que sirve como base de conocimiento reutilizable para otras herramientas del sistema y facilita la comprensión rápida del proyecto en futuras sesiones.
+Realizar un análisis profundo y automatizado de un proyecto de software para extraer información técnica, arquitectónica y contextual, generando un archivo `{{contexto_proyecto_location}}` que sirve como base de conocimiento reutilizable para otras herramientas del sistema y facilita la comprensión rápida del proyecto en futuras sesiones.
+
+---
+
+Debes de seguir todas las instrucciones de activación exactamente como se especifican. NUNCA rompas el personaje hasta que se te dé un comando de salida.
 
 ---
 
@@ -85,11 +89,11 @@ Realizar un análisis profundo y automatizado de un proyecto de software para ex
 
 - **Verificar permisos y acceso al proyecto:**
   - Confirmar acceso de lectura a la raíz del proyecto
-  - Verificar si existe archivo `artefactos/contexto_proyecto.md` previo
+  - Verificar si existe archivo `{{contexto_proyecto_location}}` previo
   - Si existe y `actualizar_existente=false`, preguntar al usuario si desea actualizar o preservar
 
 - **Preparar estructura de artefactos:**
-  - Crear carpeta `artefactos/` si no existe
+  - Crear carpeta de {{artifacts_location}} si no existe (según `{{output_folder}}`)
   - Inicializar estructura base del archivo de contexto
   - Configurar parámetros según la configuración del usuario
 
@@ -184,8 +188,8 @@ Realizar un análisis profundo y automatizado de un proyecto de software para ex
     - Integraciones externas detectadas
     - Configuración DevOps encontrada
 
-- **Generar archivo `artefactos/contexto_proyecto.md`:**
-  - Aplicar plantilla estándar con información recolectada
+- **Generar archivo `{{contexto_proyecto_location}}`:**
+  - Aplicar plantilla estándar desde `{{contexto_proyecto_plantilla}}` con información recolectada
   - Incluir metadata del análisis (fecha, herramienta, parámetros)
   - Marcar secciones que requieren validación manual
   - Agregar notas sobre archivos no encontrados o información incompleta
@@ -216,6 +220,272 @@ Realizar un análisis profundo y automatizado de un proyecto de software para ex
   - Recomendaciones para mejorar la documentación del proyecto
   - Lista de archivos que podrían proporcionar más contexto si existieran
 
+### 9️⃣ Generación de Reglas Arquitectónicas y Confirmación
+
+Este paso genera automáticamente el archivo `{{reglas_arquitectonicas_location}}` basándose en el análisis realizado, y solicita confirmación del usuario antes de finalizar.
+
+#### **9.1. Generar Archivo de Reglas Arquitectónicas**
+
+- **Crear archivo `{{reglas_arquitectonicas_location}}`** con las reglas inferidas del análisis:
+
+**Plantilla del archivo:**
+
+```markdown
+# 📐 Reglas Arquitectónicas del Proyecto
+
+> **Proyecto:** [Nombre del Proyecto]  
+> **Generado por:** tomar_contexto  
+> **Fecha de generación:** [timestamp]  
+> **Basado en:** contexto_proyecto.md v[fecha]
+
+---
+
+## 1. Arquitectura Base
+
+- **Estilo Arquitectónico:** [Hexagonal/Capas/MVC/Event-Driven/etc.]
+- **Nivel de Adherencia Esperado:** [Estricto/Flexible]
+
+---
+
+## 2. Reglas de Capas y Dependencias
+
+### 2.1. Capa de Dominio
+- [ ] **NO importar** clases de infraestructura (frameworks, BD, APIs externas)
+- [ ] **NO importar** clases de aplicación/casos de uso
+- [ ] Solo puede contener: Entidades, Value Objects, Excepciones de Dominio, Interfaces de Puertos
+- [ ] Paquetes permitidos: `[paquete.dominio]`, `[paquete.modelo]`, `[paquete.puerto]`
+
+### 2.2. Capa de Aplicación / Casos de Uso
+- [ ] **NO importar** clases de infraestructura directamente
+- [ ] Puede importar: Dominio (entidades, puertos)
+- [ ] Debe usar **interfaces (puertos)** para comunicarse con infraestructura
+- [ ] Paquetes permitidos: `[paquete.casodeuso]`, `[paquete.aplicacion]`
+
+### 2.3. Capa de Infraestructura
+- [ ] Puede importar: Dominio, Aplicación
+- [ ] Contiene implementaciones de puertos (adaptadores)
+- [ ] Paquetes permitidos: `[paquete.adaptador]`, `[paquete.infraestructura]`
+
+---
+
+## 3. Reglas de Persistencia
+
+### 3.1. Migraciones de Base de Datos
+- [ ] **Gestor de migraciones:** [Flyway/Liquibase/Alembic/Prisma/etc.]
+- [ ] **Nomenclatura obligatoria:** `V[XXX]__[descripcion_snake_case].sql`
+- [ ] **NO modificar** migraciones ya ejecutadas en producción
+- [ ] **Versiones incrementales** - verificar última versión antes de crear nueva
+- [ ] **Incluir comentarios** descriptivos en cada migración
+- [ ] **Plan de rollback** requerido para cambios destructivos (DROP)
+
+### 3.2. Repositorios
+- [ ] Interfaces de repositorio en capa de dominio (puertos)
+- [ ] Implementaciones en capa de infraestructura (adaptadores)
+- [ ] Usar **convención de nombres:** `[Entidad]Repository` (interfaz), `[Entidad]RepositoryImpl` o `[Entidad]Postgres` (implementación)
+
+---
+
+## 4. Reglas de Testing
+
+### 4.1. Cobertura Mínima
+- [ ] **Dominio:** ≥ [80]% de cobertura
+- [ ] **Casos de Uso:** ≥ [75]% de cobertura
+- [ ] **Adaptadores:** ≥ [60]% de cobertura
+
+### 4.2. Tipos de Tests Requeridos
+- [ ] Tests unitarios para lógica de dominio
+- [ ] Tests unitarios para casos de uso (con mocks de puertos)
+- [ ] Tests de integración para adaptadores de BD (usar [Testcontainers/H2/etc.])
+- [ ] Tests de integración para controladores/endpoints
+
+### 4.3. Convenciones de Nombres de Tests
+- [ ] Formato: `deberia[Resultado]_Cuando[Condicion]_Entonces[Comportamiento]`
+- [ ] Archivos: `[ClaseBajoTest]Test.java` o `[ClaseBajoTest].test.ts`
+
+---
+
+## 5. Reglas de Código
+
+### 5.1. Convenciones de Nombres
+- [ ] **Clases:** PascalCase
+- [ ] **Métodos/Funciones:** camelCase
+- [ ] **Constantes:** SCREAMING_SNAKE_CASE
+- [ ] **Paquetes/Módulos:** lowercase con puntos o guiones según lenguaje
+
+### 5.2. Principios SOLID
+- [ ] **S** - Single Responsibility: Una clase, una responsabilidad
+- [ ] **O** - Open/Closed: Abierto a extensión, cerrado a modificación
+- [ ] **L** - Liskov Substitution: Subtipos sustituibles por sus tipos base
+- [ ] **I** - Interface Segregation: Interfaces específicas, no generales
+- [ ] **D** - Dependency Inversion: Depender de abstracciones, no de concreciones
+
+### 5.3. Restricciones Específicas del Stack
+[Reglas específicas detectadas según el stack tecnológico]
+- [ ] [Regla específica 1]
+- [ ] [Regla específica 2]
+- [ ] [Regla específica 3]
+
+---
+
+## 6. Reglas de Git y Commits
+
+- [ ] **Convención de commits:** [Conventional Commits/GitFlow/etc.]
+- [ ] **Formato:** `[tipo]: [descripción breve]`
+- [ ] **Tipos permitidos:** feat, fix, refactor, test, docs, chore
+- [ ] **Ramas:** `feature/[ID]-[descripcion]`, `bugfix/[ID]-[descripcion]`
+
+---
+
+## 7. Reglas de Seguridad
+
+- [ ] No hardcodear credenciales en código
+- [ ] Usar variables de entorno para configuración sensible
+- [ ] Validar todas las entradas de usuario
+- [ ] Sanitizar datos antes de persistir o mostrar
+- [ ] [Reglas adicionales según el proyecto]
+
+---
+
+## 8. Excepciones Documentadas
+
+| Regla | Excepción | Justificación | Aprobado por |
+|-------|-----------|---------------|--------------|
+| [Regla X] | [Descripción de la excepción] | [Por qué se permite] | [Usuario/Fecha] |
+
+---
+
+## 9. Historial de Cambios
+
+| Fecha | Acción | Descripción | Usuario |
+|-------|--------|-------------|---------|
+| [timestamp] | Creación | Generación inicial por tomar_contexto | Sistema |
+
+---
+
+**⚠️ IMPORTANTE:** Este archivo fue generado automáticamente basándose en el análisis del proyecto. 
+Debe ser revisado y ajustado según las necesidades específicas del equipo.
+```
+
+#### **9.2. Adaptar Reglas al Contexto Detectado**
+
+Basándose en la información recolectada en pasos anteriores:
+
+1. **Detectar arquitectura** → Configurar reglas de capas apropiadas
+2. **Detectar stack** → Agregar reglas específicas del lenguaje/framework
+3. **Detectar gestor de migraciones** → Configurar nomenclatura correcta
+4. **Detectar framework de testing** → Ajustar convenciones de tests
+5. **Detectar CI/CD** → Agregar reglas de commits/branching si hay convenciones
+
+**Ejemplos de adaptación:**
+
+| Si se detecta... | Entonces configurar... |
+|------------------|------------------------|
+| Arquitectura Hexagonal | Reglas estrictas de separación dominio/infraestructura |
+| Spring Boot | Reglas de @Component, @Service, @Repository |
+| Flyway | Nomenclatura V[X]__descripcion.sql |
+| JUnit 5 | Convención de nombres de tests Java |
+| Jest | Convención de nombres .test.ts/.spec.ts |
+| React | Reglas de componentes, hooks, estado |
+| Conventional Commits | Tipos de commits permitidos |
+
+#### **9.3. Solicitar Confirmación del Usuario**
+
+**Mostrar resumen de reglas generadas:**
+
+```markdown
+---
+
+## 📐 Reglas Arquitectónicas Generadas
+
+He generado el archivo `{{reglas_arquitectonicas_location}}` con las siguientes reglas inferidas del análisis:
+
+### Resumen de Reglas Detectadas:
+
+| Categoría | Reglas Generadas | Confianza |
+|-----------|------------------|-----------|
+| Arquitectura | [X] reglas de capas | [Alta/Media/Baja] |
+| Persistencia | [Y] reglas de migraciones | [Alta/Media/Baja] |
+| Testing | [Z] reglas de cobertura | [Alta/Media/Baja] |
+| Código | [W] convenciones | [Alta/Media/Baja] |
+| Git | [V] reglas de commits | [Alta/Media/Baja] |
+
+### Reglas Clave Detectadas:
+1. **Arquitectura:** [Tipo detectado] con separación de capas [estricta/flexible]
+2. **Migraciones:** Usar [Flyway/Liquibase/etc.] con formato [nomenclatura]
+3. **Testing:** Cobertura mínima [X]% con [framework detectado]
+4. **Commits:** [Convención detectada o sugerida]
+
+---
+
+### ⚠️ Confirmación Requerida
+
+¿Aceptas estas reglas arquitectónicas para el proyecto?
+
+**A) ✅ Sí, aceptar todas las reglas**
+   - Se guardará el archivo tal como está
+   - Las herramientas `validar-hu` y `planificar-hu` usarán estas reglas
+
+**B) 📝 Revisar y ajustar antes de aceptar**
+   - Mostraré el archivo completo para que puedas editarlo
+   - Puedes agregar, modificar o eliminar reglas
+   - Una vez editado, se guardará la versión final
+
+**C) ❌ No generar reglas arquitectónicas**
+   - No se creará el archivo
+   - Las herramientas funcionarán sin reglas explícitas (modo flexible)
+
+**D) 🔄 Regenerar con más contexto**
+   - Puedes proporcionar información adicional sobre las reglas del proyecto
+   - Se regenerará el archivo con tus indicaciones
+
+---
+```
+
+#### **9.4. Procesar Respuesta del Usuario**
+
+**Si elige A (Aceptar):**
+1. Confirmar guardado del archivo
+2. Mostrar ruta: `{{reglas_arquitectonicas_location}}`
+3. Continuar con cierre normal de la herramienta
+
+**Si elige B (Revisar):**
+1. Mostrar contenido completo del archivo generado
+2. Esperar ediciones del usuario
+3. Guardar versión editada
+4. Agregar al historial: "Editado manualmente por usuario"
+
+**Si elige C (No generar):**
+1. No crear el archivo
+2. Mostrar advertencia: "⚠️ Las herramientas `validar-hu` y `planificar-hu` funcionarán sin reglas explícitas"
+3. Continuar con cierre normal
+
+**Si elige D (Regenerar):**
+1. Solicitar información adicional al usuario
+2. Volver al paso 9.1 con el nuevo contexto
+3. Regenerar archivo con las indicaciones
+
+#### **9.5. Finalización**
+
+```markdown
+---
+
+✅ **Análisis de Contexto Completado**
+
+📄 **Artefactos Generados:**
+1. `artefactos/contexto_proyecto.md` - Contexto técnico del proyecto
+2. `{{reglas_arquitectonicas_location}}` - Reglas arquitectónicas [si fue aceptado]
+
+📊 **Resumen:**
+- Stack: [resumen del stack]
+- Arquitectura: [tipo detectado]
+- Reglas: [X] reglas arquitectónicas definidas
+
+💡 **Siguiente paso recomendado:**
+- Ejecutar `refinar-hu` para crear historias de usuario alineadas con la arquitectura
+- O ejecutar `analizar_code_smells` para detectar violaciones a las reglas
+
+---
+```
 ---
 
 ## ⚠️ Manejo de Errores y Casos Borde
@@ -238,8 +508,17 @@ Realizar un análisis profundo y automatizado de un proyecto de software para ex
 ## 📤 Formato de Salida Esperado
 
 **Tipo principal:**
-- Archivo `artefactos/contexto_proyecto.md` estructurado según plantilla estándar
+- Archivo `{{contexto_proyecto_location}}` estructurado según plantilla estándar
+- Archivo `{{reglas_arquitectonicas_location}}` con reglas inferidas del análisis
 - Reporte de análisis con nivel de confianza y recomendaciones
+
+**Artefactos generados:**
+
+| Artefacto | Ubicación | Descripción | Requiere Confirmación |
+|-----------|-----------|-------------|----------------------|
+| Contexto del Proyecto | `{{contexto_proyecto_location}}` | Información técnica y arquitectónica | No |
+| Reglas Arquitectónicas | `{{reglas_arquitectonicas_location}}` | Restricciones y patrones obligatorios | **Sí** |
+| README.md | `README.md` (raíz) | Documentación actualizada (opcional) | Sí (si aplica) |
 
 **Estructura del archivo contexto_proyecto.md:**
 ```
@@ -321,13 +600,6 @@ Realizar un análisis profundo y automatizado de un proyecto de software para ex
 - README.md actualizado (si autorizado por usuario)
 - Lista de archivos faltantes recomendados
 - Plantilla de configuración para herramientas complementarias
-
----
-
-## 💡 Ejemplo de Uso
-
-Para ver un ejemplo detallado de uso de esta herramienta, consulta:
-📁 **Archivo de ejemplo:** `ejemplos/herramientas/tomar_contexto_ejemplo.md`
 
 ---
 

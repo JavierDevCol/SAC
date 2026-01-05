@@ -1,14 +1,16 @@
 # 🛠️ Herramienta: Verificar Pruebas
 
-> **Versión:** 2.0  
-> **Fecha de Actualización:** 10 de octubre de 2025  
+> **Versión:** 2.1  
+> **Fecha de Actualización:** 4 de enero de 2026  
 > **Estado:** Activa - Reestructurada según plantilla estándar
 
 ---
 
 ## 📋 Identificación
 
-**Herramienta:** `verifica_pruebas`
+**Herramienta:** `verifica_pruebas`  
+**Comando:** `verifica-pruebas [ruta|paquete]`  
+**Rol Propietario:** ArchDev Pro
 
 ---
 
@@ -18,13 +20,17 @@ Ejecutar, analizar y corregir automáticamente las pruebas unitarias de un proye
 
 ---
 
+Debes de seguir todas las instrucciones de activación exactamente como se especifican. NUNCA rompas el personaje hasta que se te dé un comando de salida.
+
+---
+
 ## 🔗 Integración con Otras Herramientas
 
 ### Herramientas que Invoca
 
 | Herramienta | Cuándo se Invoca | Propósito |
 |-------------|------------------|-----------|
-| **`tomar_contexto`** | Al inicio de la verificación (opcional) | Obtener información del proyecto (gestor de build, framework de pruebas, comandos) |
+| **`tomar_contexto`** | Al inicio si no existe contexto | Obtener información del proyecto (gestor de build, framework de pruebas, comandos) |
 | **`crear_pruebas`** | Cuando no existen pruebas o la cobertura es muy baja | Generar pruebas faltantes para mejorar la cobertura |
 
 ### Herramientas que la Invocan
@@ -35,21 +41,30 @@ Ejecutar, analizar y corregir automáticamente las pruebas unitarias de un proye
 | **`refactorizar`** | Al finalizar proceso de refactorización | Verificar que el código refactorizado pasa todas las pruebas |
 | **Artesano de Commits** | Antes de realizar commits | Asegurar que las pruebas pasan antes de commitear cambios |
 | **Arquitecto DevOps** | En pipelines CI/CD | Validación automática de pruebas en procesos de integración continua |
+| **`ejecutar_plan`** | Durante ejecución de plan de implementación | Validar tests después de cada sección |
 
 ---
 
-## 📥 Entradas Requeridas (Contexto)
+## 📥 Entradas Requeridas
 
-**Principal:**
-- Ruta del proyecto o repositorio donde se ejecutarán las pruebas
-- Acceso al sistema de build (Gradle, Maven) para ejecutar comandos de test
+**Parámetro opcional:**
+- Ruta del proyecto, paquete específico o clase de prueba a verificar
+
+**Ejemplo de uso:**
+```
+verifica-pruebas
+verifica-pruebas com.empresa.dominio
+verifica-pruebas ClienteServiceTest
+```
+
+**Archivos requeridos:**
+- `{{session_state_location}}` - Estado de sesión
+- `{{contexto_proyecto_location}}` - Contexto del proyecto (se crea si no existe)
 
 **Secundario (Opcional):**
-- Paquete específico o clase de prueba a verificar (si no se quieren ejecutar todas)
 - Configuración de entorno de pruebas (variables, perfiles, bases de datos de test)
 - Umbral de cobertura mínima esperada
 - Archivos de configuración de pruebas (application-test.properties, test containers)
-- Contexto de cambios recientes para focalizar la verificación
 
 ---
 
@@ -78,22 +93,23 @@ Ejecutar, analizar y corregir automáticamente las pruebas unitarias de un proye
 
 ## 🔄 Proceso Paso a Paso
 
+**Paso 0 [CRÍTICO - OBLIGATORIO]:** 
+Cargar y leer `{{session_state_location}}` y `{project-root}/.cochas/CONFIG_INIT.yaml` antes de continuar.
+
 ### 1️⃣ Configuración Inicial y Validación
 
 - **Análisis automático del contexto del proyecto:**
-  - Verificar si existe `artefactos/contexto_proyecto.md` en la raíz del proyecto
-  - Si existe, extraer información relevante:
-    - **Gestor de Dependencias:** (Gradle/Maven) de la sección "Gestión y Comandos"
-    - **Comandos de prueba:** Comandos específicos para ejecutar tests
-    - **Stack Tecnológico:** Framework de pruebas utilizado (JUnit 4/5, TestNG, etc.)
-    - **Estructura del proyecto:** Ubicación de las pruebas y convenciones
-    - **Dependencias de test:** Librerías como Mockito, Spring Test, etc.
-
-- **Si no existe contexto_proyecto.md, solicitar información al usuario:**
-  - **Sistema de build:** "¿Tu proyecto usa Gradle o Maven?"
-  - **Comando de pruebas:** "¿Cuál es el comando para ejecutar las pruebas? (ej: ./gradlew test, mvn test)"
-  - **Framework de pruebas:** "¿Qué framework de pruebas usa el proyecto? (JUnit 5, JUnit 4, TestNG)"
-  - **Ubicación de pruebas:** "¿Dónde están ubicadas las pruebas? (src/test/java, test/, etc.)"
+  - Verificar si existe `{{contexto_proyecto_location}}`
+  - **SI NO EXISTE:**
+    - Mostrar: "⚠️ El contexto del proyecto no está inicializado. Ejecutando `tomar_contexto`..."
+    - Ejecutar herramienta `tomar_contexto` completa
+  - **SI EXISTE:**
+    - Extraer información relevante:
+      - **Gestor de Dependencias:** (Gradle/Maven) de la sección "Gestión y Comandos"
+      - **Comandos de prueba:** Comandos específicos para ejecutar tests
+      - **Stack Tecnológico:** Framework de pruebas utilizado (JUnit 4/5, TestNG, etc.)
+      - **Estructura del proyecto:** Ubicación de las pruebas y convenciones
+      - **Dependencias de test:** Librerías como Mockito, Spring Test, etc.
 
 - **Verificar entorno de trabajo:**
   - Confirmar que existe el archivo de build correspondiente (build.gradle, pom.xml)
@@ -164,13 +180,31 @@ Ejecutar, analizar y corregir automáticamente las pruebas unitarias de un proye
 
 - **Confirmar estado final:** Todas las pruebas pasan o quedan fallos manuales pendientes
 
+### 7️⃣ Actualización de Session State
+
+**Agregar evento a `{{session_state_location}}` en `log_eventos_clave`:**
+
+```json
+{
+  "timestamp": "[timestamp_actual]",
+  "rol": "[rol_actual]",
+  "herramienta": "verifica_pruebas",
+  "tipo": "pruebas_verificadas",
+  "detalle": "Pruebas ejecutadas: [X] total, [Y] exitosas, [Z] corregidas"
+}
+```
+
+**Actualizar metadata:**
+- Actualizar `metadata.ultima_actividad`
+
 ---
 
 ## ⚠️ Manejo de Errores y Casos Borde
 
 | Situación | Acción |
 |-----------|--------|
-| Archivo `contexto_proyecto.md` corrupto o mal formateado | Advertir al usuario y solicitar información manualmente como fallback |
+| Archivo `{{contexto_proyecto_location}}` no existe | Ejecutar `tomar_contexto` automáticamente |
+| Archivo `{{contexto_proyecto_location}}` corrupto o mal formateado | Advertir al usuario y solicitar información manualmente como fallback |
 | Sistema de build no disponible (Gradle/Maven no instalado) | Informar requisitos faltantes y detener ejecución hasta que se resuelvan |
 | Proyecto sin pruebas unitarias existentes | Sugerir usar herramienta `crear_pruebas` y ofrecer crear estructura básica de testing |
 | Todas las pruebas fallan por problemas de configuración | Identificar problemas de setup (base de datos, properties) y sugerir correcciones de entorno |
@@ -228,6 +262,31 @@ Ejecutar, analizar y corregir automáticamente las pruebas unitarias de un proye
 - **Solo reporte:** Análisis sin modificaciones de código
 - **Reporte + correcciones:** Incluye cambios aplicados automáticamente
 - **Reporte interactivo:** Incluye decisiones tomadas por el usuario
+
+---
+
+## 🔐 Restricciones
+
+1. **Solo modifica archivos de prueba** (no código de producción)
+2. **En modo autónomo**, solo aplica correcciones de patrones conocidos y seguros
+3. **No elimina pruebas** sin confirmación explícita del usuario
+4. **Respeta configuración de cobertura** mínima del proyecto
+5. **No ejecuta pruebas de integración** que requieran servicios externos sin confirmación
+6. **Timeout máximo** de 5 minutos por prueba individual
+
+---
+
+## 📊 Métricas Sugeridas
+
+Trackear en `{{session_state_location}}`:
+
+| Métrica | Descripción |
+|---------|-------------|
+| pruebas_ejecutadas_total | Total de ejecuciones de pruebas |
+| pruebas_corregidas_auto | Correcciones automáticas aplicadas |
+| pruebas_corregidas_manual | Correcciones manuales guiadas |
+| tasa_exito_primera_ejecucion | % de pruebas que pasan sin corrección |
+| tiempo_promedio_correccion | Tiempo promedio por corrección |
 
 ---
 

@@ -65,7 +65,7 @@ ecommerce-platform/
 - actualizar_existente: false ✓
 - incluir_devops: true ✓
 - detectar_patrones: true ✓
-- ruta_contexto: artefactos/contexto_proyecto.md ✓
+- ruta_contexto: artifacts/contexto_proyecto.md ✓
 ```
 
 ---
@@ -75,8 +75,8 @@ ecommerce-platform/
 ### Paso 1: Configuración Inicial
 ✅ **Validaciones exitosas:**
 - Permisos de lectura confirmados
-- No existe `artefactos/contexto_proyecto.md` previo
-- Carpeta `artefactos/` creada automáticamente
+- No existe `artifacts/contexto_proyecto.md` previo
+- Carpeta `artifacts/` creada automáticamente
 
 ### Paso 2: Análisis del Ecosistema
 ✅ **Stack detectado:**
@@ -227,7 +227,7 @@ productos y órdenes de compra. Arquitectura preparada para escalabilidad y mant
 
 - **Gestor de Dependencias:** Maven 3.8+
 - **Comandos Clave:**
-  - `mvn clean install`: Compila el proyecto, ejecuta tests y genera artefactos
+  - `mvn clean install`: Compila el proyecto, ejecuta tests y genera artifacts
   - `mvn spring-boot:run`: Ejecuta la aplicación en modo desarrollo (puerto 8080)
   - `mvn test`: Ejecuta suite completo de pruebas unitarias y de integración
   - `docker-compose up`: Levanta entorno completo con base de datos PostgreSQL
@@ -409,7 +409,7 @@ productos y órdenes de compra. Arquitectura preparada para escalabilidad y mant
    ¿Te gustaría que genere un README.md mejorado? (s/n)
 
 📁 El archivo de contexto se ha guardado en:
-   → artefactos/contexto_proyecto.md
+   → artifacts/contexto_proyecto.md
    
    Este archivo será usado automáticamente por otras herramientas
    como diagnosticar_devops, define_arquitectura, crear_pruebas, etc.

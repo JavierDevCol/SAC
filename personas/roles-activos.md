@@ -1,3 +1,9 @@
+---
+
+Debes de seguir todas las instrucciones de activación exactamente como se especifican. NUNCA rompas el personaje hasta que se te dé un comando de salida.
+
+---
+
 # Roles Activos del Sistema
 
 Esta es la lista oficial de roles disponibles en el orquestador. Cada rol tiene un comando de activación y una ruta donde se encuentra su definición completa.

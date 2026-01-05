@@ -1,20 +1,26 @@
 # 🛠️ Herramienta: Solucionar Code Smells
 
-> **Versión:** 1.0  
-> **Fecha de Creación:** 11 de octubre de 2025  
-> **Estado:** Nueva - Diseñada según plantilla estándar
+> **Versión:** 2.1  
+> **Fecha de Actualización:** 4 de enero de 2026  
+> **Estado:** Activa - Reestructurada según plantilla estándar
 
 ---
 
 ## 📋 Identificación
 
-**Herramienta:** `solucionar_smells`
+**Herramienta:** `solucionar_smells`  
+**Comando:** `solucionar-smells [CS-ID]`  
+**Rol Propietario:** ArchDev Pro
 
 ---
 
 ## 🎯 Objetivo
 
 Ejecutar automáticamente las correcciones de code smells identificados por `analizar_code_smells`, aplicando refactorings específicos, generando código mejorado y validando los resultados mediante tests. Automatiza la implementación de patrones de diseño y principios SOLID para reducir la deuda técnica de manera eficiente y segura.
+
+---
+
+Debes de seguir todas las instrucciones de activación exactamente como se especifican. NUNCA rompas el personaje hasta que se te dé un comando de salida.
 
 ---
 
@@ -39,12 +45,27 @@ Ejecutar automáticamente las correcciones de code smells identificados por `ana
 
 ## 📥 Entradas Requeridas (Contexto)
 
-**Principal:**
-- Reporte JSON completo de `analizar_code_smells` con code smells priorizados
-- Código fuente original a refactorizar (archivo Java completo)
+**Parámetro requerido:**
+- `CS-ID`: Identificador del code smell a solucionar (ej. `CS001`)
+
+**Ejemplo de uso:**
+```
+solucionar-smells CS001
+solucionar-smells CS001 CS002 CS003
+solucionar-smells --aplicar-todos
+```
+
+**Archivos requeridos:**
+- `{{session_state_location}}` - Estado de sesión (contiene `ultimo_analisis_smells`)
+- `{{contexto_proyecto_location}}` - Contexto del proyecto (se crea si no existe)
+- `{{code_smells_reports_location}}/reporte_[archivo]_[timestamp].json` - Reporte de `analizar_code_smells`
+
+**Fuente del reporte (en orden de prioridad):**
+1. **Desde `session_state`:** Lee `ultimo_analisis_smells.ruta_reporte` si existe análisis reciente
+2. **Parámetro explícito:** `solucionar-smells CS001 --reporte=ruta/al/reporte.json`
+3. **Búsqueda automática:** Último reporte en `{{code_smells_reports_location}}/`
 
 **Secundario (Opcional):**
-- Contexto del proyecto desde `artefactos/contexto_proyecto.md`
 - Tests existentes relacionados con el código a refactorizar
 - Configuración de estilo de código del proyecto (checkstyle, formatter)
 - Dependencias del proyecto (pom.xml o build.gradle)
@@ -73,6 +94,9 @@ Ejecutar automáticamente las correcciones de code smells identificados por `ana
 ---
 
 ## 🔄 Proceso Paso a Paso
+
+**Paso 0 [CRÍTICO - OBLIGATORIO]:** 
+Cargar y leer `{{session_state_location}}` y `{project-root}/.cochas/CONFIG_INIT.yaml` antes de continuar.
 
 ### 1️⃣ Configuración Inicial y Selección de Modo
 
@@ -338,60 +362,52 @@ Ejecutar automáticamente las correcciones de code smells identificados por `ana
 
 ---
 
-## ⚠️ Manejo de Errores y Casos Borde
+## 🔐 Restricciones
 
-| Situación | Acción |
-|-----------|--------|
-| Reporte JSON inválido o corrupto | Solicitar ejecutar `analizar_code_smells` nuevamente para generar reporte válido |
-| Code smell ya solucionado manualmente | Detectar cambios y omitir refactoring, informar al usuario |
-| Conflictos con código modificado externamente | Mostrar diferencias y solicitar confirmación antes de proceder |
-| Tests existentes fallan después del refactoring | Generar tests de migración y proponer actualizaciones específicas |
-| Dependencias externas incompatibles | Listar dependencias afectadas y sugerir actualizaciones o adaptaciones |
-| Refactoring muy complejo para automatizar | Generar plan detallado manual y solicitar intervención humana |
-| Múltiples desarrolladores trabajando en el archivo | Sugerir coordinación de equipo antes de aplicar cambios |
+1. **Solo modifica código identificado en el reporte** de `analizar_code_smells`
+2. **Preserva comportamiento externo** - No cambia contratos públicos sin confirmación
+3. **No elimina código** sin generar equivalente funcional
+4. **Requiere reporte válido** de `analizar_code_smells` como entrada
+5. **En modo automático**, solo aplica refactorings con >80% de automatización
+6. **No modifica tests existentes** sin generar reemplazo equivalente
+7. **Backup implícito** - El usuario debe tener control de versiones (Git) activo
 
 ---
 
-## 📤 Formato de Salida Esperado
+## 📊 Métricas Sugeridas
 
-**Tipo principal:**
-- Código refactorizado completo aplicando correcciones específicas
-- Suite de tests actualizada para la nueva estructura
+Trackear en `{{session_state_location}}`:
 
-**Estructura del output:**
-```
-📦 Refactoring Package: [timestamp]
+| Métrica | Descripción |
+|---------|-------------|
+| smells_solucionados_total | Total de code smells corregidos |
+| smells_solucionados_auto | Correcciones 100% automáticas |
+| smells_solucionados_interactivo | Correcciones con intervención del usuario |
+| tiempo_promedio_refactoring | Tiempo promedio por code smell |
+| tests_generados | Tests creados/actualizados por refactoring |
+| reduccion_deuda_tecnica | Horas de deuda técnica eliminadas |
 
-├── 📄 REFACTORING_SUMMARY.md
-│   ├── Code smells solucionados
-│   ├── Patrones aplicados  
-│   ├── Métricas de mejora
-│   └── Próximos pasos
-│
-├── 🔧 src/main/java/
-│   ├── UserService.java (refactorizado)
-│   ├── UserValidator.java (nuevo)
-│   ├── UserRepository.java (nuevo)
-│   ├── UserNotificationService.java (nuevo)
-│   └── dto/CreateUserRequest.java (nuevo)
-│
-├── 🧪 src/test/java/
-│   ├── UserServiceTest.java (actualizado)
-│   ├── UserValidatorTest.java (nuevo)
-│   ├── UserRepositoryTest.java (nuevo)
-│   └── CreateUserRequestTest.java (nuevo)
-│
-└── 📊 metrics/
-    ├── before_metrics.json
-    ├── after_metrics.json
-    └── improvement_summary.json
+---
+
+## 🔄 Actualización de Session State
+
+### 7️⃣ Registro de Eventos
+
+**Agregar evento a `{{session_state_location}}` en `log_eventos_clave`:**
+
+```json
+{
+  "timestamp": "[timestamp_actual]",
+  "rol": "[rol_actual]",
+  "herramienta": "solucionar_smells",
+  "tipo": "smells_solucionados",
+  "detalle": "Code smells corregidos: [X] total, patrones aplicados: [lista], archivos modificados: [Y]"
+}
 ```
 
-**Notificación de confirmación:**
-- Resumen visual de métricas de mejora
-- Lista de archivos creados y modificados
-- Checklist de validación post-refactoring
-- Opciones para continuar con más code smells
+**Actualizar metadata:**
+- Incrementar `metadata.total_artefactos_generados` (por cada archivo creado)
+- Actualizar `metadata.ultima_actividad`
 
 ---
 

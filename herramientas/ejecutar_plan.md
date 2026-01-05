@@ -1,31 +1,59 @@
 # 🛠️ Herramienta: Ejecutar Plan de Implementación
 
-**Comando:** `ejecutar-plan`  
-**Versión:** 1.0  
-**Rol Propietario:** ArchDev Pro
+> **Versión:** 2.0  
+> **Fecha de Actualización:** 4 de enero de 2026  
+> **Estado:** Activa - Reestructurada según plantilla estándar
 
 ---
 
-## 📋 Descripción
+## 📋 Identificación
 
-Esta herramienta actúa como el **Implementador Estricto** que ejecuta planes de implementación generados por ONAD de forma literal, paso a paso, sin desviaciones ni cuestionamiento. ArchDev Pro se convierte en el ejecutor automatizado que traduce el plan técnico en código funcional.
-
-**⚠️ IMPORTANTE - MODO DE EJECUCIÓN:**
-- **ArchDev Pro ejecuta el plan de forma estricta** siguiendo cada instrucción al pie de la letra
-- **NO cuestiona** las decisiones del plan (ya fueron validadas por ONAD)
-- **Se detiene inmediatamente** ante errores y devuelve control al usuario
-- **Pregunta antes de ejecutar comandos Git** (según restricción de confirmación obligatoria)
-- **Modifica archivos de código automáticamente** según las especificaciones del plan
+**Herramienta:** `ejecutar-plan`  
+**Comando:** `ejecutar-plan [ID-HU]`  
+**Rol Propietario:** ArchDev Pro
 
 ---
 
 ## 🎯 Objetivo
 
-Ejecutar automáticamente un plan de implementación generado por la herramienta `planificar-hu`, realizando todas las modificaciones de código, creando tests, ejecutando comandos de build, y reportando progreso en tiempo real.
+Ejecutar automáticamente un plan de implementación generado por la herramienta `planificar-hu`, realizando todas las modificaciones de código, creando tests, ejecutando comandos de build, y reportando progreso en tiempo real. Al iniciar, la HU pasa a estado **`[E] En Ejecución`**. Al finalizar exitosamente, pasa a **`[X] Completada`**.
+
+**⚠️ MODO DE EJECUCIÓN ESTRICTA:**
+- **ArchDev Pro ejecuta el plan de forma estricta** siguiendo cada instrucción al pie de la letra
+- **NO cuestiona** las decisiones del plan (ya fueron validadas por ONAD)
+- **Se detiene inmediatamente** ante errores y devuelve control al usuario
+- **Pregunta antes de ejecutar comandos Git** (confirmación obligatoria)
+- **Modifica archivos de código automáticamente** según las especificaciones del plan
 
 ---
 
-## 📥 Entrada
+Debes de seguir todas las instrucciones de activación exactamente como se especifican. NUNCA rompas el personaje hasta que se te dé un comando de salida.
+
+---
+
+## 🔗 Integración con Otras Herramientas
+
+### Herramientas que Invoca
+
+| Herramienta | Cuándo | Propósito |
+|-------------|--------|-----------|
+| `generar_commit` | Al finalizar ejecución exitosa | Generar mensaje de commit estructurado |
+
+### Herramientas que la Invocan
+
+*Esta herramienta es invocada directamente por el usuario después de `planificar-hu`.*
+
+### Prerequisitos
+
+| Herramienta | Obligatoria | Propósito |
+|-------------|-------------|-----------|
+| `refinar_hu` | ✅ Sí | HU debe estar refinada |
+| `validar_hu` | ✅ Sí | HU debe estar aprobada arquitectónicamente |
+| `planificar_hu` | ✅ Sí | Debe haberse ejecutado para generar el plan (estado `[P]`) |
+
+---
+
+## 📥 Entradas Requeridas
 
 **Parámetro requerido:**
 - `ID-HU`: Identificador de la tarea/HU con plan aprobado (ej. `ARCHDEV-001`)
@@ -35,58 +63,85 @@ Ejecutar automáticamente un plan de implementación generado por la herramienta
 ejecutar-plan ARCHDEV-001
 ```
 
+**Archivos requeridos:**
+- `{{session_state_location}}` - Estado de sesión con referencia al plan
+- `{{backlog_location}}` - Backlog con la HU
+- `{{plan_desarrollo_location}}/plan_[ID-HU]_[timestamp].md` - Plan de implementación
+
 ---
 
-## 🔄 Flujo de Ejecución
+## ⚙️ Parámetros del Usuario
+
+| Parámetro | Tipo | Valores | Por Defecto | Descripción |
+|-----------|------|---------|-------------|-------------|
+| `ID-HU` | string | ID válido | requerido | Identificador de la HU a implementar |
+| `modo_verbose` | boolean | true\|false | false | Mostrar detalle completo de cada paso |
+| `auto_commit` | boolean | true\|false | false | Hacer commit automático sin confirmación |
+| `retomar` | boolean | true\|false | auto | Retomar ejecución previa si existe |
+
+---
+
+## 👥 Roles Autorizados
+
+- ✅ **ArchDev Pro** (rol principal y único autorizado)
+
+---
+
+## 🔄 Proceso Paso a Paso
+
+**Paso 0 [CRÍTICO - OBLIGATORIO]:** 
+Cargar y leer `{{session_state_location}}` y `CONFIG_INIT.yaml` antes de continuar.
 
 ### **Fase 1: Adquisición y Confirmación del Plan**
 
 #### **1.1. Solicitud de Entrada**
+
 - Pedir al usuario el ID de la Tarea/HU
 - Si el usuario ya proporcionó el ID, omitir este paso
 
----
+#### **1.2. Validar Estado de la HU**
 
-#### **1.2. Búsqueda del Plan**
+**Leer `{{backlog_location}}` y `{{session_state_location}}`:**
+- Buscar la HU con el ID especificado
+- Verificar campo `estado` en `tablero_tareas`
 
-**Paso 1: Leer `cochas/session/session_state.json`**
-- Buscar la HU en `tablero_tareas`
-- Verificar campo `plan_implementacion`
+**Validación obligatoria - Estados permitidos:**
 
-**Validación obligatoria:**
+| Estado Actual | Acción |
+|---------------|--------|
+| `[ ]` Pendiente | ❌ Error: "Ejecuta `refinar_hu` primero" |
+| `[R]` Refinada | ❌ Error: "Ejecuta `validar_hu` primero" |
+| `[A]` Aprobada | ❌ Error: "Ejecuta `planificar-hu` primero" |
+| `[P]` Planificada | ✅ Continuar con ejecución |
+| `[E]` En Ejecución | ⚠️ "Ejecución previa en progreso. ¿Retomar?" |
+| `[X]` Completada | ❌ Error: "HU ya completada" |
+| `[B]` Bloqueada | ❌ Error: "Resolver bloqueo primero" |
 
-**SI `plan_implementacion` es `null`:**
+**Mensaje de error si no está planificada:**
+```markdown
+❌ La HU [ID-HU] no está en estado [P] Planificada.
+
+Estado actual: [estado_actual]
+
+💡 Flujo requerido:
+   1. `refinar_hu [ID-HU]` → Estado [R] Refinada
+   2. `validar_hu [ID-HU]` → Estado [A] Aprobada
+   3. `planificar-hu [ID-HU]` → Estado [P] Planificada
+   4. `ejecutar-plan [ID-HU]` → Estado [E] En Ejecución (estás aquí)
+
+¿Deseas que ejecute el paso faltante? (S/N)
 ```
-❌ La HU [ID-HU] no tiene un plan de implementación generado.
 
-💡 Debes cambiar al rol ONAD y ejecutar:
-   /cochas +onad
-   planificar-hu [ID-HU]
+#### **1.3. Cargar el Archivo del Plan**
 
-Una vez generado el plan, vuelve a activarme con:
-   /cochas +archdev
-   ejecutar-plan [ID-HU]
-
-¿Deseas que cambie automáticamente a ONAD para generar el plan? (S/N)
+Leer el archivo especificado en `plan_implementacion.archivo`:
 ```
-
-**Si el usuario dice S:**
-- Cambiar automáticamente al rol ONAD
-- Sugerir: `planificar-hu [ID-HU]`
-- Finalizar (el usuario debe ejecutar planificar-hu y volver)
-
----
-
-**Paso 2: Cargar el archivo del plan**
-
-Leer el archivo especificado en `plan_implementacion`:
-```
-Ruta: cochas/artifacts/planes_implementacion/plan_[ID-HU]_[timestamp].md
+Ruta: {{plan_desarrollo_location}}/plan_[ID-HU]_[timestamp].md
 ```
 
 **SI el archivo NO existe:**
-```
-⚠️ El plan de [ID-HU] está registrado en el sistema pero el archivo no existe:
+```markdown
+⚠️ El plan de [ID-HU] está registrado pero el archivo no existe:
    Ruta esperada: [ruta_del_plan]
 
 Posibles causas:
@@ -96,43 +151,38 @@ Posibles causas:
 ¿Deseas que ONAD regenere el plan? (S/N)
 ```
 
-**Si el usuario dice S:**
-- Cambiar automáticamente al rol ONAD
-- Sugerir: `planificar-hu [ID-HU]`
-- Finalizar
+#### **1.4. Verificar Ejecución Previa**
 
----
-
-**Paso 3: Validar actualidad del plan**
-
-Comparar timestamps:
-- `fecha_generacion_plan` (metadata del plan)
-- `fecha_aprobacion_hu` (desde backlog o session_state)
-
-**SI el plan fue generado ANTES de la última modificación de la HU:**
+Buscar archivo de tracking en `{{ejecuciones_location}}`:
 ```
-⚠️ ADVERTENCIA: Plan potencialmente desactualizado
+Patrón: ejecucion_[ID-HU]_*_EN_PROGRESO.json
+        ejecucion_[ID-HU]_*_DETENIDA_POR_ERROR.json
+```
 
-Plan generado: [fecha_plan]
-HU modificada: [fecha_hu_modificacion]
-Diferencia: [X] horas después
+**SI existe ejecución previa incompleta:**
+```markdown
+⚠️ Se detectó una ejecución previa incompleta de [ID-HU]
 
-El plan puede no reflejar los cambios más recientes de la HU.
+Estado anterior: [DETENIDA_POR_ERROR / EN_PROGRESO]
+Último paso completado: Sección [X], Paso [Y]
+Progreso: [Z]% completado
+Fecha: [timestamp]
 
 ¿Deseas:
-A) Continuar con el plan existente (bajo tu propio riesgo)
-B) Pedir a ONAD que regenere el plan actualizado
-C) Cancelar ejecución
+A) Retomar desde donde quedó (Paso [Y+1])
+B) Reiniciar ejecución desde el principio
+C) Ver detalles de la ejecución anterior
+D) Cancelar
 ```
 
----
-
-#### **1.3. Confirmación de Ejecución**
+#### **1.5. Confirmación de Ejecución**
 
 Presentar resumen del plan al usuario:
 
-```
-✅ Plan encontrado para [ID-HU]
+```markdown
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ PLAN ENCONTRADO PARA [ID-HU]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 📋 Resumen del Plan:
 - Archivo: plan_[ID-HU]_[timestamp].md
@@ -149,324 +199,699 @@ Presentar resumen del plan al usuario:
 - Preguntaré antes de ejecutar comandos Git
 - Modificaré archivos de código automáticamente
 
+📋 Estado de la HU cambiará:
+- Actual: [P] Planificada
+- Durante ejecución: [E] En Ejecución
+- Al finalizar: [X] Completada
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ¿Confirmas la ejecución del plan? (S/N)
 ```
 
-**Si el usuario dice N:**
-- Cancelar ejecución
-- Finalizar
-
-**Si el usuario dice S:**
-- Continuar a Fase 2
-Plan: plan_ARCHDEV-001_20251021_150000.md
-Inicio: 2025-10-21 16:30:00
-Fin: 2025-10-21 16:45:00 (abortada)
-
-Progreso:
-- Sección 1: ✅ Completada (3/3 pasos)
-- Sección 2: ⚠️ Parcial (2/4 pasos)
-  - Paso 2.1: ✅ Completado
-  - Paso 2.2: ✅ Completado
-  - Paso 2.3: ❌ FALLIDO (compilación)
-  - Paso 2.4: ⏭️ No ejecutado
-
-Error que causó el abort:
-- Paso: 2.3 (Actualizar tests de Cliente)
-- Tipo: Error de compilación
-- Mensaje: cannot find symbol - Email
-
-Archivos modificados:
-1. microservicio/dominio/.../Cliente.java ✅
-2. microservicio/dominio/.../ClienteTest.java ❌ (parcial)
-
-Archivos creados:
-[Ninguno]
-
-Comandos Git ejecutados:
-1. git checkout develop ✅
-2. git pull origin develop ✅
-3. git checkout -b feature/ARCHDEV-001 ✅
-
-Estado actual:
-- Rama: feature/ARCHDEV-001
-- Cambios sin commit: 2 archivos modificados
-- Build: ❌ Fallido
-
-Recomendaciones:
-1. Corregir import de clase Email en Cliente.java
-Cuando se aborta por error, generar reporte completo:
-
-**El archivo de tracking ya contiene toda la información necesaria:**
-- `ejecucion_ARCHDEV-001_20251021_170000_DETENIDA_POR_ERROR.json`
-
-**Adicionalmente, generar reporte en Markdown para lectura humana:**
-3. O revertir cambios: git checkout dominio/
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📄 REPORTE DE EJECUCIÓN DETENIDA POR ERROR
-Reporte guardado en:
-cochas/artifacts/planes_implementacion/ejecucion_ARCHDEV-001_20251021_163000_ABORTADA.md
-```
-
-Archivo de tracking: ejecucion_ARCHDEV-001_20251021_170000_DETENIDA_POR_ERROR.json
-Inicio: 2025-10-21 17:00:00
-Fin: 2025-10-21 17:12:00 (detenida por error)
-### **Fase 4: Finalización y Verificación**
-
-#### **4.1. Anuncio de Finalización (Si todos los pasos se completaron)**
-
-  - Paso 2.1: ✅ Completado (45s)
-  - Paso 2.2: ✅ Completado (180s)
-🎉 EJECUCIÓN COMPLETADA
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Error que causó la detención:
-- Paso: 2.3 (Agregar validación de email)
-Resumen de ejecución:
-- Secciones ejecutadas: 7/7 (100%)
-- Detalle completo: [ver tracking JSON]
-- Pasos totales: 42/42 (100%)
-- Archivos modificados: 8
-- Archivos creados: 5
-2. microservicio/dominio/.../ClienteTest.java ✅
-3. microservicio/dominio/.../Cliente.java ❌ (fallido)
-- Tiempo total: 52 minutos
-```
+**Si el usuario dice N:** Cancelar ejecución y finalizar
+**Si el usuario dice S:** Continuar a Fase 2
 
 ---
 
-#### **4.2. Verificación Final**
+### **Fase 2: Ejecución del Plan Paso a Paso**
 
-Ejecutar comando de verificación final del plan:
+#### **2.1. Actualizar Estado a [E] En Ejecución**
 
-```
-📌 Verificación Final: Build completo
+**Cambiar estado:** `[P] Planificada` → `[E] En Ejecución`
 
-Ejecutando: gradlew clean build
-- Archivo de tracking: GUARDADO (puedes retomar)
+**⚠️ IMPORTANTE:** Usar la estructura exacta de `{{backlog_desarrollo_plantilla}}` para mantener coherencia.
 
-> Task :compileJava
-> Task :processResources
-2. Retomar ejecución: ejecutar-plan ARCHDEV-001
-   (Se detectará automáticamente la ejecución previa y preguntará si retomar)
-> Task :compileTestJava
-> Task :processTestResources
-> Task :testClasses
-> Task :test
-💾 IMPORTANTE: Tu progreso está guardado en el archivo de tracking.
-   Puedes retomar la ejecución en cualquier momento ejecutando:
-   
-   ejecutar-plan ARCHDEV-001
-   
-   El sistema detectará que hay una ejecución previa y te permitirá continuar
-   desde el Paso 2.3 (donde falló).
+**Actualizar `{{backlog_location}}` con la estructura estándar para estado [E]:**
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```markdown
+### [ID-HU]: [Título de la HU]
+- **Estado:** [E] En Ejecución
+- **Origen:** [ID origen - mantener valor existente]
+- **Prioridad:** [Alta | Media | Baja - mantener valor existente]
+- **Refinamiento:** `{{hu_refinamiento_location}}/[ID-HU]_refinamiento_[concepto].md`
+- **Fecha refinamiento:** [timestamp - mantener valor existente]
+- **Estimación:** [X] SP / [Y] horas
+- **Plan:** `{{plan_desarrollo_location}}/plan_[ID-HU]_[timestamp].md`
+- **Fecha planificación:** [timestamp - mantener valor existente]
+- **Inicio ejecución:** [timestamp]
+- **Progreso:** 0% (0/[Z] pasos)
+- **Sección actual:** 1/[N] - [Nombre primera sección]
+- **Tracking:** `{{ejecuciones_location}}/ejecucion_[ID-HU]_[timestamp]_EN_PROGRESO.json`
 
-> Task :build
-cochas/artifacts/planes_implementacion/ejecucion_ARCHDEV-001_20251021_170000_ERROR.md
-BUILD SUCCESSFUL in 1m 23s
-45 tests completed, 45 passed
-```
+**Descripción:**
+[Mantener descripción existente]
 
-```
-✅ Verificación final exitosa
-✅ Build: OK
-✅ Tests: 42/42 pasados
+**Criterios de Aceptación:**
+- [ ] CA1: [descripción - mantener existentes]
+- [ ] CA2: [descripción]
+- [ ] CA3: [descripción]
 ```
 
----
+**Campos obligatorios para estado [E]:**
+| Campo | Fuente | Acción |
+|-------|--------|--------|
+| `Estado` | Herramienta | Cambiar a `[E] En Ejecución` |
+| `Origen` | Existente | **Mantener sin modificar** |
+| `Prioridad` | Existente | **Mantener sin modificar** |
+| `Refinamiento` | Existente | **Mantener sin modificar** |
+| `Fecha refinamiento` | Existente | **Mantener sin modificar** |
+| `Estimación` | Existente | **Mantener sin modificar** |
+| `Plan` | Existente | **Mantener sin modificar** |
+| `Fecha planificación` | Existente | **Mantener sin modificar** |
+| `Inicio ejecución` | Herramienta | Agregar timestamp actual |
+| `Progreso` | Herramienta | Agregar progreso inicial (0%) |
+| `Sección actual` | Herramienta | Agregar primera sección |
+| `Tracking` | Herramienta | Agregar ruta del archivo de tracking |
+| `Descripción` | Existente | **Mantener sin modificar** |
+| `Criterios de Aceptación` | Existente | **Mantener sin modificar** |
 
-#### **4.3. Preparación de Commit (CON CONFIRMACIÓN)**
+**❌ NO agregar campos que no estén en la plantilla.**
+**❌ NO eliminar campos existentes.**
 
-```
-📌 Paso Final: Preparar commit
-
-He completado la implementación de ARCHDEV-001 según el plan.
-
-Archivos modificados:
-1. dominio/modelo/Cliente.java
-2. dominio/modelo/ClienteTest.java
-3. infraestructura/adaptador/RepositorioClientePostgres.java
-4. infraestructura/resources/db/migration/V005__agregar_columna_email.sql
-5. aplicacion/casodeuso/CrearClienteCasoUso.java
-... (total: 8 archivos)
-
-¿Deseas que prepare el commit ahora?
-A) Sí, hacer git add y git commit con mensaje generado
-B) No, yo haré el commit manualmente
-C) Mostrarme el diff completo antes de decidir
-```
-
-**Si usuario elige A:**
-```
-Ejecutando: git add .
-✅ 8 archivos agregados al stage
-
-Generando mensaje de commit basado en el plan...
-
-Mensaje propuesto:
-─────────────────────────────────────────────────
-feat: agregar campo email a entidad Cliente
-
-Implementa validación y persistencia de email en Cliente según ARCHDEV-001.
-
-Cambios:
-- Agregado campo email a modelo Cliente (inmutable)
-- Actualizado RepositorioClientePostgres con mapeo de email
-- Creada migración Flyway V005 para columna email
-- Agregados tests unitarios completos (42 tests, todos pasando)
-- Actualizado CrearClienteCasoUso con validación de email
-
-Refs: ARCHDEV-001
-─────────────────────────────────────────────────
-
-¿Confirmas este mensaje de commit? (S/N)
-```
-
-**Si usuario dice S:**
-```
-Ejecutando: git commit -m "feat: agregar campo email..."
-✅ Commit creado: a3f5c21
-
-¿Deseas hacer push al remoto? (S/N)
-```
-
----
-
-#### **4.4. Actualización de Estado de la HU**
-
-```
-📌 Actualizando estado de la HU en el sistema...
-
-Actualizando cochas/artifacts/backlog_desarrollo.md...
-✅ Estado cambiado: [A] Aprobada → [X] Completada
-✅ Fecha de completación agregada: 2025-10-21T17:22:00Z
-
-Actualizando cochas/session/session_state.json...
-✅ Estado actualizado en tablero_tareas
-✅ Evento agregado a log_eventos_clave
-```
-
----
-
-#### **4.5. Informe Final de Éxito**
-
-```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📊 REPORTE FINAL DE EJECUCIÓN
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-HU: ARCHDEV-001 - Migrar plantillas faltantes
-Plan: plan_ARCHDEV-001_20251021_150000.md
-Estado: ✅ COMPLETADA EXITOSAMENTE
-
-Tiempo de ejecución:
-- Inicio: 2025-10-21 16:30:00
-- Fin: 2025-10-21 17:22:00
-- Duración total: 52 minutos
-- Estimación original: 60 minutos
-- Eficiencia: 87% (8 min bajo estimación)
-
-Métricas de ejecución:
-- Secciones: 7/7 (100%)
-- Pasos: 42/42 (100%)
-- Comandos Git: 5/5 exitosos
-- Archivos modificados: 8
-- Archivos creados: 5
-- Tests ejecutados: 42 (100% pasados)
-- Build final: ✅ Exitoso
-
-Artefactos generados:
-- Código implementado: ✅
-- Tests unitarios: ✅ (42 tests)
-- Migración Flyway: ✅ (V005)
-- Commit: ✅ (a3f5c21)
-- Push: ✅ (origin/feature/ARCHDEV-001)
-
-Estado de la HU:
-- Backlog: [X] Completada
-- Session state: Actualizado
-- Fecha completación: 2025-10-21T17:22:00Z
-
-Próximos pasos sugeridos:
-1. Crear Pull Request en GitHub/GitLab
-2. Solicitar code review al equipo
-3. Ejecutar CI/CD pipeline
-4. Validar en ambiente de QA
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Reporte completo guardado en:
-cochas/artifacts/planes_implementacion/ejecucion_ARCHDEV-001_20251021_163000_EXITOSA.md
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🤖 MODO IMPLEMENTADOR ESTRICTO DESACTIVADO
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-```
-
----
-
-#### **4.6. Cierre**
-
-```
-¿Deseas:
-A) Ejecutar el plan de otra HU
-B) Ver el diff completo de los cambios realizados
-C) Cambiar a otro rol
-D) Otra cosa
-```
-**Actualizar archivo de tracking:**
+**Actualizar `{{session_state_location}}`:**
 ```json
 {
-  "estado_ejecucion": "COMPLETADA",
-  "timestamp_fin": "2025-10-21T17:52:00Z",
+  "id": "[ID-HU]",
+  "estado": "[E]",
+  "ejecucion": {
+    "archivo_tracking": "{{ejecuciones_location}}/ejecucion_[ID-HU]_[timestamp]_EN_PROGRESO.json",
+    "estado": "EN_PROGRESO",
+    "inicio": "[timestamp]",
+    "progreso": 0
+  }
+}
+```
+
+#### **2.2. Inicialización del Tracking**
+
+Crear archivo de tracking en `{{ejecuciones_location}}`:
+
+```json
+{
+  "id_hu": "ARCHDEV-001",
+  "plan_archivo": "{{plan_desarrollo_location}}/plan_ARCHDEV-001_20260104_150000.md",
+  "estado_ejecucion": "EN_PROGRESO",
+  "timestamp_inicio": "2026-01-04T15:30:00Z",
+  "timestamp_fin": null,
   "progreso": {
-    "pasos_completados": 42,
-    "porcentaje_completado": 100
+    "seccion_actual": 1,
+    "paso_actual": 1,
+    "total_secciones": 7,
+    "total_pasos": 42,
+    "pasos_completados": 0,
+    "porcentaje_completado": 0
+  },
+  "secciones": [
+    {
+      "numero": 1,
+      "nombre": "Preparación del entorno",
+      "estado": "EN_PROGRESO",
+      "pasos": [
+        { "numero": 1, "descripcion": "Checkout develop", "estado": "PENDIENTE", "timestamp": null },
+        { "numero": 2, "descripcion": "Pull últimos cambios", "estado": "PENDIENTE", "timestamp": null },
+        { "numero": 3, "descripcion": "Crear rama feature", "estado": "PENDIENTE", "timestamp": null }
+      ]
+    }
+  ],
+  "archivos_modificados": [],
+  "archivos_creados": [],
+  "comandos_git_ejecutados": [],
+  "errores": []
+}
+```
+
+**Nombre del archivo:**
+```
+ejecucion_[ID-HU]_[timestamp]_EN_PROGRESO.json
+```
+
+#### **2.3. Activación del Modo Implementador**
+
+```markdown
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🤖 MODO IMPLEMENTADOR ESTRICTO ACTIVADO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Plan: [nombre_archivo_plan]
+HU: [ID-HU] - [Título de la HU]
+Estado: [E] En Ejecución
+Inicio: [timestamp]
+
+Ejecutando Sección 1 de [X]: [Nombre de la sección]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+#### **2.4. Iteración por Secciones y Pasos**
+
+Para cada sección del plan:
+
+```markdown
+📂 SECCIÓN [N]/[TOTAL]: [Nombre de la Sección]
+────────────────────────────────────────────────
+```
+
+Para cada paso dentro de la sección:
+
+```markdown
+📌 Paso [N.M]: [Descripción del paso]
+
+[Acción específica según tipo de paso]
+```
+
+**Tipos de pasos y acciones:**
+
+| Tipo de Paso | Acción | Confirmación |
+|--------------|--------|--------------|
+| Modificar archivo | Editar código automáticamente | No |
+| Crear archivo | Crear archivo con contenido | No |
+| Ejecutar comando build | Ejecutar `mvn`, `gradle`, `npm` | No |
+| Ejecutar tests | Ejecutar suite de tests | No |
+| Comando Git | `git checkout`, `git add`, etc. | **SÍ** |
+| Comando Git push | `git push` | **SÍ** |
+| Eliminar archivo | Borrar archivo | **SÍ** |
+
+**Ejemplo de ejecución de paso:**
+
+```markdown
+📌 Paso 2.3: Agregar campo email a entidad Cliente
+
+Archivo: src/main/java/com/empresa/dominio/modelo/Cliente.java
+Acción: Agregar campo inmutable 'email' con validación
+
+Modificando archivo...
+✅ Campo 'email' agregado correctamente
+
+Ejecutando: mvn compile -q
+✅ Compilación exitosa (0 errores, 0 warnings)
+
+[Paso 2.3 completado en 45s]
+```
+
+**Ejemplo de paso Git (con confirmación):**
+
+```markdown
+📌 Paso 1.3: Crear rama feature
+
+Comando: git checkout -b feature/ARCHDEV-001
+
+⚠️ Este comando Git requiere tu confirmación.
+¿Ejecutar? (S/N)
+```
+
+#### **2.5. Actualización de Progreso**
+
+Después de cada paso completado:
+
+1. Actualizar archivo de tracking con nuevo estado
+2. Mostrar barra de progreso:
+
+```markdown
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📊 Progreso: [████████████░░░░░░░░] 60% (25/42 pasos)
+   Sección actual: 4/7 - Implementación de tests
+   Tiempo transcurrido: 32 minutos
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+#### **2.6. Verificación Post-Sección**
+
+Al completar cada sección, ejecutar verificación:
+
+```markdown
+✅ Sección [N] completada: [Nombre]
+   - Pasos ejecutados: [X]/[X]
+   - Archivos modificados: [Y]
+   - Tiempo: [Z] minutos
+
+Verificando integridad...
+- Compilación: ✅ OK
+- Tests afectados: ✅ 12/12 pasando
+
+Continuando con Sección [N+1]...
+```
+
+---
+
+### **Fase 3: Manejo de Errores y Abort**
+
+#### **3.1. Detección de Error**
+
+Tipos de errores que detienen la ejecución:
+
+| Tipo de Error | Ejemplo | Acción |
+|---------------|---------|--------|
+| Compilación | `cannot find symbol` | Detener inmediatamente |
+| Test fallido | `AssertionError` | Detener inmediatamente |
+| Archivo no encontrado | `FileNotFoundException` | Detener inmediatamente |
+| Comando Git fallido | `merge conflict` | Detener inmediatamente |
+| Permiso denegado | `Access denied` | Detener inmediatamente |
+
+#### **3.2. Procedimiento de Abort**
+
+Al detectar un error:
+
+```markdown
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🛑 ERROR DETECTADO - EJECUCIÓN DETENIDA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+❌ Error en Paso [N.M]: [Descripción del paso]
+
+Tipo de error: [COMPILACIÓN / TEST / GIT / SISTEMA]
+Mensaje: [mensaje de error completo]
+
+Contexto:
+- Archivo: [archivo donde ocurrió]
+- Línea: [número de línea si aplica]
+- Comando: [comando que falló si aplica]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+#### **3.3. Actualización de Tracking en Error**
+
+```json
+{
+  "estado_ejecucion": "DETENIDA_POR_ERROR",
+  "timestamp_fin": "2026-01-04T16:12:00Z",
+  "error": {
+    "paso": "2.3",
+    "tipo": "COMPILACION",
+    "mensaje": "cannot find symbol - Email",
+    "archivo": "Cliente.java",
+    "linea": 45,
+    "timestamp": "2026-01-04T16:12:00Z"
   }
 }
 ```
 
 **Renombrar archivo de tracking:**
 ```
-DE: ejecucion_ARCHDEV-001_20251021_170000_EN_PROGRESO.json
-A:  ejecucion_ARCHDEV-001_20251021_170000_COMPLETADA.json
+DE: ejecucion_ARCHDEV-001_20260104_153000_EN_PROGRESO.json
+A:  ejecucion_ARCHDEV-001_20260104_153000_DETENIDA_POR_ERROR.json
 ```
 
+#### **3.4. Reporte de Error y Opciones**
+
+```markdown
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📊 RESUMEN DE EJECUCIÓN DETENIDA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+HU: [ID-HU]
+Plan: plan_[ID-HU]_[timestamp].md
+Inicio: [timestamp_inicio]
+Fin: [timestamp_fin] (detenida por error)
+
+Progreso alcanzado:
+- Secciones: [X]/[Y] ([Z]%)
+- Pasos: [A]/[B] ([C]%)
+
+Archivos modificados antes del error:
+1. [archivo1.java] ✅
+2. [archivo2.java] ✅
+3. [archivo3.java] ❌ (parcial)
+
+Estado Git:
+- Rama actual: feature/[ID-HU]
+- Cambios sin commit: [N] archivos
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+¿Qué deseas hacer?
+
+A) 🔍 Ver código del archivo que falló
+B) 🔧 Corregir manualmente y retomar ejecución
+C) ↩️ Revertir todos los cambios (git checkout .)
+D) 💾 Mantener cambios y salir (puedes retomar después)
+E) 📋 Ver log completo de ejecución
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+💾 Tu progreso está guardado. Puedes retomar ejecutando:
+   ejecutar-plan [ID-HU]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+#### **3.5. Generar Reporte de Error (Markdown)**
+
+Crear archivo en `{{ejecuciones_location}}`:
+
+```markdown
+# 📄 Reporte de Ejecución Detenida
+
+> **HU:** [ID-HU]  
+> **Estado:** DETENIDA_POR_ERROR  
+> **Fecha:** [timestamp]
+
+## Resumen
+
+| Métrica | Valor |
+|---------|-------|
+| Plan | plan_[ID-HU]_[timestamp].md |
+| Inicio | [timestamp_inicio] |
+| Fin | [timestamp_fin] |
+| Progreso | [X]% ([Y]/[Z] pasos) |
+
+## Error que causó la detención
+
+- **Paso:** [N.M] - [Descripción]
+- **Tipo:** [COMPILACIÓN/TEST/GIT/SISTEMA]
+- **Mensaje:** `[mensaje de error]`
+- **Archivo:** [ruta del archivo]
+- **Línea:** [número]
+
+## Progreso por Sección
+
+| Sección | Estado | Pasos |
+|---------|--------|-------|
+| 1. Preparación | ✅ Completada | 3/3 |
+| 2. Implementación | ⚠️ Parcial | 2/4 |
+| 3. Tests | ⏭️ No iniciada | 0/5 |
+
+## Archivos Modificados
+
+| Archivo | Estado |
+|---------|--------|
+| Cliente.java | ✅ Completado |
+| ClienteTest.java | ❌ Parcial |
+
+## Comandos Git Ejecutados
+
+1. `git checkout develop` ✅
+2. `git pull origin develop` ✅
+3. `git checkout -b feature/ARCHDEV-001` ✅
+
+## Recomendaciones
+
+1. Corregir el error en [archivo]
+2. Ejecutar `ejecutar-plan [ID-HU]` para retomar
+3. O revertir con `git checkout .`
+```
 
 ---
 
-## 📤 Salida
+### **Fase 4: Finalización Exitosa**
 
-### Archivos Modificados
+#### **4.1. Verificación Final**
 
-1. **Archivos de código** según el plan (Java, SQL, etc.)
-2. **`cochas/artifacts/backlog_desarrollo.md`** - Estado de HU actualizado a `[X]`
-3. **`cochas/session/session_state.json`** - Estado y eventos actualizados
+Al completar todos los pasos:
 
-### Archivos Creados
+```markdown
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📌 Verificación Final
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-1. **Reporte de ejecución:**
-   - Éxito: `cochas/artifacts/planes_implementacion/ejecucion_[ID-HU]_[timestamp]_EXITOSA.md`
-   - Abortada: `cochas/artifacts/planes_implementacion/ejecucion_[ID-HU]_[timestamp]_ABORTADA.md`
+Ejecutando build completo...
+> [comando de build del proyecto]
 
-### Commits Git (si se confirmaron)
+✅ BUILD SUCCESSFUL
+   - Compilación: OK
+   - Tests: [X]/[X] pasados (100%)
+   - Cobertura: [Y]%
+   - Tiempo: [Z]s
+```
 
-1. Commit con mensaje generado automáticamente
-2. Push al remoto (si se confirmó)
+#### **4.2. Preparación de Commit (Con Confirmación)**
+
+```markdown
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📌 Preparar Commit
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+He completado la implementación de [ID-HU] según el plan.
+
+Archivos modificados ([N] archivos):
+1. dominio/modelo/Cliente.java
+2. dominio/modelo/ClienteTest.java
+3. infraestructura/adaptador/RepositorioClientePostgres.java
+4. resources/db/migration/V005__agregar_columna_email.sql
+...
+
+¿Deseas que prepare el commit ahora?
+
+A) ✅ Sí, hacer git add y git commit con mensaje generado
+B) ❌ No, yo haré el commit manualmente
+C) 🔍 Mostrarme el diff completo antes de decidir
+```
+
+**Si usuario elige A:**
+
+```markdown
+Ejecutando: git add .
+✅ [N] archivos agregados al stage
+
+Generando mensaje de commit...
+
+────────────────────────────────────────────────
+feat: agregar campo email a entidad Cliente
+
+Implementa validación y persistencia de email en Cliente según [ID-HU].
+
+Cambios:
+- Agregado campo email a modelo Cliente (inmutable)
+- Actualizado RepositorioClientePostgres con mapeo de email
+- Creada migración Flyway V005 para columna email
+- Agregados tests unitarios completos ([X] tests)
+
+Refs: [ID-HU]
+────────────────────────────────────────────────
+
+¿Confirmas este mensaje de commit? (S/N)
+```
+
+**Si confirma:**
+
+```markdown
+Ejecutando: git commit -m "feat: agregar campo email..."
+✅ Commit creado: [hash]
+
+¿Deseas hacer push al remoto? (S/N)
+```
+
+#### **4.3. Actualización de Estado de la HU a [X] Completada**
+
+**Cambiar estado:** `[E] En Ejecución` → `[X] Completada`
+
+**⚠️ IMPORTANTE:** Usar la estructura exacta de `{{backlog_desarrollo_plantilla}}` para mantener coherencia.
+
+**Actualizar `{{backlog_location}}` con la estructura estándar para estado [X]:**
+
+```markdown
+### [ID-HU]: [Título de la HU]
+- **Estado:** [X] Completada
+- **Origen:** [ID origen - mantener valor existente]
+- **Prioridad:** [Alta | Media | Baja - mantener valor existente]
+- **Refinamiento:** `{{hu_refinamiento_location}}/[ID-HU]_refinamiento_[concepto].md`
+- **Fecha refinamiento:** [timestamp - mantener valor existente]
+- **Estimación:** [X] SP / [Y] horas
+- **Plan:** `{{plan_desarrollo_location}}/plan_[ID-HU]_[timestamp].md`
+- **Completado:** [timestamp]
+- **Duración:** [X]h [Y]min
+- **Commit:** `[hash]`
+
+**Descripción:**
+[Mantener descripción existente]
+
+**Criterios de Aceptación:**
+- ✅ CA1: [descripción]
+- ✅ CA2: [descripción]
+- ✅ CA3: [descripción]
+
+**Implementación:**
+- ✅ [Logro 1]
+- ✅ [Logro 2]
+- ✅ Tests: [X] unitarios + [Y] integración
+- ✅ Cobertura: [Z]%
+```
+
+**Campos obligatorios para estado [X]:**
+| Campo | Fuente | Acción |
+|-------|--------|--------|
+| `Estado` | Herramienta | Cambiar a `[X] Completada` |
+| `Origen` | Existente | **Mantener sin modificar** |
+| `Prioridad` | Existente | **Mantener sin modificar** |
+| `Refinamiento` | Existente | **Mantener sin modificar** |
+| `Fecha refinamiento` | Existente | **Mantener sin modificar** |
+| `Estimación` | Existente | **Mantener sin modificar** |
+| `Plan` | Existente | **Mantener sin modificar** |
+| `Completado` | Herramienta | Agregar timestamp de finalización |
+| `Duración` | Herramienta | Calcular duración total |
+| `Commit` | Herramienta | Agregar hash del commit |
+| `Descripción` | Existente | **Mantener sin modificar** |
+| `Criterios de Aceptación` | Herramienta | Marcar todos con ✅ |
+| `Implementación` | Herramienta | Agregar resumen de logros |
+
+**❌ NO agregar campos que no estén en la plantilla.**
+**❌ NO eliminar campos existentes.**
+**❌ ELIMINAR campos temporales:** `Inicio ejecución`, `Progreso`, `Sección actual`, `Tracking`
+
+**Actualizar `{{session_state_location}}`:**
+
+```json
+{
+  "id": "[ID-HU]",
+  "estado": "[X]",
+  "ejecucion": {
+    "archivo_tracking": "{{ejecuciones_location}}/ejecucion_[ID-HU]_[timestamp]_COMPLETADA.json",
+    "estado": "COMPLETADA",
+    "inicio": "[timestamp_inicio]",
+    "fin": "[timestamp_fin]",
+    "duracion_minutos": [N],
+    "progreso": 100
+  }
+}
+```
+
+**Agregar evento a `log_eventos_clave`:**
+```json
+{
+  "timestamp": "[timestamp_actual]",
+  "rol": "ArchDev Pro",
+  "herramienta": "ejecutar_plan",
+  "tipo": "hu_completada",
+  "id_hu": "[ID-HU]",
+  "detalle": "HU completada. Duración: [X]min. Commit: [hash]"
+}
+```
+
+#### **4.4. Actualización de Tracking Final**
+
+```json
+{
+  "estado_ejecucion": "COMPLETADA",
+  "timestamp_fin": "2026-01-04T17:22:00Z",
+  "progreso": {
+    "pasos_completados": 42,
+    "porcentaje_completado": 100
+  },
+  "commit": {
+    "hash": "a3f5c21",
+    "mensaje": "feat: agregar campo email...",
+    "push": true
+  }
+}
+```
+
+**Renombrar archivo:**
+```
+DE: ejecucion_ARCHDEV-001_20260104_153000_EN_PROGRESO.json
+A:  ejecucion_ARCHDEV-001_20260104_153000_COMPLETADA.json
+```
+
+#### **4.5. Reporte Final de Éxito**
+
+```markdown
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🎉 EJECUCIÓN COMPLETADA EXITOSAMENTE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+HU: [ID-HU] - [Título]
+Plan: plan_[ID-HU]_[timestamp].md
+Estado: ✅ COMPLETADA
+
+Tiempo de ejecución:
+- Inicio: [timestamp_inicio]
+- Fin: [timestamp_fin]
+- Duración: [X] minutos
+- Estimación original: [Y] minutos
+- Eficiencia: [Z]%
+
+Métricas:
+- Secciones: [A]/[A] (100%)
+- Pasos: [B]/[B] (100%)
+- Archivos modificados: [C]
+- Archivos creados: [D]
+- Tests ejecutados: [E] (100% pasados)
+- Build final: ✅ Exitoso
+
+Artefactos:
+- ✅ Código implementado
+- ✅ Tests unitarios ([X] tests)
+- ✅ Migración Flyway (V005)
+- ✅ Commit: [hash]
+- ✅ Push: origin/feature/[ID-HU]
+
+Estado HU:
+- Backlog: [X] Completada
+- Session state: Actualizado
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+💡 Próximos pasos sugeridos:
+1. Crear Pull Request en GitHub/GitLab
+2. Solicitar code review
+3. Ejecutar CI/CD pipeline
+4. Validar en ambiente de QA
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Reporte guardado en:
+{{ejecuciones_location}}/ejecucion_[ID-HU]_[timestamp]_COMPLETADA.md
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🤖 MODO IMPLEMENTADOR ESTRICTO DESACTIVADO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+#### **4.6. Cierre**
+
+```markdown
+¿Deseas:
+A) Ejecutar el plan de otra HU
+B) Ver el diff completo de los cambios realizados
+C) Cambiar a otro rol
+D) Finalizar
+```
+
+---
+
+## ⚠️ Manejo de Errores y Casos Borde
+
+| Situación | Acción |
+|-----------|--------|
+| Plan no encontrado | Sugerir ejecutar `planificar-hu` primero |
+| Archivo de plan eliminado | Ofrecer regenerar con ONAD |
+| Plan desactualizado | Advertir y ofrecer regenerar |
+| Ejecución previa incompleta | Ofrecer retomar o reiniciar |
+| Error de compilación | Detener, mostrar error, ofrecer opciones |
+| Test fallido | Detener, mostrar error, ofrecer opciones |
+| Conflicto de Git | Detener, mostrar conflicto, requerir resolución manual |
+| Permiso denegado | Detener, informar, sugerir verificar permisos |
+| Archivo bloqueado | Reintentar 3 veces, luego detener |
+| Timeout en comando | Detener después de timeout configurable |
+
+---
+
+## 📤 Formato de Salida Esperado
+
+**Archivos generados:**
+
+| Artefacto | Ubicación | Descripción |
+|-----------|-----------|-------------|
+| Tracking de ejecución | `{{ejecuciones_location}}/ejecucion_[ID-HU]_[timestamp]_[ESTADO].json` | Estado detallado de la ejecución |
+| Reporte Markdown | `{{ejecuciones_location}}/ejecucion_[ID-HU]_[timestamp]_[ESTADO].md` | Reporte legible |
+
+**Archivos modificados:**
+
+| Archivo | Cambio |
+|---------|--------|
+| `{{backlog_location}}` | Estado de HU actualizado |
+| `{{session_state_location}}` | tablero_tareas y log actualizado |
+| Archivos de código | Según especificaciones del plan |
 
 ---
 
 ## 🔧 Dependencias
 
-- **Archivos requeridos:**
-  - Plan de implementación (generado por `planificar-hu`)
-  - `cochas/session/session_state.json`
-  - `cochas/artifacts/backlog_desarrollo.md`
+**Archivos requeridos:**
+- `{{session_state_location}}` - Estado de sesión
+- `{{backlog_location}}` - Backlog con la HU
+- `{{plan_desarrollo_location}}/plan_[ID-HU]_*.md` - Plan generado
 
-- **Herramientas relacionadas:**
-  - `planificar-hu` (prerequisito: debe haberse ejecutado primero)
+**Herramientas prerequisito:**
+- `planificar-hu` - Debe ejecutarse primero para generar el plan
 
 ---
 
@@ -475,21 +900,24 @@ A:  ejecucion_ARCHDEV-001_20251021_170000_COMPLETADA.json
 1. **Solo ArchDev Pro puede ejecutar esta herramienta**
 2. **La HU debe tener un plan generado** (`plan_implementacion != null`)
 3. **El archivo del plan debe existir** en la ruta especificada
-4. **Ejecución estricta:** No se desvía del plan sin aprobación del usuario
-5. **Detención ante errores:** Cualquier error detiene la ejecución inmediatamente
-6. **Confirmación de Git obligatoria:** Todos los comandos Git requieren confirmación del usuario
+4. **Ejecución estricta:** No se desvía del plan sin aprobación
+5. **Detención ante errores:** Cualquier error detiene inmediatamente
+6. **Confirmación Git obligatoria:** Todos los comandos Git requieren confirmación
 7. **No modifica archivos fuera del plan:** Solo trabaja con archivos especificados
 
 ---
 
 ## 📊 Métricas Sugeridas
 
-Trackear en `session_state.json`:
-- Total de planes ejecutados exitosamente
-- Total de planes abortados por error
-- Tiempo promedio de ejecución vs estimación
-- Tasa de éxito en primera ejecución
-- Tipos de errores más comunes
+Trackear en `{{session_state_location}}`:
+
+| Métrica | Descripción |
+|---------|-------------|
+| planes_ejecutados_exitosos | Total de ejecuciones completadas |
+| planes_abortados | Total de ejecuciones detenidas por error |
+| tiempo_promedio_ejecucion | Promedio vs estimación |
+| tasa_exito_primera_ejecucion | % que completan sin errores |
+| errores_mas_comunes | Tipos de error frecuentes |
 
 ---
 
@@ -505,21 +933,18 @@ ArchDev Pro:
 [... confirmación ...]
 
 🤖 MODO IMPLEMENTADOR ESTRICTO ACTIVADO
-
 [... 52 minutos de ejecución ...]
 
 🎉 EJECUCIÓN COMPLETADA
 ✅ 42/42 pasos ejecutados
 ✅ Build: OK
 ✅ Tests: 42/42 pasados
-✅ Commit creado: a3f5c21
+✅ Commit: a3f5c21
 
 Estado: [X] Completada
 ```
 
----
-
-### Caso 2: Error en Compilación (Detención)
+### Caso 2: Error en Compilación
 
 ```
 Usuario: ejecutar-plan ARCHDEV-002
@@ -527,38 +952,61 @@ Usuario: ejecutar-plan ARCHDEV-002
 ArchDev Pro:
 [... ejecutando pasos ...]
 
-📌 Paso 2.3: Actualizar tests de Cliente
+🛑 ERROR DETECTADO - EJECUCIÓN DETENIDA
 
-❌ ERROR DE COMPILACIÓN
-cannot find symbol - Email
-
-🛑 EJECUCIÓN DETENIDA
+❌ Error en Paso 2.3: Actualizar tests de Cliente
+Tipo: COMPILACIÓN
+Mensaje: cannot find symbol - Email
 
 Progreso: 5/42 pasos (12%)
-Estado: Abortada en Paso 2.3
 
-¿Deseas:
-A) Ver código modificado
-B) Revertir cambios
-C) Corregir manualmente
+¿Qué deseas hacer?
+A) Ver código del archivo
+B) Corregir manualmente y retomar
+C) Revertir cambios
+D) Mantener y salir
 ```
 
----
+### Caso 3: Retomar Ejecución Previa
 
-### Caso 3: Plan No Encontrado
+```
+Usuario: ejecutar-plan ARCHDEV-001
+
+ArchDev Pro:
+⚠️ Se detectó una ejecución previa incompleta
+
+Estado: DETENIDA_POR_ERROR
+Último paso: Sección 2, Paso 3
+Progreso: 12%
+
+¿Deseas:
+A) Retomar desde Paso 2.4
+B) Reiniciar desde el principio
+C) Ver detalles
+D) Cancelar
+```
+
+### Caso 4: Plan No Encontrado
 
 ```
 Usuario: ejecutar-plan ARCHDEV-005
 
 ArchDev Pro:
-❌ La HU ARCHDEV-005 no tiene un plan de implementación generado.
+❌ La HU ARCHDEV-005 no tiene plan de implementación.
 
-💡 Debes ejecutar primero:
+💡 Ejecuta primero:
    /cochas +onad
    planificar-hu ARCHDEV-005
 
-¿Deseas que cambie automáticamente a ONAD? (S/N)
+¿Cambiar automáticamente a ONAD? (S/N)
 ```
+
+---
+
+## 💡 Ejemplo de Uso Completo
+
+Para ver un ejemplo detallado de uso de esta herramienta, consulta:
+📁 **Archivo de ejemplo:** `ejemplos/herramientas/ejecutar_plan_ejemplo.md`
 
 ---
 
