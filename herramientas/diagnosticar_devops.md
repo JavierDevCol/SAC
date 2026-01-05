@@ -1,14 +1,16 @@
 # 🛠️ Herramienta: Diagnosticar DevOps
 
-> **Versión:** 2.0  
-> **Fecha de Actualización:** 10 de octubre de 2025  
+> **Versión:** 2.1  
+> **Fecha de Actualización:** 4 de enero de 2026  
 > **Estado:** Activa - Reestructurada según plantilla estándar
 
 ---
 
 ## 📋 Identificación
 
-**Herramienta:** `diagnosticar_devops`
+**Herramienta:** `diagnosticar_devops`  
+**Comando:** `diagnosticar-devops`  
+**Rol Propietario:** Arquitecto DevOps
 
 ---
 
@@ -40,6 +42,29 @@ Debes de seguir todas las instrucciones de activación exactamente como se espec
 ---
 
 ## 📥 Entradas Requeridas (Contexto)
+
+**Ejemplo de uso:**
+```
+diagnosticar-devops
+diagnosticar-devops --foco=seguridad --profundidad=exhaustivo
+diagnosticar-devops --incluir-compliance --formato=json
+```
+
+**Archivos requeridos:**
+- `{{session_state_location}}` - Estado de sesión
+- `{{contexto_proyecto_location}}` - Contexto del proyecto (opcional, mejora precisión)
+
+**Archivos que puede leer (si existen):**
+- `.github/workflows/*.yml` - Workflows de GitHub Actions
+- `.gitlab-ci.yml` - Pipeline de GitLab CI
+- `Jenkinsfile` - Pipeline de Jenkins
+- `Dockerfile`, `docker-compose.yml` - Configuración de containers
+- `*.tf`, `*.tfvars` - Configuración de Terraform
+- `kubernetes/*.yaml` - Manifests de Kubernetes
+- `helm/` - Charts de Helm
+
+**Archivos que genera:**
+- `{{analisis_location}}/diagnostico_devops_[timestamp].md` - Reporte de diagnóstico
 
 **Principal:**
 - Descripción del entorno actual (proveedor cloud, orquestador, arquitectura general)
@@ -80,6 +105,9 @@ Debes de seguir todas las instrucciones de activación exactamente como se espec
 ---
 
 ## 🔄 Proceso Paso a Paso
+
+**Paso 0 [CRÍTICO - OBLIGATORIO]:** 
+Cargar y leer `{{session_state_location}}` y `{project-root}/.cochas/CONFIG_INIT.yaml` antes de continuar.
 
 ### 1️⃣ Configuración Inicial y Análisis de Contexto
 
@@ -221,6 +249,69 @@ Debes de seguir todas las instrucciones de activación exactamente como se espec
   - Métricas de éxito apropiadas para el tipo de aplicación y arquitectura
   - Risk mitigation basado en los riesgos específicos del contexto
   - Budget estimates realistas basados en el tamaño y complejidad detectados
+
+---
+
+## 🔐 Restricciones
+
+1. **Solo análisis estático** - No ejecuta comandos ni modifica infraestructura
+2. **Basado en información proporcionada** - No tiene acceso directo a sistemas cloud
+3. **No almacena credenciales** - Nunca solicita ni guarda secrets o API keys
+4. **Recomendaciones genéricas** - No garantiza compatibilidad con configuraciones específicas del cliente
+5. **Estimaciones aproximadas** - Costos y tiempos son estimaciones basadas en benchmarks públicos
+6. **No reemplaza auditorías formales** - Para compliance, requiere validación de especialistas certificados
+
+---
+
+## 📊 Métricas Sugeridas
+
+Trackear en `{{session_state_location}}`:
+
+| Métrica | Descripción |
+|---------|-------------|
+| diagnosticos_ejecutados | Total de diagnósticos DevOps realizados |
+| nivel_madurez_promedio | Promedio de nivel de madurez detectado |
+| gaps_criticos_identificados | Total de gaps críticos encontrados |
+| recomendaciones_generadas | Total de recomendaciones producidas |
+| tiempo_promedio_diagnostico | Tiempo promedio por diagnóstico |
+| roadmaps_generados | Total de roadmaps de implementación creados |
+
+---
+
+## 🔄 Actualización de Session State
+
+### Registro de Eventos
+
+**Al completar diagnóstico:**
+
+```json
+{
+  "timestamp": "[timestamp_actual]",
+  "rol": "Arquitecto DevOps",
+  "herramienta": "diagnosticar_devops",
+  "tipo": "diagnostico_completado",
+  "detalle": "Nivel madurez: [X]/4 - Gaps críticos: [Y] - Recomendaciones: [Z]"
+}
+```
+
+**Actualizar registro de diagnósticos en session_state:**
+
+```json
+{
+  "ultimo_diagnostico_devops": {
+    "timestamp": "[timestamp]",
+    "nivel_madurez": [X],
+    "score_general": [Y],
+    "gaps_criticos": [Z],
+    "archivo_reporte": "{{analisis_location}}/diagnostico_devops_[timestamp].md",
+    "areas_evaluadas": ["ci_cd", "seguridad", "infraestructura", "observabilidad"]
+  }
+}
+```
+
+**Actualizar metadata:**
+- Incrementar `metadata.total_artefactos_generados`
+- Actualizar `metadata.ultima_actividad`
 
 ---
 
@@ -442,3 +533,13 @@ Para ver un ejemplo detallado de uso de esta herramienta, consulta:
 - "Site Reliability Engineering" - Google (SRE practices)
 - "Building Secure & Reliable Systems" - Google (Security + Reliability)
 - "Accelerate" - Forsgren, Humble, Kim (DevOps research)
+
+---
+
+## 📅 Historial de Versiones
+
+| Versión | Fecha | Cambios Principales |
+|---------|-------|---------------------|
+| 1.0 | - | Versión inicial básica |
+| 2.0 | 2025-10-10 | ✅ Estructura completa de 7 pasos<br>✅ Matriz de madurez DevOps<br>✅ Integración con contexto_proyecto.md<br>✅ Análisis de costos y ROI<br>✅ Roadmap de implementación |
+| 2.1 | 2026-01-04 | ✅ Integración con placeholders y session_state<br>✅ Paso 0 crítico obligatorio<br>✅ Secciones de Restricciones y Métricas<br>✅ Registro de eventos en log<br>✅ Comando en Identificación |

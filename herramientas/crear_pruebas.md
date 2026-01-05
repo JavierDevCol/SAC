@@ -1,12 +1,16 @@
 # 🛠️ Herramienta: Creación de Pruebas
 
-> El propósito de esta herramienta es generar código de pruebas (unitarias, integración, carga) de forma automática e inteligente, identificando casos felices, casos de borde y escenarios de error.
+> **Versión:** 2.1  
+> **Fecha de Actualización:** 4 de enero de 2026  
+> **Estado:** Activa - Reestructurada según plantilla estándar
 
 ---
 
 ## 📋 Identificación
 
-**Herramienta:** `crear_pruebas`
+**Herramienta:** `crear_pruebas`  
+**Comando:** `crear-pruebas [archivo.java]`  
+**Rol Propietario:** ArchDev Pro
 
 ---
 
@@ -36,6 +40,24 @@ Debes de seguir todas las instrucciones de activación exactamente como se espec
 ---
 
 ## 📥 Entradas Requeridas (Contexto)
+
+**Parámetro requerido:**
+- `archivo_java`: Código fuente Java a analizar para generar pruebas
+
+**Ejemplo de uso:**
+```
+crear-pruebas UserService.java
+crear-pruebas UserService.java --tipo=INTEGRACION
+crear-pruebas --cobertura_objetivo=90 --nivel=EXHAUSTIVO
+```
+
+**Archivos requeridos:**
+- `{{session_state_location}}` - Estado de sesión
+- Código fuente Java a testear (archivo o contenido)
+
+**Archivos que genera:**
+- `src/test/java/[paquete]/[Clase]Test.java` - Tests unitarios
+- `src/test/java/[paquete]/[Clase]IntegrationTest.java` - Tests de integración (si aplica)
 
 **Principal:**
 - El contenido del archivo activo o el código seleccionado en el editor (#selection o #file) que contiene la clase o componente a probar.
@@ -67,6 +89,9 @@ Debes de seguir todas las instrucciones de activación exactamente como se espec
 ---
 
 ## 🔄 Proceso Paso a Paso
+
+**Paso 0 [CRÍTICO - OBLIGATORIO]:** 
+Cargar y leer `{{session_state_location}}` y `{project-root}/.cochas/CONFIG_INIT.yaml` antes de continuar.
 
 ### 1️⃣ Análisis Automático del Código
 
@@ -167,6 +192,69 @@ Debes de seguir todas las instrucciones de activación exactamente como se espec
 
 ---
 
+## 🔐 Restricciones
+
+1. **Solo genera código Java** - No soporta otros lenguajes de programación
+2. **Requiere código válido** - El código fuente debe compilar correctamente
+3. **No ejecuta tests** - Solo genera el código, la ejecución es responsabilidad del usuario
+4. **Dependencias deben existir** - Asume que las dependencias de testing están configuradas
+5. **Docker requerido para integración** - Testcontainers necesita Docker corriendo
+6. **No modifica código de producción** - Solo genera archivos en `src/test/`
+
+---
+
+## 📊 Métricas Sugeridas
+
+Trackear en `{{session_state_location}}`:
+
+| Métrica | Descripción |
+|---------|-------------|
+| tests_generados_total | Total de archivos de test generados |
+| tests_unitarios_generados | Total de tests unitarios creados |
+| tests_integracion_generados | Total de tests de integración creados |
+| metodos_test_promedio | Promedio de métodos de test por archivo |
+| cobertura_estimada_promedio | % de cobertura estimada promedio |
+| tiempo_promedio_generacion | Tiempo promedio para generar tests |
+
+---
+
+## 🔄 Actualización de Session State
+
+### Registro de Eventos
+
+**Al generar tests:**
+
+```json
+{
+  "timestamp": "[timestamp_actual]",
+  "rol": "ArchDev Pro",
+  "herramienta": "crear_pruebas",
+  "tipo": "tests_generados",
+  "detalle": "Clase: [NombreClase] - Tipo: [UNITARIO|INTEGRACION] - Tests: [N] - Cobertura estimada: [X]%"
+}
+```
+
+**Actualizar registro de tests en session_state:**
+
+```json
+{
+  "ultimo_test_generado": {
+    "timestamp": "[timestamp]",
+    "clase_testeada": "[NombreClase].java",
+    "archivo_test": "src/test/java/[paquete]/[NombreClase]Test.java",
+    "tipo": "[UNITARIO|INTEGRACION]",
+    "metodos_generados": [N],
+    "cobertura_estimada": [X]
+  }
+}
+```
+
+**Actualizar metadata:**
+- Incrementar `metadata.total_artefactos_generados`
+- Actualizar `metadata.ultima_actividad`
+
+---
+
 ## ⚠️ Manejo de Errores y Casos Borde
 
 | Situación | Acción |
@@ -255,79 +343,10 @@ class [Clase]IntegrationTest {
 
 ---
 
-## 💡 Ejemplo de Uso
+## 📅 Historial de Versiones
 
-Para ver un ejemplo detallado de uso de esta herramienta, consulta:
-📁 **Archivo de ejemplo:** `ejemplos/herramientas/crear_pruebas_ejemplo.md`
-
----
-
-## 📚 Referencias y Notas
-
-**Dependencias Maven para Tests Unitarios:**
-```xml
-<dependency>
-    <groupId>org.junit.jupiter</groupId>
-    <artifactId>junit-jupiter</artifactId>
-    <version>5.10.0</version>
-    <scope>test</scope>
-</dependency>
-<dependency>
-    <groupId>org.mockito</groupId>
-    <artifactId>mockito-core</artifactId>
-    <version>5.5.0</version>
-    <scope>test</scope>
-</dependency>
-<dependency>
-    <groupId>org.assertj</groupId>
-    <artifactId>assertj-core</artifactId>
-    <version>3.24.2</version>
-    <scope>test</scope>
-</dependency>
-```
-
-**Dependencias Maven para Tests de Integración:**
-```xml
-<dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-test</artifactId>
-    <scope>test</scope>
-</dependency>
-<dependency>
-    <groupId>org.testcontainers</groupId>
-    <artifactId>testcontainers</artifactId>
-    <version>1.19.1</version>
-    <scope>test</scope>
-</dependency>
-<dependency>
-    <groupId>org.testcontainers</groupId>
-    <artifactId>postgresql</artifactId>
-    <version>1.19.1</version>
-    <scope>test</scope>
-</dependency>
-```
-
-**Convenciones de Nomenclatura:**
-- Tests unitarios: `[Clase]Test.java`
-- Tests de integración: `[Clase]IntegrationTest.java`
-- Métodos de test: `should[Comportamiento]When[Condicion]()`
-
-**Limitaciones conocidas:**
-- Solo soporta Java con Spring Boot actualmente
-- Testcontainers requiere Docker instalado y corriendo
-- Las pruebas de carga requieren herramientas externas (JMeter/Gatling)
-
-**Comandos útiles:**
-```bash
-# Ejecutar todos los tests
-mvn test
-
-# Ejecutar solo tests unitarios
-mvn test -Dtest="*Test"
-
-# Ejecutar solo tests de integración
-mvn test -Dtest="*IntegrationTest"
-
-# Ver reporte de cobertura
-mvn jacoco:report
-```
+| Versión | Fecha | Cambios Principales |
+|---------|-------|---------------------|
+| 1.0 | - | Versión inicial básica |
+| 2.0 | - | ✅ Proceso estructurado de 5 pasos<br>✅ Soporte para unitarios, integración y carga<br>✅ Análisis automático de código<br>✅ Patrón AAA documentado |
+| 2.1 | 2026-01-04 | ✅ Integración con placeholders y session_state<br>✅ Paso 0 crítico obligatorio<br>✅ Secciones de Restricciones y Métricas<br>✅ Registro de eventos en log<br>✅ Comando en Identificación |

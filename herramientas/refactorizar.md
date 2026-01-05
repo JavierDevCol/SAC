@@ -1,16 +1,17 @@
 # 🔧 Herramienta: Refactorizar Código
 
-> **Versión:** 2.0  
-> **Fecha de Actualización:** 6 de octubre de 2025  
-> **Autor:** Sistema de Herramientas ArchDev Pro  
-> **Estado:** Activa  
-> **Cambio Principal v2.0:** Integración automática con `analizar_code_smells` para priorización por ROI
+> **Versión:** 2.1  
+> **Fecha de Actualización:** 4 de enero de 2026  
+> **Estado:** Activa - Reestructurada según plantilla estándar  
+> **Cambio Principal v2.1:** Integración con placeholders, session_state y flujo completo de smells
 
 ---
 
 ## 📋 Identificación
 
-**Herramienta:** `refactorizar`
+**Herramienta:** `refactorizar`  
+**Comando:** `refactorizar [archivo.java|paquete]`  
+**Rol Propietario:** ArchDev Pro
 
 ---
 
@@ -83,14 +84,32 @@ El análisis automático puede desactivarse si el usuario ya tiene un análisis 
 
 ## 📥 Entradas Requeridas (Contexto)
 
-**Principal:**
-- El fragmento de código Java a refactorizar (clase completa preferiblemente).
-- Puede ser proporcionado como ruta de archivo o contenido directo del código.
+**Parámetro requerido:**
+- `codigo_fuente`: Código Java a refactorizar (ruta de archivo o contenido)
+
+**Ejemplo de uso:**
+```
+refactorizar UserService.java
+refactorizar com.empresa.servicio.UserService
+refactorizar --contenido "public class MiClase { ... }"
+```
+
+**Archivos requeridos:**
+- `{{session_state_location}}` - Estado de sesión
+- `{{contexto_proyecto_location}}` - Contexto del proyecto (mejora precisión del análisis)
+
+**Archivos que puede leer (si existen):**
+- `{{code_smells_reports_location}}/reporte_[archivo]_[timestamp].json` - Reporte previo de `analizar_code_smells`
+- Usa `session_state.ultimo_analisis_smells` si existe análisis reciente del mismo archivo
+
+**Archivos que genera:**
+- Código refactorizado (clases Java nuevas/modificadas)
+- Tests unitarios (si `generar_tests_post_refactoring: true`)
 
 **Secundario (Opcional):**
-- Contexto del proyecto (arquitectura, patrones usados, restricciones específicas).
-- Análisis de code smells previo (si ya se ejecutó).
-- Tests existentes relacionados con el código.
+- Contexto del proyecto (arquitectura, patrones usados, restricciones específicas)
+- Análisis de code smells previo (si ya se ejecutó `analizar_code_smells`)
+- Tests existentes relacionados con el código
 
 ---
 
@@ -114,7 +133,42 @@ El análisis automático puede desactivarse si el usuario ya tiene un análisis 
 
 ---
 
+## 🔐 Restricciones
+
+1. **Solo refactoriza código Java/Spring Boot** (no otros lenguajes)
+2. **Requiere código sintácticamente correcto** (debe compilar)
+3. **No modifica lógica de negocio** sin confirmación explícita del usuario
+4. **Preserva comportamiento externo** - Los contratos públicos se mantienen
+5. **No elimina tests existentes** sin crear reemplazo equivalente
+6. **Requiere confirmación** antes de aplicar cambios arquitectónicos profundos
+7. **Reutiliza análisis previo** si existe en `session_state.ultimo_analisis_smells` del mismo archivo
+
+---
+
+## 📊 Métricas Sugeridas
+
+Trackear en `{{session_state_location}}`:
+
+| Métrica | Descripción |
+|---------|-------------|
+| refactorizaciones_total | Total de refactorizaciones ejecutadas |
+| refactorizaciones_auto | Ejecutadas con modo automático (`solucionar_smells`) |
+| refactorizaciones_guiadas | Ejecutadas con modo guiado (paso a paso) |
+| reduccion_complejidad_promedio | % promedio de reducción de complejidad ciclomática |
+| mejora_cobertura_promedio | % promedio de mejora en cobertura de tests |
+| tiempo_promedio_refactoring | Tiempo promedio por refactorización completa |
+
+---
+
 ## 🔄 Proceso Paso a Paso
+
+**Paso 0 [CRÍTICO - OBLIGATORIO]:** 
+Cargar y leer `{{session_state_location}}` y `{project-root}/.cochas/CONFIG_INIT.yaml` antes de continuar.
+
+**Verificar análisis previo:**
+- Si existe `session_state.ultimo_analisis_smells` para el mismo archivo:
+  - Mostrar: "📋 Se encontró análisis previo de [archivo] ([timestamp]). ¿Usar este análisis o ejecutar uno nuevo?"
+- Si no existe: Continuar con análisis automático
 
 ### **Paso 1: Análisis Profundo del Código** 🤖
 
@@ -429,6 +483,38 @@ class UserServiceTest {
 
 ---
 
+## 🔄 Actualización de Session State
+
+### Registro de Eventos
+
+**Al iniciar refactorización:**
+```json
+{
+  "timestamp": "[timestamp_actual]",
+  "rol": "ArchDev Pro",
+  "herramienta": "refactorizar",
+  "tipo": "refactorizacion_iniciada",
+  "detalle": "Archivo: [NombreArchivo].java - Modo: [Automático|Guiado]"
+}
+```
+
+**Al completar refactorización:**
+```json
+{
+  "timestamp": "[timestamp_actual]",
+  "rol": "ArchDev Pro",
+  "herramienta": "refactorizar",
+  "tipo": "refactorizacion_completada",
+  "detalle": "Archivo: [NombreArchivo].java - Smells corregidos: [X] - Reducción complejidad: [Y]%"
+}
+```
+
+**Actualizar metadata:**
+- Incrementar `metadata.total_artefactos_generados` (por cada clase creada)
+- Actualizar `metadata.ultima_actividad`
+
+---
+
 ## ⚠️ Manejo de Errores y Casos Borde
 
 | Situación | Acción |
@@ -549,3 +635,4 @@ public class UserService {
 |---------|-------|---------------------|
 | 1.0 | - | Versión inicial básica (solo análisis manual) |
 | 2.0 | 2025-10-06 | ✅ Integración automática con `analizar_code_smells`<br>✅ Proceso estructurado de 5 pasos<br>✅ Priorización por ROI Score<br>✅ Formato estandarizado siguiendo `herramienta_plantilla.md`<br>✅ Métricas de mejora cuantificables<br>✅ Generación automática de tests post-refactoring |
+| 2.1 | 2026-01-04 | ✅ Integración con placeholders, session_state y flujo completo de smells |

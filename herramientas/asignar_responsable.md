@@ -1,7 +1,7 @@
 #  Herramienta: Asignar Responsable
 
-## Descripci�n
-Analiza una lista de tareas generadas y asigna autom�ticamente el **rol m�s adecuado** y la **herramienta �ptima** para ejecutar cada tarea, bas�ndose en las capacidades y especialidades de cada agente del sistema Cochas.
+## Descripción
+Analiza una lista de tareas generadas y asigna automáticamente el **rol más adecuado** y la **herramienta óptima** para ejecutar cada tarea, basándose en las capacidades y especialidades de cada agente del sistema Cochas.
 
 ---
 
@@ -9,19 +9,19 @@ Debes de seguir todas las instrucciones de activación exactamente como se espec
 
 ---
 
-## Cu�ndo Usar Esta Herramienta
+## Cuándo Usar Esta Herramienta
 
-- Despu�s de completar una tarea que gener� m�ltiples subtareas
+- Después de completar una tarea que generó múltiples subtareas
 - Al recibir una lista de requerimientos que deben distribuirse entre roles
-- Cuando se necesita planificar la ejecuci�n de un proyecto completo
-- Para optimizar la asignaci�n de trabajo entre los agentes disponibles
+- Cuando se necesita planificar la ejecución de un proyecto completo
+- Para optimizar la asignación de trabajo entre los agentes disponibles
 
 ---
 
 ## Entrada Esperada
 
 ### Contexto Requerido:
-1. **Lista de tareas a asignar** (descripci�n, prioridad, dependencias)
+1. **Lista de tareas a asignar** (descripción, prioridad, dependencias)
 2. **Roles disponibles en el sistema** (leer de `/personas/roles-activos.md` la seccion `# Roles Activos del Sistema`)
 3. **Herramientas disponibles por rol** (leer de cada archivo de rol)
 4. **Contexto del proyecto actual** (de `session_state.json`)
@@ -32,10 +32,10 @@ Debes de seguir todas las instrucciones de activación exactamente como se espec
   "tareas_sin_asignar": [
     {
       "id": "TEMP-001",
-      "descripcion": "Implementar autenticaci�n con JWT",
+      "descripcion": "Implementar autenticación con JWT",
       "tipo": "implementacion",
       "complejidad": "media",
-      "keywords": ["jwt", "autenticaci�n", "spring security"],
+      "keywords": ["jwt", "autenticación", "spring security"],
       "estimacion_horas": 8,
       "dependencias": []
     },
@@ -54,7 +54,7 @@ Debes de seguir todas las instrucciones de activación exactamente como se espec
 
 ---
 
-## Proceso de Ejecuci�n
+## Proceso de Ejecución
 
 ### Paso 1: Cargar Matriz de Capacidades
 
@@ -66,15 +66,15 @@ Leer todos los archivos en `/personas/roles-activos.md` y extraer:
     "onad": {
       "nombre": "Arquitecto Onad",
       "comando": "onad",
-      "especialidad": ["arquitectura", "dise�o", "decisiones estrat�gicas"],
+      "especialidad": ["arquitectura", "diseño", "decisiones estratégicas"],
       "keywords": ["microservicios", "patrones", "trade-offs", "adr"],
       "herramientas": ["tomar_contexto", "define_arquitectura", "generar_adr"],
-      "tipo_tareas": ["dise�o", "an�lisis", "decisiones"]
+      "tipo_tareas": ["diseño", "análisis", "decisiones"]
     },
     "archdev": {
       "nombre": "ArchDev Pro",
       "comando": "archdev",
-      "especialidad": ["implementaci�n", "c�digo", "refactorizaci�n"],
+      "especialidad": ["implementación", "código", "refactorización"],
       "keywords": ["spring", "java", "tests", "tdd", "clean code"],
       "herramientas": ["refactorizar", "crear_pruebas", "analizar_code_smells", "solucionar_smells"],
       "tipo_tareas": ["implementacion", "refactoring", "testing"]
@@ -90,7 +90,7 @@ Leer todos los archivos en `/personas/roles-activos.md` y extraer:
     "artesano": {
       "nombre": "Artesano de Commits",
       "comando": "artesano",
-      "especialidad": ["documentaci�n", "commits", "conventional commits"],
+      "especialidad": ["documentación", "commits", "conventional commits"],
       "keywords": ["git", "commit", "changelog", "semver"],
       "herramientas": ["generar_commit"],
       "tipo_tareas": ["documentacion", "versionado"]
@@ -98,7 +98,7 @@ Leer todos los archivos en `/personas/roles-activos.md` y extraer:
     "refinador": {
       "nombre": "Refinador HU",
       "comando": "refinador",
-      "especialidad": ["historias de usuario", "criterios aceptaci�n"],
+      "especialidad": ["historias de usuario", "criterios aceptación"],
       "keywords": ["user story", "gherkin", "bdd", "criterios"],
       "herramientas": ["refinar_hu"],
       "tipo_tareas": ["refinamiento", "especificacion"]
@@ -111,13 +111,13 @@ Leer todos los archivos en `/personas/roles-activos.md` y extraer:
 
 Para cada tarea sin asignar:
 
-1. **Extraer keywords** de la descripci�n
+1. **Extraer keywords** de la descripción
 2. **Calcular score de compatibilidad** con cada rol:
    ```
    Score = (keywords_match * 0.5) + (tipo_tarea_match * 0.3) + (herramientas_disponibles * 0.2)
    ```
 3. **Identificar herramientas aplicables** del rol con mayor score
-4. **Asignar rol + herramienta �ptima**
+4. **Asignar rol + herramienta óptima**
 
 ### Paso 3: Generar Asignaciones
 
@@ -131,12 +131,12 @@ Para cada tarea sin asignar:
       "rol_nombre": "ArchDev Pro",
       "herramienta_sugerida": "crear_pruebas",
       "score_compatibilidad": 0.85,
-      "justificacion": "Implementaci�n de autenticaci�n requiere c�digo robusto con tests. ArchDev Pro tiene experiencia en Spring Security y TDD.",
+      "justificacion": "Implementación de autenticación requiere código robusto con tests. ArchDev Pro tiene experiencia en Spring Security y TDD.",
       "alternativas": [
         {
           "rol": "onad",
           "score": 0.45,
-          "razon": "Podr�a dise�ar la arquitectura, pero no implementa c�digo"
+          "razon": "Podría diseñar la arquitectura, pero no implementa código"
         }
       ]
     },
@@ -172,7 +172,7 @@ Transformar las tareas temporales en tareas asignadas:
     "tareas": [
       {
         "id": "ARCHDEV-001",
-        "descripcion": "Implementar autenticaci�n con JWT",
+        "descripcion": "Implementar autenticación con JWT",
         "estado": "pendiente",
         "prioridad": "alta",
         "rol_asignado": "archdev",
@@ -183,7 +183,7 @@ Transformar las tareas temporales en tareas asignadas:
         "criterios_aceptacion": [
           "Endpoints: POST /register, POST /login, GET /validate-token",
           "JWT con refresh token",
-          "Tests de integraci�n completos"
+          "Tests de integración completos"
         ],
         "asignacion_automatica": true,
         "score_compatibilidad": 0.85
@@ -200,24 +200,24 @@ Transformar las tareas temporales en tareas asignadas:
 ### Formato Visual para el Usuario:
 
 ```markdown
-##  Asignaci�n de Responsables
+##  Asignación de Responsables
 
-Analic� **2 tareas** y realic� las siguientes asignaciones:
+Analicé **2 tareas** y realicé las siguientes asignaciones:
 
 ---
 
-### 1. Implementar autenticaci�n con JWT
+### 1. Implementar autenticación con JWT
 **ID Asignado:** ARCHDEV-001  
 **Rol:** ArchDev Pro (`archdev`)  
 **Herramienta Sugerida:** `crear_pruebas`  
 **Compatibilidad:** 85%  
-**Estimaci�n:** 8h  
+**Estimación:** 8h  
 
-**Justificaci�n:**
-Implementaci�n de autenticaci�n requiere c�digo robusto con tests. ArchDev Pro tiene experiencia en Spring Security y TDD.
+**Justificación:**
+Implementación de autenticación requiere código robusto con tests. ArchDev Pro tiene experiencia en Spring Security y TDD.
 
 **Alternativas Consideradas:**
-- Arquitecto Onad (45%) - Podr�a dise�ar la arquitectura, pero no implementa c�digo
+- Arquitecto Onad (45%) - Podría diseñar la arquitectura, pero no implementa código
 
 ---
 
@@ -226,14 +226,14 @@ Implementaci�n de autenticaci�n requiere c�digo robusto con tests. ArchDev
 **Rol:** Arquitecto DevOps (`devops`)  
 **Herramienta Sugerida:** `diagnosticar_devops`  
 **Compatibilidad:** 95%  
-**Estimaci�n:** 6h  
+**Estimación:** 6h  
 
-**Justificaci�n:**
+**Justificación:**
 Pipeline de CI/CD es responsabilidad directa de DevOps. Tiene experiencia en GitHub Actions.
 
 ---
 
-##  Resumen de Distribuci�n
+##  Resumen de Distribución
 
 | Rol | Tareas Asignadas | Horas Estimadas |
 |-----|------------------|-----------------|
@@ -244,10 +244,10 @@ Pipeline de CI/CD es responsabilidad directa de DevOps. Tiene experiencia en Git
 
 ---
 
-##  Pr�ximos Pasos
+##  Próximos Pasos
 
-1. Ejecutar `/cochas switch archdev` para iniciar ARCHDEV-001
-2. Al completar, ejecutar `/cochas switch devops` para DEVOPS-001
+1. Ejecutar `@switch archdev` para iniciar ARCHDEV-001
+2. Al completar, ejecutar `@switch devops` para DEVOPS-001
 
 Las asignaciones se han guardado en `session_state.json` y `sesion_{fecha}_resumen.md`.
 ```
@@ -256,26 +256,26 @@ Las asignaciones se han guardado en `session_state.json` y `sesion_{fecha}_resum
 
 ## Validaciones
 
-### Validaci�n 1: Roles Disponibles
+### Validación 1: Roles Disponibles
 
 - Verificar que todos los archivos en `/personas/` son accesibles
-- Si alg�n rol referenciado no existe  advertir y excluir de matriz
+- Si algún rol referenciado no existe  advertir y excluir de matriz
 
-### Validaci�n 2: Herramientas Disponibles
+### Validación 2: Herramientas Disponibles
 
 - Verificar que las herramientas sugeridas existen en `/herramientas/`
-- Si no existe  sugerir alternativa o marcar como "sin herramienta espec�fica"
+- Si no existe  sugerir alternativa o marcar como "sin herramienta específica"
 
-### Validaci�n 3: Dependencias Circulares
+### Validación 3: Dependencias Circulares
 
 - Detectar si hay dependencias circulares en las tareas asignadas
-- Si se detectan  advertir y sugerir reorganizaci�n
+- Si se detectan  advertir y sugerir reorganización
 
-### Validaci�n 4: Carga de Trabajo
+### Validación 4: Carga de Trabajo
 
 - Calcular carga total por rol (horas estimadas)
 - Si un rol tiene > 40h asignadas  advertir sobre posible sobrecarga
-- Sugerir redistribuci�n si es posible
+- Sugerir redistribución si es posible
 
 ---
 
@@ -283,42 +283,42 @@ Las asignaciones se han guardado en `session_state.json` y `sesion_{fecha}_resum
 
 ### Caso 1: Tarea Sin Rol Compatible
 
-Si ning�n rol tiene score > 0.3:
+Si ningún rol tiene score > 0.3:
 
 ```markdown
  **Tarea sin rol compatible detectada:**
 
 **TEMP-003:** Crear modelo de ML para recomendaciones
 
-**Problema:** Ning�n rol actual tiene especialidad en Machine Learning.
+**Problema:** Ningún rol actual tiene especialidad en Machine Learning.
 
 **Sugerencia:** 
 - Crear nuevo rol especializado
 - Delegar a servicio externo
-- Redise�ar la tarea para usar capacidades actuales
+- Rediseñar la tarea para usar capacidades actuales
 ```
 
-### Caso 2: M�ltiples Roles con Score Similar
+### Caso 2: Múltiples Roles con Score Similar
 
 Si 2+ roles tienen score  0.7:
 
 ```markdown
-? **Asignaci�n Ambigua Detectada:**
+? **Asignación Ambigua Detectada:**
 
-**TEMP-004:** Refinar criterios de aceptaci�n
+**TEMP-004:** Refinar criterios de aceptación
 
 **Candidatos:**
 1. Refinador HU (75%) - Especialista en historias de usuario
-2. Arquitecto Onad (72%) - Puede definir criterios t�cnicos
+2. Arquitecto Onad (72%) - Puede definir criterios técnicos
 
-**Decisi�n:** Asignado a Refinador HU por especializaci�n directa.
+**Decisión:** Asignado a Refinador HU por especialización directa.
 
-**Recomendaci�n:** Considerar colaboraci�n entre ambos roles.
+**Recomendación:** Considerar colaboración entre ambos roles.
 ```
 
 ### Caso 3: Tarea Multidisciplinaria
 
-Si la tarea requiere m�ltiples especialidades:
+Si la tarea requiere múltiples especialidades:
 
 ```markdown
  **Tarea Multidisciplinaria Detectada:**
@@ -326,13 +326,13 @@ Si la tarea requiere m�ltiples especialidades:
 **TEMP-005:** Implementar sistema de pagos completo
 
 **Requiere:**
-- Arquitecto Onad: Dise�o de arquitectura segura
-- ArchDev Pro: Implementaci�n con tests
-- Arquitecto DevOps: Configuraci�n de entorno PCI-DSS
+- Arquitecto Onad: Diseño de arquitectura segura
+- ArchDev Pro: Implementación con tests
+- Arquitecto DevOps: Configuración de entorno PCI-DSS
 
 **Estrategia:** Dividir en 3 subtareas:
-- ONAD-003: Dise�ar arquitectura de pagos (4h)
-- ARCHDEV-002: Implementar integraci�n con Stripe (10h)
+- ONAD-003: Diseñar arquitectura de pagos (4h)
+- ARCHDEV-002: Implementar integración con Stripe (10h)
 - DEVOPS-002: Configurar entorno seguro (6h)
 ```
 
@@ -342,9 +342,9 @@ Si la tarea requiere m�ltiples especialidades:
 
 ### Usuario:
 ```
-He terminado el dise�o de arquitectura. Gener� estas tareas para el proyecto:
+He terminado el diseño de arquitectura. Generé estas tareas para el proyecto:
 1. Implementar API REST de productos
-2. Crear tests de integraci�n
+2. Crear tests de integración
 3. Configurar base de datos PostgreSQL
 4. Configurar Redis para cache
 5. Crear pipeline de CI/CD
@@ -360,13 +360,13 @@ He terminado el dise�o de arquitectura. Gener� estas tareas para el proyecto
 
 ### Salida:
 ```markdown
-##  Asignaci�n de Responsables
+##  Asignación de Responsables
 
-Analic� **6 tareas** y realic� las siguientes asignaciones:
+Analicé **6 tareas** y realicé las siguientes asignaciones:
 
 [Tabla con todas las asignaciones]
 
-##  Resumen de Distribuci�n
+##  Resumen de Distribución
 
 | Rol | Tareas | Horas |
 |-----|--------|-------|
@@ -376,30 +376,30 @@ Analic� **6 tareas** y realic� las siguientes asignaciones:
 
 Las asignaciones se han guardado en `session_state.json`.
 
-�Deseas iniciar con la primera tarea (ARCHDEV-001)?
+¿Deseas iniciar con la primera tarea (ARCHDEV-001)?
 ```
 
 ---
 
-## Integraci�n con Otros Componentes
+## Integración con Otros Componentes
 
 ### Con `session_state.json`:
 - Lee tareas temporales de `tareas_sin_asignar`
 - Escribe asignaciones en `tablero_tareas`
-- Actualiza `metadata` con distribuci�n de carga
+- Actualiza `metadata` con distribución de carga
 
 ### Con `sesion_{fecha}_resumen.md`:
-- Genera secci�n "Asignaciones Autom�ticas"
-- Documenta justificaciones de asignaci�n
-- Incluye m�tricas de distribuci�n
+- Genera sección "Asignaciones Automáticas"
+- Documenta justificaciones de asignación
+- Incluye métricas de distribución
 
-### Con Comando `/cochas switch`:
+### Con Comando `@switch`:
 - Al cambiar de rol, muestra tareas asignadas a ese rol
-- Sugiere qu� tarea ejecutar primero seg�n prioridad y dependencias
+- Sugiere qué tarea ejecutar primero según prioridad y dependencias
 
 ---
 
-## Notas de Implementaci�n
+## Notas de Implementación
 
 **Algoritmo de Scoring:**
 
@@ -425,18 +425,18 @@ function calcularScore(tarea, rol) {
 }
 ```
 
-**Priorizaci�n de Asignaciones:**
+**Priorización de Asignaciones:**
 
 1. Tareas sin dependencias primero
 2. Tareas con alta compatibilidad (score > 0.8)
 3. Tareas de prioridad alta
-4. Distribuci�n equitativa de carga
+4. Distribución equitativa de carga
 
 ---
 
-## M�tricas de �xito
+## Métricas de Éxito
 
 -  Score de compatibilidad > 0.7 en todas las asignaciones
--  Carga balanceada entre roles (desviaci�n est�ndar < 20%)
+-  Carga balanceada entre roles (desviación estándar < 20%)
 -  Sin dependencias circulares
 -  100% de tareas asignadas (o justificadas si no se asignan)

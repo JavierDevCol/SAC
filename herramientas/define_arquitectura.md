@@ -1,15 +1,16 @@
 # 🏗️ Herramienta: Definición de Arquitectura
 
-> **Versión:** 2.0  
-> **Fecha de Actualización:** 7 de octubre de 2025  
-> **Autor:** Sistema de Herramientas ArchDev Pro  
-> **Estado:** Activa
+> **Versión:** 2.1  
+> **Fecha de Actualización:** 4 de enero de 2026  
+> **Estado:** Activa - Reestructurada según plantilla estándar
 
 ---
 
 ## 📋 Identificación
 
-**Herramienta:** `define_arquitectura`
+**Herramienta:** `define_arquitectura`  
+**Comando:** `definir-arquitectura [nombre-proyecto]`  
+**Rol Propietario:** ArchDev Pro
 
 ---
 
@@ -42,6 +43,24 @@ Debes de seguir todas las instrucciones de activación exactamente como se espec
 ---
 
 ## 📥 Entradas Requeridas (Contexto)
+
+**Ejemplo de uso:**
+```
+definir-arquitectura mi-proyecto-ecommerce
+definir-arquitectura --modo=rapido --max_opciones=2
+definir-arquitectura --analizar_codigo_existente --considerar_devops
+```
+
+**Archivos requeridos:**
+- `{{session_state_location}}` - Estado de sesión
+- `{{contexto_proyecto_location}}` - Contexto del proyecto (opcional, se genera si no existe)
+
+**Archivos que puede leer (si existen):**
+- `{{adr_location}}/` - ADRs existentes para evitar conflictos
+- Código fuente del proyecto (si `analizar_codigo_existente=true`)
+
+**Archivos que genera:**
+- `{{adr_location}}/[NNN]-arquitectura-[nombre].md` - ADR de la decisión (vía `generar_adr`)
 
 **Principal:**
 - Resumen de los requisitos funcionales clave (qué debe lograr el sistema inicialmente)
@@ -82,6 +101,9 @@ Debes de seguir todas las instrucciones de activación exactamente como se espec
 ---
 
 ## 🔄 Proceso Paso a Paso
+
+**Paso 0 [CRÍTICO - OBLIGATORIO]:** 
+Cargar y leer `{{session_state_location}}` y `{project-root}/.cochas/CONFIG_INIT.yaml` antes de continuar.
 
 ### **Paso 1: Análisis Automático de Contexto** 🤖 (Si aplica)
 
@@ -278,6 +300,81 @@ Proponer plan de implementación de los primeros 3 meses (sprints o fases).
 
 ---
 
+## 🔐 Restricciones
+
+1. **No implementa código** - Solo genera recomendaciones y documentación arquitectónica
+2. **Requiere información mínima del usuario** - Requisitos funcionales y tipo de proyecto obligatorios
+3. **No garantiza resultados** - La decisión final es responsabilidad del arquitecto/equipo
+4. **Limitado a patrones mainstream** - No cubre arquitecturas altamente especializadas
+5. **Estimaciones aproximadas** - Costos y tiempos son estimaciones basadas en benchmarks públicos
+6. **Requiere confirmación** - No genera ADR automáticamente sin aprobación del usuario
+
+---
+
+## 📊 Métricas Sugeridas
+
+Trackear en `{{session_state_location}}`:
+
+| Métrica | Descripción |
+|---------|-------------|
+| arquitecturas_definidas | Total de análisis arquitectónicos completados |
+| adrs_generados | Total de ADRs generados vía esta herramienta |
+| opciones_comparadas_promedio | Promedio de opciones evaluadas por análisis |
+| tiempo_promedio_analisis | Tiempo promedio para completar análisis |
+| patrones_mas_recomendados | Distribución de patrones arquitectónicos recomendados |
+| tasa_aprobacion | % de recomendaciones aprobadas por el usuario |
+
+---
+
+## 🔄 Actualización de Session State
+
+### Registro de Eventos
+
+**Al completar análisis arquitectónico:**
+
+```json
+{
+  "timestamp": "[timestamp_actual]",
+  "rol": "ArchDev Pro",
+  "herramienta": "define_arquitectura",
+  "tipo": "arquitectura_definida",
+  "detalle": "Proyecto: [nombre] - Patrón recomendado: [patron] - Opciones evaluadas: [X]"
+}
+```
+
+**Si se genera ADR:**
+
+```json
+{
+  "timestamp": "[timestamp_actual]",
+  "rol": "ArchDev Pro",
+  "herramienta": "define_arquitectura",
+  "tipo": "adr_delegado",
+  "detalle": "ADR generado vía generar_adr: {{adr_location}}/[NNN]-arquitectura-[nombre].md"
+}
+```
+
+**Actualizar registro de arquitectura en session_state:**
+
+```json
+{
+  "ultima_definicion_arquitectura": {
+    "timestamp": "[timestamp]",
+    "proyecto": "[nombre_proyecto]",
+    "patron_seleccionado": "[patron]",
+    "opciones_evaluadas": ["opcion1", "opcion2", "opcion3"],
+    "adr_generado": "{{adr_location}}/[NNN]-arquitectura-[nombre].md",
+    "aprobado_por_usuario": true
+  }
+}
+```
+
+**Actualizar metadata:**
+- Incrementar `metadata.total_artefactos_generados` (si se genera ADR)
+- Actualizar `metadata.ultima_actividad`
+
+---
+
 ## ⚠️ Manejo de Errores y Casos Borde
 
 | Situación | Acción |
@@ -369,3 +466,4 @@ Este ejemplo muestra:
 |---------|-------|---------------------|
 | 1.0 | - | Versión inicial básica |
 | 2.0 | 2025-10-07 | ✅ Reestructuración siguiendo `herramienta_plantilla.md`<br>✅ Integración con herramientas complementarias<br>✅ Delegación de generación de ADR a `generar_adr`<br>✅ Referencias a ejemplos en carpeta `ejemplos/`<br>✅ Matriz de trade-offs mejorada |
+| 2.1 | 2026-01-04 | ✅ Actualización de encabezado y detalles de identificación |

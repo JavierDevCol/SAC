@@ -1,7 +1,7 @@
 # 🤖 Sistema de Orquestación de Agentes IA (Cochas)
 
-> **Versión:** 2.0  
-> **Última actualización:** 16 de octubre de 2025
+> **Versión:** 3.0  
+> **Última actualización:** 5 de enero de 2026
 
 ---
 
@@ -24,7 +24,7 @@
 
 | Característica | Sistema Tradicional | Cochas |
 |----------------|---------------------|---------|
-| **Gestión de Roles** | Manual, reiniciando sesión | Cambio dinámico con `/cochas switch` |
+| **Gestión de Roles** | Manual, reiniciando sesión | Cambio dinámico con `@rol` |
 | **Estado de Sesión** | Se pierde entre conversaciones | Persistente en `session_state.json` |
 | **Herramientas** | Cargadas todas al inicio | Lazy loading (carga bajo demanda) |
 | **Coordinación** | Usuario decide todo | Orquestador sugiere roles proactivamente |
@@ -35,7 +35,7 @@
 
 ## 🧩 Conceptos Clave
 
-### 1. **El Orquestador** (`/cochas`)
+### 1. **El Orquestador** (`@`)
 El núcleo del sistema. Gestiona:
 - ✅ Activación y cambio de roles
 - ✅ Estado persistente de la sesión
@@ -45,11 +45,11 @@ El núcleo del sistema. Gestiona:
 
 ### 2. **Roles/Personas** (`/personas/`)
 Agentes especializados con personalidades únicas:
-- **ONAD** (`Arquitecto Onad`) - Arquitectura estratégica y decisiones de alto nivel
-- **ARCHDEV** (`ArchDev Pro`) - Implementación de código y refactoring
-- **DEVOPS** (`Arquitecto DevOps`) - Infraestructura, pipelines y deployment
-- **REFINADOR** (`Refinador HU`) - Refinamiento de historias de usuario
-- **ARTESANO** (`Artesano de Commits`) - Creación de mensajes de commit profesionales
+- **ONAD** (`@onad`) - Arquitectura estratégica y decisiones de alto nivel
+- **ARCHDEV** (`@archdev`) - Implementación de código y refactoring
+- **DEVOPS** (`@devops`) - Infraestructura, pipelines y deployment
+- **REFINADOR** (`@refinador`) - Refinamiento de historias de usuario
+- **ARTESANO** (`@artesano`) - Creación de mensajes de commit profesionales
 
 ### 3. **Herramientas** (`/herramientas/`)
 Funcionalidades ejecutables que los roles pueden invocar:
@@ -70,25 +70,21 @@ Funcionalidades ejecutables que los roles pueden invocar:
 
 ## 🚀 Inicio Rápido
 
-### Paso 1: Iniciar el Orquestador
+### Paso 1: Ver Ayuda del Sistema
 ```
-/cochas help
+@help
 ```
 Esto te mostrará todos los comandos disponibles y verificará el estado del sistema.
 
 ### Paso 2: Ver Roles Disponibles
 ```
-/cochas list
+@list
 ```
 Muestra la lista completa de roles con sus comandos de activación.
 
 ### Paso 3: Activar tu Primer Rol
 ```
-/cochas +ONAD
-```
-o
-```
-/cochas switch ONAD
+@onad
 ```
 
 ### Paso 4: Analizar el Proyecto (Recomendado)
@@ -112,28 +108,26 @@ Esto creará un análisis completo del proyecto que persistirá entre sesiones.
 
 | Comando | Descripción | Ejemplo |
 |---------|-------------|---------|
-| `/cochas list` | Lista todos los roles disponibles | - |
-| `/cochas +<ROL>` | Activa un rol | `/cochas +ONAD` |
-| `/cochas switch <ROL>` | Activa un rol (alternativa) | `/cochas switch ARCHDEV` |
-| `/cochas status` | Muestra el estado actual de la sesión | - |
-| `/cochas assign <tarea>` | Sugiere el mejor rol para una tarea | `/cochas assign "Necesito optimizar base de datos"` |
-| `/cochas history` | Muestra historial completo de la sesión | - |
-| `/cochas reload` | Recarga el rol activo | - |
-| `/cochas reset` | Reinicia la sesión (con confirmación) | - |
-| `/cochas export` | Exporta el estado de la sesión | - |
-| `/cochas help` | Muestra ayuda de comandos | - |
+| `@list` | Lista todos los roles disponibles | - |
+| `@<rol>` | Activa un rol | `@onad`, `@archdev` |
+| `@status` | Muestra el estado actual de la sesión | - |
+| `@assign <tarea>` | Sugiere el mejor rol para una tarea | `@assign "Necesito optimizar base de datos"` |
+| `@history` | Muestra historial completo de la sesión | - |
+| `@reload` | Recarga el rol activo | - |
+| `@reset` | Reinicia la sesión (con confirmación) | - |
+| `@export` | Exporta el estado de la sesión | - |
+| `@help` | Muestra ayuda de comandos | - |
 
 ### Comandos de Herramientas
 
 | Comando | Descripción | Requiere Rol Activo |
 |---------|-------------|---------------------|
 | `> <herramienta>` | Ejecuta una herramienta | ✅ Sí |
-| `-> <herramienta>` | Ejecuta una herramienta (alternativa) | ✅ Sí |
 
 **Ejemplo:**
 ```
 > tomar_contexto
--> refactorizar
+> refactorizar
 ```
 
 ---
@@ -153,7 +147,7 @@ Para profundizar en aspectos específicos del sistema, consulta estas guías:
 
 - **[`core-cochas.md`](core-cochas.md)** - Arquitectura completa del orquestador
 - **[`README_PLANTILLA.md`](README_PLANTILLA.md)** - Sistema completo de plantillas para roles
-- **[`help/estructura_session_state.md`](help/estructura_session_state.md)** - Estructura del archivo de estado
+- **[`plantillas/estructura_session_state.md`](plantillas/estructura_session_state.md)** - Estructura del archivo de estado
 
 ---
 
@@ -191,8 +185,10 @@ ia_prompts/
 │   ├── generar_adr.md                 ← Documentación de decisiones
 │   └── asignar_responsable.md         ← Asignación inteligente de roles
 │
-├── help/                              ← Ayuda y referencias
-│   └── estructura_session_state.md    ← Estructura del estado de sesión
+├── plantillas/                        ← Plantillas del sistema
+│   ├── backlog_desarrollo_plantilla.md    ← Plantilla de backlog
+│   ├── contexto_proyecto_plantilla.md     ← Plantilla de contexto
+│   └── estructura_session_state.md        ← Estructura del estado de sesión
 │
 ├── ejemplos/                          ← Ejemplos de uso
 │   └── herramientas/                  ← Ejemplos de herramientas en acción
@@ -219,7 +215,7 @@ Carga el archivo `core-cochas.md` en tu herramienta de IA (Claude, GPT-4, etc.)
 ### Paso 2: Ver Roles Disponibles
 
 ```bash
-/cochas list
+@list
 ```
 
 Verás una lista de todos los roles disponibles con sus comandos de activación.
@@ -227,13 +223,7 @@ Verás una lista de todos los roles disponibles con sus comandos de activación.
 ### Paso 3: Activar un Rol
 
 ```bash
-/cochas +ONAD
-```
-
-O alternativamente:
-
-```bash
-/cochas switch ONAD
+@onad
 ```
 
 ### Paso 4: Usar Herramientas
@@ -247,13 +237,13 @@ Una vez activado un rol, puedes ejecutar sus herramientas:
 O alternativamente:
 
 ```bash
--> define_arquitectura
+> define_arquitectura
 ```
 
 ### Paso 5: Ver el Estado
 
 ```bash
-/cochas status
+@status
 ```
 
 Te mostrará:
@@ -270,7 +260,7 @@ Te mostrará:
 
 ```bash
 # 1. Activar el arquitecto estratégico
-/cochas +ONAD
+@onad
 
 # 2. Analizar el proyecto (automático al saludar a ONAD)
 # Se crea automáticamente cochas/artifacts/contexto_proyecto.md
@@ -279,7 +269,7 @@ Te mostrará:
 > define_arquitectura
 
 # 4. Cambiar al desarrollador
-/cochas +ARCHDEV
+@archdev
 
 # 5. Implementar código
 > refactorizar
@@ -292,7 +282,7 @@ Te mostrará:
 
 ```bash
 # 1. Activar el desarrollador pragmático
-/cochas +ARCHDEV
+@archdev
 
 # 2. Analizar problemas de código
 > analizar_code_smells
@@ -308,17 +298,17 @@ Te mostrará:
 
 ```bash
 # 1. Activar el refinador de historias
-/cochas +REFINADOR
+@refinador
 
 # 2. Refinar historias de usuario
 > refinar_hu
 
 # 3. Cambiar al arquitecto para validación técnica
-/cochas +ONAD
+@onad
 # Revisar viabilidad arquitectónica de las historias
 
 # 4. Cambiar al desarrollador para estimación
-/cochas +ARCHDEV
+@archdev
 # Estimar esfuerzo de implementación
 ```
 
@@ -337,17 +327,17 @@ El sistema mantiene el estado en:
 
 ```bash
 # Ver estado actual
-/cochas status
+@status
 
 # Ver historial completo
-/cochas history
+@history
 
 # Exportar estado (backup)
-/cochas export
+@export
 # Crea: cochas/session/exports/session_state_export_[fecha].json
 
 # Reiniciar sesión (confirmación requerida)
-/cochas reset
+@reset
 ```
 
 ---
@@ -372,11 +362,17 @@ Consulta la **[Guía de Creación de Roles](guia_creacion_roles.md)** para apren
 - **Comandos:** Consulta [`guia_comandos.md`](guia_comandos.md)
 - **Roles:** Consulta [`guia_roles_activos.md`](guia_roles_activos.md)
 - **Arquitectura:** Consulta [`core-cochas.md`](core-cochas.md)
-- **Problemas:** Usa `/cochas status` para diagnosticar el estado
+- **Problemas:** Usa `@status` para diagnosticar el estado
 
 ---
 
 ## 📝 Notas de Versión
+
+### v3.0 (Enero 2026)
+- ✅ Nueva sintaxis simplificada: `@rol` en lugar de `/cochas +ROL`
+- ✅ Comandos más intuitivos: `@status`, `@list`, `@help`
+- ✅ Ejecución de herramientas con `> herramienta`
+- ✅ Documentación actualizada
 
 ### v2.0 (Octubre 2025)
 - ✅ Sistema de estado persistente con `session_state.json`
@@ -394,5 +390,4 @@ Consulta la **[Guía de Creación de Roles](guia_creacion_roles.md)** para apren
 
 **¡Listo para empezar!** 🚀
 
-Usa `/cochas help` para ver todos los comandos disponibles y comenzar tu primera sesión.
-````
+Usa `@help` para ver todos los comandos disponibles y comenzar tu primera sesión.

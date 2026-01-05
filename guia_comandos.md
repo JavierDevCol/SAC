@@ -1,626 +1,296 @@
 # 📋 Guía Completa de Comandos del Sistema
 
-> **Sistema:** Cochas - Orquestación de Agentes IA  
-> **Versión:** 2.0  
-> **Última Actualización:** 16 de octubre de 2025
+> **Sistema:** COCHAS - Orquestación de Agentes IA  
+> **Versión:** 3.0  
+> **Última Actualización:** 5 de enero de 2026
 
 ---
 
 ## 📖 Índice
 
-- [Comandos del Orquestador](#comandos-del-orquestador)
-- [Comandos de Herramientas](#comandos-de-herramientas)
+- [Sistema de Prefijos](#sistema-de-prefijos)
+- [Comandos del Orquestador (*)](#comandos-del-orquestador-)
+- [Activación de Roles (+)](#activación-de-roles-)
+- [Ejecución de Herramientas (>)](#ejecución-de-herramientas-)
 - [Casos de Uso Comunes](#casos-de-uso-comunes)
 - [Gestión de Errores](#gestión-de-errores)
 
 ---
 
-## Comandos del Orquestador
+## Sistema de Prefijos
 
-Todos los comandos del orquestador comienzan con `/cochas`.
+El sistema COCHAS usa **3 prefijos** para diferentes tipos de acciones:
+
+| Prefijo | Propósito | Requiere Rol Activo | Ejemplos |
+|---------|-----------|---------------------|----------|
+| `*` | **Comandos del Orquestador** | ❌ No | `*roles`, `*status`, `*HU`, `*help` |
+| `+` | **Activar un Rol** | ❌ No | `+ONAD`, `+ARCHDEV`, `+REFINADOR` |
+| `>` | **Ejecutar una Herramienta** | ✅ Sí | `>refinar_hu`, `>generar_commit` |
+
+### Regla Principal
+
+```
+* = Consultar/Utilidades del sistema
++ = Activar rol
+> = Ejecutar herramienta (requiere rol activo)
+```
 
 ---
 
-### `/cochas list`
+## Comandos del Orquestador (`*`)
+
+Los comandos con `*` son utilidades del orquestador que no requieren rol activo.
+
+---
+
+### `*roles`
 
 **Descripción:** Lista todos los roles disponibles en el sistema.
 
 **Formato:**
 ```
-/cochas list
+*roles
 ```
 
 **Salida Esperada:**
-```markdown
-📋 **Roles Disponibles en el Sistema**
+```
+📋 Roles Disponibles en COCHAS:
 
-| Comando | Nombre del Rol | Área de Expertise |
-|---------|----------------|-------------------|
-| ONAD | Arquitecto Onad | Arquitectura estratégica y decisiones de alto nivel |
-| ARCHDEV | ArchDev Pro | Implementación de código y refactoring |
-| DEVOPS | Arquitecto DevOps | Infraestructura, pipelines y deployment |
-| REFINADOR | Refinador HU | Refinamiento de historias de usuario |
-| ARTESANO | Artesano de Commits | Creación de mensajes de commit profesionales |
+| # | Rol               | Comando     | Estado      |
+|---|-------------------|-------------|-------------|
+| 1 | Arquitecto ONAD   | +ONAD       | ⚪ Inactivo |
+| 2 | ArchDev Pro       | +ARCHDEV    | 🟢 Activo   |
+| 3 | Artesano Commits  | +ARTESANO   | ⚪ Inactivo |
+| 4 | Arquitecto DevOps | +DEVOPS     | ⚪ Inactivo |
+| 5 | Refinador HU      | +REFINADOR  | ⚪ Inactivo |
 
-💡 **Uso:** `/cochas +<COMANDO>` o `/cochas switch <COMANDO>`
-
-**Ejemplo:** `/cochas +ONAD`
+💡 Usa +COMANDO para activar un rol.
 ```
 
 **Cuándo Usarlo:**
 - Al iniciar una nueva sesión
 - Cuando no recuerdas qué roles están disponibles
-- Para verificar el comando exacto de activación de un rol
+- Para verificar el comando exacto de activación
 
 ---
 
-### `/cochas +<ROL>` o `/cochas switch <ROL>`
+### `*status`
 
-**Descripción:** Activa un rol específico en la sesión.
+**Descripción:** Muestra el estado actual de la sesión.
 
 **Formato:**
 ```
-/cochas +ONAD
-/cochas switch ARCHDEV
-```
-
-**Ambos formatos son equivalentes:**
-- `/cochas +ONAD` = `/cochas switch ONAD`
-- `/cochas +ARCHDEV` = `/cochas switch ARCHDEV`
-
-**Proceso Interno:**
-1. Lee `personas/roles-activos.md`
-2. Busca el comando en la columna **COMANDO**
-3. Obtiene la ruta del archivo del rol
-4. Carga el rol desde esa ruta
-5. Actualiza `artefactos/session_state.json`
-6. Presenta el saludo del rol activado
-
-**Salida Esperada:**
-```markdown
-🔄 **Cambio de Rol Exitoso**
-
-Rol anterior: Ninguno
-Rol nuevo: Arquitecto Onad (ONAD)
-
----
-
-👋 ¡Hola! Soy el **Arquitecto Onad**, especialista en arquitectura de software...
-
-🛠️ **Herramientas Disponibles:**
-- tomar_contexto
-- define_arquitectura
-- generar_adr
-
-💡 **Tip:** Usa `> tomar_contexto` para analizar el proyecto.
-
----
-**[ESTADO_SESION]**
-🎯 **Rol Activo:** `Arquitecto Onad` (ONAD)
-📊 **Contexto Proyecto:** `NO_INICIALIZADO`
-🕒 **Timestamp:** `2025-10-16T10:30:00`
-```
-
-**Cuándo Usarlo:**
-- Al comenzar una tarea que requiere expertise específica
-- Para cambiar de contexto de trabajo
-- Cuando el orquestador te recomienda un rol
-
-**Errores Comunes:**
-
-❌ **Comando no encontrado:**
-```
-Usuario: /cochas +DEVELOPER
-Sistema: ❌ El rol 'DEVELOPER' no existe en el sistema.
-         💡 Usa `/cochas list` para ver roles disponibles.
-```
-
----
-
-### `/cochas status`
-
-**Descripción:** Muestra el estado completo de la sesión actual.
-
-**Formato:**
-```
-/cochas status
+*status
 ```
 
 **Salida Esperada:**
-```markdown
-📊 **Estado de la Sesión**
+```
+📊 Estado de Sesión COCHAS
 
-🎯 **Rol Activo:**
-- Nombre: Arquitecto Onad
-- Comando: ONAD
-- Ruta: personas/arquitecto_onad.md
+🎭 Rol Activo: ArchDev Pro (+ARCHDEV)
+📂 Archivo: personas/archdev_pro.md
+🛠️ Herramientas disponibles: >refactorizar, >crear_pruebas, >analizar_code_smells
+📅 Última actividad: 2026-01-05 10:30
 
-📁 **Contexto del Proyecto:**
-- Estado: INICIALIZADO
-- Archivo: artefactos/contexto_proyecto.md
-- Última actualización: 2025-10-16T09:15:00
-
-📚 **Herramientas Usadas en esta Sesión:**
-1. tomar_contexto (usado 1 vez)
-2. define_arquitectura (usado 1 vez)
-
-🔄 **Historial de Roles:**
-1. Arquitecto Onad (ONAD) - Activo desde 2025-10-16T10:30:00
-   - Tareas completadas: 2
-   - Herramientas usadas: tomar_contexto, define_arquitectura
-
-📈 **Estadísticas:**
-- Total cambios de rol: 1
-- Total tareas completadas: 2
-- Sesión iniciada: 2025-10-16T10:00:00
-- Última actividad: 2025-10-16T10:45:00
-
-📋 **Tablero de Tareas:**
-- Pendientes: 2
-- Refinadas: 0
-- Aprobadas: 0
-- Completadas: 0
+📁 Proyecto:
+- Contexto: INICIALIZADO
+- HUs activas: 3
+- Tareas pendientes: 5
 ```
 
 **Cuándo Usarlo:**
 - Para verificar qué rol está activo
 - Para revisar el progreso de la sesión
-- Para diagnosticar problemas
 - Al retomar una sesión anterior
 
 ---
 
-### `/cochas assign <tarea>`
+### `*HU`
 
-**Descripción:** Sugiere el rol más adecuado para una tarea específica.
-
-**Formato:**
-```
-/cochas assign "descripción de la tarea"
-```
-
-**Ejemplos:**
-
-**Ejemplo 1: Optimización de base de datos**
-```
-Usuario: /cochas assign "Necesito optimizar las consultas de la base de datos"
-
-Sistema:
-🎯 **Análisis de Tarea**
-
-**Tarea:** Optimizar consultas de base de datos
-
-**Rol Recomendado:** 🥇 Arquitecto Onad (ONAD)
-
-**Justificación:**
-- Requiere decisiones arquitectónicas sobre índices y queries
-- Puede impactar el diseño general del sistema
-- Necesita evaluar trade-offs de performance vs complejidad
-
-**Herramienta Sugerida:** `define_arquitectura`
-- Para documentar decisiones de optimización
-- Generar ADR si se cambia estrategia de persistencia
-
-**Roles Alternativos:**
-- 🥈 ArchDev Pro (ARCHDEV) - Si solo se necesita refactorizar queries existentes
-- 🥉 Arquitecto DevOps (DEVOPS) - Si el problema es de infraestructura (cache, réplicas)
-
-💡 **¿Deseas activar ONAD ahora?** Usa: `/cochas +ONAD`
-```
-
-**Ejemplo 2: Crear tests unitarios**
-```
-Usuario: /cochas assign "Crear tests unitarios para el módulo de autenticación"
-
-Sistema:
-🎯 **Análisis de Tarea**
-
-**Tarea:** Crear tests unitarios para módulo de autenticación
-
-**Rol Recomendado:** 🥇 ArchDev Pro (ARCHDEV)
-
-**Justificación:**
-- Es una tarea de implementación de código
-- Requiere conocimiento de testing frameworks
-- ARCHDEV tiene herramienta especializada para esto
-
-**Herramienta Sugerida:** `crear_pruebas`
-- Genera tests con cobertura completa
-- Aplica mejores prácticas de testing
-
-**Roles Alternativos:**
-- No hay alternativas viables para esta tarea
-
-💡 **¿Deseas activar ARCHDEV ahora?** Usa: `/cochas +ARCHDEV`
-```
-
-**Cuándo Usarlo:**
-- Cuando no sabes qué rol activar
-- Para validar si elegiste el rol correcto
-- Al enfrentar una tarea compleja que podría involucrar múltiples roles
-
-**Proceso Interno:**
-1. Ejecuta la herramienta `asignar_responsable`
-2. Analiza las capacidades de cada rol
-3. Evalúa la compatibilidad con la tarea
-4. Sugiere el más adecuado con justificación
-
----
-
-### `/cochas history`
-
-**Descripción:** Muestra el historial completo de la sesión.
+**Descripción:** Lista las historias de usuario del proyecto.
 
 **Formato:**
 ```
-/cochas history
+*HU
 ```
 
 **Salida Esperada:**
-```markdown
-📜 **Historial de la Sesión**
+```
+📋 Historias de Usuario
 
----
+| ID | Título | Estado | Prioridad |
+|----|--------|--------|-----------|
+| HU-001 | Login con OAuth | 🟡 En Refinamiento | Alta |
+| HU-002 | Dashboard usuario | 🟢 Refinada | Media |
+| HU-003 | Notificaciones push | ⚪ Pendiente | Baja |
 
-## 🔄 Cambios de Rol
-
-### 1. Arquitecto Onad (ONAD)
-- **Activado:** 2025-10-16T10:00:00
-- **Duración:** 45 minutos
-- **Tareas Completadas:**
-  - ✅ ONAD-001: Análisis de contexto del proyecto
-  - ✅ ONAD-002: Diseño de arquitectura microservicios
-
-### 2. ArchDev Pro (ARCHDEV)
-- **Activado:** 2025-10-16T10:45:00
-- **Duración:** 30 minutos (activo)
-- **Tareas Completadas:**
-  - ✅ ARCHDEV-001: Refactorización del módulo de autenticación
-
----
-
-## 📝 Log de Eventos Clave
-
-| Timestamp | Evento | Descripción |
-|-----------|--------|-------------|
-| 2025-10-16T10:00:00 | Sesión iniciada | Nueva sesión creada |
-| 2025-10-16T10:05:00 | Rol activado | Arquitecto Onad (ONAD) |
-| 2025-10-16T10:10:00 | Herramienta ejecutada | tomar_contexto |
-| 2025-10-16T10:15:00 | Contexto inicializado | contexto_proyecto.md creado |
-| 2025-10-16T10:20:00 | Herramienta ejecutada | define_arquitectura |
-| 2025-10-16T10:25:00 | Tarea completada | ONAD-001 |
-| 2025-10-16T10:30:00 | ADR generado | adr_001_microservicios.md |
-| 2025-10-16T10:35:00 | Tarea completada | ONAD-002 |
-| 2025-10-16T10:40:00 | Backlog actualizado | 3 nuevas tareas agregadas |
-| 2025-10-16T10:45:00 | Rol cambiado | ONAD → ARCHDEV |
-| 2025-10-16T10:50:00 | Herramienta ejecutada | refactorizar |
-| 2025-10-16T11:00:00 | Tarea completada | ARCHDEV-001 |
-
----
-
-## 📈 Estadísticas
-
-- **Total tareas completadas:** 3
-- **Total cambios de rol:** 2
-- **Herramientas más usadas:**
-  1. tomar_contexto (1 vez)
-  2. define_arquitectura (1 vez)
-  3. refactorizar (1 vez)
-- **Rol más usado:** Arquitecto Onad (45 min)
-- **Duración de sesión:** 1 hora 15 minutos
+📂 Ubicación: .cochas/artifacts/HU/
+💡 Usa +REFINADOR y >refinar_hu HU-XXX para trabajar una HU.
 ```
 
 **Cuándo Usarlo:**
-- Para revisar todo lo que has hecho en la sesión
-- Para generar reportes de trabajo
-- Para auditar decisiones tomadas
-- Para recordar el flujo de trabajo seguido
+- Para ver el estado del backlog
+- Para elegir qué HU trabajar
+- Para revisar el progreso general
 
 ---
 
-### `/cochas reload`
-
-**Descripción:** Recarga el rol activo actual desde su archivo fuente.
-
-**Formato:**
-```
-/cochas reload
-```
-
-**Proceso Interno:**
-1. Lee `session_state.json` para obtener el comando del rol activo
-2. Lee `personas/roles-activos.md` para obtener la ruta del archivo
-3. Recarga el archivo del rol desde disco
-4. Limpia la caché de herramientas
-
-**Salida Esperada:**
-```markdown
-🔄 **Recarga de Rol**
-
-Rol recargado: Arquitecto Onad (ONAD)
-Ruta: personas/arquitecto_onad.md
-
-✅ Archivo recargado exitosamente
-🧹 Caché de herramientas limpiada
-
-💡 Las herramientas se recargarán al usarlas nuevamente.
-
----
-**[ESTADO_SESION]**
-🎯 **Rol Activo:** `Arquitecto Onad` (ONAD)
-📊 **Contexto Proyecto:** `INICIALIZADO`
-🕒 **Timestamp:** `2025-10-16T11:00:00`
-```
-
-**Cuándo Usarlo:**
-- Después de modificar el archivo de un rol
-- Si actualizaste herramientas del rol
-- Para forzar recarga de definiciones
-- Si el rol se comporta de forma inconsistente
-
-**Casos de Uso:**
-```
-# Ejemplo: Actualizaste el archivo arquitecto_onad.md
-# agregando una nueva herramienta
-
-1. Editas: personas/arquitecto_onad.md
-2. Ejecutas: /cochas reload
-3. El rol se recarga con los cambios
-```
-
----
-
-### `/cochas reset`
-
-**Descripción:** Reinicia completamente la sesión (requiere confirmación).
-
-**Formato:**
-```
-/cochas reset
-```
-
-**Proceso Interno:**
-1. Solicita confirmación al usuario
-2. Si confirma, elimina `artefactos/session_state.json`
-3. Crea nuevo estado inicial vacío
-
-**Salida Esperada:**
-```markdown
-⚠️ **Confirmación Requerida**
-
-Estás a punto de reiniciar la sesión completamente.
-
-**Esto eliminará:**
-- ❌ El rol activo actual
-- ❌ Todo el historial de roles
-- ❌ El log de eventos
-- ❌ El registro de herramientas usadas
-
-**Esto NO eliminará:**
-- ✅ artefactos/contexto_proyecto.md
-- ✅ artefactos/backlog_desarrollo.md
-- ✅ Archivos de roles y herramientas
-
-¿Estás seguro? (S/N)
-```
-
-**Si el usuario confirma:**
-```markdown
-✅ **Sesión Reiniciada**
-
-- Estado anterior eliminado
-- Nuevo estado creado
-- Sistema listo para usar
-
-💡 Usa `/cochas list` para ver roles disponibles.
-```
-
-**Cuándo Usarlo:**
-- Al comenzar un proyecto completamente nuevo
-- Si el estado está corrupto
-- Para limpiar sesiones de prueba
-- Cuando necesitas empezar de cero
-
-**⚠️ Advertencia:**
-- Esta acción no se puede deshacer
-- Asegúrate de exportar el estado antes si lo necesitas
-
----
-
-### `/cochas export`
-
-**Descripción:** Exporta el estado de la sesión a un archivo con timestamp.
-
-**Formato:**
-```
-/cochas export
-```
-
-**Proceso Interno:**
-1. Lee `session_state.json`
-2. Agrega metadata de exportación
-3. Formatea con indentación legible
-4. Guarda copia con timestamp
-
-**Salida Esperada:**
-```markdown
-📦 **Exportación de Sesión**
-
-✅ Estado exportado exitosamente
-
-**Archivo creado:**
-`artefactos/session_state_export_2025-10-16_11-30-00.json`
-
-**Contenido incluido:**
-- Rol activo
-- Historial de roles
-- Log de eventos
-- Herramientas usadas
-- Metadata de la sesión
-- Tablero de tareas
-
-**Tamaño:** 3.2 KB
-
-💡 **Uso:**
-- Respaldo antes de `/cochas reset`
-- Compartir estado con el equipo
-- Auditoría de trabajo realizado
-```
-
-**Cuándo Usarlo:**
-- Antes de ejecutar `/cochas reset`
-- Para crear respaldos periódicos
-- Para compartir el progreso con otros
-- Para auditoría o documentación
-
-**Ejemplo de Archivo Exportado:**
-```json
-{
-  "version": "1.0",
-  "export_metadata": {
-    "timestamp": "2025-10-16T11:30:00",
-    "exported_by": "Orquestador Cochas v2.0"
-  },
-  "rol_activo": {
-    "nombre": "Arquitecto Onad",
-    "comando": "ONAD",
-    "ruta": "personas/arquitecto_onad.md"
-  },
-  "historial_roles": [...],
-  "log_eventos_clave": [...],
-  "metadata": {...}
-}
-```
-
----
-
-### `/cochas help`
+### `*help`
 
 **Descripción:** Muestra ayuda rápida con todos los comandos disponibles.
 
 **Formato:**
 ```
-/cochas help
+*help
 ```
 
 **Salida Esperada:**
-```markdown
-🤖 **Comandos del Orquestador Cochas**
+```
+🤖 Sistema de Comandos COCHAS
+
+┌─────────────────────────────────────────────────────┐
+│ PREFIJO │ PROPÓSITO              │ EJEMPLO         │
+├─────────────────────────────────────────────────────┤
+│    *    │ Comandos orquestador   │ *roles, *status │
+│    +    │ Activar rol            │ +ONAD, +ARCHDEV │
+│    >    │ Ejecutar herramienta   │ >refinar_hu     │
+└─────────────────────────────────────────────────────┘
+
+📋 Comandos del Orquestador (*):
+  *roles   - Listar roles disponibles
+  *status  - Ver estado de sesión
+  *HU      - Listar historias de usuario
+  *help    - Mostrar esta ayuda
+
+🎭 Activar Roles (+):
+  +ONAD      - Arquitecto ONAD
+  +ARCHDEV   - ArchDev Pro
+  +REFINADOR - Refinador HU
+  +ARTESANO  - Artesano de Commits
+  +DEVOPS    - Arquitecto DevOps
+
+🛠️ Herramientas (>) - Requiere rol activo:
+  >nombre_herramienta [parámetros]
+
+📚 Documentación: guia_comandos.md
+```
 
 ---
 
-## 📋 Gestión de Roles
+## Activación de Roles (`+`)
 
-| Comando | Descripción |
-|---------|-------------|
-| `/cochas list` | Lista todos los roles disponibles |
-| `/cochas +<ROL>` | Activa un rol |
-| `/cochas switch <ROL>` | Activa un rol (alternativa) |
+Los comandos con `+` activan un rol específico.
 
 ---
 
-## 📊 Estado y Diagnóstico
+### `+<ROL>`
 
-| Comando | Descripción |
-|---------|-------------|
-| `/cochas status` | Muestra estado de la sesión |
-| `/cochas history` | Muestra historial completo |
+**Descripción:** Activa un rol específico en la sesión.
 
----
+**Formato:**
+```
++ONAD
++ARCHDEV
++REFINADOR
++ARTESANO
++DEVOPS
+```
 
-## 🎯 Asignación Inteligente
+**Proceso Interno:**
+1. Busca el rol en `personas/roles-activos.md`
+2. Carga el archivo del rol desde `personas/`
+3. Actualiza `session_state.json`
+4. Presenta el saludo del rol activado
 
-| Comando | Descripción |
-|---------|-------------|
-| `/cochas assign <tarea>` | Sugiere el mejor rol para una tarea |
+**Salida Esperada:**
+```
+🔄 Cambio de Rol
 
----
-
-## 🔧 Mantenimiento
-
-| Comando | Descripción |
-|---------|-------------|
-| `/cochas reload` | Recarga el rol activo |
-| `/cochas reset` | Reinicia la sesión |
-| `/cochas export` | Exporta el estado |
-
----
-
-## 🚀 Inicio Rápido
-
-1. Ver roles: `/cochas list`
-2. Activar rol: `/cochas +ONAD`
-3. Ver estado: `/cochas status`
-4. Pedir ayuda: `/cochas assign "tu tarea"`
+Rol anterior: Ninguno
+Rol nuevo: Arquitecto ONAD (+ONAD)
 
 ---
 
-📚 **Documentación Completa:** `guia_comandos.md`
+👋 ¡Hola! Soy el **Arquitecto ONAD**, especialista en arquitectura de software...
+
+🛠️ Herramientas Disponibles:
+  >tomar_contexto
+  >define_arquitectura
+  >generar_adr
+
+💡 Usa >tomar_contexto para analizar el proyecto.
 ```
 
 **Cuándo Usarlo:**
-- Primera vez usando el sistema
-- Para recordar la sintaxis de comandos
-- Como referencia rápida
+- Al comenzar una tarea que requiere expertise específica
+- Para cambiar de contexto de trabajo
 
 ---
 
-## Comandos de Herramientas
+### Tabla de Roles y Herramientas
 
-Los comandos de herramientas permiten ejecutar funcionalidades específicas del rol activo.
+| Comando | Rol | Herramientas Disponibles |
+|---------|-----|--------------------------|
+| `+ONAD` | Arquitecto ONAD | `>tomar_contexto`, `>define_arquitectura`, `>generar_adr` |
+| `+ARCHDEV` | ArchDev Pro | `>refactorizar`, `>crear_pruebas`, `>analizar_code_smells`, `>ejecutar_plan` |
+| `+REFINADOR` | Refinador HU | `>refinar_hu`, `>validar_hu`, `>planificar_hu` |
+| `+ARTESANO` | Artesano de Commits | `>generar_commit` |
+| `+DEVOPS` | Arquitecto DevOps | `>diagnosticar_devops` |
 
-### `> <herramienta>` o `-> <herramienta>`
+---
+
+## Ejecución de Herramientas (`>`)
+
+Los comandos con `>` ejecutan herramientas del rol activo.
+
+---
+
+### `>herramienta [parámetros]`
 
 **Descripción:** Ejecuta una herramienta del rol activo.
 
 **Formato:**
 ```
-> tomar_contexto
--> refactorizar
-> crear_pruebas
+>nombre_herramienta
+>nombre_herramienta parámetro1
+>nombre_herramienta parámetro1 parámetro2
 ```
 
-**Ambos formatos son equivalentes:**
-- `> tomar_contexto` = `-> tomar_contexto`
-
 **Requisitos:**
-- ✅ Debe haber un rol activo
-- ✅ El rol debe tener acceso a la herramienta
-- ✅ La herramienta debe existir en el sistema
+- ✅ Debe haber un rol activo (`+ROL` previo)
+- ✅ La herramienta debe pertenecer al rol activo
 
 **Ejemplos por Rol:**
 
-**Arquitecto Onad (ONAD):**
+**Con +ONAD activo:**
 ```
-> tomar_contexto
-> define_arquitectura
-> generar_adr
-```
-
-**ArchDev Pro (ARCHDEV):**
-```
-> refactorizar
-> analizar_code_smells
-> solucionar_smells
-> crear_pruebas
-> verifica_pruebas
+>tomar_contexto
+>define_arquitectura
+>generar_adr ADR-001
 ```
 
-**Arquitecto DevOps (DEVOPS):**
+**Con +ARCHDEV activo:**
 ```
-> diagnosticar_devops
-> tomar_contexto
-```
-
-**Refinador HU (REFINADOR):**
-```
-> refinar_hu
-> tomar_contexto
+>refactorizar src/auth/login.java
+>crear_pruebas src/services/UserService.java
+>analizar_code_smells
 ```
 
-**Artesano de Commits (ARTESANO):**
+**Con +REFINADOR activo:**
 ```
-> generar_commit
+>refinar_hu HU-001
+>validar_hu HU-001
+>planificar_hu HU-001
+```
+
+**Con +ARTESANO activo:**
+```
+>generar_commit
+```
+
+**Con +DEVOPS activo:**
+```
+>diagnosticar_devops
 ```
 
 ---
@@ -631,80 +301,82 @@ Los comandos de herramientas permiten ejecutar funcionalidades específicas del 
 
 ```bash
 # Paso 1: Ver ayuda
-/cochas help
+*help
 
 # Paso 2: Ver roles disponibles
-/cochas list
+*roles
 
 # Paso 3: Activar primer rol
-/cochas +ONAD
++ONAD
 
 # Paso 4: Analizar proyecto
-> tomar_contexto
+>tomar_contexto
 
 # Paso 5: Ver estado
-/cochas status
+*status
 ```
 
 ---
 
-### Caso 2: No Sé Qué Rol Usar
+### Caso 2: Refinar una Historia de Usuario
 
 ```bash
-# Describir la tarea
-/cochas assign "Necesito crear un pipeline de CI/CD con GitHub Actions"
+# Ver HUs disponibles
+*HU
 
-# El sistema te recomendará:
-# 🥇 Arquitecto DevOps (DEVOPS)
-# Herramienta: diagnosticar_devops
+# Activar rol de refinamiento
++REFINADOR
 
-# Activar el rol recomendado
-/cochas +DEVOPS
+# Refinar la HU específica
+>refinar_hu HU-001
+
+# Validar el refinamiento
+>validar_hu HU-001
 ```
 
 ---
 
-### Caso 3: Cambiar Entre Roles
+### Caso 3: Implementar Código
+
+```bash
+# Activar rol de desarrollo
++ARCHDEV
+
+# Ejecutar plan de desarrollo
+>ejecutar_plan HU-001
+
+# Crear pruebas
+>crear_pruebas src/services/AuthService.java
+
+# Analizar code smells
+>analizar_code_smells
+```
+
+---
+
+### Caso 4: Generar Commit
+
+```bash
+# Activar rol de commits
++ARTESANO
+
+# Generar mensaje de commit
+>generar_commit
+```
+
+---
+
+### Caso 5: Cambiar Entre Roles
 
 ```bash
 # Verificar rol actual
-/cochas status
+*status
 
 # Cambiar a otro rol
-/cochas +ARCHDEV
++ARCHDEV
 
-# Ver historial de cambios
-/cochas history
-```
-
----
-
-### Caso 4: Retomar Sesión Anterior
-
-```bash
-# Ver estado de la sesión guardada
-/cochas status
-
-# El último rol se mantiene activo
-# Continuar trabajando o cambiar de rol
-/cochas +REFINADOR
-```
-
----
-
-### Caso 5: Exportar y Reiniciar
-
-```bash
-# Exportar estado antes de limpiar
-/cochas export
-
-# Reiniciar sesión
-/cochas reset
-
-# Confirmar: S
-
-# Comenzar nueva sesión
-/cochas list
+# Continuar trabajando con nuevo rol
+>refactorizar src/main/App.java
 ```
 
 ---
@@ -715,17 +387,14 @@ Los comandos de herramientas permiten ejecutar funcionalidades específicas del 
 
 **Entrada:**
 ```
-/cochas +DEVELOPER
++DEVELOPER
 ```
 
 **Salida:**
 ```
 ❌ El rol 'DEVELOPER' no existe en el sistema.
-
-💡 Usa `/cochas list` para ver la lista completa de roles disponibles.
+💡 Usa *roles para ver la lista completa de roles disponibles.
 ```
-
-**Solución:** Verifica el nombre correcto con `/cochas list`.
 
 ---
 
@@ -733,45 +402,35 @@ Los comandos de herramientas permiten ejecutar funcionalidades específicas del 
 
 **Entrada:**
 ```
-> refactorizar
+>refactorizar
 ```
 (Sin tener un rol activo)
 
 **Salida:**
 ```
-❌ No hay ningún rol activo. Las herramientas solo pueden ejecutarse cuando un rol está cargado.
-
-💡 La herramienta 'refactorizar' puede ser activada por los siguientes roles:
-
-• ArchDev Pro - Usar: /cochas +ARCHDEV
-
-¿Deseas activar un rol ahora?
+❌ Error: Debes activar un rol primero con +COMANDO
+💡 Usa *roles para ver los roles disponibles.
 ```
-
-**Solución:** Activa un rol compatible antes de usar herramientas.
 
 ---
 
-### Error: Herramienta No Compatible
+### Error: Herramienta No Disponible en Rol
 
 **Entrada:**
 ```
-/cochas +ONAD
-> diagnosticar_devops
++ARTESANO
+>refinar_hu HU-001
 ```
 
 **Salida:**
 ```
-❌ El rol activo 'Arquitecto Onad' no puede ejecutar la herramienta 'diagnosticar_devops'.
+❌ La herramienta 'refinar_hu' no está disponible en el rol 'Artesano de Commits'.
 
-💡 La herramienta 'diagnosticar_devops' puede ser activada por:
+🛠️ Herramientas disponibles para este rol:
+  >generar_commit
 
-• Arquitecto DevOps - Usar: /cochas +DEVOPS
-
-¿Deseas cambiar de rol?
+💡 Para usar 'refinar_hu', activa el rol con: +REFINADOR
 ```
-
-**Solución:** Cambia al rol apropiado con `/cochas +DEVOPS`.
 
 ---
 
@@ -779,68 +438,71 @@ Los comandos de herramientas permiten ejecutar funcionalidades específicas del 
 
 **Entrada:**
 ```
-/cochas +ARCHDEV
-> compilar_proyecto
++ARCHDEV
+>compilar_proyecto
 ```
 
 **Salida:**
 ```
 ❌ La herramienta 'compilar_proyecto' no existe en el sistema.
 
-💡 Herramientas disponibles para 'ArchDev Pro':
-
-• refactorizar
-• analizar_code_smells
-• solucionar_smells
-• crear_pruebas
-• verifica_pruebas
-• generar_adr
-• tomar_contexto
+🛠️ Herramientas disponibles para 'ArchDev Pro':
+  >refactorizar
+  >crear_pruebas
+  >analizar_code_smells
+  >ejecutar_plan
 ```
-
-**Solución:** Usa una herramienta disponible para tu rol activo.
 
 ---
 
 ## 💡 Tips y Mejores Prácticas
 
-### Tip 1: Usa `assign` Cuando Tengas Dudas
+### Tip 1: Siempre Empieza con `*roles`
 ```bash
-/cochas assign "descripción de lo que necesitas hacer"
-```
-El sistema te guiará al rol correcto.
-
-### Tip 2: Exporta Antes de Reset
-```bash
-/cochas export  # Guarda respaldo
-/cochas reset   # Limpia sesión
+*roles  # Ver qué roles hay disponibles
 ```
 
-### Tip 3: Revisa el Status Regularmente
+### Tip 2: Verifica el Estado Regularmente
 ```bash
-/cochas status  # Ver progreso y estado
+*status  # Ver rol activo y progreso
 ```
 
-### Tip 4: Analiza el Proyecto Una Vez
+### Tip 3: Analiza el Proyecto Una Vez
 ```bash
-/cochas +ONAD
-> tomar_contexto  # Se guarda y reutiliza
++ONAD
+>tomar_contexto  # Se guarda y reutiliza por otros roles
 ```
 
-### Tip 5: Usa History para Reportes
+### Tip 4: Secuencia Típica de Trabajo
 ```bash
-/cochas history  # Genera log completo de trabajo
+*HU                    # Ver qué HUs hay
++REFINADOR             # Activar rol
+>refinar_hu HU-001     # Trabajar la HU
++ARCHDEV               # Cambiar a desarrollo
+>ejecutar_plan HU-001  # Implementar
++ARTESANO              # Cambiar a commits
+>generar_commit        # Crear commit
 ```
+
+---
+
+## 📅 Historial de Versiones
+
+| Versión | Fecha | Cambios Principales |
+|---------|-------|---------------------|
+| 1.0 | 2025-10-16 | Versión inicial con comandos `/cochas` |
+| 2.0 | 2025-10-16 | Documentación completa de `/cochas` |
+| 3.0 | 2026-01-05 | ✅ **Nuevo sistema de prefijos**<br>✅ `*` para comandos orquestador<br>✅ `+` para activar roles<br>✅ `>` para herramientas<br>✅ Eliminados comandos `/cochas` |
 
 ---
 
 ## 📚 Documentación Relacionada
 
-- **[README Principal](README.md)** - Visión general del sistema
-- **[Guía de Roles](guia_roles_activos.md)** - Roles disponibles y sus capacidades
-- **[Guía de Ciclo de Vida](guia_ciclo_vida_tareas.md)** - Flujo de tareas
-- **[Arquitectura del Sistema](core-cochas.md)** - Documentación técnica completa
+- **[Orquestador](core-cochas.md)** - Documentación técnica del orquestador
+- **[Roles Activos](personas/roles-activos.md)** - Lista completa de roles
+- **[Herramientas](herramientas/herramientas-activas.md)** - Lista de herramientas
+- **[Ciclo de Vida](guia_ciclo_vida_tareas.md)** - Flujo de tareas
 
 ---
 
-**¿Necesitas más ayuda?** Usa `/cochas help` en cualquier momento.
+**¿Necesitas ayuda?** Usa `*help` en cualquier momento.

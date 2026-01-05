@@ -1,161 +1,199 @@
----
+# 🛠️ Herramientas Activas del Sistema
 
-Debes de seguir todas las instrucciones de activación exactamente como se especifican. NUNCA rompas el personaje hasta que se te dé un comando de salida.
-
----
-
-# Herramientas Activas del Sistema
-
-Esta es la lista oficial de herramientas disponibles en el orquestador. Cada herramienta indica qué roles pueden activarla.
-
-| Nombre de la Herramienta | Comando | Roles que Pueden Activarla | Ruta del Archivo |
-|---------------------------|---------|----------------------------|------------------|
-| Tomar Contexto | tomar_contexto | ONAD, ARCHDEV, DEVOPS, REFINADOR | herramientas/tomar_contexto.md |
-| Definir Arquitectura | define_arquitectura | ONAD | herramientas/define_arquitectura.md |
-| Generar ADR | generar_adr | ONAD, ARCHDEV | herramientas/generar_adr.md |
-| Refactorizar | refactorizar | ARCHDEV | herramientas/refactorizar.md |
-| Analizar Code Smells | analizar_code_smells | ARCHDEV | herramientas/analizar_code_smells.md |
-| Solucionar Smells | solucionar_smells | ARCHDEV | herramientas/solucionar_smells.md |
-| Crear Pruebas | crear_pruebas | ARCHDEV | herramientas/crear_pruebas.md |
-| Verificar Pruebas | verifica_pruebas | ARCHDEV | herramientas/verifica_pruebas.md |
-| Ejecutar Plan | ejecutar_plan | ARCHDEV | herramientas/ejecutar_plan.md |
-| Generar Commit | generar_commit | ARTESANO | herramientas/generar_commit.md |
-| Diagnosticar DevOps | diagnosticar_devops | DEVOPS | herramientas/diagnosticar_devops.md |
-| Refinar HU | refinar_hu | REFINADOR | herramientas/refinar_hu.md |
-| Validar HU | validar_hu | ONAD | herramientas/validar_hu.md |
-| Planificar HU | planificar_hu | ONAD | herramientas/planificar_hu.md |
-| Asignar Responsable | asignar_responsable | ORQUESTADOR | herramientas/asignar_responsable.md |
+> **Versión:** 3.0  
+> **Fecha de Actualización:** 5 de enero de 2026  
+> **Estado:** Activo - Registro oficial de herramientas del sistema
 
 ---
 
-## Uso
+## 📋 Descripción
 
-Para activar una herramienta, usa cualquiera de estos formatos (con un rol activo, validando en el archivo `artefactos/session_state.json`):
-- `> <nombre_herramienta>`
-- `-> <nombre_herramienta>`
-
-**Ejemplos:**
-- `> tomar_contexto`
-- `-> refactorizar`
+Esta es la lista oficial de herramientas disponibles en el sistema COCHAS. Cada herramienta tiene un comando de activación, los roles que pueden ejecutarla y la ruta donde se encuentra su definición completa.
 
 ---
 
-## Validaciones
+## 🎮 Sistema de Comandos
 
-### Herramienta sin Rol Activo
+| Prefijo | Propósito | Ejemplo |
+|---------|-----------|---------|
+| `>` | Ejecutar Herramienta (requiere rol activo) | `>refinar_hu`, `>generar_commit` |
+| `+` | Activar un Rol | `+ONAD`, `+ARCHDEV` |
+| `*` | Comandos del Orquestador | `*roles`, `*status`, `*herramientas` |
 
-Si se intenta activar una herramienta **SIN tener un rol activo** en la sesión:
+---
 
-1. **Mostrar error:**
-   ```
-   ❌ No hay ningún rol activo. Las herramientas solo pueden ejecutarse cuando un rol está cargado.
-   ```
+## 📦 Lista de Herramientas Disponibles
 
-2. **Buscar roles compatibles:**
-   - Leer la tabla anterior
-   - Buscar la herramienta en la columna "Nombre de la Herramienta"
-   - Obtener la lista de roles de la columna "Roles que Pueden Activarla"
+| Herramienta | Comando | Roles Compatibles | Ruta |
+|-------------|---------|-------------------|------|
+| **Tomar Contexto** | `>tomar_contexto` | ONAD, ARCHDEV, DEVOPS, REFINADOR | `herramientas/tomar_contexto.md` |
+| **Definir Arquitectura** | `>define_arquitectura` | ONAD | `herramientas/define_arquitectura.md` |
+| **Generar ADR** | `>generar_adr` | ONAD, ARCHDEV | `herramientas/generar_adr.md` |
+| **Refactorizar** | `>refactorizar` | ARCHDEV | `herramientas/refactorizar.md` |
+| **Analizar Code Smells** | `>analizar_code_smells` | ARCHDEV | `herramientas/analizar_code_smells.md` |
+| **Solucionar Smells** | `>solucionar_smells` | ARCHDEV | `herramientas/solucionar_smells.md` |
+| **Crear Pruebas** | `>crear_pruebas` | ARCHDEV | `herramientas/crear_pruebas.md` |
+| **Verificar Pruebas** | `>verifica_pruebas` | ARCHDEV | `herramientas/verifica_pruebas.md` |
+| **Ejecutar Plan** | `>ejecutar_plan` | ARCHDEV | `herramientas/ejecutar_plan.md` |
+| **Generar Commit** | `>generar_commit` | ARTESANO | `herramientas/generar_commit.md` |
+| **Diagnosticar DevOps** | `>diagnosticar_devops` | DEVOPS | `herramientas/diagnosticar_devops.md` |
+| **Refinar HU** | `>refinar_hu` | REFINADOR | `herramientas/refinar_hu.md` |
+| **Validar HU** | `>validar_hu` | ONAD | `herramientas/validar_hu.md` |
+| **Planificar HU** | `>planificar_hu` | ONAD | `herramientas/planificar_hu.md` |
+| **Asignar Responsable** | `>asignar_responsable` | ORQUESTADOR | `herramientas/asignar_responsable.md` |
 
-3. **Sugerir roles compatibles:**
-   ```
-   💡 La herramienta '[nombre_herramienta]' puede ser activada por los siguientes roles:
-   
-   • [ROL_1] - Usar: /cochas +[COMANDO_1]
-   • [ROL_2] - Usar: /cochas +[COMANDO_2]
-   ```
+---
 
-4. **Abortar ejecución:**
-   - No se ejecuta la herramienta
-   - Se espera a que el usuario active un rol apropiado
+## 🚀 Uso
 
-**Ejemplo:**
+### Ejecutar una Herramienta
+
+Para ejecutar una herramienta, **primero debe haber un rol activo** y luego usar el prefijo `>`:
+
+```bash
++ARCHDEV                    # Primero activo el rol
+>analizar_code_smells       # Luego uso la herramienta
+>crear_pruebas              # Otra herramienta del mismo rol
 ```
-Usuario: > refactorizar
 
-Sistema: ❌ No hay ningún rol activo. Las herramientas solo pueden ejecutarse cuando un rol está cargado.
+### Listar Herramientas Disponibles
 
-         💡 La herramienta 'refactorizar' puede ser activada por los siguientes roles:
+```bash
+*herramientas
+```
+
+**Salida esperada (con rol activo):**
+```
+🛠️ Herramientas Disponibles para ArchDev Pro (+ARCHDEV):
+
+| # | Herramienta           | Comando                 |
+|---|-----------------------|-------------------------|
+| 1 | Tomar Contexto        | >tomar_contexto         |
+| 2 | Generar ADR           | >generar_adr            |
+| 3 | Refactorizar          | >refactorizar           |
+| 4 | Analizar Code Smells  | >analizar_code_smells   |
+| 5 | Solucionar Smells     | >solucionar_smells      |
+| 6 | Crear Pruebas         | >crear_pruebas          |
+| 7 | Verificar Pruebas     | >verifica_pruebas       |
+| 8 | Ejecutar Plan         | >ejecutar_plan          |
+
+💡 Usa >comando para ejecutar una herramienta.
+```
+
+---
+
+## ⚠️ Manejo de Errores
+
+### Herramienta Sin Rol Activo
+
+Si se intenta ejecutar una herramienta **sin tener un rol activo**:
+
+```
+Usuario: >refactorizar
+
+Sistema: ❌ No hay ningún rol activo. Las herramientas requieren un rol cargado.
+
+         💡 La herramienta 'refactorizar' puede ser ejecutada por:
          
-         • ArchDev Pro - Usar: /cochas +ARCHDEV
+         • ArchDev Pro - Activar con: +ARCHDEV
 ```
-
----
 
 ### Herramienta No Compatible con Rol Activo
 
-Si se intenta activar una herramienta **con un rol activo incompatible**:
+Si se intenta ejecutar una herramienta **con un rol activo incompatible**:
 
-1. **Mostrar error:**
-   ```
-   ❌ El rol activo '[nombre_rol]' no puede ejecutar la herramienta '[nombre_herramienta]'.
-   ```
-
-2. **Sugerir roles compatibles:**
-   ```
-   💡 La herramienta '[nombre_herramienta]' puede ser activada por:
-   
-   • [ROL_1] - Usar: /cochas +[COMANDO_1]
-   • [ROL_2] - Usar: /cochas +[COMANDO_2]
-   
-   ¿Deseas cambiar de rol?
-   ```
-
-**Ejemplo:**
 ```
-Usuario: > diagnosticar_devops
+Usuario: >diagnosticar_devops
 (Rol activo: ArchDev Pro)
 
-Sistema: ❌ El rol activo 'ArchDev Pro' no puede ejecutar la herramienta 'diagnosticar_devops'.
+Sistema: ❌ El rol 'ArchDev Pro' no puede ejecutar 'diagnosticar_devops'.
 
-         💡 La herramienta 'diagnosticar_devops' puede ser activada por:
+         💡 Esta herramienta puede ser ejecutada por:
          
-         • Arquitecto DevOps - Usar: /cochas +DEVOPS
+         • Arquitecto DevOps - Activar con: +DEVOPS
          
          ¿Deseas cambiar de rol?
 ```
 
----
-
 ### Herramienta No Encontrada
 
-Si la herramienta solicitada **NO existe** en la tabla:
+Si la herramienta **NO existe** en el sistema:
 
-1. **Mostrar error:**
-   ```
-   ❌ La herramienta '[nombre_herramienta]' no existe en el sistema.
-   ```
-
-2. **Listar herramientas disponibles para el rol activo:**
-   ```
-   💡 Herramientas disponibles para '[nombre_rol]':
-   
-   • herramienta_1
-   • herramienta_2
-   • herramienta_3
-   ```
-
-**Ejemplo:**
 ```
-Usuario: > compilar_proyecto
+Usuario: >compilar_proyecto
 (Rol activo: ArchDev Pro)
 
 Sistema: ❌ La herramienta 'compilar_proyecto' no existe en el sistema.
 
-         💡 Herramientas disponibles para 'ArchDev Pro':
+         🛠️ Herramientas disponibles para 'ArchDev Pro':
          
-         • refactorizar
-         • analizar_code_smells
-         • solucionar_smells
-         • crear_pruebas
-         • verifica_pruebas
-         • generar_adr
-         • tomar_contexto
+         • >tomar_contexto
+         • >generar_adr
+         • >refactorizar
+         • >analizar_code_smells
+         • >solucionar_smells
+         • >crear_pruebas
+         • >verifica_pruebas
+         • >ejecutar_plan
 ```
 
 ---
 
-## Notas Importantes
+## 📊 Categorías de Herramientas
 
-- **Herramientas Universales:** Algunas herramientas como `tomar_contexto` pueden ser usadas por múltiples roles
-- **Herramientas Especializadas:** Otras como `diagnosticar_devops` son exclusivas de un rol específico
-- **Herramienta del Orquestador:** `asignar_responsable` es una herramienta especial que solo el orquestador puede ejecutar mediante el comando `/cochas assign <tarea>`
+### Por Tipo de Función
+
+| Categoría | Herramientas |
+|-----------|--------------|
+| **Contexto** | `tomar_contexto` |
+| **Arquitectura** | `define_arquitectura`, `generar_adr` |
+| **Código** | `refactorizar`, `analizar_code_smells`, `solucionar_smells` |
+| **Pruebas** | `crear_pruebas`, `verifica_pruebas` |
+| **Documentación** | `generar_commit`, `generar_adr` |
+| **DevOps** | `diagnosticar_devops` |
+| **HU/Requisitos** | `refinar_hu`, `validar_hu`, `planificar_hu` |
+| **Ejecución** | `ejecutar_plan`, `asignar_responsable` |
+
+### Herramientas Universales vs Especializadas
+
+**Universales (múltiples roles):**
+- `tomar_contexto` - ONAD, ARCHDEV, DEVOPS, REFINADOR
+- `generar_adr` - ONAD, ARCHDEV
+
+**Especializadas (un solo rol):**
+- `diagnosticar_devops` - Solo DEVOPS
+- `generar_commit` - Solo ARTESANO
+- `refinar_hu` - Solo REFINADOR
+
+---
+
+## 🆕 Agregar Nuevas Herramientas
+
+Para crear una nueva herramienta en el sistema:
+
+1. **Crear archivo de definición** en `herramientas/[nombre_herramienta].md`
+2. **Agregar a esta tabla** con nombre, comando, roles compatibles y ruta
+3. **Actualizar roles afectados** en `personas/[rol].md` si corresponde
+
+**Plantilla para nueva herramienta:**
+```markdown
+| [Nombre Herramienta] | `>[comando]` | ROL1, ROL2 | `herramientas/[archivo].md` |
+```
+
+---
+
+## 📚 Referencias
+
+- **Roles disponibles:** `personas/roles-activos.md`
+- **Orquestador:** `core-cochas.md`
+- **Guía de comandos:** `guia_comandos.md`
+
+---
+
+## 📅 Historial de Versiones
+
+| Versión | Fecha | Cambios Principales |
+|---------|-------|---------------------|
+| 1.0 | - | Versión inicial con lista básica de herramientas |
+| 2.0 | - | Agregado manejo de errores y validaciones |
+| 3.0 | 2026-01-05 | ✅ **Nuevo sistema de prefijos**<br>✅ `>` para herramientas (reemplaza `->` y `> `)<br>✅ Categorización de herramientas<br>✅ Formato consistente con `roles-activos.md`<br>✅ Sección de herramientas universales vs especializadas |

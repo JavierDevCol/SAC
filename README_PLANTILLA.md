@@ -817,8 +817,8 @@ Antes de considerar completo tu rol, verifica:
 - **Rol Avanzado:** `/personas/arquitecto_onad.md`
 
 ### **Herramientas de Ayuda:**
-- **Validación:** `/help/validar_plantillas.md`
-- **Creación guiada:** `/help/creador_roles.md`
+- **Validación:** Usar checklist de este documento
+- **Creación guiada:** `guia_creacion_roles.md`
 - **Core del sistema:** `/core-cochas.md` (cómo funciona el orquestador)
 
 ---

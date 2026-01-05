@@ -28,7 +28,7 @@ Los roles (o personas) son agentes especializados con personalidades únicas, á
 
 ### 🏛️ Arquitecto Onad (ONAD)
 
-**Comando de activación:** `/cochas +ONAD` o `/cochas switch ONAD`
+**Comando de activación:** `@ONAD` o `@switch ONAD`
 
 **Especialidad:** Arquitectura estratégica y decisiones de alto nivel
 
@@ -86,7 +86,7 @@ Interesante. Antes de diseñar la implementación, validemos:
 
 ### 💻 ArchDev Pro (ARCHDEV)
 
-**Comando de activación:** `/cochas +ARCHDEV` o `/cochas switch ARCHDEV`
+**Comando de activación:** `@ARCHDEV` o `@switch ARCHDEV`
 
 **Especialidad:** Implementación de código y refactoring
 
@@ -157,7 +157,7 @@ Perfecto. Voy a analizar el código y aplicar mejoras.
 
 ### 🚀 Arquitecto DevOps (DEVOPS)
 
-**Comando de activación:** `/cochas +DEVOPS` o `/cochas switch DEVOPS`
+**Comando de activación:** `@DEVOPS` o `@switch DEVOPS`
 
 **Especialidad:** Infraestructura, pipelines y deployment
 
@@ -218,7 +218,7 @@ Perfecto. Voy a diagnosticar tu proyecto y proponer un pipeline.
 
 ### 📝 Refinador HU (REFINADOR)
 
-**Comando de activación:** `/cochas +REFINADOR` o `/cochas switch REFINADOR`
+**Comando de activación:** `@REFINADOR` o `@switch REFINADOR`
 
 **Especialidad:** Refinamiento de historias de usuario
 
@@ -285,7 +285,7 @@ Para encontrar rápidamente lo que necesito
 
 ### 🎨 Artesano de Commits (ARTESANO)
 
-**Comando de activación:** `/cochas +ARTESANO` o `/cochas switch ARTESANO`
+**Comando de activación:** `@ARTESANO` o `@switch ARTESANO`
 
 **Especialidad:** Creación de mensajes de commit profesionales
 
@@ -420,19 +420,19 @@ git commit -m "feat(auth): implement JWT-based authentication" -m "..."
 ### Flujo 1: Nuevo Proyecto
 
 ```
-1. /cochas +ONAD
+1. @ONAD
    > tomar_contexto              # Analizar proyecto
    > define_arquitectura          # Diseñar arquitectura
    > generar_adr                  # Documentar decisiones
 
-2. /cochas +DEVOPS
+2. @DEVOPS
    > diagnosticar_devops          # Configurar infraestructura
 
-3. /cochas +ARCHDEV
+3. @ARCHDEV
    > refactorizar                 # Implementar código
    > crear_pruebas                # Agregar tests
 
-4. /cochas +ARTESANO
+4. @ARTESANO
    > generar_commit               # Documentar cambios
 ```
 
@@ -441,16 +441,16 @@ git commit -m "feat(auth): implement JWT-based authentication" -m "..."
 ### Flujo 2: Refactoring Mayor
 
 ```
-1. /cochas +ONAD
+1. @ONAD
    > tomar_contexto              # Analizar situación actual
    Validar propuesta de refactoring
 
-2. /cochas +ARCHDEV
+2. @ARCHDEV
    > analizar_code_smells         # Detectar problemas
    > solucionar_smells            # Aplicar mejoras
    > verifica_pruebas             # Validar tests
 
-3. /cochas +ARTESANO
+3. @ARTESANO
    > generar_commit               # Documentar refactoring
 ```
 
@@ -459,13 +459,13 @@ git commit -m "feat(auth): implement JWT-based authentication" -m "..."
 ### Flujo 3: Sprint Planning
 
 ```
-1. /cochas +REFINADOR
+1. @REFINADOR
    > refinar_hu                   # Clarificar historias
 
-2. /cochas +ONAD
+2. @ONAD
    Validar viabilidad técnica de historias
 
-3. /cochas +ARCHDEV
+3. @ARCHDEV
    Estimar esfuerzo de implementación
 ```
 
@@ -474,14 +474,14 @@ git commit -m "feat(auth): implement JWT-based authentication" -m "..."
 ### Flujo 4: Deployment de Feature
 
 ```
-1. /cochas +ARCHDEV
+1. @ARCHDEV
    > crear_pruebas                # Asegurar cobertura
    > verifica_pruebas             # Validar calidad
 
-2. /cochas +DEVOPS
+2. @DEVOPS
    > diagnosticar_devops          # Preparar deployment
 
-3. /cochas +ARTESANO
+3. @ARTESANO
    > generar_commit               # Documentar release
 ```
 
@@ -490,16 +490,16 @@ git commit -m "feat(auth): implement JWT-based authentication" -m "..."
 ### Flujo 5: Resolución de Propuesta Técnica
 
 ```
-1. /cochas +ONAD
+1. @ONAD
    Analizar propuesta con "No Comer Entero"
    - Validar supuestos
    - Evaluar trade-offs
    - Proponer alternativas
 
-2. Si se aprueba → /cochas +ARCHDEV
+2. Si se aprueba → @ARCHDEV
    Implementar la solución validada
 
-3. Si requiere infra → /cochas +DEVOPS
+3. Si requiere infra → @DEVOPS
    Configurar recursos necesarios
 ```
 
@@ -507,9 +507,9 @@ git commit -m "feat(auth): implement JWT-based authentication" -m "..."
 
 ## 💡 Tips para Elegir el Rol Correcto
 
-### Tip 1: Usa `/cochas assign` Cuando Tengas Dudas
+### Tip 1: Usa `@assign` Cuando Tengas Dudas
 ```bash
-/cochas assign "Tu descripción de la tarea"
+@assign "Tu descripción de la tarea"
 ```
 El sistema analizará tu necesidad y recomendará el rol más adecuado.
 
@@ -542,23 +542,23 @@ Es común necesitar múltiples roles en una sesión. El sistema mantiene el cont
 
 ```bash
 # Analizar arquitectura
-/cochas +ONAD
+@ONAD
 > define_arquitectura
 
 # Implementar código
-/cochas +ARCHDEV
+@ARCHDEV
 > refactorizar
 
 # Configurar deployment
-/cochas +DEVOPS
+@DEVOPS
 > diagnosticar_devops
 
 # Crear commit
-/cochas +ARTESANO
+@ARTESANO
 > generar_commit
 
 # Ver historial de cambios
-/cochas history
+@history
 ```
 
 **El sistema recuerda:**
@@ -580,6 +580,6 @@ Es común necesitar múltiples roles en una sesión. El sistema mantiene el cont
 
 **¿No estás seguro qué rol usar?**
 
-Ejecuta: `/cochas assign "descripción de tu tarea"`
+Ejecuta: `@assign "descripción de tu tarea"`
 
 El orquestador te recomendará el rol más adecuado con justificación.

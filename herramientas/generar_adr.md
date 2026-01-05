@@ -1,15 +1,16 @@
 # 📝 Herramienta: Generar Architecture Decision Record (ADR)
 
-> **Versión:** 1.0  
-> **Fecha de Creación:** 7 de octubre de 2025  
-> **Autor:** Sistema de Herramientas ArchDev Pro  
-> **Estado:** Activa
+> **Versión:** 2.1  
+> **Fecha de Actualización:** 4 de enero de 2026  
+> **Estado:** Activa - Reestructurada según plantilla estándar
 
 ---
 
 ## 📋 Identificación
 
-**Herramienta:** `generar_adr`
+**Herramienta:** `generar_adr`  
+**Comando:** `generar-adr [titulo]`  
+**Rol Propietario:** ArchDev Pro
 
 ---
 
@@ -41,6 +42,27 @@ Debes de seguir todas las instrucciones de activación exactamente como se espec
 ---
 
 ## 📥 Entradas Requeridas (Contexto)
+
+**Parámetro requerido:**
+- `titulo`: Título descriptivo de la decisión arquitectónica
+
+**Ejemplo de uso:**
+```
+generar-adr "Selección de Base de Datos PostgreSQL"
+generar-adr --titulo="Adopción de Kubernetes" --formato=madr
+```
+
+**Archivos requeridos:**
+- `{{session_state_location}}` - Estado de sesión
+- `{{adr_location}}` - Ubicación de ADRs existentes (para auto-numeración)
+
+**Archivos que puede leer (si existen):**
+- `{{contexto_proyecto_location}}` - Para extraer contexto del proyecto
+- `{{adr_location}}/README.md` - Índice de ADRs existentes
+
+**Archivos que genera:**
+- `{{adr_location}}/[NNN]-[titulo-slug].md` - Archivo ADR generado
+- Actualiza `{{adr_location}}/README.md` - Índice de ADRs
 
 **Principal:**
 - **Título de la decisión:** Nombre descriptivo de la decisión arquitectónica
@@ -87,6 +109,9 @@ Debes de seguir todas las instrucciones de activación exactamente como se espec
 ---
 
 ## 🔄 Proceso Paso a Paso
+
+**Paso 0 [CRÍTICO - OBLIGATORIO]:** 
+Cargar y leer `{{session_state_location}}` y `{project-root}/.cochas/CONFIG_INIT.yaml` antes de continuar.
 
 ### **Paso 1: Validación de Entradas** ✅
 
@@ -274,6 +299,73 @@ Notificar al usuario:
 
 ---
 
+## 🔐 Restricciones
+
+1. **Solo genera archivos Markdown** (no otros formatos)
+2. **Requiere parámetros mínimos:** titulo, contexto, decision, consecuencias
+3. **No modifica ADRs existentes** - Los ADRs son inmutables, se crean nuevos que superseden
+4. **Numeración secuencial obligatoria** - No permite saltos en la numeración
+5. **Un ADR por decisión** - No mezcla múltiples decisiones en un solo archivo
+6. **Slug máximo 50 caracteres** - Nombres de archivo truncados automáticamente
+
+---
+
+## 📊 Métricas Sugeridas
+
+Trackear en `{{session_state_location}}`:
+
+| Métrica | Descripción |
+|---------|-------------|
+| adrs_generados_total | Total de ADRs generados |
+| adrs_por_formato | Distribución por formato (Nygard, MADR, Y-Statement) |
+| adrs_por_estado | Distribución por estado (Aceptado, Propuesto, etc.) |
+| adrs_supersedidos | Total de ADRs que han sido supersedidos |
+| tiempo_promedio_generacion | Tiempo promedio para generar un ADR |
+
+---
+
+## 🔄 Actualización de Session State
+
+### Registro de Eventos
+
+**Al generar un ADR:**
+
+```json
+{
+  "timestamp": "[timestamp_actual]",
+  "rol": "[rol_actual]",
+  "herramienta": "generar_adr",
+  "tipo": "adr_generado",
+  "detalle": "ADR [NNN]: [titulo] - Formato: [formato] - Estado: [estado]"
+}
+```
+
+**Actualizar registro de ADRs en session_state:**
+
+```json
+{
+  "adrs": {
+    "ultimo_numero": [NNN],
+    "total": [X],
+    "lista": [
+      {
+        "numero": "001",
+        "titulo": "[titulo]",
+        "archivo": "{{adr_location}}/001-[slug].md",
+        "estado": "aceptado",
+        "fecha": "[timestamp]"
+      }
+    ]
+  }
+}
+```
+
+**Actualizar metadata:**
+- Incrementar `metadata.total_artefactos_generados`
+- Actualizar `metadata.ultima_actividad`
+
+---
+
 ## ⚠️ Manejo de Errores y Casos Borde
 
 | Situación | Acción |
@@ -416,3 +508,4 @@ Trade-offs aceptables para fase de validación MVP.
 | Versión | Fecha | Cambios Principales |
 |---------|-------|---------------------|
 | 1.0 | 2025-10-07 | ✅ Creación inicial<br>✅ Soporte para formatos Nygard, MADR y Y-Statement<br>✅ Auto-numeración de ADRs<br>✅ Integración con `define_arquitectura` |
+| 2.1 | 2026-01-04 | ✅ Integración con placeholders y session_state<br>✅ Paso 0 crítico obligatorio<br>✅ Secciones de Restricciones y Métricas<br>✅ Registro de eventos en log |

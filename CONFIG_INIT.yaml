@@ -19,23 +19,15 @@ plantillas_location: '{project-root}/.cochas/plantillas'
 contexto_proyecto_plantilla: '{project-root}/.cochas/plantillas/contexto_proyecto_plantilla.md'
 backlog_desarrollo_plantilla: '{project-root}/.cochas/plantillas/backlog_desarrollo_plantilla.md'
 
-# Estados de HU (ciclo de vida)
-# [ ] Pendiente - HU creada, sin analizar
-# [R] Refinada - Analizada con criterios y estimación (por refinar_hu)
-# [A] Aprobada - Validada arquitectónicamente (por validar_hu)
-# [P] Planificada - Tiene plan de implementación (por planificar_hu)
-# [E] En Ejecución - ArchDev ejecutando el plan (por ejecutar_plan)
-# [X] Completada - Implementación terminada (por ejecutar_plan)
-# [B] Bloqueada - Dependencias no resueltas (por cualquier herramienta)
-
 ruta_herramientas: '{project-root}/.cochas/herramientas/herramientas-activas.md'
 
 architecture_sharded_location: '{project-root}/.cochas/artifacts/architecture'
 architecture_file: '{project-root}/.cochas/artifacts/architecture/index.md'
-dod_pivots_location: '{project-root}/.cochas/artifacts/architecture/dod-pivots.md'
 
-# Core Configuration Values
 communication_language: Español
 document_output_language: Español
 user_name: Javier Garcia
 output_folder: '{project-root}/.cochas'
+
+orchestrator_name: Cochas 
+orchestrator_version: 3.1
