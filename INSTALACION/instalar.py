@@ -9,13 +9,18 @@
 Este script instala el sistema COCHAS en cualquier proyecto.
 
 Uso:
-    python instalar.py                    # Modo interactivo
-    python instalar.py "C:\mi\proyecto"   # Ruta como argumento
+    python instalar.py                       # Modo interactivo
+    python instalar.py "C:/mi/proyecto"      # Ruta como argumento
+    python instalar.py --update              # Actualizar repo desde GitHub
+    python instalar.py --help                # Mostrar ayuda
 """
 
 import os
 import sys
 import shutil
+import subprocess
+import platform
+import tempfile
 from pathlib import Path
 from datetime import datetime
 
@@ -23,6 +28,11 @@ from datetime import datetime
 # ============================================
 # CONFIGURACIÓN
 # ============================================
+
+# URL del repositorio de COCHAS
+REPO_URL = "https://github.com/JavierDevCol/SAC.git"
+REPO_NAME = "SAC"
+REPO_BRANCH = "feature/instalacion"  # Rama a clonar
 
 # Carpetas a copiar desde la raíz de ia_prompts
 CARPETAS_COCHAS = [
@@ -83,6 +93,153 @@ def get_root_directory():
     return get_script_directory().parent
 
 
+def get_temp_repo_path():
+    """
+    Obtiene la ruta temporal donde se clonará el repositorio.
+    - Windows: %TEMP%/cochas_repo/
+    - Linux/Mac: /tmp/cochas_repo/
+    """
+    if platform.system() == "Windows":
+        temp_base = Path(tempfile.gettempdir())
+    else:
+        temp_base = Path("/tmp")
+    
+    return temp_base / "cochas_repo"
+
+
+def is_git_available():
+    """Verifica si Git está disponible en el sistema."""
+    try:
+        result = subprocess.run(
+            ["git", "--version"],
+            capture_output=True,
+            text=True,
+            timeout=10
+        )
+        return result.returncode == 0
+    except (subprocess.SubprocessError, FileNotFoundError):
+        return False
+
+
+def is_local_install():
+    """
+    Verifica si el script se está ejecutando desde una instalación local
+    (dentro del proyecto ia_prompts completo).
+    """
+    root_dir = get_root_directory()
+    
+    # Verificar si existen las carpetas necesarias en el padre
+    for folder in CARPETAS_COCHAS:
+        if not (root_dir / folder).exists():
+            return False
+    
+    return True
+
+
+def clone_repository(dest_path):
+    """Clona el repositorio desde GitHub."""
+    print_info(f"Clonando repositorio desde {REPO_URL}...")
+    
+    try:
+        # Eliminar carpeta si existe
+        if dest_path.exists():
+            shutil.rmtree(dest_path)
+        
+        # Crear carpeta padre si no existe
+        dest_path.parent.mkdir(parents=True, exist_ok=True)
+        
+        # Clonar repositorio
+        result = subprocess.run(
+            ["git", "clone", "--depth", "1", "--branch", REPO_BRANCH, REPO_URL, str(dest_path)],
+            capture_output=True,
+            text=True,
+            timeout=120
+        )
+        
+        if result.returncode == 0:
+            print_success("Repositorio clonado correctamente")
+            return True
+        else:
+            print_error(f"Error al clonar: {result.stderr}")
+            return False
+            
+    except subprocess.TimeoutExpired:
+        print_error("Tiempo de espera agotado al clonar el repositorio")
+        return False
+    except Exception as e:
+        print_error(f"Error inesperado: {e}")
+        return False
+
+
+def update_repository(repo_path):
+    """Actualiza el repositorio con git pull."""
+    print_info("Actualizando repositorio...")
+    
+    try:
+        result = subprocess.run(
+            ["git", "-C", str(repo_path), "pull", "--ff-only"],
+            capture_output=True,
+            text=True,
+            timeout=60
+        )
+        
+        if result.returncode == 0:
+            if "Already up to date" in result.stdout or "Ya está actualizado" in result.stdout:
+                print_success("El repositorio ya está actualizado")
+            else:
+                print_success("Repositorio actualizado correctamente")
+            return True
+        else:
+            print_error(f"Error al actualizar: {result.stderr}")
+            return False
+            
+    except subprocess.TimeoutExpired:
+        print_error("Tiempo de espera agotado al actualizar")
+        return False
+    except Exception as e:
+        print_error(f"Error inesperado: {e}")
+        return False
+
+
+def ensure_repo_available():
+    """
+    Asegura que el repositorio esté disponible.
+    Retorna la ruta al directorio raíz de ia_prompts.
+    """
+    # Primero verificar si estamos en una instalación local
+    if is_local_install():
+        print_info("Usando instalación local")
+        return get_root_directory()
+    
+    # Si no, necesitamos clonar/actualizar desde GitHub
+    print_info("No se encontró instalación local, usando repositorio remoto...")
+    
+    if not is_git_available():
+        print_error("Git no está instalado o no está disponible en el PATH")
+        print_info("Instala Git desde: https://git-scm.com/downloads")
+        print_info("O usa Chocolatey: choco install git")
+        return None
+    
+    temp_repo_path = get_temp_repo_path()
+    
+    # Si ya existe el repo en temp, actualizarlo
+    if temp_repo_path.exists() and (temp_repo_path / ".git").exists():
+        print_info(f"Repositorio encontrado en {temp_repo_path}")
+        if update_repository(temp_repo_path):
+            return temp_repo_path
+        else:
+            # Si falla el update, intentar clonar de nuevo
+            print_warning("Fallo la actualización, re-clonando...")
+            if clone_repository(temp_repo_path):
+                return temp_repo_path
+            return None
+    else:
+        # Clonar el repositorio
+        if clone_repository(temp_repo_path):
+            return temp_repo_path
+        return None
+
+
 def validate_source_folders(root_dir):
     """Valida que existan las carpetas fuente necesarias."""
     missing = []
@@ -131,11 +288,27 @@ def copy_folder(source, destination, folder_name):
     return True
 
 
-def install_cochas(dest_path):
+def get_github_agents_source(root_dir):
+    """
+    Obtiene la ruta a los archivos de .github/agents.
+    Puede estar en INSTALACION/.github/agents o directamente en el repo.
+    """
+    # Primero intentar en INSTALACION/
+    instalacion_path = root_dir / "INSTALACION" / ".github" / "agents"
+    if instalacion_path.exists():
+        return instalacion_path
+    
+    # Si no, buscar en la raíz del repo
+    root_github_path = root_dir / ".github" / "agents"
+    if root_github_path.exists():
+        return root_github_path
+    
+    return None
+
+
+def install_cochas(dest_path, root_dir):
     """Ejecuta la instalación de COCHAS."""
     dest = Path(dest_path)
-    root_dir = get_root_directory()
-    script_dir = get_script_directory()
     
     print("\n📦 Iniciando instalación...\n")
     
@@ -160,9 +333,9 @@ def install_cochas(dest_path):
     
     # 4. Copiar archivos de activación de agentes
     print("\n📂 Copiando activadores de Copilot:\n")
-    github_source = script_dir / GITHUB_AGENTS_SOURCE
+    github_source = get_github_agents_source(root_dir)
     
-    if github_source.exists():
+    if github_source and github_source.exists():
         for agent_file in github_source.glob("*.agent.md"):
             try:
                 shutil.copy2(agent_file, github_dest / agent_file.name)
@@ -171,8 +344,8 @@ def install_cochas(dest_path):
                 print_error(f"{agent_file.name} - Error: {e}")
                 return False
     else:
-        print_error(f"No se encontró la carpeta de agentes: {github_source}")
-        return False
+        print_warning("No se encontró la carpeta de activadores .github/agents")
+        print_info("Puedes copiarlos manualmente desde INSTALACION/.github/agents/")
     
     # 5. Crear carpetas de artefactos (vacías)
     print("\n📂 Creando estructura de artefactos:\n")
@@ -230,24 +403,91 @@ def print_final_summary(dest_path):
     print()
 
 
+def print_help():
+    """Muestra la ayuda del comando."""
+    print("""
+📖 USO:
+    python instalar.py [RUTA]              Instala COCHAS en la ruta especificada
+    python instalar.py                     Modo interactivo (pide la ruta)
+    python instalar.py --update            Actualiza el repositorio en caché
+    python instalar.py --help              Muestra esta ayuda
+
+📍 EJEMPLOS:
+    python instalar.py "C:/proyectos/mi-app"
+    python instalar.py "/home/user/mi-proyecto"
+    python instalar.py --update
+
+🔧 OPCIONES:
+    --update    Actualiza el repositorio COCHAS desde GitHub sin instalar.
+                Útil para obtener la última versión antes de instalar.
+    
+    --help      Muestra este mensaje de ayuda.
+
+📦 FUENTES:
+    El script primero busca los archivos localmente.
+    Si no los encuentra, clona automáticamente desde:
+    {repo_url}
+    
+    El repositorio se guarda en:
+    - Windows: %TEMP%/cochas_repo/
+    - Linux/Mac: /tmp/cochas_repo/
+""".format(repo_url=REPO_URL))
+
+
+def do_update():
+    """Ejecuta solo la actualización del repositorio."""
+    print_banner()
+    print("🔄 Modo actualización\n")
+    
+    if not is_git_available():
+        print_error("Git no está instalado o no está disponible en el PATH")
+        return False
+    
+    temp_repo_path = get_temp_repo_path()
+    
+    if temp_repo_path.exists() and (temp_repo_path / ".git").exists():
+        print_info(f"Repositorio en: {temp_repo_path}")
+        return update_repository(temp_repo_path)
+    else:
+        print_info("No existe repositorio en caché, clonando...")
+        return clone_repository(temp_repo_path)
+
+
 def main():
     """Función principal."""
+    
+    # Procesar argumentos
+    args = sys.argv[1:]
+    
+    # --help
+    if "--help" in args or "-h" in args:
+        print_banner()
+        print_help()
+        sys.exit(0)
+    
+    # --update
+    if "--update" in args:
+        success = do_update()
+        sys.exit(0 if success else 1)
+    
     print_banner()
     
-    # Obtener directorios
-    root_dir = get_root_directory()
-    script_dir = get_script_directory()
+    # Obtener la raíz del proyecto (local o remoto)
+    root_dir = ensure_repo_available()
+    if root_dir is None:
+        print_error("No se pudo obtener el repositorio de COCHAS")
+        sys.exit(1)
     
     # Validar carpetas fuente
     missing = validate_source_folders(root_dir)
     if missing:
         print_error(f"Faltan carpetas fuente: {', '.join(missing)}")
-        print_info(f"Directorio raíz esperado: {root_dir}")
+        print_info(f"Directorio raíz: {root_dir}")
         sys.exit(1)
     
     # Obtener ruta destino
-    if len(sys.argv) > 1:
-        dest_path = sys.argv[1]
+    if args and not args[0].startswith("--"):
+        dest_path = args[0]
     else:
         print("📍 Ingresa la ruta donde instalar COCHAS:\n")
         print("   (La carpeta debe existir)\n")
@@ -268,7 +508,8 @@ def main():
         print_error(error)
         sys.exit(1)
     
-    print(f"\n📍 Destino: {dest_path}\n")
+    print(f"\n📍 Destino: {dest_path}")
+    print(f"📦 Fuente: {root_dir}\n")
     
     # Verificar instalación existente
     existing = check_existing_installation(dest_path)
@@ -280,7 +521,7 @@ def main():
             sys.exit(0)
     
     # Ejecutar instalación
-    success = install_cochas(dest_path)
+    success = install_cochas(dest_path, root_dir)
     
     if success:
         print_final_summary(dest_path)

@@ -17,7 +17,7 @@ El script te pedirá la ruta del proyecto donde instalar COCHAS.
 También puedes pasar la ruta como argumento:
 
 ```bash
-python instalar.py "C:\mi\proyecto"
+python instalar.py "C:/mi/proyecto"
 python instalar.py "/home/usuario/mi-proyecto"
 ```
 
@@ -31,6 +31,61 @@ python instalar.py "/home/usuario/mi-proyecto"
    - `config/`
 
 2. **Copia la carpeta `.github/agents/`** de esta instalación a `[tu-proyecto]/.github/agents/`
+
+---
+
+## 🌐 Instalación Sin Tener el Repositorio Local
+
+El script puede **descargar automáticamente** los archivos desde GitHub si no tienes el repositorio `ia_prompts` en tu equipo.
+
+### Requisitos
+
+- **Python 3.6+**
+- **Git** instalado y disponible en el PATH
+
+### ¿Cómo funciona?
+
+1. El script detecta si está dentro del proyecto `ia_prompts` completo
+2. Si **SÍ** → Usa los archivos locales
+3. Si **NO** → Clona automáticamente desde GitHub a una carpeta temporal:
+   - **Windows:** `%TEMP%\cochas_repo\`
+   - **Linux/Mac:** `/tmp/cochas_repo/`
+
+### Descargar solo el script
+
+Puedes descargar **solo el archivo `instalar.py`** y ejecutarlo en cualquier equipo:
+
+```bash
+# El script clonará el repositorio automáticamente
+python instalar.py "C:/mi/proyecto"
+```
+
+---
+
+## 🔄 Actualizar el Sistema
+
+Para obtener la última versión de COCHAS desde GitHub:
+
+```bash
+python instalar.py --update
+```
+
+Esto actualiza el repositorio en caché (`git pull`). Luego puedes reinstalar en tu proyecto:
+
+```bash
+python instalar.py "C:/mi/proyecto"
+```
+
+---
+
+## 📋 Comandos Disponibles
+
+| Comando | Descripción |
+|---------|-------------|
+| `python instalar.py` | Modo interactivo (pide la ruta) |
+| `python instalar.py "RUTA"` | Instala en la ruta especificada |
+| `python instalar.py --update` | Actualiza el repositorio desde GitHub |
+| `python instalar.py --help` | Muestra la ayuda |
 
 ---
 
@@ -48,16 +103,6 @@ INSTALACION/
         ├── analista_historias.agent.md
         └── narrador_commit.agent.md
 ```
-
-### `.github/agents/` - Activadores para Copilot
-
-| Archivo | Agente que Activa | Descripción |
-|---------|-------------------|-------------|
-| `arquitecto.agent.md` | Arquitecto Onad | Arquitectura estratégica y DDD |
-| `desarrollador.agent.md` | ArchDev Pro | Implementación, TDD, refactoring |
-| `devops.agent.md` | Arquitecto DevOps | CI/CD, infraestructura, DevSecOps |
-| `analista_historias.agent.md` | Analista de Historias | Refinamiento de HUs |
-| `narrador_commit.agent.md` | Narrador de Cambios | Conventional Commits |
 
 ---
 
@@ -130,12 +175,47 @@ Una vez activado un agente, puedes usar sus herramientas con el prefijo `>`:
 ## ⚠️ Notas Importantes
 
 1. **Python requerido**: El script necesita Python 3.6 o superior
-2. **Rutas fijas**: No renombres los archivos en `.cochas/agentes/`
-3. **Gitignore**: Considera agregar a tu `.gitignore`:
+2. **Git requerido**: Para descargar desde GitHub (si no tienes el repo local)
+3. **Rutas fijas**: No renombres los archivos en `.cochas/agentes/`
+4. **Gitignore**: Considera agregar a tu `.gitignore`:
    ```
    .cochas/session/
    .cochas/artifacts/
    ```
+
+---
+
+## 🐛 Solución de Problemas
+
+### "Git no está instalado"
+
+```bash
+# Windows (Chocolatey)
+choco install git
+
+# Windows (winget)
+winget install Git.Git
+
+# Linux (Ubuntu/Debian)
+sudo apt install git
+
+# Mac
+brew install git
+```
+
+### "Python no encontrado"
+
+```bash
+# Windows (Chocolatey)
+choco install python
+
+# Windows (winget)
+winget install Python.Python.3.11
+```
+
+### "La ruta no existe"
+
+Asegúrate de que la carpeta destino exista antes de ejecutar el instalador.
 
 ---
 
@@ -144,6 +224,7 @@ Una vez activado un agente, puedes usar sus herramientas con el prefijo `>`:
 - Documentación completa: `ia_prompts/README.md`
 - Crear nuevos agentes: `.cochas/plantillas/agente_plantilla.agent.md`
 - Crear nuevas herramientas: `.cochas/plantillas/herramienta_plantilla.tool.md`
+- Repositorio: https://github.com/JavierDevCol/SAC
 
 ---
 
