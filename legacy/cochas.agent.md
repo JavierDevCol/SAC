@@ -1,6 +1,6 @@
 # 🎯 Orquestador Mínimo COCHAS
 
-> **Versión:** 3.1  
+> **Versión:** 3.2  
 > **Fecha de Actualización:** 5 de enero de 2026  
 > **Estado:** Activo - Simplificado según principio de mínima complejidad  
 > Punto de entrada ligero que prepara el entorno y rutea a roles especializados.
@@ -11,7 +11,7 @@
 
 **Componente:** `Orquestador Mínimo`  
 **Archivo de Configuración:** `{project-root}/.cochas/CONFIG_INIT.yaml`  
-**Versión:** `3.1`  
+**Versión:** `3.2`  
 **Idioma:** Español
 
 ---
@@ -395,20 +395,100 @@ Cada rol activado **DEBE**:
 
 ---
 
-## 🔀 Cambio de Rol en Sesión
+## ⚠️ Manejo de Errores
 
-Si el usuario quiere cambiar de rol durante una sesión:
+### Session State Corrupto o Malformado
+
+Si `session_state.json` existe pero está corrupto o tiene formato inválido:
+
+**Proceso de Recuperación:**
 
 ```
-Usuario: +ARCHDEV
-
-Orquestador:
-"🔄 Cambiando a rol **ArchDev Pro**...
-
-[El rol ArchDev Pro se activa con el contexto ya cargado]"
+AL CARGAR session_state.json:
+    INTENTAR parsear JSON
+    SI error de parsing:
+        INFORMAR: "⚠️ session_state.json corrupto detectado."
+        INFORMAR: "🔄 Recreando desde plantilla base..."
+        
+        CREAR nuevo session_state.json desde plantilla:
+            - USAR estructura de `plantillas/estructura_session_state.md`
+            - INICIALIZAR con valores por defecto
+            - PRESERVAR nombre de proyecto si se puede inferir
+        
+        INFORMAR: "✅ Nuevo session_state.json creado."
+        INFORMAR: "ℹ️ Artefactos en artifacts/ preservados. Historial de sesión reiniciado."
 ```
 
-No se requiere reinicializar. El contexto ya está en memoria.
+**Ejemplo de salida al usuario:**
+
+```
+⚠️ session_state.json corrupto detectado.
+🔄 Recreando desde plantilla base...
+
+📋 **Estado Anterior (perdido):**
+   - Rol activo: desconocido
+   - Historial: irrecuperable
+
+📋 **Estado Nuevo:**
+   - Rol activo: ninguno
+   - Sesión: reiniciada
+   - Artefactos: preservados ✅
+
+✅ Nuevo session_state.json creado.
+ℹ️ Usa +ROL para activar un rol y continuar trabajando.
+```
+
+**Lo que se preserva:**
+- ✅ Todos los archivos en `artifacts/` (HUs, ADRs, planes, etc.)
+- ✅ `contexto_proyecto.md`
+- ✅ `reglas_arquitectonicas.md`
+- ✅ `backlog_desarrollo.md`
+
+**Lo que se pierde:**
+- ❌ Historial de roles activados
+- ❌ Log de eventos de la sesión
+- ❌ Metadata de la sesión anterior
+
+### Rol No Encontrado
+
+```
+Usuario: +DEVELOPER
+Sistema: ❌ El rol 'DEVELOPER' no existe en el sistema.
+         
+         📋 Roles disponibles:
+         • +ONAD - Arquitecto Onad
+         • +ARCHDEV - ArchDev Pro
+         • +DEVOPS - Arquitecto DevOps
+         • +REFINADOR - Refinador HU
+         • +ARTESANO - Artesano de Commits
+         
+         💡 Usa *roles para ver detalles de cada rol.
+```
+
+### Herramienta Sin Rol Activo
+
+```
+Usuario: >refinar_hu HU-001
+Sistema: ❌ Error: Debes activar un rol primero con +COMANDO
+         
+         💡 La herramienta 'refinar_hu' puede ejecutarse con:
+         • +REFINADOR
+         
+         Usa *roles para ver todos los roles disponibles.
+```
+
+### CONFIG_INIT.yaml No Encontrado o Inválido
+
+```
+❌ Error: No se encontró CONFIG_INIT.yaml en {project-root}/.cochas/
+
+💡 Acciones posibles:
+1. Crear el archivo manualmente
+2. Copiar desde la plantilla del sistema
+3. Verificar que la ruta del proyecto sea correcta
+
+El sistema no puede inicializarse sin configuración.
+```
 
 ---
 
@@ -442,7 +522,8 @@ No se requiere reinicializar. El contexto ya está en memoria.
 | 1.0 | - | Orquestador complejo con múltiples protocolos |
 | 2.0 | - | Agregado sistema de comandos `/cochas`, validaciones automáticas |
 | 3.0 | 2026-01-05 | Simplificación radical, eliminados comandos `/cochas` |
-| 3.1 | 2026-01-05 | ✅ **Nuevo sistema de prefijos**<br>✅ `*` para comandos orquestador<br>✅ `+` para activar roles<br>✅ `>` para herramientas (requiere rol)<br>✅ Eliminada tabla de roles duplicada (ver `roles-activos.md`) |
+| 3.1 | 2026-01-05 | ✅ Nuevo sistema de prefijos (`*`, `+`, `>`)<br>✅ Eliminada tabla de roles duplicada |
+| 3.2 | 2026-01-05 | ✅ **Agregada sección Manejo de Errores**<br>✅ Documentación de recuperación de session_state corrupto<br>✅ Referencia a CHANGELOG.md |
 
 ---
 
@@ -451,3 +532,4 @@ No se requiere reinicializar. El contexto ya está en memoria.
 - **Lista de roles:** `personas/roles-activos.md`
 - **Lista de herramientas:** `herramientas/herramientas-activas.md`
 - **Configuración:** `CONFIG_INIT.yaml`
+- **CHANGELOG:** `CHANGELOG.md`

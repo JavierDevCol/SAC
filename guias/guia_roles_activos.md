@@ -1,14 +1,15 @@
 # 👥 Guía de Roles Activos del Sistema
 
-> **Sistema:** Cochas - Orquestación de Agentes IA  
-> **Versión:** 2.0  
-> **Última Actualización:** 16 de octubre de 2025
+> **Sistema:** COCHAS - Orquestación de Agentes IA  
+> **Versión:** 3.0  
+> **Última Actualización:** 5 de enero de 2026
 
 ---
 
 ## 📖 Índice
 
 - [Introducción](#introducción)
+- [Sistema de Comandos](#sistema-de-comandos)
 - [Roles Disponibles](#roles-disponibles)
 - [Matriz de Capacidades](#matriz-de-capacidades)
 - [Cuándo Usar Cada Rol](#cuándo-usar-cada-rol)
@@ -24,11 +25,23 @@ Los roles (o personas) son agentes especializados con personalidades únicas, á
 
 ---
 
+## Sistema de Comandos
+
+El sistema COCHAS usa **3 prefijos** para diferentes tipos de acciones:
+
+| Prefijo | Propósito | Ejemplo | Requiere Rol Activo |
+|---------|-----------|---------|---------------------|
+| `*` | **Comandos del Orquestador** | `*roles`, `*status`, `*HU` | ❌ No |
+| `+` | **Activar un Rol** | `+ONAD`, `+ARCHDEV` | ❌ No |
+| `>` | **Ejecutar una Herramienta** | `>refinar_hu`, `>generar_commit` | ✅ Sí |
+
+---
+
 ## Roles Disponibles
 
 ### 🏛️ Arquitecto Onad (ONAD)
 
-**Comando de activación:** `@ONAD` o `@switch ONAD`
+**Comando de activación:** `+ONAD`
 
 **Especialidad:** Arquitectura estratégica y decisiones de alto nivel
 
@@ -39,9 +52,11 @@ Los roles (o personas) son agentes especializados con personalidades únicas, á
 - 📊 **Enfoque:** Análisis de trade-offs y validación de supuestos
 
 **Herramientas:**
-- `tomar_contexto` - Analiza el proyecto completo
-- `define_arquitectura` - Diseña arquitecturas con visión estratégica
-- `generar_adr` - Documenta decisiones arquitectónicas importantes
+- `>tomar_contexto` - Analiza el proyecto completo
+- `>define_arquitectura` - Diseña arquitecturas con visión estratégica
+- `>generar_adr` - Documenta decisiones arquitectónicas importantes
+- `>validar_hu` - Valida viabilidad arquitectónica de HUs
+- `>planificar_hu` - Crea planes de implementación alineados con arquitectura
 
 **Cuándo usarlo:**
 - ✅ Diseñar la arquitectura de un nuevo proyecto
@@ -86,7 +101,7 @@ Interesante. Antes de diseñar la implementación, validemos:
 
 ### 💻 ArchDev Pro (ARCHDEV)
 
-**Comando de activación:** `@ARCHDEV` o `@switch ARCHDEV`
+**Comando de activación:** `+ARCHDEV`
 
 **Especialidad:** Implementación de código y refactoring
 
@@ -97,13 +112,14 @@ Interesante. Antes de diseñar la implementación, validemos:
 - 🛠️ **Enfoque:** Código limpio, tests y mejores prácticas
 
 **Herramientas:**
-- `tomar_contexto` - Analiza el proyecto completo
-- `refactorizar` - Mejora código existente aplicando patrones
-- `analizar_code_smells` - Detecta problemas de calidad en el código
-- `solucionar_smells` - Aplica soluciones a code smells detectados
-- `crear_pruebas` - Genera tests unitarios y de integración
-- `verifica_pruebas` - Valida calidad y cobertura de tests
-- `generar_adr` - Documenta decisiones técnicas de implementación
+- `>tomar_contexto` - Analiza el proyecto completo
+- `>refactorizar` - Mejora código existente aplicando patrones
+- `>analizar_code_smells` - Detecta problemas de calidad en el código
+- `>solucionar_smells` - Aplica soluciones a code smells detectados
+- `>crear_pruebas` - Genera tests unitarios y de integración
+- `>verifica_pruebas` - Valida calidad y cobertura de tests
+- `>ejecutar_plan` - Ejecuta planes de implementación generados
+- `>generar_adr` - Documenta decisiones técnicas de implementación
 
 **Cuándo usarlo:**
 - ✅ Implementar código basado en diseños arquitectónicos
@@ -131,21 +147,21 @@ Usuario: Necesito refactorizar el módulo de autenticación
 ARCHDEV:
 Perfecto. Voy a analizar el código y aplicar mejoras.
 
-> analizar_code_smells
+>analizar_code_smells
 
 **Code Smells Detectados:**
 1. Long Method en AuthService.authenticate()
 2. Feature Envy en TokenValidator
 3. Duplicación en métodos de validación
 
-> solucionar_smells
+>solucionar_smells
 
 **Refactorings Aplicados:**
 1. Extract Method para reducir complejidad
 2. Move Method para cohesión
 3. Extract Common para DRY
 
-> crear_pruebas
+>crear_pruebas
 
 **Tests Generados:**
 ✅ 12 tests unitarios
@@ -157,7 +173,7 @@ Perfecto. Voy a analizar el código y aplicar mejoras.
 
 ### 🚀 Arquitecto DevOps (DEVOPS)
 
-**Comando de activación:** `@DEVOPS` o `@switch DEVOPS`
+**Comando de activación:** `+DEVOPS`
 
 **Especialidad:** Infraestructura, pipelines y deployment
 
@@ -168,8 +184,8 @@ Perfecto. Voy a analizar el código y aplicar mejoras.
 - 🔧 **Enfoque:** Automatización, monitoreo y confiabilidad
 
 **Herramientas:**
-- `tomar_contexto` - Analiza el proyecto completo
-- `diagnosticar_devops` - Analiza infraestructura, pipelines y deployment
+- `>tomar_contexto` - Analiza el proyecto completo
+- `>diagnosticar_devops` - Analiza infraestructura, pipelines y deployment
 
 **Cuándo usarlo:**
 - ✅ Configurar pipelines CI/CD
@@ -192,7 +208,7 @@ Usuario: Necesito configurar CI/CD con GitHub Actions
 DEVOPS:
 Perfecto. Voy a diagnosticar tu proyecto y proponer un pipeline.
 
-> diagnosticar_devops
+>diagnosticar_devops
 
 **Diagnóstico Completo:**
 
@@ -218,7 +234,7 @@ Perfecto. Voy a diagnosticar tu proyecto y proponer un pipeline.
 
 ### 📝 Refinador HU (REFINADOR)
 
-**Comando de activación:** `@REFINADOR` o `@switch REFINADOR`
+**Comando de activación:** `+REFINADOR`
 
 **Especialidad:** Refinamiento de historias de usuario
 
@@ -229,8 +245,8 @@ Perfecto. Voy a diagnosticar tu proyecto y proponer un pipeline.
 - 📋 **Enfoque:** Claridad, completitud y estimabilidad
 
 **Herramientas:**
-- `tomar_contexto` - Analiza el proyecto completo
-- `refinar_hu` - Refina historias de usuario con criterios claros
+- `>tomar_contexto` - Analiza el proyecto completo
+- `>refinar_hu` - Refina historias de usuario con criterios claros
 
 **Cuándo usarlo:**
 - ✅ Refinar historias de usuario antes del sprint
@@ -252,7 +268,7 @@ Usuario: HU: Como usuario quiero buscar productos
 REFINADOR:
 Veo que esta historia necesita refinamiento. Vamos a clarificarla.
 
-> refinar_hu
+>refinar_hu
 
 **Historia Refinada:**
 
@@ -285,7 +301,7 @@ Para encontrar rápidamente lo que necesito
 
 ### 🎨 Artesano de Commits (ARTESANO)
 
-**Comando de activación:** `@ARTESANO` o `@switch ARTESANO`
+**Comando de activación:** `+ARTESANO`
 
 **Especialidad:** Creación de mensajes de commit profesionales
 
@@ -296,7 +312,7 @@ Para encontrar rápidamente lo que necesito
 - 📝 **Enfoque:** Conventional Commits y trazabilidad
 
 **Herramientas:**
-- `generar_commit` - Crea mensajes de commit siguiendo mejores prácticas
+- `>generar_commit` - Crea mensajes de commit siguiendo mejores prácticas
 
 **Cuándo usarlo:**
 - ✅ Crear mensajes de commit profesionales
@@ -317,7 +333,7 @@ Usuario: Necesito un commit para los cambios de autenticación
 ARTESANO:
 Perfecto. Voy a generar un mensaje de commit profesional.
 
-> generar_commit
+>generar_commit
 
 **Mensaje de Commit Generado:**
 
@@ -380,19 +396,19 @@ git commit -m "feat(auth): implement JWT-based authentication" -m "..."
 ### Preguntas Guía
 
 **¿Necesitas tomar una decisión arquitectónica importante?**
-→ Usa **ONAD** para analizar trade-offs y alternativas
+→ Usa **+ONAD** para analizar trade-offs y alternativas
 
 **¿Ya tienes el diseño y necesitas implementarlo?**
-→ Usa **ArchDev Pro** para escribir código limpio
+→ Usa **+ARCHDEV** para escribir código limpio
 
 **¿Necesitas configurar infraestructura o deployment?**
-→ Usa **DevOps** para automatizar y optimizar
+→ Usa **+DEVOPS** para automatizar y optimizar
 
 **¿Tienes historias de usuario ambiguas?**
-→ Usa **Refinador HU** para clarificarlas
+→ Usa **+REFINADOR** para clarificarlas
 
 **¿Necesitas commitear cambios profesionalmente?**
-→ Usa **Artesano** para documentar correctamente
+→ Usa **+ARTESANO** para documentar correctamente
 
 ---
 
@@ -400,18 +416,18 @@ git commit -m "feat(auth): implement JWT-based authentication" -m "..."
 
 | Escenario | Rol Recomendado | Justificación |
 |-----------|----------------|---------------|
-| Diseñar sistema desde cero | **ONAD** | Requiere visión estratégica y análisis de trade-offs |
-| Evaluar propuesta técnica | **ONAD** | Necesita validación crítica y alternativas |
-| Implementar feature | **ArchDev Pro** | Código concreto con tests |
-| Mejorar código existente | **ArchDev Pro** | Refactoring táctico |
-| Configurar pipeline | **DevOps** | Automatización y deployment |
-| Optimizar infraestructura | **DevOps** | Conocimiento de cloud y ops |
-| Clarificar requisitos | **Refinador HU** | Análisis de negocio técnico |
-| Documentar cambios en Git | **Artesano** | Conventional Commits |
-| Resolver deuda técnica arquitectónica | **ONAD** | Análisis estratégico |
-| Resolver code smells | **ArchDev Pro** | Refactoring de código |
-| Investigar problema de producción | **DevOps** | Troubleshooting y logs |
-| Estimar complejidad de HU | **Refinador HU** | Análisis técnico de historias |
+| Diseñar sistema desde cero | **+ONAD** | Requiere visión estratégica y análisis de trade-offs |
+| Evaluar propuesta técnica | **+ONAD** | Necesita validación crítica y alternativas |
+| Implementar feature | **+ARCHDEV** | Código concreto con tests |
+| Mejorar código existente | **+ARCHDEV** | Refactoring táctico |
+| Configurar pipeline | **+DEVOPS** | Automatización y deployment |
+| Optimizar infraestructura | **+DEVOPS** | Conocimiento de cloud y ops |
+| Clarificar requisitos | **+REFINADOR** | Análisis de negocio técnico |
+| Documentar cambios en Git | **+ARTESANO** | Conventional Commits |
+| Resolver deuda técnica arquitectónica | **+ONAD** | Análisis estratégico |
+| Resolver code smells | **+ARCHDEV** | Refactoring de código |
+| Investigar problema de producción | **+DEVOPS** | Troubleshooting y logs |
+| Estimar complejidad de HU | **+REFINADOR** | Análisis técnico de historias |
 
 ---
 
@@ -419,120 +435,136 @@ git commit -m "feat(auth): implement JWT-based authentication" -m "..."
 
 ### Flujo 1: Nuevo Proyecto
 
-```
-1. @ONAD
-   > tomar_contexto              # Analizar proyecto
-   > define_arquitectura          # Diseñar arquitectura
-   > generar_adr                  # Documentar decisiones
+```bash
+# 1. Analizar y diseñar arquitectura
++ONAD
+>tomar_contexto
+>define_arquitectura
+>generar_adr
 
-2. @DEVOPS
-   > diagnosticar_devops          # Configurar infraestructura
+# 2. Configurar infraestructura
++DEVOPS
+>diagnosticar_devops
 
-3. @ARCHDEV
-   > refactorizar                 # Implementar código
-   > crear_pruebas                # Agregar tests
+# 3. Implementar código
++ARCHDEV
+>ejecutar_plan
+>crear_pruebas
 
-4. @ARTESANO
-   > generar_commit               # Documentar cambios
+# 4. Documentar cambios
++ARTESANO
+>generar_commit
 ```
 
 ---
 
 ### Flujo 2: Refactoring Mayor
 
-```
-1. @ONAD
-   > tomar_contexto              # Analizar situación actual
-   Validar propuesta de refactoring
+```bash
+# 1. Analizar situación actual
++ONAD
+>tomar_contexto
+# Validar propuesta de refactoring
 
-2. @ARCHDEV
-   > analizar_code_smells         # Detectar problemas
-   > solucionar_smells            # Aplicar mejoras
-   > verifica_pruebas             # Validar tests
+# 2. Aplicar mejoras
++ARCHDEV
+>analizar_code_smells
+>solucionar_smells
+>verifica_pruebas
 
-3. @ARTESANO
-   > generar_commit               # Documentar refactoring
+# 3. Documentar refactoring
++ARTESANO
+>generar_commit
 ```
 
 ---
 
 ### Flujo 3: Sprint Planning
 
-```
-1. @REFINADOR
-   > refinar_hu                   # Clarificar historias
+```bash
+# 1. Clarificar historias
++REFINADOR
+>refinar_hu HU-001
 
-2. @ONAD
-   Validar viabilidad técnica de historias
+# 2. Validar y planificar
++ONAD
+>validar_hu HU-001
+>planificar_hu HU-001
 
-3. @ARCHDEV
-   Estimar esfuerzo de implementación
+# 3. Estimar esfuerzo
++ARCHDEV
+# Revisar plan y estimar
 ```
 
 ---
 
 ### Flujo 4: Deployment de Feature
 
-```
-1. @ARCHDEV
-   > crear_pruebas                # Asegurar cobertura
-   > verifica_pruebas             # Validar calidad
+```bash
+# 1. Asegurar calidad
++ARCHDEV
+>crear_pruebas
+>verifica_pruebas
 
-2. @DEVOPS
-   > diagnosticar_devops          # Preparar deployment
+# 2. Preparar deployment
++DEVOPS
+>diagnosticar_devops
 
-3. @ARTESANO
-   > generar_commit               # Documentar release
+# 3. Documentar release
++ARTESANO
+>generar_commit
 ```
 
 ---
 
 ### Flujo 5: Resolución de Propuesta Técnica
 
-```
-1. @ONAD
-   Analizar propuesta con "No Comer Entero"
-   - Validar supuestos
-   - Evaluar trade-offs
-   - Proponer alternativas
+```bash
+# 1. Analizar propuesta con "No Comer Entero"
++ONAD
+# - Validar supuestos
+# - Evaluar trade-offs
+# - Proponer alternativas
 
-2. Si se aprueba → @ARCHDEV
-   Implementar la solución validada
+# 2. Si se aprueba → Implementar
++ARCHDEV
+>ejecutar_plan
 
-3. Si requiere infra → @DEVOPS
-   Configurar recursos necesarios
+# 3. Si requiere infra
++DEVOPS
+>diagnosticar_devops
 ```
 
 ---
 
 ## 💡 Tips para Elegir el Rol Correcto
 
-### Tip 1: Usa `@assign` Cuando Tengas Dudas
+### Tip 1: Usa `*roles` Cuando Tengas Dudas
 ```bash
-@assign "Tu descripción de la tarea"
+*roles    # Ver todos los roles disponibles
+*status   # Ver rol activo actual
 ```
-El sistema analizará tu necesidad y recomendará el rol más adecuado.
 
 ### Tip 2: Horizonte Temporal
-- **Largo plazo (6-12 meses)** → **ONAD**
-- **Sprint actual (1-2 semanas)** → **ArchDev Pro**
-- **Inmediato (operaciones)** → **DevOps**
-- **Planning** → **Refinador HU**
-- **Por commit** → **Artesano**
+- **Largo plazo (6-12 meses)** → **+ONAD**
+- **Sprint actual (1-2 semanas)** → **+ARCHDEV**
+- **Inmediato (operaciones)** → **+DEVOPS**
+- **Planning** → **+REFINADOR**
+- **Por commit** → **+ARTESANO**
 
 ### Tip 3: Naturaleza de la Tarea
-- **¿Qué hacer?** → **ONAD** (estrategia)
-- **¿Cómo implementar?** → **ArchDev Pro** (código)
-- **¿Cómo desplegar?** → **DevOps** (infraestructura)
-- **¿Qué construir exactamente?** → **Refinador HU** (requisitos)
-- **¿Cómo documentar?** → **Artesano** (commits)
+- **¿Qué hacer?** → **+ONAD** (estrategia)
+- **¿Cómo implementar?** → **+ARCHDEV** (código)
+- **¿Cómo desplegar?** → **+DEVOPS** (infraestructura)
+- **¿Qué construir exactamente?** → **+REFINADOR** (requisitos)
+- **¿Cómo documentar?** → **+ARTESANO** (commits)
 
 ### Tip 4: Nivel de Abstracción
-- **Alto nivel (arquitectura)** → **ONAD**
-- **Medio nivel (código)** → **ArchDev Pro**
-- **Operaciones (infra)** → **DevOps**
-- **Negocio (requisitos)** → **Refinador HU**
-- **Documentación (Git)** → **Artesano**
+- **Alto nivel (arquitectura)** → **+ONAD**
+- **Medio nivel (código)** → **+ARCHDEV**
+- **Operaciones (infra)** → **+DEVOPS**
+- **Negocio (requisitos)** → **+REFINADOR**
+- **Documentación (Git)** → **+ARTESANO**
 
 ---
 
@@ -542,23 +574,23 @@ Es común necesitar múltiples roles en una sesión. El sistema mantiene el cont
 
 ```bash
 # Analizar arquitectura
-@ONAD
-> define_arquitectura
++ONAD
+>define_arquitectura
 
 # Implementar código
-@ARCHDEV
-> refactorizar
++ARCHDEV
+>refactorizar
 
 # Configurar deployment
-@DEVOPS
-> diagnosticar_devops
++DEVOPS
+>diagnosticar_devops
 
 # Crear commit
-@ARTESANO
-> generar_commit
++ARTESANO
+>generar_commit
 
-# Ver historial de cambios
-@history
+# Ver estado
+*status
 ```
 
 **El sistema recuerda:**
@@ -578,8 +610,16 @@ Es común necesitar múltiples roles en una sesión. El sistema mantiene el cont
 
 ---
 
+## 📅 Historial de Versiones
+
+| Versión | Fecha | Cambios Principales |
+|---------|-------|---------------------|
+| 1.0 | - | Versión inicial con descripción de roles |
+| 2.0 | 2025-10-16 | Agregada matriz de capacidades y flujos de trabajo |
+| 3.0 | 2026-01-05 | ✅ **Nuevo sistema de prefijos**<br>✅ `+ROL` reemplaza `@ROL` y `@switch ROL`<br>✅ Herramientas sincronizadas con `herramientas-activas.md`<br>✅ Agregadas `>validar_hu` y `>planificar_hu` a ONAD<br>✅ Agregado `>ejecutar_plan` a ARCHDEV |
+
+---
+
 **¿No estás seguro qué rol usar?**
 
-Ejecuta: `@assign "descripción de tu tarea"`
-
-El orquestador te recomendará el rol más adecuado con justificación.
+Ejecuta: `*roles` para ver la lista completa con descripciones.

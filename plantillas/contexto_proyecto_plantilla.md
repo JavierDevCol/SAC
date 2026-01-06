@@ -1,170 +1,137 @@
-# Contexto del Proyecto: [Nombre del Proyecto Detectado]
+# Contexto del Proyecto: [Nombre]
 
-> **Último Análisis:** [Fecha y Hora del Análisis]  
-> **Analizado por:** [Herramienta y Rol ejecutor]  
-> **Nivel de Confianza:** [Alto/Medio/Bajo] basado en información disponible
+> **Generado:** [timestamp]  
+> **Confianza:** [Alto|Medio|Bajo]
 
 ---
 
-## 1. Resumen del Proyecto
+## 📊 Scorecard Ejecutivo
 
-[Descripción extraída del README o inferida del análisis]
+| Aspecto | Puntuación | Estado |
+|---------|------------|--------|
+| Arquitectura | [X]/10 | [🟢🟡🔴] |
+| Stack | [X]/10 | [🟢🟡🔴] |
+| Testing | [X]/10 | [🟢🟡🔴] |
+| DevOps | [X]/10 | [🟢🟡🔴] |
+| Documentación | [X]/10 | [🟢🟡🔴] |
 
-**Estado de Documentación:** [Completo/Básico/Pobre/Inexistente] - [Comentario breve sobre el estado]
+---
+
+## 1. Identificación
+
+- **Nombre:** [nombre del proyecto]
+- **Descripción:** [1-2 líneas]
+- **Tipo:** [API|Web|CLI|Librería|Monolito|Microservicio]
+- **Estado:** [Desarrollo|Producción|Mantenimiento|Legacy]
 
 ---
 
 ## 2. Stack Tecnológico
 
-- **Lenguaje Principal:** [Java 17, JavaScript ES2022, Python 3.11, etc.]
-- **Framework Principal:** [Spring Boot 3.1.5, React 18, Django 4.2, etc.]
-- **Base de Datos:** [PostgreSQL, MongoDB, Redis, etc.]
-- **Seguridad:** [Spring Security, JWT, OAuth2, etc.]
-- **Framework de Pruebas:** [JUnit 5, Jest, PyTest, etc.]
-- **Contenerización:** [Docker, Podman, sin containerización]
+| Categoría | Tecnología | Versión |
+|-----------|------------|---------|
+| Lenguaje | [Java/Python/JS/etc.] | [versión] |
+| Framework | [Spring/Django/React/etc.] | [versión] |
+| Base de Datos | [PostgreSQL/MongoDB/etc.] | [versión] |
+| Testing | [JUnit/Jest/PyTest/etc.] | [versión] |
+| Build | [Maven/Gradle/NPM/etc.] | [versión] |
 
 ---
 
-## 3. Gestión y Comandos
+## 3. Comandos Clave
 
-- **Gestor de Dependencias:** [Maven, Gradle, NPM, pip, etc.]
-- **Comandos Clave:**
-  - `[Comando de build]`: [Descripción]
-  - `[Comando de ejecución]`: [Descripción]
-  - `[Comando de testing]`: [Descripción]
-  - `[Comando de containerización]`: [Descripción]
+```bash
+# Build
+[comando de build]
 
----
+# Ejecutar
+[comando de ejecución]
 
-## 4. Arquitectura y Patrones
+# Tests
+[comando de tests]
 
-- **Estilo Arquitectónico:** [Hexagonal, Capas, Event-Driven, MVC, etc.]
-- **Nivel de Confianza:** [Alto/Medio/Bajo]
-- **Patrones de Diseño Detectados:**
-  - **[Patrón 1]:** [Descripción de implementación]
-  - **[Patrón 2]:** [Descripción de implementación]
-  - **[Patrón 3]:** [Descripción de implementación]
-
-**Capas Identificadas:**
-```
-[Representación visual de las capas detectadas]
-
-Ejemplo para Arquitectura Hexagonal:
-🏛️ Domain Layer (Core Business)
-├── model/ (Entidades de negocio)
-├── repository/ (Contratos de persistencia)
-└── service/ (Lógica de dominio)
-
-🔄 Application Layer (Use Cases)
-├── usecase/ (Casos de uso de la aplicación)
-└── dto/ (Objetos de transferencia)
-
-🔌 Infrastructure Layer (Adaptadores)
-├── rest/ (API REST controllers)
-├── persistence/ (Implementaciones de repositorios)
-└── config/ (Configuración técnica)
+# Docker (si aplica)
+[comando de docker]
 ```
 
 ---
 
-## 5. Componentes Clave
+## 4. Arquitectura
 
-- **Entidades Core del Dominio:**
-  - `[paquete.Entidad1]` - [Descripción]
-  - `[paquete.Entidad2]` - [Descripción]
-  - `[paquete.Entidad3]` - [Descripción]
+- **Estilo:** [Hexagonal|Capas|MVC|Event-Driven|Microservicios]
+- **Patrón Principal:** [DDD|CQRS|Repository|etc.]
 
-- **Casos de Uso / Servicios Principales:**
-  - `[paquete.CasoDeUso1]` - [Descripción]
-  - `[paquete.CasoDeUso2]` - [Descripción]
+### Estructura de Capas
+```
+[capa-1]/        # [Propósito]
+[capa-2]/        # [Propósito]
+[capa-3]/        # [Propósito]
+```
 
-- **Puntos de Entrada (Controllers/Handlers):**
-  - `[paquete.Controller1]` - [Descripción de endpoints]
-  - `[paquete.Controller2]` - [Descripción de endpoints]
-
-- **Clase Principal:**
-  - `[paquete.MainClass]` - [Descripción]
-
----
-
-## 6. Integraciones Externas
-
-- **Base de Datos Primaria:**
-  - [Tipo de BD] (configurado en [archivo de configuración])
-  - [Gestor de migraciones] detectado en `[ruta de migraciones]`
-
-- **APIs Documentadas:**
-  - [Tipo de documentación] en `[ruta del archivo]`
-  - Endpoints principales: [lista de endpoints]
-
-- **Integraciones Detectadas:**
-  - [Integración 1]: [Descripción]
-  - [Integración 2]: [Descripción]
-
-- **Mensajería/Eventos:**
-  - [Sistema de mensajería si existe]
+### Componentes Principales
+| Componente | Ubicación | Responsabilidad |
+|------------|-----------|-----------------|
+| [Entidad/Servicio] | [ruta] | [descripción breve] |
+| [Entidad/Servicio] | [ruta] | [descripción breve] |
+| [Entidad/Servicio] | [ruta] | [descripción breve] |
 
 ---
 
-## 7. Configuración DevOps
+## 5. Integraciones
 
-- **Containerización:**
-  - `Dockerfile`: [Descripción breve]
-  - `docker-compose.yml`: [Descripción breve]
-  - Puerto(s) expuesto(s): [lista de puertos]
-
-- **CI/CD Pipeline:**
-  - [Plataforma CI/CD] configurado en `[ruta del archivo]`
-  - Pipeline: [descripción de stages]
-  - **Oportunidades de mejora:** [si aplica]
-
-- **Configuración de Entorno:**
-  - `[archivo de configuración]` para configuración principal
-  - Profiles detectados: [lista de profiles]
-  - **Recomendación:** [si aplica]
-
-- **Infrastructure as Code:**
-  - [Herramienta IaC si existe]: [descripción]
+| Tipo | Tecnología | Configuración |
+|------|------------|---------------|
+| BD Principal | [tipo] | [archivo config] |
+| Cache | [tipo o N/A] | [archivo config] |
+| Mensajería | [tipo o N/A] | [archivo config] |
+| APIs Externas | [lista o N/A] | [archivo config] |
 
 ---
 
-## 8. Historial de Análisis
+## 6. DevOps
 
-| Fecha | Herramienta | Descripción | Observaciones |
-|-------|-------------|-------------|---------------|
-| [timestamp] | tomar_contexto | Análisis inicial del proyecto | [observaciones] |
+| Aspecto | Estado | Archivo |
+|---------|--------|---------|
+| Dockerfile | [✅/❌] | [ruta] |
+| Docker Compose | [✅/❌] | [ruta] |
+| CI/CD | [✅/❌] | [ruta] |
+| IaC | [✅/❌] | [ruta] |
 
----
-
-## 📊 Métricas de Calidad del Proyecto
-
-| Aspecto | Puntuación | Observación |
-|---------|------------|-------------|
-| Estructura arquitectónica | [X]/10 | [comentario] |
-| Stack tecnológico | [X]/10 | [comentario] |
-| DevOps maturity | [X]/10 | [comentario] |
-| Documentación | [X]/10 | [comentario] |
-| Mantenibilidad | [X]/10 | [comentario] |
-
-**Nivel de Confianza General:** [Alto/Medio/Bajo] ([X]/10)
+**Puertos:** [lista de puertos expuestos]  
+**Profiles:** [lista de profiles/entornos]
 
 ---
 
-## 💡 Recomendaciones
+## 7. Convenciones del Proyecto
 
-### 🔴 Críticas (Hacer Ahora)
-1. [Recomendación crítica 1]
-2. [Recomendación crítica 2]
-
-### 🟡 Importantes (Próximas 2 semanas)
-1. [Recomendación importante 1]
-2. [Recomendación importante 2]
-
-### 🟢 Mejoras Futuras
-1. [Mejora futura 1]
-2. [Mejora futura 2]
+- **Nomenclatura Commits:** [Conventional|Angular|Otro]
+- **Branching:** [GitFlow|Trunk|Feature Branch]
+- **Estructura Paquetes:** [por capa|por feature|híbrido]
 
 ---
 
-> **Nota:** Este archivo fue generado automáticamente por la herramienta `tomar_contexto`.  
-> Última actualización: [timestamp]
+## 8. Puntos de Atención
+
+### 🔴 Críticos
+- [Punto crítico 1]
+- [Punto crítico 2]
+
+### 🟡 Importantes
+- [Punto importante 1]
+- [Punto importante 2]
+
+### 🟢 Sugerencias
+- [Sugerencia 1]
+- [Sugerencia 2]
+
+---
+
+## 📝 Historial
+
+| Fecha | Acción | Detalle |
+|-------|--------|---------|
+| [timestamp] | Análisis inicial | Generado por >tomar_contexto |
+
+---
+
+> **Archivo generado automáticamente.** Editar solo si hay correcciones manuales necesarias.

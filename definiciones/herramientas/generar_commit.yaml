@@ -1,0 +1,45 @@
+# ============================================
+# DEFINICIÓN: generar_commit
+# ============================================
+id: generar_commit
+nombre: "Generar Commit"
+version: "2.1"
+estado: activo
+
+descripcion_corta: >
+  Analizar automáticamente un git diff y generar mensajes de commit claros,
+  estandarizados y semánticamente correctos siguiendo la especificación
+  Conventional Commits.
+
+# Roles que pueden usar esta herramienta
+roles_autorizados:
+  - ARTESANO
+  - ARCHDEV
+  - DEVOPS
+  - REFINADOR
+
+# Parámetros principales
+parametros:
+  - nombre: tipo_commit
+    valores: [auto, feat, fix, docs, style, refactor, perf, test, build, ci, chore]
+    defecto: auto
+  - nombre: incluir_body
+    tipo: boolean
+    defecto: true
+  - nombre: breaking_change
+    tipo: boolean
+    defecto: false
+
+# Artefactos que genera
+artefactos_generados:
+  - nombre: "diff.txt"
+    ubicacion: "cochas/artifacts/"
+    temporal: true
+
+# Invocada por otras herramientas
+invocada_por:
+  - refactorizar
+  - crear_pruebas
+
+# Referencia al archivo completo
+archivo_completo: "herramientas/generar_commit.md"

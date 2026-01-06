@@ -1,0 +1,25 @@
+# ============================================
+# DEFINICIÓN: ejecutar_plan
+# ============================================
+id: ejecutar_plan
+nombre: "Ejecutar Plan"
+version: "2.0"
+estado: activo
+
+descripcion_corta: >
+  Ejecutar planes de implementación generados por ONAD de forma estricta y literal.
+  Modificar código, crear tests, ejecutar builds. Detenerse ante errores.
+
+# Roles que pueden usar esta herramienta
+roles_autorizados:
+  - ARCHDEV
+
+# Comportamiento crítico
+comportamiento:
+  - "Ejecutar tareas del plan en orden estricto"
+  - "Detenerse inmediatamente ante errores"
+  - "Solicitar confirmación antes de comandos Git"
+  - "Reportar progreso al usuario"
+
+# Referencia al archivo completo
+archivo_completo: "herramientas/ejecutar_plan.md"

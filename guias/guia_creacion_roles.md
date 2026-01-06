@@ -227,30 +227,63 @@ Edita el archivo `personas/roles-activos.md` y agrega una fila:
 
 Si tu rol necesita herramientas nuevas:
 
-1. Crea archivo en `herramientas/nueva_herramienta.md`
-2. Regístrala en `herramientas/herramientas-activas.md`
+1. **Copia la plantilla** de `plantillas/herramienta_plantilla.tool.md`
+2. **Crea el archivo** en `herramientas/[nombre_herramienta].tool.md`
+3. **Personaliza** el contenido según la necesidad
+4. **Regístrala** en `herramientas/herramientas-activas.md`
 
-**Estructura básica de herramienta:**
-```markdown
-# [Nombre de la Herramienta]
+> ⚠️ **IMPORTANTE:** Toda herramienta DEBE incluir el paso obligatorio de **"Actualizar Estado de Sesión"** al final del proceso. Sin este paso, el sistema pierde trazabilidad.
 
-## Propósito
-[Qué hace esta herramienta]
+**Estructura obligatoria de una herramienta:**
 
-## Cuándo Usar
-[En qué situaciones se debe usar]
+```yaml
+# ============================================
+# MANDATORY - Instrucciones base (NO MODIFICAR)
+# ============================================
+mandatory:
+  - instruccion: "Seguir el proceso paso a paso en orden secuencial"
+  - instruccion: "Validar prerequisitos antes de ejecutar"
+  - instruccion: "Los pasos marcados como obligatorio:true NO se pueden omitir"
+  - instruccion: "Actualizar session_state.json al finalizar"  # ⚠️ CRÍTICO
 
-## Proceso de Ejecución
+# ============================================
+# PROCESO - Incluir siempre el paso final
+# ============================================
+proceso:
+  paso_1:
+    nombre: "[Tu primer paso]"
+    # ... pasos de la herramienta ...
 
-### Fase 1: [Nombre]
-[Pasos...]
+  # ⚠️ OBLIGATORIO - Este paso SIEMPRE debe existir
+  paso_final:
+    nombre: "Actualizar Estado de Sesión"
+    obligatorio: true
+    acciones:
+      - "Abrir/crear {{session_state_location}}"
+      - "Registrar herramienta ejecutada"
+      - "Actualizar timestamp de ultima_actividad"
+      - "Registrar artefactos generados"
+      - "Si hay HU activa, actualizar su estado"
+      - "Guardar cambios en session_state.json"
 
-### Fase 2: [Nombre]
-[Pasos...]
-
-## Salida Esperada
-[Qué genera la herramienta]
+# ============================================
+# SALIDA - session_state siempre en actualizados
+# ============================================
+salida:
+  archivos_actualizados:
+    - "{{session_state_location}}"  # ⚠️ SIEMPRE incluir
 ```
+
+**¿Por qué es obligatorio el paso de actualizar sesión?**
+
+| Sin el paso | Con el paso |
+|-------------|-------------|
+| ❌ No hay trazabilidad | ✅ Historial completo de ejecución |
+| ❌ Se pierde contexto entre sesiones | ✅ Contexto persistente |
+| ❌ No se puede auditar | ✅ Auditoría completa |
+| ❌ HUs no actualizan estado | ✅ Estados de HU sincronizados |
+
+**📄 Plantilla completa:** Ver `plantillas/herramienta_plantilla.tool.md`
 
 ---
 

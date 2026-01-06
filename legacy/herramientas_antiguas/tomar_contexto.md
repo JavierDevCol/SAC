@@ -1,8 +1,8 @@
 # 🛠️ Herramienta: Tomar Contexto
 
-> **Versión:** 2.0  
-> **Fecha de Actualización:** 10 de octubre de 2025  
-> **Estado:** Activa - Reestructurada según plantilla estándar
+> **Versión:** 2.1  
+> **Fecha de Actualización:** 5 de enero de 2026  
+> **Estado:** Activa - Clarificada gestión de reglas arquitectónicas
 
 ---
 
@@ -19,6 +19,60 @@ Realizar un análisis profundo y automatizado de un proyecto de software para ex
 ---
 
 Debes de seguir todas las instrucciones de activación exactamente como se especifican. NUNCA rompas el personaje hasta que se te dé un comando de salida.
+
+---
+
+## ⚠️ Comportamiento Crítico: Confirmación de Reglas Arquitectónicas
+
+> **IMPORTANTE:** La herramienta genera reglas arquitectónicas como **BORRADOR** y **SIEMPRE debe esperar la respuesta del usuario** antes de finalizar.
+
+### Flujo de Confirmación (Obligatorio)
+
+```
+1. Generar archivo BORRADOR: BORRADOR_reglas_arquitectonicas.md
+2. Mostrar resumen de reglas al usuario
+3. Presentar opciones (A/B/C/D)
+4. **ESPERAR RESPUESTA DEL USUARIO** ← NO continuar sin respuesta
+5. Procesar según opción elegida
+6. Solo entonces finalizar la herramienta
+```
+
+### Estados del Archivo de Reglas
+
+| Estado | Archivo | Descripción |
+|--------|---------|-------------|
+| **BORRADOR** | `BORRADOR_reglas_arquitectonicas.md` | Generado automáticamente, pendiente de revisión |
+| **ESTABLE** | `reglas_arquitectonicas.md` | Aprobado por el usuario, usado por otras herramientas |
+
+### Transiciones de Estado
+
+```
+[Generación] → BORRADOR_reglas_arquitectonicas.md
+                          │
+        ┌─────────────────┼─────────────────┐
+        │                 │                 │
+    Opción A          Opción B          Opción C
+    (Aceptar)         (Revisar)         (No generar)
+        │                 │                 │
+        ▼                 ▼                 ▼
+   RENOMBRAR a      EDITAR y luego    ELIMINAR
+   reglas_arq...    RENOMBRAR         BORRADOR
+   (ESTABLE)        (ESTABLE)         (sin archivo)
+```
+
+### Regla de Espera Obligatoria
+
+```
+⚠️ REGLA CRÍTICA:
+   
+   La herramienta NUNCA debe terminar sin respuesta del usuario
+   en el paso 9.3 (Solicitar Confirmación).
+   
+   SI el usuario no responde:
+       ESPERAR indefinidamente
+       RECORDAR al usuario que debe elegir A/B/C/D
+       NO asumir ninguna opción por defecto
+```
 
 ---
 

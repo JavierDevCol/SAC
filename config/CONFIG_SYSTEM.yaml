@@ -1,0 +1,72 @@
+# ============================================
+# CONFIGURACIÓN DEL SISTEMA COCHAS
+# ============================================
+# ⚠️ NO MODIFICAR - Rutas internas del sistema
+# Versión: 4.0
+# ============================================
+
+version: "4.0"
+
+# ============================================
+# CARPETAS PRINCIPALES
+# ============================================
+rutas:
+  output_folder: "{project-root}/.cochas"
+  session_folder: "{project-root}/.cochas/session"
+  artifacts_folder: "{project-root}/.cochas/artifacts"
+  config_folder: "{project-root}/.cochas/config"
+
+# ============================================
+# ARCHIVOS DEL SISTEMA
+# ============================================
+archivos:
+  session_state: "{project-root}/.cochas/session/session_state.json"
+  backlog: "{project-root}/.cochas/artifacts/backlog_desarrollo.md"
+  reglas_arquitectonicas: "{project-root}/.cochas/artifacts/reglas_arquitectonicas.md"
+  # Proyecto único
+  contexto_proyecto: "{project-root}/.cochas/artifacts/contexto_proyecto.md"
+  # Multi-proyecto
+  workspace_index: "{project-root}/.cochas/artifacts/workspace.md"
+
+# ============================================
+# SUBCARPETAS DE ARTIFACTS
+# ============================================
+artifacts:
+  # Historias de Usuario
+  hu_folder: "{project-root}/.cochas/artifacts/HU"
+  hu_refinamientos: "{project-root}/.cochas/artifacts/HU/refinamientos"
+  hu_compartidas: "{project-root}/.cochas/artifacts/HU/compartidas"
+  # Arquitectura
+  adr_folder: "{project-root}/.cochas/artifacts/ADR"
+  # Planes y ejecución
+  planes_folder: "{project-root}/.cochas/artifacts/planes_de_desarrollo"
+  ejecuciones_folder: "{project-root}/.cochas/artifacts/ejecuciones"
+  # Code quality
+  code_smells_folder: "{project-root}/.cochas/artifacts/code_smells"
+  # Multi-proyecto
+  contextos_folder: "{project-root}/.cochas/artifacts/contextos"
+
+# ============================================
+# CONFIGURACIÓN MULTI-PROYECTO
+# ============================================
+multi_proyecto:
+  # Patrones para detectar raíz de proyecto
+  marcadores_proyecto:
+    java: ["pom.xml", "build.gradle", "build.gradle.kts"]
+    javascript: ["package.json"]
+    python: ["pyproject.toml", "setup.py", "requirements.txt"]
+    dotnet: ["*.csproj", "*.sln"]
+    rust: ["Cargo.toml"]
+    go: ["go.mod"]
+  # Nomenclatura de archivos generados
+  patron_contexto: "contexto_proyecto_{nombre}.md"
+  patron_hu_proyecto: "HU/{nombre_proyecto}/"
+
+# ============================================
+# PLANTILLAS DEL SISTEMA
+# ============================================
+plantillas:
+  session_state: "plantillas/session_state_plantilla.md"
+  backlog: "plantillas/backlog_desarrollo_plantilla.md"
+  contexto: "plantillas/contexto_proyecto_plantilla.md"
+  workspace: "plantillas/workspace_plantilla.md"

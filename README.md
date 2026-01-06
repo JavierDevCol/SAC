@@ -1,7 +1,7 @@
-# 🤖 Sistema de Orquestación de Agentes IA (Cochas)
+# 🤖 Sistema de Orquestación de Agentes IA (COCHAS)
 
-> **Versión:** 3.0  
-> **Última actualización:** 5 de enero de 2026
+> **Versión:** 4.0  
+> **Última actualización:** 6 de enero de 2026
 
 ---
 
@@ -10,7 +10,9 @@
 - [¿Qué es este sistema?](#-qué-es-este-sistema)
 - [Conceptos Clave](#-conceptos-clave)
 - [Inicio Rápido](#-inicio-rápido)
-- [Comandos Principales](#-comandos-principales)
+- [Sistema de Comandos](#-sistema-de-comandos)
+- [Roles Disponibles](#-roles-disponibles)
+- [Herramientas Disponibles](#-herramientas-disponibles)
 - [Documentación Detallada](#-documentación-detallada)
 - [Estructura del Proyecto](#-estructura-del-proyecto)
 
@@ -18,136 +20,274 @@
 
 ## 🎯 ¿Qué es este sistema?
 
-**Cochas** es un sistema avanzado de **orquestación de agentes de IA especializados** que permite gestionar múltiples roles (personalidades) y herramientas de forma eficiente y coordinada.
+**COCHAS** es un sistema de **agentes de IA especializados** que permite trabajar con roles (personalidades) y herramientas definidas en formato YAML estructurado.
 
 ### ¿En qué se diferencia de otros sistemas de prompts?
 
-| Característica | Sistema Tradicional | Cochas |
-|----------------|---------------------|---------|
-| **Gestión de Roles** | Manual, reiniciando sesión | Cambio dinámico con `@rol` |
+| Característica | Sistema Tradicional | COCHAS v4.0 |
+|----------------|---------------------|-------------|
+| **Roles** | Prompt único genérico | Agentes especializados por dominio |
 | **Estado de Sesión** | Se pierde entre conversaciones | Persistente en `session_state.json` |
-| **Herramientas** | Cargadas todas al inicio | Lazy loading (carga bajo demanda) |
-| **Coordinación** | Usuario decide todo | Orquestador sugiere roles proactivamente |
-| **Contexto del Proyecto** | Debe repetirse | Se analiza una vez con `tomar_contexto` |
-| **Trazabilidad** | Inexistente | Historial completo de tareas y roles |
+| **Herramientas** | Instrucciones dispersas | Herramientas estructuradas (`.tool.md`) |
+| **Contexto del Proyecto** | Debe repetirse | Se analiza una vez con `>tomar_contexto` |
+| **Trazabilidad** | Inexistente | Historial completo de tareas |
+| **Formato** | Prompts en texto plano | YAML estructurado (`.agent.md`, `.tool.md`) |
+
+### Modelo de Uso
+
+Cada **agente/rol se carga en un chat independiente**. Esto permite:
+- 🎯 **Contexto enfocado**: El agente mantiene su personalidad sin interferencias
+- 📝 **Historial limpio**: Cada chat tiene su propia conversación
+- 🔄 **Estado compartido**: Los agentes comparten información vía `session_state.json` y artefactos en `.cochas/`
 
 ---
 
 ## 🧩 Conceptos Clave
 
-### 1. **El Orquestador** (`@`)
-El núcleo del sistema. Gestiona:
-- ✅ Activación y cambio de roles
-- ✅ Estado persistente de la sesión
-- ✅ Carga optimizada de herramientas
-- ✅ Sugerencias proactivas de roles
-- ✅ Validaciones automáticas
+### 1. **Sistema de Prefijos**
 
-### 2. **Roles/Personas** (`/personas/`)
-Agentes especializados con personalidades únicas:
-- **ONAD** (`@onad`) - Arquitectura estratégica y decisiones de alto nivel
-- **ARCHDEV** (`@archdev`) - Implementación de código y refactoring
-- **DEVOPS** (`@devops`) - Infraestructura, pipelines y deployment
-- **REFINADOR** (`@refinador`) - Refinamiento de historias de usuario
-- **ARTESANO** (`@artesano`) - Creación de mensajes de commit profesionales
+| Prefijo | Propósito | Ejemplo |
+|---------|-----------|---------|
+| `+` | Identificador del Rol (en archivo) | `+ONAD`, `+ARCHDEV` |
+| `>` | Ejecutar Herramienta | `>tomar_contexto`, `>refinar_hu` |
+| `*` | Comandos del Sistema | `*roles`, `*status`, `*help` |
 
-### 3. **Herramientas** (`/herramientas/`)
+### 2. **Roles/Agentes** (`agentes/`)
+
+Agentes especializados con personalidades únicas. **Cada agente se usa en un chat separado**:
+
+| Rol | Archivo | Especialidad |
+|-----|---------|--------------|
+| **Arquitecto Onad** | `arquitecto_onad.agent.md` | Arquitectura estratégica y decisiones de alto nivel |
+| **ArchDev Pro** | `archdev_pro.agent.md` | Implementación de código, refactoring y testing |
+| **Arquitecto DevOps** | `arquitecto_devops.agent.md` | Infraestructura, pipelines y deployment |
+| **Analista de Historias** | `refinador_hu.agent.md` | Refinamiento de historias de usuario |
+| **Narrador de Cambios** | `artesano_de_commits.agent.md` | Creación de mensajes de commit profesionales |
+
+### 3. **Herramientas** (`herramientas/`)
+
 Funcionalidades ejecutables que los roles pueden invocar:
-- `tomar_contexto` - Analiza el proyecto completo
-- `define_arquitectura` - Diseña arquitecturas
-- `refactorizar` - Mejora código existente
-- `crear_pruebas` - Genera tests
-- `diagnosticar_devops` - Analiza infraestructura
-- `generar_commit` - Crea mensajes de commit
-- Y más...
+
+| Herramienta | Comando | Descripción |
+|-------------|---------|-------------|
+| Tomar Contexto | `>tomar_contexto` | Analiza el proyecto completo |
+| Refinar HU | `>refinar_hu` | Refina historias de usuario |
+| Validar HU | `>validar_hu` | Validación arquitectónica de HU |
+| Planificar HU | `>planificar_hu` | Genera plan de implementación |
+| Ejecutar Plan | `>ejecutar_plan` | Ejecuta planes de implementación |
+| Crear Pruebas | `>crear_pruebas` | Genera tests unitarios e integración |
+| Analizar Code Smells | `>analizar_code_smells` | Detecta problemas de diseño |
+| Diagnosticar DevOps | `>diagnosticar_devops` | Analiza madurez DevOps |
+| Generar Commit | `>generar_commit` | Crea mensajes Conventional Commits |
 
 ### 4. **Sistema de Estado Persistente**
-- **`session_state.json`** - Memoria de la sesión (roles, tareas, eventos)
-- **`contexto_proyecto.md`** - Análisis del proyecto (se crea una vez)
-- **`backlog_desarrollo.md`** - Tareas pendientes con estados de validación
+
+Los agentes comparten información a través de archivos en el proyecto del usuario:
+
+| Archivo | Ubicación | Propósito |
+|---------|-----------|-----------|
+| `session_state.json` | `.cochas/session/` | Memoria compartida entre agentes |
+| `contexto_proyecto.md` | `.cochas/artifacts/` | Análisis del proyecto |
+| `backlog_desarrollo.md` | `.cochas/artifacts/` | Backlog de HUs con estados |
 
 ---
 
 ## 🚀 Inicio Rápido
 
-### Paso 1: Ver Ayuda del Sistema
-```
-@help
-```
-Esto te mostrará todos los comandos disponibles y verificará el estado del sistema.
+### Paso 1: Elegir el Agente Adecuado
 
-### Paso 2: Ver Roles Disponibles
-```
-@list
-```
-Muestra la lista completa de roles con sus comandos de activación.
+| Necesitas... | Usa este agente |
+|--------------|-----------------|
+| Decisiones arquitectónicas | `arquitecto_onad.agent.md` |
+| Implementar código/tests | `archdev_pro.agent.md` |
+| CI/CD e infraestructura | `arquitecto_devops.agent.md` |
+| Refinar historias de usuario | `refinador_hu.agent.md` |
+| Crear mensajes de commit | `artesano_de_commits.agent.md` |
 
-### Paso 3: Activar tu Primer Rol
+### Paso 2: Cargar el Agente en un Chat
+
+1. Abre un **nuevo chat** en tu cliente de IA
+2. Carga el archivo `.agent.md` correspondiente como contexto
+3. El agente se presentará con su personalidad
+
+### Paso 3: Analizar el Proyecto (Recomendado)
+
 ```
-@onad
+>tomar_contexto
 ```
 
-### Paso 4: Analizar el Proyecto (Recomendado)
-```
-> tomar_contexto
-```
-Esto creará un análisis completo del proyecto que persistirá entre sesiones.
+### Paso 4: Usar Herramientas del Rol
 
-### Paso 5: Usar Herramientas del Rol
 ```
-> define_arquitectura
-> refactorizar
-> crear_pruebas
+>refinar_hu
+>validar_hu
+>crear_pruebas
+```
+
+### Paso 5: Ver Estado
+
+```
+*status
 ```
 
 ---
 
-## 📋 Comandos Principales
+## 📋 Sistema de Comandos
 
-### Comandos del Orquestador
+### Comandos del Sistema (`*`)
 
-| Comando | Descripción | Ejemplo |
-|---------|-------------|---------|
-| `@list` | Lista todos los roles disponibles | - |
-| `@<rol>` | Activa un rol | `@onad`, `@archdev` |
-| `@status` | Muestra el estado actual de la sesión | - |
-| `@assign <tarea>` | Sugiere el mejor rol para una tarea | `@assign "Necesito optimizar base de datos"` |
-| `@history` | Muestra historial completo de la sesión | - |
-| `@reload` | Recarga el rol activo | - |
-| `@reset` | Reinicia la sesión (con confirmación) | - |
-| `@export` | Exporta el estado de la sesión | - |
-| `@help` | Muestra ayuda de comandos | - |
+| Comando | Descripción |
+|---------|-------------|
+| `*roles` | Lista todos los roles disponibles |
+| `*status` | Muestra el estado actual de la sesión |
+| `*HU` | Lista historias de usuario del backlog |
+| `*help` | Muestra ayuda de comandos disponibles |
 
-### Comandos de Herramientas
+### Identificadores de Roles (`+`)
 
-| Comando | Descripción | Requiere Rol Activo |
-|---------|-------------|---------------------|
-| `> <herramienta>` | Ejecuta una herramienta | ✅ Sí |
+Cada agente tiene un identificador único:
 
-**Ejemplo:**
+| Identificador | Agente | Archivo |
+|---------------|--------|---------|
+| `+ONAD` | Arquitecto Onad | `arquitecto_onad.agent.md` |
+| `+ARCHDEV` | ArchDev Pro | `archdev_pro.agent.md` |
+| `+DEVOPS` | Arquitecto DevOps | `arquitecto_devops.agent.md` |
+| `+REFINADOR` | Analista de Historias | `refinador_hu.agent.md` |
+| `+ARTESANO` | Narrador de Cambios | `artesano_de_commits.agent.md` |
+
+### Ejecución de Herramientas (`>`)
+
 ```
-> tomar_contexto
-> refactorizar
+>tomar_contexto
+>refinar_hu HU-001
+>crear_pruebas --tipo=unitario
+```
+
+**Nota:** Las herramientas verifican que el rol activo sea compatible.
+
+---
+
+## 👥 Roles Disponibles
+
+### +ONAD (Arquitecto Onad)
+- **Archivo:** `agentes/arquitecto_onad.agent.md`
+- **Tipo:** Arquitecto estratégico
+- **Principio:** "No Comer Entero"
+- **Herramientas:** `>tomar_contexto`, `>validar_hu`, `>planificar_hu`
+- **Cuándo usar:** Decisiones arquitectónicas, validación de HUs, planificación
+
+### +ARCHDEV (ArchDev Pro)
+- **Archivo:** `agentes/archdev_pro.agent.md`
+- **Tipo:** Ingeniero constructor
+- **Principio:** "Código con Propósito"
+- **Herramientas:** `>crear_pruebas`, `>analizar_code_smells`, `>ejecutar_plan`
+- **Cuándo usar:** Implementación, refactoring, testing
+
+### +DEVOPS (Arquitecto DevOps)
+- **Archivo:** `agentes/arquitecto_devops.agent.md`
+- **Tipo:** Mentor DevOps
+- **Principio:** "Seguridad es No Negociable"
+- **Herramientas:** `>tomar_contexto`, `>diagnosticar_devops`
+- **Cuándo usar:** CI/CD, infraestructura, observabilidad
+
+### +REFINADOR (Analista de Historias)
+- **Archivo:** `agentes/refinador_hu.agent.md`
+- **Tipo:** Analista técnico
+- **Principio:** "Claridad Sobre Velocidad"
+- **Herramientas:** `>refinar_hu`, `>tomar_contexto`
+- **Cuándo usar:** Refinamiento de HUs, estimación, desglose técnico
+
+### +ARTESANO (Narrador de Cambios)
+- **Archivo:** `agentes/artesano_de_commits.agent.md`
+- **Tipo:** Comunicador técnico
+- **Principio:** "La Historia Importa"
+- **Herramientas:** `>generar_commit`
+- **Cuándo usar:** Documentar cambios con commits profesionales
+
+---
+
+## 🔧 Herramientas Disponibles
+
+| Herramienta | Comando | Roles Autorizados |
+|-------------|---------|-------------------|
+| Tomar Contexto | `>tomar_contexto` | ONAD, ARCHDEV, DEVOPS, REFINADOR |
+| Refinar HU | `>refinar_hu` | REFINADOR, ARCHDEV, DEVOPS |
+| Validar HU | `>validar_hu` | ONAD |
+| Planificar HU | `>planificar_hu` | ONAD |
+| Ejecutar Plan | `>ejecutar_plan` | ARCHDEV |
+| Crear Pruebas | `>crear_pruebas` | ARCHDEV |
+| Analizar Code Smells | `>analizar_code_smells` | ARCHDEV |
+| Diagnosticar DevOps | `>diagnosticar_devops` | DEVOPS |
+| Generar Commit | `>generar_commit` | ARTESANO, ARCHDEV, DEVOPS, REFINADOR |
+
+---
+
+## 📋 Flujos de Trabajo Típicos
+
+### Escenario 1: Nueva Historia de Usuario
+
+```bash
+# Chat 1: Cargar refinador_hu.agent.md
+>refinar_hu
+# El agente refina la HU y genera artefactos en .cochas/
+
+# Chat 2: Cargar arquitecto_onad.agent.md
+>validar_hu HU-001
+>planificar_hu HU-001
+# El agente lee el estado compartido y continúa el flujo
+
+# Chat 3: Cargar archdev_pro.agent.md
+>ejecutar_plan HU-001
+# El agente implementa según el plan generado
+```
+
+### Escenario 2: Análisis de Código Existente
+
+```bash
+# Chat: Cargar archdev_pro.agent.md
+>analizar_code_smells
+>crear_pruebas
+
+# Chat: Cargar artesano_de_commits.agent.md
+>generar_commit
+```
+
+### Escenario 3: Evaluación DevOps
+
+```bash
+# Chat: Cargar arquitecto_devops.agent.md
+>tomar_contexto
+>diagnosticar_devops
 ```
 
 ---
 
 ## 📚 Documentación Detallada
 
-### Guías Especializadas
+### Guías
 
-Para profundizar en aspectos específicos del sistema, consulta estas guías:
+| Guía | Ubicación | Descripción |
+|------|-----------|-------------|
+| Guía de Comandos | `guias/guia_comandos.md` | Explicación detallada de comandos |
+| Guía de Roles | `guias/guia_roles_activos.md` | Descripción completa de cada rol |
+| Ciclo de Vida de Tareas | `guias/guia_ciclo_vida_tareas.md` | Flujo de tareas en el sistema |
+| Creación de Roles | `guias/guia_creacion_roles.md` | Cómo crear roles personalizados |
 
-- **[📋 Guía de Comandos](guia_comandos.md)** - Explicación detallada de cada comando con ejemplos
-- **[👥 Guía de Roles Activos](guia_roles_activos.md)** - Descripción completa de cada rol y cuándo usarlo
-- **[🔄 Guía del Ciclo de Vida de Tareas](guia_ciclo_vida_tareas.md)** - Cómo fluyen las tareas por el sistema
-- **[🛠️ Guía de Creación de Roles](guia_creacion_roles.md)** - Cómo crear tus propios roles personalizados
+### Plantillas
 
-### Documentación Técnica Avanzada
+| Plantilla | Ubicación | Propósito |
+|-----------|-----------|-----------|
+| Plantilla de Agente | `plantillas/agente_plantilla.agent.md` | Crear nuevos roles |
+| Plantilla de Herramienta | `plantillas/herramienta_plantilla.tool.md` | Crear nuevas herramientas |
+| Índice de Plantillas | `README_PLANTILLA.md` | Guía central de plantillas |
 
-- **[`core-cochas.md`](core-cochas.md)** - Arquitectura completa del orquestador
-- **[`README_PLANTILLA.md`](README_PLANTILLA.md)** - Sistema completo de plantillas para roles
-- **[`plantillas/estructura_session_state.md`](plantillas/estructura_session_state.md)** - Estructura del archivo de estado
+### Referencias Técnicas
+
+| Documento | Ubicación | Contenido |
+|-----------|-----------|-----------|
+| Roles Activos | `agentes/roles-activos.md` | Registro de roles del sistema |
+| Herramientas Activas | `herramientas/herramientas-activas.md` | Registro de herramientas |
+| Configuración del Sistema | `config/CONFIG_SYSTEM.yaml` | Variables y rutas del sistema |
 
 ---
 
@@ -155,189 +295,69 @@ Para profundizar en aspectos específicos del sistema, consulta estas guías:
 
 ```
 ia_prompts/
-├── README.md                          ← Este archivo
-├── core-cochas.md                     ← Núcleo del orquestador
-├── guia_comandos.md                   ← Guía de comandos del sistema
-├── guia_roles_activos.md              ← Guía de roles disponibles
-├── guia_ciclo_vida_tareas.md          ← Ciclo de vida de tareas
-├── guia_creacion_roles.md             ← Crear roles personalizados
+├── README.md                              ← Este archivo
+├── README_PLANTILLA.md                    ← Índice de plantillas
+├── CHANGELOG.md                           ← Historial de cambios
+├── estructura_directorio.md               ← Documentación de estructura
 │
-├── personas/                          ← Roles/Agentes disponibles
-│   ├── roles-activos.md               ← Registro central de roles
-│   ├── arquitecto_onad.md             ← Arquitecto estratégico
-│   ├── archdev_pro.md                 ← Desarrollador pragmático
-│   ├── arquitecto_devops.md           ← Especialista en infraestructura
-│   ├── refinador_hu.md                ← Refinador de historias
-│   └── artesano_de_commits.md         ← Especialista en commits
+├── agentes/                               ← Roles/Agentes (cargar en chat separado)
+│   ├── roles-activos.md                   ← Registro central de roles
+│   ├── arquitecto_onad.agent.md           ← Arquitecto estratégico
+│   ├── archdev_pro.agent.md               ← Desarrollador pragmático
+│   ├── arquitecto_devops.agent.md         ← Especialista en infraestructura
+│   ├── refinador_hu.agent.md              ← Analista de historias
+│   └── artesano_de_commits.agent.md       ← Narrador de cambios
 │
-├── herramientas/                      ← Herramientas ejecutables
-│   ├── herramientas-activas.md        ← Registro central de herramientas
-│   ├── tomar_contexto.md              ← Análisis profundo del proyecto
-│   ├── refactorizar.md                ← Mejora de código
-│   ├── define_arquitectura.md         ← Diseño arquitectónico
-│   ├── crear_pruebas.md               ← Generación de tests
-│   ├── analizar_code_smells.md        ← Detección de problemas
-│   ├── solucionar_smells.md           ← Solución de code smells
-│   ├── verifica_pruebas.md            ← Validación de tests
-│   ├── diagnosticar_devops.md         ← Análisis de infraestructura
-│   ├── refinar_hu.md                  ← Refinamiento de historias
-│   ├── generar_commit.md              ← Mensajes de commit profesionales
-│   ├── generar_adr.md                 ← Documentación de decisiones
-│   └── asignar_responsable.md         ← Asignación inteligente de roles
+├── herramientas/                          ← Herramientas ejecutables
+│   ├── herramientas-activas.md            ← Registro central
+│   ├── tomar_contexto.tool.md             ← Análisis del proyecto
+│   ├── refinar_hu.tool.md                 ← Refinamiento de HUs
+│   ├── validar_hu.tool.md                 ← Validación arquitectónica
+│   ├── planificar_hu.tool.md              ← Planificación de implementación
+│   ├── ejecutar_plan.tool.md              ← Ejecución de planes
+│   ├── crear_pruebas.tool.md              ← Generación de tests
+│   ├── analizar_code_smells.tool.md       ← Detección de problemas
+│   ├── diagnosticar_devops.tool.md        ← Análisis DevOps
+│   └── generar_commit.tool.md             ← Mensajes de commit
 │
-├── plantillas/                        ← Plantillas del sistema
+├── config/                                ← Configuración del sistema
+│   ├── CONFIG_SYSTEM.yaml                 ← Variables del sistema
+│   └── CONFIG_USER.template.yaml          ← Plantilla para usuario
+│
+├── definiciones/                          ← Definiciones YAML
+│   ├── agentes/                           ← Definiciones de agentes
+│   └── herramientas/                      ← Definiciones de herramientas
+│
+├── guias/                                 ← Documentación y guías
+│   ├── guia_comandos.md                   ← Guía de comandos
+│   ├── guia_roles_activos.md              ← Guía de roles
+│   ├── guia_ciclo_vida_tareas.md          ← Ciclo de vida de tareas
+│   └── guia_creacion_roles.md             ← Crear roles personalizados
+│
+├── plantillas/                            ← Plantillas del sistema
+│   ├── agente_plantilla.agent.md          ← Plantilla para roles
+│   ├── herramienta_plantilla.tool.md      ← Plantilla para herramientas
 │   ├── backlog_desarrollo_plantilla.md    ← Plantilla de backlog
 │   ├── contexto_proyecto_plantilla.md     ← Plantilla de contexto
-│   └── estructura_session_state.md        ← Estructura del estado de sesión
+│   ├── session_state_plantilla.md         ← Estructura del estado
+│   └── workspace_plantilla.md             ← Plantilla multi-proyecto
 │
-├── ejemplos/                          ← Ejemplos de uso
-│   └── herramientas/                  ← Ejemplos de herramientas en acción
+├── ejemplos/                              ← Ejemplos de uso
+│   └── herramientas/                      ← Ejemplos de herramientas
+│
+├── legacy/                                ← Archivos de versiones anteriores
+│   ├── cochas.agent.md                    ← Orquestador v3.0
+│   ├── herramientas_antiguas/             ← Herramientas v3.0
+│   └── personas_antiguas/                 ← Roles v3.0
 │
 └── [EN EL PROYECTO DEL USUARIO]
-    └── cochas/                        ← Carpeta del sistema (auto-creada)
-        ├── session/                   ← Estado temporal (en .gitignore)
-        │   ├── session_state.json     ← Estado de la sesión
-        │   └── exports/               ← Backups exportados
-        └── artifacts/                 ← Documentación del proyecto
-            ├── contexto_proyecto.md   ← Análisis del proyecto
-            ├── backlog_desarrollo.md  ← Backlog de tareas
-            └── adr/                   ← Architecture Decision Records
-```
-
----
-
-## 🚀 Inicio Rápido
-
-### Paso 1: Activar el Orquestador
-
-Carga el archivo `core-cochas.md` en tu herramienta de IA (Claude, GPT-4, etc.)
-
-### Paso 2: Ver Roles Disponibles
-
-```bash
-@list
-```
-
-Verás una lista de todos los roles disponibles con sus comandos de activación.
-
-### Paso 3: Activar un Rol
-
-```bash
-@onad
-```
-
-### Paso 4: Usar Herramientas
-
-Una vez activado un rol, puedes ejecutar sus herramientas:
-
-```bash
-> tomar_contexto
-```
-
-O alternativamente:
-
-```bash
-> define_arquitectura
-```
-
-### Paso 5: Ver el Estado
-
-```bash
-@status
-```
-
-Te mostrará:
-- Rol activo actual
-- Estado del contexto del proyecto
-- Tareas completadas
-- Historial de la sesión
-
----
-
-## 📋 Flujo de Trabajo Típico
-
-### Escenario 1: Nuevo Proyecto
-
-```bash
-# 1. Activar el arquitecto estratégico
-@onad
-
-# 2. Analizar el proyecto (automático al saludar a ONAD)
-# Se crea automáticamente cochas/artifacts/contexto_proyecto.md
-
-# 3. Diseñar la arquitectura
-> define_arquitectura
-
-# 4. Cambiar al desarrollador
-@archdev
-
-# 5. Implementar código
-> refactorizar
-
-# 6. Crear tests
-> crear_pruebas
-```
-
-### Escenario 2: Refactoring de Código Existente
-
-```bash
-# 1. Activar el desarrollador pragmático
-@archdev
-
-# 2. Analizar problemas de código
-> analizar_code_smells
-
-# 3. Solucionar los problemas detectados
-> solucionar_smells
-
-# 4. Validar con tests
-> verifica_pruebas
-```
-
-### Escenario 3: Sprint Planning
-
-```bash
-# 1. Activar el refinador de historias
-@refinador
-
-# 2. Refinar historias de usuario
-> refinar_hu
-
-# 3. Cambiar al arquitecto para validación técnica
-@onad
-# Revisar viabilidad arquitectónica de las historias
-
-# 4. Cambiar al desarrollador para estimación
-@archdev
-# Estimar esfuerzo de implementación
-```
-
----
-
-## 🔄 Gestión del Estado
-
-### Persistencia Automática
-
-El sistema mantiene el estado en:
-- **`cochas/session/session_state.json`** - Estado de la sesión actual
-- **`cochas/artifacts/contexto_proyecto.md`** - Contexto del proyecto analizado
-- **`cochas/artifacts/backlog_desarrollo.md`** - Backlog de tareas de desarrollo
-
-### Comandos de Estado
-
-```bash
-# Ver estado actual
-@status
-
-# Ver historial completo
-@history
-
-# Exportar estado (backup)
-@export
-# Crea: cochas/session/exports/session_state_export_[fecha].json
-
-# Reiniciar sesión (confirmación requerida)
-@reset
+    └── .cochas/                           ← Carpeta del sistema (auto-creada)
+        ├── session/                       ← Estado compartido entre agentes
+        │   └── session_state.json         ← Estado de la sesión
+        └── artifacts/                     ← Artefactos generados
+            ├── contexto_proyecto.md       ← Análisis del proyecto
+            ├── backlog_desarrollo.md      ← Backlog de tareas
+            └── HU/                        ← Historias de usuario
 ```
 
 ---
@@ -345,49 +365,60 @@ El sistema mantiene el estado en:
 ## 🤝 Contribuir
 
 ### Crear un Nuevo Rol
-Consulta la **[Guía de Creación de Roles](guia_creacion_roles.md)** para aprender a:
-1. Copiar la plantilla base
-2. Definir personalidad y comandos
-3. Registrar el rol en el sistema
+
+1. Copiar `plantillas/agente_plantilla.agent.md`
+2. Guardar en `agentes/[nombre].agent.md`
+3. Personalizar secciones YAML
+4. Registrar en `agentes/roles-activos.md`
+
+Ver: **[Guía de Creación de Roles](guias/guia_creacion_roles.md)**
 
 ### Crear una Nueva Herramienta
-1. Crear archivo en `/herramientas/nueva_herramienta.md`
-2. Registrarla en `/herramientas/herramientas-activas.md`
-3. Asignarla a uno o más roles
+
+1. Copiar `plantillas/herramienta_plantilla.tool.md`
+2. Guardar en `herramientas/[nombre].tool.md`
+3. Definir proceso y paso_final obligatorio
+4. Registrar en `herramientas/herramientas-activas.md`
+
+Ver: **[README_PLANTILLA.md](README_PLANTILLA.md)**
 
 ---
 
 ## 📞 Soporte
 
-- **Comandos:** Consulta [`guia_comandos.md`](guia_comandos.md)
-- **Roles:** Consulta [`guia_roles_activos.md`](guia_roles_activos.md)
-- **Arquitectura:** Consulta [`core-cochas.md`](core-cochas.md)
-- **Problemas:** Usa `@status` para diagnosticar el estado
+| Recurso | Ubicación |
+|---------|-----------|
+| Comandos | `guias/guia_comandos.md` |
+| Roles | `guias/guia_roles_activos.md` |
+| Problemas | Usar `*status` para diagnosticar |
 
 ---
 
 ## 📝 Notas de Versión
 
+### v4.0 (Enero 2026)
+- ✅ Migración a formato YAML estructurado
+- ✅ Nuevas extensiones: `.agent.md` y `.tool.md`
+- ✅ Sistema de prefijos: `+` (roles), `>` (herramientas), `*` (sistema)
+- ✅ Modelo de uso: cada agente en chat independiente
+- ✅ Estado compartido vía `.cochas/` en proyecto usuario
+- ✅ Paso final obligatorio en herramientas
+- ✅ Nuevos nombres: "Analista de Historias", "Narrador de Cambios"
+
 ### v3.0 (Enero 2026)
-- ✅ Nueva sintaxis simplificada: `@rol` en lugar de `/cochas +ROL`
-- ✅ Comandos más intuitivos: `@status`, `@list`, `@help`
-- ✅ Ejecución de herramientas con `> herramienta`
-- ✅ Documentación actualizada
+- Sintaxis con `@rol` y `> herramienta`
 
 ### v2.0 (Octubre 2025)
-- ✅ Sistema de estado persistente con `session_state.json`
-- ✅ Validación secuencial de tareas
-- ✅ Comando `/cochas assign` para sugerencias inteligentes
-- ✅ Backlog de desarrollo automatizado
-- ✅ Mejoras en lazy loading de herramientas
+- Sistema de estado persistente
 
 ### v1.0 (Octubre 2025)
-- ✅ Orquestador básico con cambio de roles
-- ✅ 5 roles iniciales (ONAD, ARCHDEV, DEVOPS, REFINADOR, ARTESANO)
-- ✅ Sistema de herramientas modular
+- Orquestador básico con 5 roles iniciales
 
 ---
 
 **¡Listo para empezar!** 🚀
 
-Usa `@help` para ver todos los comandos disponibles y comenzar tu primera sesión.
+1. Elige el agente adecuado para tu tarea
+2. Cárgalo en un nuevo chat
+3. Usa `>tomar_contexto` para analizar tu proyecto
+4. Ejecuta las herramientas del rol

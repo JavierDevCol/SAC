@@ -1,0 +1,30 @@
+# ============================================
+# DEFINICIÓN: diagnosticar_devops
+# ============================================
+id: diagnosticar_devops
+nombre: "Diagnosticar DevOps"
+version: "2.0"
+estado: activo
+
+descripcion_corta: >
+  Producir matriz de madurez DevOps y backlog priorizado por impacto/esfuerzo.
+  Analiza CI/CD, IaC, observabilidad, seguridad y cultura del equipo.
+
+# Roles que pueden usar esta herramienta
+roles_autorizados:
+  - DEVOPS
+
+# Herramientas que invoca
+invoca:
+  - tomar_contexto
+
+# Áreas de análisis
+areas_analisis:
+  - CI/CD
+  - Infrastructure as Code
+  - Observabilidad
+  - Seguridad
+  - Cultura DevOps
+
+# Referencia al archivo completo
+archivo_completo: "herramientas/diagnosticar_devops.md"

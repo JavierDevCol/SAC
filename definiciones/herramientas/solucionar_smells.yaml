@@ -1,0 +1,27 @@
+# ============================================
+# DEFINICIÓN: solucionar_smells
+# ============================================
+id: solucionar_smells
+nombre: "Solucionar Code Smells"
+version: "2.0"
+estado: activo
+
+descripcion_corta: >
+  Aplicar refactorings específicos para resolver code smells identificados.
+  Genera código refactorizado con tests y documentación de cambios.
+
+# Roles que pueden usar esta herramienta
+roles_autorizados:
+  - ARCHDEV
+
+# Herramientas que invoca
+invoca:
+  - tomar_contexto
+
+# Herramientas relacionadas
+relacionada_con:
+  - analizar_code_smells
+  - refactorizar
+
+# Referencia al archivo completo
+archivo_completo: "herramientas/solucionar_smells.md"

@@ -1,0 +1,24 @@
+# ============================================
+# DEFINICIÓN: validar_hu
+# ============================================
+id: validar_hu
+nombre: "Validar Historia de Usuario"
+version: "2.0"
+estado: activo
+
+descripcion_corta: >
+  Validar viabilidad técnica y arquitectónica de historias de usuario antes
+  de planificación. Verificar alignment con arquitectura del sistema.
+
+# Roles que pueden usar esta herramienta
+roles_autorizados:
+  - ONAD
+
+# Herramientas relacionadas
+relacionada_con:
+  - refinar_hu
+  - planificar_hu
+  - define_arquitectura
+
+# Referencia al archivo completo
+archivo_completo: "herramientas/validar_hu.md"

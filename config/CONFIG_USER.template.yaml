@@ -1,0 +1,26 @@
+# ============================================
+# CONFIGURACIÓN DEL USUARIO/PROYECTO
+# ============================================
+# ✅ Editable por el usuario
+# Se solicita durante >inicializar_proyecto
+# ============================================
+
+# === INFORMACIÓN DEL USUARIO ===
+usuario:
+  nombre: ""                          # Tu nombre para personalización
+
+# === PREFERENCIAS DE IDIOMA ===
+idiomas:
+  documentacion: "es"                 # Idioma para documentos generados (es|en|pt)
+  comunicacion: "es"                  # Idioma para interacción con el sistema
+
+# === INFORMACIÓN DEL PROYECTO ===
+proyecto:
+  nombre: ""                          # Nombre del proyecto
+  tipo: "single"                      # single | multi-repo
+
+# === PREFERENCIAS DE DESARROLLO ===
+preferencias:
+  convencion_commits: "conventional"  # conventional | angular | custom
+  formato_estimacion: "story_points"  # story_points | horas | ambos
+  framework_testing: "auto"           # auto | junit | jest | pytest

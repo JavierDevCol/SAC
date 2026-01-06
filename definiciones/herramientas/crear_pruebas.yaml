@@ -1,0 +1,38 @@
+# ============================================
+# DEFINICIÓN: crear_pruebas
+# ============================================
+id: crear_pruebas
+nombre: "Creación de Pruebas"
+version: "2.1"
+estado: activo
+
+descripcion_corta: >
+  Diseñar y generar código para diferentes tipos de pruebas (unitarias, de
+  integración, de carga) con generación automática inteligente, identificando
+  casos felices, casos de borde y escenarios de error.
+
+# Roles que pueden usar esta herramienta
+roles_autorizados:
+  - ARCHDEV
+
+# Parámetros principales
+parametros:
+  - nombre: tipo_test
+    valores: [UNITARIO, INTEGRACION, CARGA, AMBOS]
+    defecto: UNITARIO
+  - nombre: framework_test
+    valores: [junit5, testcontainers]
+    defecto: junit5
+  - nombre: cobertura_objetivo
+    tipo: number
+    defecto: 80
+
+# Artefactos que genera
+artefactos_generados:
+  - nombre: "[Clase]Test.java"
+    ubicacion: "src/test/java/[paquete]/"
+  - nombre: "[Clase]IntegrationTest.java"
+    ubicacion: "src/test/java/[paquete]/"
+
+# Referencia al archivo completo
+archivo_completo: "herramientas/crear_pruebas.md"

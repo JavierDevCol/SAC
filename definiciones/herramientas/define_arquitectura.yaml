@@ -1,0 +1,29 @@
+# ============================================
+# DEFINICIÓN: define_arquitectura
+# ============================================
+id: define_arquitectura
+nombre: "Definir Arquitectura"
+version: "2.0"
+estado: activo
+
+descripcion_corta: >
+  Diseñar arquitectura considerando escalabilidad a largo plazo, trade-offs
+  explícitos y alignment con objetivos de negocio. Documentar decisiones
+  arquitectónicas clave.
+
+# Roles que pueden usar esta herramienta
+roles_autorizados:
+  - ONAD
+
+# Herramientas que invoca
+invoca:
+  - tomar_contexto
+
+# Herramientas relacionadas
+relacionada_con:
+  - generar_adr
+  - validar_hu
+  - planificar_hu
+
+# Referencia al archivo completo
+archivo_completo: "herramientas/define_arquitectura.md"

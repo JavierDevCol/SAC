@@ -1,0 +1,26 @@
+# ============================================
+# DEFINICIÓN: verifica_pruebas
+# ============================================
+id: verifica_pruebas
+nombre: "Verificar Pruebas"
+version: "2.0"
+estado: activo
+
+descripcion_corta: >
+  Ejecutar y validar que las pruebas pasen correctamente. Analizar cobertura
+  y sugerir casos faltantes para mejorar la calidad del testing.
+
+# Roles que pueden usar esta herramienta
+roles_autorizados:
+  - ARCHDEV
+
+# Herramientas que invoca
+invoca:
+  - tomar_contexto
+
+# Herramientas relacionadas
+relacionada_con:
+  - crear_pruebas
+
+# Referencia al archivo completo
+archivo_completo: "herramientas/verifica_pruebas.md"

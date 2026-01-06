@@ -1,0 +1,24 @@
+# ============================================
+# DEFINICIÓN: generar_adr
+# ============================================
+id: generar_adr
+nombre: "Generar ADR"
+version: "2.0"
+estado: activo
+
+descripcion_corta: >
+  Documentar formalmente decisiones arquitectónicas significativas con contexto,
+  alternativas evaluadas y consecuencias. Genera Architecture Decision Records.
+
+# Roles que pueden usar esta herramienta
+roles_autorizados:
+  - ONAD
+
+# Artefactos que genera
+artefactos_generados:
+  - nombre: "ADR-[NNN]-[titulo].md"
+    ubicacion: "{{adr_location}}"
+    requiere_confirmacion: false
+
+# Referencia al archivo completo
+archivo_completo: "herramientas/generar_adr.md"

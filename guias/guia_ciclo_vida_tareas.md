@@ -1,8 +1,8 @@
 # 🔄 Guía del Ciclo de Vida de Tareas
 
-> **Sistema:** Cochas - Orquestación de Agentes IA  
-> **Versión:** 3.0  
-> **Última Actualización:** 4 de enero de 2026
+> **Sistema:** COCHAS - Orquestación de Agentes IA  
+> **Versión:** 3.1  
+> **Última Actualización:** 5 de enero de 2026
 
 ---
 
@@ -241,7 +241,32 @@ El sistema define **7 estados** para el ciclo de vida de una HU/Tarea:
 - `DECISION_PENDIENTE` - Requiere decisión arquitectónica
 - `RECURSO_NO_DISPONIBLE` - Falta infraestructura o acceso
 
-**Responsable de desbloquear:** Quien pueda resolver la dependencia
+**¿Quién puede marcar una tarea como bloqueada?**
+
+> ✅ **Cualquier rol activo** puede marcar una tarea como `[B]` Bloqueada si detecta un impedimento que bloquea la ejecución de la tarea.
+
+| Rol | Puede Bloquear | Motivos Típicos |
+|-----|----------------|-----------------|
+| **+ONAD** | ✅ Sí | Decisión arquitectónica pendiente, dependencia técnica no resuelta |
+| **+ARCHDEV** | ✅ Sí | Dependencia de código de otra HU, API externa no disponible |
+| **+DEVOPS** | ✅ Sí | Infraestructura no disponible, acceso denegado |
+| **+REFINADOR** | ✅ Sí | Requisitos ambiguos que requieren clarificación del PO |
+| **+ARTESANO** | ✅ Sí | Cambios pendientes de otros commits |
+
+**Proceso para marcar como bloqueada:**
+
+```
+1. ROL detecta impedimento durante su trabajo
+2. ROL documenta el bloqueo:
+   - Motivo del bloqueo
+   - Tipo de bloqueo (DEPENDENCIA_HU, DECISION_PENDIENTE, etc.)
+   - Acción requerida para desbloquear
+   - Estado previo al bloqueo
+3. ROL actualiza estado a [B] en session_state.json
+4. ROL notifica al usuario sobre el bloqueo
+```
+
+**Responsable de desbloquear:** Quien pueda resolver la dependencia (puede ser el mismo rol u otro)
 
 **Siguiente estado:** Estado anterior al bloqueo (una vez resuelto)
 
@@ -250,6 +275,7 @@ El sistema define **7 estados** para el ciclo de vida de una HU/Tarea:
 ### ARCHDEV-003: Implementar Payment Integration
 - **Estado:** [B] Bloqueada
 - **Estado previo:** [R] Refinada
+- **Bloqueado por:** +ARCHDEV
 - **Motivo:** Dependencia de ARCHDEV-001 (Auth Service) no completada
 - **Tipo:** DEPENDENCIA_HU
 - **Acción requerida:** Completar ARCHDEV-001 primero
@@ -346,32 +372,6 @@ El sistema define **7 estados** para el ciclo de vida de una HU/Tarea:
 | `[R]` → `[A]` | Arquitecto Onad | `validar_hu` | `validar-hu [ID-HU]` |
 | `[A]` → `[P]` | Arquitecto Onad | `planificar_hu` | `planificar-hu [ID-HU]` |
 | `[P]` → `[E]` | ArchDev Pro | `ejecutar_plan` | `ejecutar-plan [ID-HU]` |
-| `[E]` → `[X]` | ArchDev Pro | `ejecutar_plan` | (automático al finalizar) |
-| `[*]` → `[B]` | Cualquiera | Cualquiera | (detectado automáticamente) |
-
----
-
-## Estructura del tablero_tareas en Session State
-
-Cada HU en `{{session_state_location}}` tiene esta estructura:
-
-```json
-{
-  "tablero_tareas": [
-    {
-      "id": "ARCHDEV-001",
-      "titulo": "Implementar Auth Service",
-      "estado": "[P]",
-      "refinamiento": {
-        "archivo": "{{hu_refinamiento_location}}/ARCHDEV-001_refinamiento_auth_jwt.md",
-        "fecha": "2026-01-04T10:00:00Z",
-        "estimacion_sp": 8,
-        "estimacion_horas": 12,
-        "completado": true
-      },
-      "plan_implementacion": {
-        "archivo": "{{plan_desarrollo_location}}/plan_ARCHDEV-001_20260104_120000.md",
-        "fecha": "2026-01-04T12:00:00Z",
         "secciones": 7,
         "archivos_a_modificar": 8,
         "tests_a_crear": 15,
