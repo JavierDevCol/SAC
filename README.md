@@ -285,8 +285,8 @@ Cada agente tiene un identificador único:
 
 | Documento | Ubicación | Contenido |
 |-----------|-----------|-----------|
-| Roles Activos | `agentes/roles-activos.md` | Registro de roles del sistema |
-| Herramientas Activas | `herramientas/herramientas-activas.md` | Registro de herramientas |
+| Roles del Sistema | `ROLES.md` | Índice de roles disponibles |
+| Herramientas del Sistema | `HERRAMIENTAS.md` | Índice de herramientas disponibles |
 | Configuración del Sistema | `config/CONFIG_SYSTEM.yaml` | Variables y rutas del sistema |
 
 ---
@@ -297,11 +297,12 @@ Cada agente tiene un identificador único:
 ia_prompts/
 ├── README.md                              ← Este archivo
 ├── README_PLANTILLA.md                    ← Índice de plantillas
+├── ROLES.md                               ← Índice de roles del sistema
+├── HERRAMIENTAS.md                        ← Índice de herramientas del sistema
 ├── CHANGELOG.md                           ← Historial de cambios
 ├── estructura_directorio.md               ← Documentación de estructura
 │
 ├── agentes/                               ← Roles/Agentes (cargar en chat separado)
-│   ├── roles-activos.md                   ← Registro central de roles
 │   ├── arquitecto_onad.agent.md           ← Arquitecto estratégico
 │   ├── archdev_pro.agent.md               ← Desarrollador pragmático
 │   ├── arquitecto_devops.agent.md         ← Especialista en infraestructura
@@ -309,7 +310,6 @@ ia_prompts/
 │   └── artesano_de_commits.agent.md       ← Narrador de cambios
 │
 ├── herramientas/                          ← Herramientas ejecutables
-│   ├── herramientas-activas.md            ← Registro central
 │   ├── tomar_contexto.tool.md             ← Análisis del proyecto
 │   ├── refinar_hu.tool.md                 ← Refinamiento de HUs
 │   ├── validar_hu.tool.md                 ← Validación arquitectónica
@@ -323,10 +323,6 @@ ia_prompts/
 ├── config/                                ← Configuración del sistema
 │   ├── CONFIG_SYSTEM.yaml                 ← Variables del sistema
 │   └── CONFIG_USER.template.yaml          ← Plantilla para usuario
-│
-├── definiciones/                          ← Definiciones YAML
-│   ├── agentes/                           ← Definiciones de agentes
-│   └── herramientas/                      ← Definiciones de herramientas
 │
 ├── guias/                                 ← Documentación y guías
 │   ├── guia_comandos.md                   ← Guía de comandos
@@ -346,9 +342,6 @@ ia_prompts/
 │   └── herramientas/                      ← Ejemplos de herramientas
 │
 ├── legacy/                                ← Archivos de versiones anteriores
-│   ├── cochas.agent.md                    ← Orquestador v3.0
-│   ├── herramientas_antiguas/             ← Herramientas v3.0
-│   └── personas_antiguas/                 ← Roles v3.0
 │
 └── [EN EL PROYECTO DEL USUARIO]
     └── .cochas/                           ← Carpeta del sistema (auto-creada)
@@ -369,7 +362,7 @@ ia_prompts/
 1. Copiar `plantillas/agente_plantilla.agent.md`
 2. Guardar en `agentes/[nombre].agent.md`
 3. Personalizar secciones YAML
-4. Registrar en `agentes/roles-activos.md`
+4. Registrar en `ROLES.md`
 
 Ver: **[Guía de Creación de Roles](guias/guia_creacion_roles.md)**
 
@@ -378,7 +371,7 @@ Ver: **[Guía de Creación de Roles](guias/guia_creacion_roles.md)**
 1. Copiar `plantillas/herramienta_plantilla.tool.md`
 2. Guardar en `herramientas/[nombre].tool.md`
 3. Definir proceso y paso_final obligatorio
-4. Registrar en `herramientas/herramientas-activas.md`
+4. Registrar en `HERRAMIENTAS.md`
 
 Ver: **[README_PLANTILLA.md](README_PLANTILLA.md)**
 

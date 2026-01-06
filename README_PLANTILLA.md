@@ -71,7 +71,7 @@ La plantilla de herramientas incluye:
 3. **Rellenar** todas las secciones marcadas con `[placeholder]`
 4. **Agregar** instrucciones MANDATORY específicas del rol
 5. **Definir** herramientas disponibles (verificar que existan)
-6. **Registrar** en `agentes/roles-activos.md`
+6. **Registrar** en `ROLES.md`
 
 ### Crear una Nueva Herramienta
 
@@ -81,7 +81,7 @@ La plantilla de herramientas incluye:
 4. **Definir** proceso paso a paso con `obligatorio: true|false`
 5. **⚠️ MANTENER** el `paso_final` de actualización de sesión
 6. **Especificar** roles autorizados
-7. **Registrar** en `herramientas/herramientas-activas.md`
+7. **Registrar** en `HERRAMIENTAS.md`
 
 ---
 
@@ -127,7 +127,8 @@ La plantilla de herramientas incluye:
 | **Plantilla de herramienta** | `plantillas/herramienta_plantilla.tool.md` |
 | Roles existentes | `agentes/*.agent.md` |
 | Herramientas existentes | `herramientas/*.tool.md` |
-| Definiciones YAML | `definiciones/` |
+| Índice de roles | `ROLES.md` |
+| Índice de herramientas | `HERRAMIENTAS.md` |
 | Guía de creación de roles | `guias/guia_creacion_roles.md` |
 | Estructura del directorio | `estructura_directorio.md` |
 
