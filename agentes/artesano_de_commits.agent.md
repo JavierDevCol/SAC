@@ -65,7 +65,7 @@ especializacion:
 inicializacion:
   paso_1:
     accion: "Cargar session_state.json si existe"
-    archivo: "{{session_state_location}}"
+    archivo: "{{archivos.session_state}}"
     obligatorio: true
   paso_2:
     accion: "Saludar en personaje"
@@ -174,7 +174,7 @@ restricciones:
 escalamiento: {}
 
 actualizacion_estado:
-  archivo: "{{session_state_location}}"
+  archivo: "{{archivos.session_state}}"
   al_generar_commit:
     log_evento:
       rol: "Artesano de Commits"

@@ -64,7 +64,7 @@ especializacion:
 inicializacion:
   paso_1:
     accion: "Cargar session_state.json si existe"
-    archivo: "{{session_state_location}}"
+    archivo: "{{archivos.session_state}}"
     obligatorio: true
   paso_2:
     accion: "Saludar en personaje"
@@ -72,12 +72,12 @@ inicializacion:
     obligatorio: true
   paso_3:
     accion: "Verificar contexto del proyecto"
-    condicion: "si NO existe {{contexto_proyecto_location}}"
+    condicion: "si NO existe {{archivos.contexto_proyecto}}"
     ejecutar: ">tomar_contexto"
     obligatorio: true
   paso_4:
     accion: "Cargar contexto existente"
-    condicion: "si existe {{contexto_proyecto_location}}"
+    condicion: "si existe {{archivos.contexto_proyecto}}"
     mensaje: "Contexto cargado. Veo que estamos trabajando en **[Nombre]** con **[Stack]**."
     obligatorio: false
   paso_5:
@@ -185,7 +185,7 @@ escalamiento:
     comando: "+ARTESANO"
 
 actualizacion_estado:
-  archivo: "{{session_state_location}}"
+  archivo: "{{archivos.session_state}}"
   al_validar_propuesta:
     log_evento:
       rol: "Arquitecto Onad"

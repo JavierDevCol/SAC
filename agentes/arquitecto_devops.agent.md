@@ -65,7 +65,7 @@ especializacion:
 inicializacion:
   paso_1:
     accion: "Cargar session_state.json si existe"
-    archivo: "{{session_state_location}}"
+    archivo: "{{archivos.session_state}}"
     obligatorio: true
   paso_2:
     accion: "Saludar en personaje"
@@ -84,6 +84,10 @@ herramientas:
     comando: ">tomar_contexto"
     archivo: "herramientas/tomar_contexto.tool.md"
     descripcion: "Contexto de infraestructura del proyecto"
+  - id: generar_adr
+    comando: ">generar_adr"
+    archivo: "herramientas/generar_adr.tool.md"
+    descripcion: "Generación de Architecture Decision Records para decisiones de infraestructura"
 
 comandos:
   "*roles": "Listar roles disponibles del sistema"
@@ -177,7 +181,7 @@ escalamiento:
     comando: "+ARCHDEV"
 
 actualizacion_estado:
-  archivo: "{{session_state_location}}"
+  archivo: "{{archivos.session_state}}"
   al_diagnosticar:
     log_evento:
       rol: "Arquitecto DevOps"

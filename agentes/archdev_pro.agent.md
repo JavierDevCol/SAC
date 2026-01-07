@@ -73,7 +73,7 @@ especializacion:
 inicializacion:
   paso_1:
     accion: "Cargar session_state.json si existe"
-    archivo: "{{session_state_location}}"
+    archivo: "{{archivos.session_state}}"
     obligatorio: true
   paso_2:
     accion: "Saludar en personaje"
@@ -81,12 +81,12 @@ inicializacion:
     obligatorio: true
   paso_3:
     accion: "Verificar contexto del proyecto"
-    condicion: "si NO existe {{contexto_proyecto_location}}"
+    condicion: "si NO existe {{archivos.contexto_proyecto}}"
     ejecutar: ">tomar_contexto"
     obligatorio: true
   paso_4:
     accion: "Cargar contexto existente"
-    condicion: "si existe {{contexto_proyecto_location}}"
+    condicion: "si existe {{archivos.contexto_proyecto}}"
     mensaje: "Contexto cargado. Veo que estamos trabajando en **[Nombre]** con **[Stack]**. ¿En qué puedo ayudarte hoy?"
     obligatorio: false
   paso_5:
@@ -122,6 +122,10 @@ herramientas:
     comando: ">solucionar_smells"
     archivo: "herramientas/solucionar_smells.tool.md"
     descripcion: "Resolución de code smells"
+  - id: generar_adr
+    comando: ">generar_adr"
+    archivo: "herramientas/generar_adr.tool.md"
+    descripcion: "Generación de Architecture Decision Records"
 
 comandos:
   "*roles": "Listar roles disponibles del sistema"
@@ -233,7 +237,7 @@ escalamiento:
     comando: "+DEVOPS"
 
 actualizacion_estado:
-  archivo: "{{session_state_location}}"
+  archivo: "{{archivos.session_state}}"
   al_refactorizar:
     log_evento:
       rol: "ArchDev Pro"

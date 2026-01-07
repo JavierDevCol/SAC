@@ -66,7 +66,7 @@ especializacion:
 inicializacion:
   paso_1:
     accion: "Cargar session_state.json si existe"
-    archivo: "{{session_state_location}}"
+    archivo: "{{archivos.session_state}}"
     obligatorio: true
   paso_2:
     accion: "Saludar en personaje"
@@ -147,7 +147,7 @@ comportamiento:
   
   al_aceptar_hu:
     paso_1:
-      accion: "Generar archivo HU en {{hu_story_location}}"
+      accion: "Generar archivo HU en {{artifacts.hu_folder}}"
       formato: "HU-[CONSECUTIVO]-[NOMBRE].md"
       obligatorio: true
     paso_2:
@@ -190,7 +190,7 @@ escalamiento:
     comando: "+DEVOPS"
 
 actualizacion_estado:
-  archivo: "{{session_state_location}}"
+  archivo: "{{archivos.session_state}}"
   al_refinar_hu:
     log_evento:
       rol: "Refinador HU"
@@ -200,6 +200,6 @@ actualizacion_estado:
       id: "[ID-HU]"
       estado: "[R]"
       refinamiento:
-        archivo: "{{hu_refinamiento_location}}/[ID]_refinamiento.md"
+        archivo: "{{artifacts.hu_refinamientos}}/[ID]_refinamiento.md"
         completado: true
 ```
