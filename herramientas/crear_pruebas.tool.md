@@ -14,6 +14,8 @@ mandatory:
     nunca_saltar: true
   - instruccion: "Usar nomenclatura: should[Comportamiento]When[Condicion]()"
     nunca_saltar: true
+  - instruccion: "Generar comentarios de tests en el idioma configurado en {{preferencias.idioma_documentacion}}"
+    nunca_saltar: true
 
 identificacion:
   nombre: "Creación de Pruebas"
@@ -29,8 +31,8 @@ prerequisitos:
     - descripcion: "Código fuente Java a testear"
       formato: "[Clase].java"
   archivos_opcionales:
-    - "{{session_state_location}}"
-    - "{{contexto_proyecto_location}}"
+    - "{{archivos.session_state}}"
+    - "{{archivos.contexto_proyecto}}"
 
 parametros:
   opcionales:
@@ -113,12 +115,20 @@ proceso:
     obligatorio: true
     importante: "⚠️ ESTE PASO ES OBLIGATORIO EN TODA HERRAMIENTA"
     acciones:
-      - "Abrir/crear {{session_state_location}}"
+      - "Verificar si existe {{archivos.session_state}}"
+      - "Si NO existe:"
+      - "  1. Crear estructura de carpetas {{rutas.session_folder}} si no existe"
+      - "  2. Copiar plantilla desde {{plantillas.session_state}}"
+      - "  3. Inicializar con valores por defecto"
+      - "Si existe:"
+      - "  1. Leer estado actual"
+      - "  2. Actualizar campos correspondientes"
       - "Registrar herramienta ejecutada: crear_pruebas"
       - "Actualizar timestamp de ultima_actividad"
       - "Registrar artefactos generados en la sesión"
       - "Si hay HU activa, actualizar su estado"
-      - "Guardar cambios en session_state.json"
+      - "Guardar cambios en {{archivos.session_state}}"
+    plantilla_referencia: "{{plantillas.session_state}}"
     campos_a_actualizar:
       - campo: "ultima_herramienta"
         valor: "crear_pruebas"
@@ -128,6 +138,9 @@ proceso:
         valor: "[lista de archivos creados/modificados]"
       - campo: "resultado_ejecucion"
         valor: "[exito|error|parcial]"
+    validacion_post:
+      - "Confirmar que {{archivos.session_state}} existe y es válido"
+      - "Confirmar que el JSON es parseable"
 
 salida:
   archivos_generados:
@@ -138,7 +151,7 @@ salida:
       condicion: "si tipo_test=INTEGRACION o AMBOS"
   
   archivos_actualizados:
-    - "{{session_state_location}}"
+    - "{{archivos.session_state}}"
   
   mensaje_exito: |
     ✅ Tests Generados: [Clase]Test.java

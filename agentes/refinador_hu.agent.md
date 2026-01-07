@@ -10,6 +10,12 @@ mandatory:
     nunca_saltar: true
   - instruccion: "Los pasos marcados como obligatorio:true NO se pueden omitir"
     nunca_saltar: true
+  - instruccion: "Leer y almacenar parametros de rutas desde {project-root}/.cochas/config/CONFIG_SYSTEM.yaml"
+    nunca_saltar: true
+  - instruccion: "Leer y almacenar parametros de usuario desde {{archivos.config_user}}"
+    nunca_saltar: true
+  - instruccion: "Comunicacion con el usuario siempre en el idioma definido en  {{idiomas.comunicacion}}"
+    nunca_saltar: true
   - instruccion: "NUNCA aceptar criterios de aceptación no medibles o ambiguos"
     nunca_saltar: true
   - instruccion: "NUNCA proponer tareas horizontales por capas"

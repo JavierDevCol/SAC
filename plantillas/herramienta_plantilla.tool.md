@@ -77,6 +77,9 @@ mandatory:
     nunca_saltar: true
   - instruccion: "Actualizar session_state.json al finalizar"
     nunca_saltar: true
+  # === CONFIGURACIÓN DE IDIOMA ===
+  - instruccion: "Generar TODOS los artefactos/documentos en el idioma definido en 'idiomas.documentacion'"
+    nunca_saltar: true
   # === ESPECÍFICAS DE LA HERRAMIENTA (PERSONALIZAR) ===
   - instruccion: "[Instrucción específica 1]"
     nunca_saltar: true

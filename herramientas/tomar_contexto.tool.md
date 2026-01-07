@@ -14,6 +14,8 @@ mandatory:
     nunca_saltar: true
   - instruccion: "NUNCA mezclar contextos de diferentes proyectos en un solo archivo"
     nunca_saltar: true
+  - instruccion: "Generar documentación en el idioma configurado en {{preferencias.idioma_documentacion}}"
+    nunca_saltar: true
 
 identificacion:
   nombre: "Tomar Contexto"
@@ -120,8 +122,12 @@ proceso_proyecto_unico:
     nombre: "Crear Archivo de Contexto"
     obligatorio: true
     acciones:
-      - "Usar plantilla: contexto_proyecto_plantilla.md"
-      - "Guardar en: {{artifacts_folder}}/contexto_proyecto.md"
+      - "Verificar si existe {{rutas.artifacts_folder}}"
+      - "Si NO existe, crear estructura de carpetas"
+      - "Leer plantilla desde {{plantillas.contexto}}"
+      - "Rellenar plantilla con datos analizados del proyecto"
+      - "Guardar resultado en {{archivos.contexto_proyecto}}"
+    plantilla_referencia: "{{plantillas.contexto}}"
 
 proceso_multi_proyecto:
   paso_1:
@@ -152,9 +158,10 @@ proceso_multi_proyecto:
     nombre: "Crear Estructura de Carpetas"
     obligatorio: true
     acciones:
-      - "Crear {{artifacts_folder}}/contextos/ si no existe"
-      - "Crear {{hu_folder}}/compartidas/ si no existe"
-      - "Crear {{hu_folder}}/[nombre_proyecto]/ por cada proyecto"
+      - "Crear {{rutas.artifacts_folder}} si no existe"
+      - "Crear {{artifacts.contextos_folder}} si no existe"
+      - "Crear {{artifacts.hu_compartidas}} si no existe"
+      - "Crear {{artifacts.hu_folder}}/[nombre_proyecto]/ por cada proyecto"
 
   paso_4:
     nombre: "Analizar Proyecto(s) Seleccionado(s)"
@@ -162,7 +169,7 @@ proceso_multi_proyecto:
     acciones:
       - "Para cada proyecto seleccionado:"
       - "  - Ejecutar proceso_proyecto_unico pasos 1-4"
-      - "  - Guardar en: {{contextos_folder}}/contexto_proyecto_[nombre].md"
+      - "  - Guardar en: {{artifacts.contextos_folder}}/contexto_proyecto_[nombre].md"
 
   paso_5:
     nombre: "Detectar Relaciones entre Proyectos"
@@ -178,22 +185,35 @@ proceso_multi_proyecto:
     obligatorio: true
     condicion: "si es multi-proyecto"
     acciones:
-      - "Usar plantilla: workspace_plantilla.md"
-      - "Incluir tabla de proyectos"
-      - "Incluir relaciones detectadas"
-      - "Guardar en: {{artifacts_folder}}/workspace.md"
+      - "Verificar si existe {{rutas.artifacts_folder}}"
+      - "Si NO existe, crear estructura de carpetas"
+      - "Leer plantilla desde {{plantillas.workspace}}"
+      - "Rellenar plantilla con:"
+      - "  - Tabla de proyectos detectados"
+      - "  - Relaciones entre proyectos"
+      - "  - Stack tecnológico de cada uno"
+      - "Guardar resultado en {{archivos.workspace_index}}"
+    plantilla_referencia: "{{plantillas.workspace}}"
 
   paso_final:
     nombre: "Actualizar Estado de Sesión"
     obligatorio: true
     importante: "⚠️ ESTE PASO ES OBLIGATORIO EN TODA HERRAMIENTA"
     acciones:
-      - "Abrir/crear {{session_state_location}}"
+      - "Verificar si existe {{archivos.session_state}}"
+      - "Si NO existe:"
+      - "  1. Crear estructura de carpetas {{rutas.session_folder}} si no existe"
+      - "  2. Copiar plantilla desde {{plantillas.session_state}}"
+      - "  3. Inicializar con valores por defecto"
+      - "Si existe:"
+      - "  1. Leer estado actual"
+      - "  2. Actualizar campos correspondientes"
       - "Registrar herramienta ejecutada: tomar_contexto"
       - "Actualizar timestamp de ultima_actividad"
       - "Registrar artefactos generados en la sesión"
       - "Si hay HU activa, actualizar su estado"
-      - "Guardar cambios en session_state.json"
+      - "Guardar cambios en {{archivos.session_state}}"
+    plantilla_referencia: "{{plantillas.session_state}}"
     campos_a_actualizar:
       - campo: "ultima_herramienta"
         valor: "tomar_contexto"
@@ -203,16 +223,22 @@ proceso_multi_proyecto:
         valor: "[lista de archivos creados/modificados]"
       - campo: "resultado_ejecucion"
         valor: "[exito|error|parcial]"
+    validacion_post:
+      - "Confirmar que {{archivos.session_state}} existe y es válido"
+      - "Confirmar que el JSON es parseable"
 
 salida_proyecto_unico:
   archivos_generados:
     - tipo: "contexto"
-      ruta: "{{artifacts_folder}}/contexto_proyecto.md"
+      ruta: "{{archivos.contexto_proyecto}}"
+  
+  archivos_actualizados:
+    - "{{archivos.session_state}}"
   
   mensaje_exito: |
     ✅ CONTEXTO GENERADO
     
-    📄 Archivo: .cochas/artifacts/contexto_proyecto.md
+    📄 Archivo: {{archivos.contexto_proyecto}}
     📊 Confianza: [Alto|Medio|Bajo]
     
     🎯 Scorecard:
@@ -226,20 +252,23 @@ salida_proyecto_unico:
 salida_multi_proyecto:
   archivos_generados:
     - tipo: "workspace"
-      ruta: "{{artifacts_folder}}/workspace.md"
+      ruta: "{{archivos.workspace_index}}"
     - tipo: "contextos"
-      ruta: "{{contextos_folder}}/contexto_proyecto_[nombre].md"
+      ruta: "{{artifacts.contextos_folder}}/contexto_proyecto_[nombre].md"
   
   carpetas_creadas:
-    - "{{contextos_folder}}"
-    - "{{hu_folder}}/compartidas"
-    - "{{hu_folder}}/[nombre_proyecto]"
+    - "{{artifacts.contextos_folder}}"
+    - "{{artifacts.hu_compartidas}}"
+    - "{{artifacts.hu_folder}}/[nombre_proyecto]"
+  
+  archivos_actualizados:
+    - "{{archivos.session_state}}"
   
   mensaje_exito: |
     ✅ WORKSPACE MULTI-PROYECTO CONFIGURADO
     
     📁 Estructura creada:
-    .cochas/artifacts/
+    {{rutas.artifacts_folder}}/
     ├── workspace.md
     ├── contextos/
     │   ├── contexto_proyecto_[proyecto_1].md

@@ -16,6 +16,8 @@ mandatory:
     nunca_saltar: true
   - instruccion: "NUNCA terminar título con punto"
     nunca_saltar: true
+  - instruccion: "Generar mensajes de commit en el idioma configurado en {{preferencias.idioma_documentacion}}"
+    nunca_saltar: true
 
 identificacion:
   nombre: "Generar Commit"
@@ -59,8 +61,8 @@ proceso:
     nombre: "Captura Automática del Git Diff"
     obligatorio: true
     acciones:
-      - "Crear directorio cochas/artifacts/ si no existe"
-      - "Ejecutar: git diff > cochas/artifacts/diff.txt"
+      - "Crear directorio {{rutas.artifacts_folder}} si no existe"
+      - "Ejecutar: git diff > {{rutas.artifacts_folder}}/diff.txt"
       - "Validar que el archivo no esté vacío"
     si_error:
       sin_repositorio: "❌ No es un repositorio git válido"
@@ -70,7 +72,7 @@ proceso:
     nombre: "Análisis del Contexto"
     obligatorio: true
     acciones:
-      - "Parsear diff.txt para identificar archivos modificados"
+      - "Parsear {{rutas.artifacts_folder}}/diff.txt para identificar archivos modificados"
       - "Extraer información del branch name"
       - "Identificar si hay cambios en archivos críticos"
 
@@ -127,12 +129,20 @@ proceso:
     obligatorio: true
     importante: "⚠️ ESTE PASO ES OBLIGATORIO EN TODA HERRAMIENTA"
     acciones:
-      - "Abrir/crear {{session_state_location}}"
+      - "Verificar si existe {{archivos.session_state}}"
+      - "Si NO existe:"
+      - "  1. Crear estructura de carpetas {{rutas.session_folder}} si no existe"
+      - "  2. Copiar plantilla desde {{plantillas.session_state}}"
+      - "  3. Inicializar con valores por defecto"
+      - "Si existe:"
+      - "  1. Leer estado actual"
+      - "  2. Actualizar campos correspondientes"
       - "Registrar herramienta ejecutada: generar_commit"
       - "Actualizar timestamp de ultima_actividad"
       - "Registrar artefactos generados en la sesión"
       - "Si hay HU activa, actualizar su estado"
-      - "Guardar cambios en session_state.json"
+      - "Guardar cambios en {{archivos.session_state}}"
+    plantilla_referencia: "{{plantillas.session_state}}"
     campos_a_actualizar:
       - campo: "ultima_herramienta"
         valor: "generar_commit"
@@ -142,12 +152,18 @@ proceso:
         valor: "[lista de archivos creados/modificados]"
       - campo: "resultado_ejecucion"
         valor: "[exito|error|parcial]"
+    validacion_post:
+      - "Confirmar que {{archivos.session_state}} existe y es válido"
+      - "Confirmar que el JSON es parseable"
 
 salida:
   archivos_generados:
     - tipo: "diff temporal"
-      ruta: "cochas/artifacts/diff.txt"
+      ruta: "{{rutas.artifacts_folder}}/diff.txt"
       temporal: true
+  
+  archivos_actualizados:
+    - "{{archivos.session_state}}"
   
   mensaje_exito: |
     ✅ Mensaje de Commit Generado
@@ -208,3 +224,4 @@ siguiente:
     - comando: "git add . && git commit -m '[mensaje]'"
       descripcion: "Agregar cambios y commitear"
 ```
+````

@@ -14,6 +14,8 @@ mandatory:
     nunca_saltar: true
   - instruccion: "Usar desglose VERTICAL (end-to-end), nunca horizontal"
     nunca_saltar: true
+  - instruccion: "Generar documentación en el idioma configurado en {{preferencias.idioma_documentacion}}"
+    nunca_saltar: true
 
 identificacion:
   nombre: "Refinar Historia de Usuario"
@@ -31,8 +33,8 @@ prerequisitos:
     - descripcion: "Texto de la Historia de Usuario"
       formato: "Como [rol], quiero [funcionalidad], para [beneficio]"
   archivos_opcionales:
-    - "{{contexto_proyecto_location}}"
-    - "{{backlog_location}}"
+    - "{{archivos.contexto_proyecto}}"
+    - "{{archivos.backlog}}"
     - "Criterios de aceptación existentes"
 
 parametros:
@@ -144,20 +146,34 @@ proceso:
     obligatorio: true
     acciones:
       - "Generar archivo [ID-HU]_refinamiento_[concepto].md"
-      - "Guardar en {{hu_refinamiento_location}}"
-      - "Actualizar {{backlog_location}} con estado [R]"
+      - "Guardar en {{artifacts.hu_refinamientos}}"
+      - "Verificar si existe {{archivos.backlog}}"
+      - "Si NO existe:"
+      - "  1. Crear estructura de carpetas {{rutas.artifacts_folder}} si no existe"
+      - "  2. Copiar plantilla desde {{plantillas.backlog}}"
+      - "  3. Inicializar backlog vacío con estructura correcta"
+      - "Actualizar {{archivos.backlog}} con estado [R] para la HU"
+    plantilla_referencia: "{{plantillas.backlog}}"
 
   paso_final:
     nombre: "Actualizar Estado de Sesión"
     obligatorio: true
     importante: "⚠️ ESTE PASO ES OBLIGATORIO EN TODA HERRAMIENTA"
     acciones:
-      - "Abrir/crear {{session_state_location}}"
+      - "Verificar si existe {{archivos.session_state}}"
+      - "Si NO existe:"
+      - "  1. Crear estructura de carpetas {{rutas.session_folder}} si no existe"
+      - "  2. Copiar plantilla desde {{plantillas.session_state}}"
+      - "  3. Inicializar con valores por defecto"
+      - "Si existe:"
+      - "  1. Leer estado actual"
+      - "  2. Actualizar campos correspondientes"
       - "Registrar herramienta ejecutada: refinar_hu"
       - "Actualizar timestamp de ultima_actividad"
       - "Registrar artefactos generados en la sesión"
       - "Actualizar estado de la HU refinada"
-      - "Guardar cambios en session_state.json"
+      - "Guardar cambios en {{archivos.session_state}}"
+    plantilla_referencia: "{{plantillas.session_state}}"
     campos_a_actualizar:
       - campo: "ultima_herramienta"
         valor: "refinar_hu"
@@ -167,22 +183,25 @@ proceso:
         valor: "[lista de archivos creados/modificados]"
       - campo: "resultado_ejecucion"
         valor: "[exito|error|parcial]"
+    validacion_post:
+      - "Confirmar que {{archivos.session_state}} existe y es válido"
+      - "Confirmar que el JSON es parseable"
 
 salida:
   archivos_generados:
     - tipo: "refinamiento"
-      ruta: "{{hu_refinamiento_location}}/[ID-HU]_refinamiento_[concepto].md"
+      ruta: "{{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento_[concepto].md"
   
   archivos_actualizados:
-    - "{{backlog_location}}"
-    - "{{session_state_location}}"
+    - "{{archivos.backlog}}"
+    - "{{archivos.session_state}}"
   
   estado_hu_final: "[R] Refinada"
   
   mensaje_exito: |
     ✅ REFINAMIENTO COMPLETADO: [ID-HU]
     
-    📄 Artefacto: {{hu_refinamiento_location}}/[ID-HU]_refinamiento_[concepto].md
+    📄 Artefacto: {{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento_[concepto].md
     
     📊 Resumen:
     - Criterios de Aceptación: [X] mejorados + [Y] nuevos

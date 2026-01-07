@@ -24,6 +24,25 @@ import tempfile
 from pathlib import Path
 from datetime import datetime
 
+# ============================================
+# CONFIGURACIÓN DE CODIFICACIÓN (Windows)
+# ============================================
+# Forzar UTF-8 en la salida estándar para Windows
+if platform.system() == "Windows":
+    # Configurar la consola de Windows para UTF-8
+    if sys.stdout.encoding != 'utf-8':
+        try:
+            sys.stdout.reconfigure(encoding='utf-8')
+        except AttributeError:
+            # Python < 3.7
+            import io
+            sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+    if sys.stderr.encoding != 'utf-8':
+        try:
+            sys.stderr.reconfigure(encoding='utf-8')
+        except AttributeError:
+            import io
+            sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
 
 # ============================================
 # CONFIGURACIÓN
@@ -32,7 +51,7 @@ from datetime import datetime
 # URL del repositorio de COCHAS
 REPO_URL = "https://github.com/JavierDevCol/SAC.git"
 REPO_NAME = "SAC"
-REPO_BRANCH = "feature/instalacion"  # Rama a clonar
+REPO_BRANCH = "feature/instalacion"  # Rama principal para instalación
 
 # Carpetas a copiar desde la raíz de ia_prompts
 CARPETAS_COCHAS = [
@@ -95,16 +114,24 @@ def get_root_directory():
 
 def get_temp_repo_path():
     """
-    Obtiene la ruta temporal donde se clonará el repositorio.
-    - Windows: %TEMP%/cochas_repo/
-    - Linux/Mac: /tmp/cochas_repo/
+    Obtiene la ruta donde se clonará/almacenará el repositorio.
+    Usa ubicaciones permanentes según el sistema operativo:
+    - Windows: %LOCALAPPDATA%/cochas/repo/
+    - Linux/Mac: ~/.local/share/cochas/repo/
     """
     if platform.system() == "Windows":
-        temp_base = Path(tempfile.gettempdir())
+        # Usar %LOCALAPPDATA% (ej: C:\Users\Usuario\AppData\Local)
+        local_app_data = os.environ.get("LOCALAPPDATA")
+        if local_app_data:
+            base_path = Path(local_app_data) / "cochas" / "repo"
+        else:
+            # Fallback si no existe la variable
+            base_path = Path.home() / "AppData" / "Local" / "cochas" / "repo"
     else:
-        temp_base = Path("/tmp")
+        # Linux/Mac: ~/.local/share/cochas/repo/
+        base_path = Path.home() / ".local" / "share" / "cochas" / "repo"
     
-    return temp_base / "cochas_repo"
+    return base_path
 
 
 def is_git_available():
@@ -137,8 +164,9 @@ def is_local_install():
 
 
 def clone_repository(dest_path):
-    """Clona el repositorio desde GitHub."""
+    """Clona el repositorio desde GitHub y cambia a la rama correcta."""
     print_info(f"Clonando repositorio desde {REPO_URL}...")
+    print_info(f"Rama objetivo: {REPO_BRANCH}")
     
     try:
         # Eliminar carpeta si existe
@@ -148,7 +176,7 @@ def clone_repository(dest_path):
         # Crear carpeta padre si no existe
         dest_path.parent.mkdir(parents=True, exist_ok=True)
         
-        # Clonar repositorio
+        # Intentar clonar directamente la rama específica
         result = subprocess.run(
             ["git", "clone", "--depth", "1", "--branch", REPO_BRANCH, REPO_URL, str(dest_path)],
             capture_output=True,
@@ -157,17 +185,92 @@ def clone_repository(dest_path):
         )
         
         if result.returncode == 0:
-            print_success("Repositorio clonado correctamente")
+            print_success(f"Repositorio clonado correctamente (rama: {REPO_BRANCH})")
+            # Configurar safe.directory INMEDIATAMENTE para evitar errores de ownership en Windows
+            configure_git_safe_directory(dest_path)
             return True
         else:
-            print_error(f"Error al clonar: {result.stderr}")
-            return False
+            # Si falla el clone de la rama específica, intentar clone normal + checkout
+            print_warning(f"No se pudo clonar la rama '{REPO_BRANCH}' directamente")
+            print_info("Intentando clone completo y checkout...")
+            
+            # Clone sin especificar rama
+            result_full = subprocess.run(
+                ["git", "clone", REPO_URL, str(dest_path)],
+                capture_output=True,
+                text=True,
+                timeout=120
+            )
+            
+            if result_full.returncode != 0:
+                print_error(f"Error al clonar: {result_full.stderr}")
+                return False
+            
+            # Configurar safe.directory antes de hacer checkout
+            configure_git_safe_directory(dest_path)
+            
+            # Hacer checkout de la rama
+            result_checkout = subprocess.run(
+                ["git", "-C", str(dest_path), "checkout", REPO_BRANCH],
+                capture_output=True,
+                text=True,
+                timeout=30
+            )
+            
+            if result_checkout.returncode == 0:
+                print_success(f"Repositorio clonado y cambiado a rama: {REPO_BRANCH}")
+                return True
+            else:
+                # Si la rama no existe, intentar crearla desde origin
+                result_fetch = subprocess.run(
+                    ["git", "-C", str(dest_path), "fetch", "origin", REPO_BRANCH],
+                    capture_output=True,
+                    text=True,
+                    timeout=60
+                )
+                
+                if result_fetch.returncode == 0:
+                    result_checkout2 = subprocess.run(
+                        ["git", "-C", str(dest_path), "checkout", "-b", REPO_BRANCH, f"origin/{REPO_BRANCH}"],
+                        capture_output=True,
+                        text=True,
+                        timeout=30
+                    )
+                    if result_checkout2.returncode == 0:
+                        print_success(f"Repositorio clonado y cambiado a rama: {REPO_BRANCH}")
+                        return True
+                
+                print_error(f"La rama '{REPO_BRANCH}' no existe en el repositorio remoto")
+                print_info("Verifica que la rama exista en GitHub")
+                return False
             
     except subprocess.TimeoutExpired:
         print_error("Tiempo de espera agotado al clonar el repositorio")
         return False
     except Exception as e:
         print_error(f"Error inesperado: {e}")
+        return False
+
+
+def configure_git_safe_directory(repo_path):
+    """
+    Configura el directorio como safe.directory en Git.
+    Necesario en Windows cuando el repo está en carpeta temporal.
+    """
+    try:
+        # Normalizar la ruta para Git (usar forward slashes)
+        safe_path = str(repo_path).replace("\\", "/")
+        
+        result = subprocess.run(
+            ["git", "config", "--global", "--add", "safe.directory", safe_path],
+            capture_output=True,
+            text=True,
+            timeout=10
+        )
+        if result.returncode == 0:
+            print_info(f"Configurado safe.directory: {safe_path}")
+        return result.returncode == 0
+    except Exception:
         return False
 
 
@@ -201,6 +304,52 @@ def update_repository(repo_path):
         return False
 
 
+def find_cochas_root(base_path):
+    """
+    Busca el directorio raíz de COCHAS dentro de una ruta.
+    El repositorio puede tener las carpetas en la raíz o dentro de una subcarpeta.
+    """
+    base = Path(base_path)
+    
+    # Primero verificar si las carpetas están directamente en base_path
+    if all((base / folder).exists() for folder in CARPETAS_COCHAS):
+        return base
+    
+    # Buscar en subcarpetas de primer nivel (ej: SAC/ia_prompts/, ia_prompts/)
+    for subdir in base.iterdir():
+        if subdir.is_dir() and not subdir.name.startswith('.'):
+            if all((subdir / folder).exists() for folder in CARPETAS_COCHAS):
+                return subdir
+            # Buscar un nivel más profundo
+            for subsubdir in subdir.iterdir():
+                if subsubdir.is_dir() and not subsubdir.name.startswith('.'):
+                    if all((subsubdir / folder).exists() for folder in CARPETAS_COCHAS):
+                        return subsubdir
+                    # Buscar un tercer nivel (por si acaso)
+                    for subsubsubdir in subsubdir.iterdir():
+                        if subsubsubdir.is_dir() and not subsubsubdir.name.startswith('.'):
+                            if all((subsubsubdir / folder).exists() for folder in CARPETAS_COCHAS):
+                                return subsubsubdir
+    
+    # Intentar buscar por nombre específico "ia_prompts"
+    ia_prompts_candidates = list(base.rglob("ia_prompts"))
+    for candidate in ia_prompts_candidates:
+        if candidate.is_dir():
+            if all((candidate / folder).exists() for folder in CARPETAS_COCHAS):
+                return candidate
+    
+    # Depuración: mostrar qué carpetas hay en la raíz
+    print_warning(f"No se encontró la estructura de COCHAS en {base}")
+    print_info("Contenido del repositorio:")
+    try:
+        for item in base.iterdir():
+            print_info(f"  - {item.name}{'/' if item.is_dir() else ''}")
+    except Exception as e:
+        print_error(f"  Error listando contenido: {e}")
+    
+    return None
+
+
 def ensure_repo_available():
     """
     Asegura que el repositorio esté disponible.
@@ -225,18 +374,21 @@ def ensure_repo_available():
     # Si ya existe el repo en temp, actualizarlo
     if temp_repo_path.exists() and (temp_repo_path / ".git").exists():
         print_info(f"Repositorio encontrado en {temp_repo_path}")
+        configure_git_safe_directory(temp_repo_path)
         if update_repository(temp_repo_path):
-            return temp_repo_path
+            return find_cochas_root(temp_repo_path)
         else:
             # Si falla el update, intentar clonar de nuevo
             print_warning("Fallo la actualización, re-clonando...")
             if clone_repository(temp_repo_path):
-                return temp_repo_path
+                configure_git_safe_directory(temp_repo_path)
+                return find_cochas_root(temp_repo_path)
             return None
     else:
         # Clonar el repositorio
         if clone_repository(temp_repo_path):
-            return temp_repo_path
+            configure_git_safe_directory(temp_repo_path)
+            return find_cochas_root(temp_repo_path)
         return None
 
 
@@ -403,6 +555,114 @@ def print_final_summary(dest_path):
     print()
 
 
+def configure_user_settings(dest_path):
+    """
+    Solicita configuración personalizada al usuario y genera CONFIG_USER.yaml.
+    Retorna True si se completó correctamente, False si se omitió.
+    """
+    print("""
+╔═══════════════════════════════════════════════════════════════╗
+║              ⚙️  CONFIGURACIÓN PERSONALIZADA                   ║
+╚═══════════════════════════════════════════════════════════════╝
+    """)
+    
+    print("   Vamos a personalizar COCHAS para tu proyecto.\n")
+    print("   (Presiona Enter para usar el valor por defecto)\n")
+    print("─" * 55 + "\n")
+    
+    # === INFORMACIÓN DEL USUARIO ===
+    print("👤 INFORMACIÓN DEL USUARIO\n")
+    nombre_usuario = input("   Tu nombre: ").strip()
+    if not nombre_usuario:
+        nombre_usuario = ""
+        print_info("Sin nombre configurado")
+    else:
+        print_success(f"Nombre: {nombre_usuario}")
+    
+    print()
+    
+    # === PREFERENCIAS DE IDIOMA ===
+    print("🌐 PREFERENCIAS DE IDIOMA\n")
+    print("   Opciones: es (Español), en (English), pt (Português)\n")
+    
+    idioma_doc = input("   Idioma para documentación [es]: ").strip().lower()
+    if idioma_doc not in ["es", "en", "pt"]:
+        idioma_doc = "es"
+    print_success(f"Documentación: {idioma_doc}")
+    
+    idioma_com = input("   Idioma para comunicación [es]: ").strip().lower()
+    if idioma_com not in ["es", "en", "pt"]:
+        idioma_com = "es"
+    print_success(f"Comunicación: {idioma_com}")
+    
+    print()
+    
+    # === INFORMACIÓN DEL PROYECTO ===
+    print("📁 INFORMACIÓN DEL PROYECTO\n")
+    
+    # Sugerir nombre basado en carpeta destino
+    nombre_proyecto_default = Path(dest_path).name
+    nombre_proyecto = input(f"   Nombre del proyecto [{nombre_proyecto_default}]: ").strip()
+    if not nombre_proyecto:
+        nombre_proyecto = nombre_proyecto_default
+    print_success(f"Proyecto: {nombre_proyecto}")
+    
+    print()
+    
+    # === GENERAR ARCHIVO CONFIG_USER.yaml ===
+    config_content = f"""# ============================================
+# CONFIGURACIÓN DEL USUARIO/PROYECTO
+# ============================================
+# ✅ Editable por el usuario
+# Generado automáticamente por el instalador de COCHAS
+# Fecha: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+# ============================================
+
+# === INFORMACIÓN DEL USUARIO ===
+usuario:
+  nombre: "{nombre_usuario}"                  # Tu nombre para personalización
+
+# === PREFERENCIAS DE IDIOMA ===
+idiomas:
+  documentacion: "{idioma_doc}"                 # Idioma para documentos generados (es|en|pt)
+  comunicacion: "{idioma_com}"                  # Idioma para interacción con el sistema
+
+# === INFORMACIÓN DEL PROYECTO ===
+proyecto:
+  nombre: "{nombre_proyecto}"                          # Nombre del proyecto
+"""
+    
+    # Guardar archivo
+    config_path = Path(dest_path) / ".cochas" / "config" / "CONFIG_USER.yaml"
+    
+    try:
+        with open(config_path, "w", encoding="utf-8") as f:
+            f.write(config_content)
+        print_success(f"Configuración guardada en: .cochas/config/CONFIG_USER.yaml")
+        return True
+    except Exception as e:
+        print_error(f"Error al guardar configuración: {e}")
+        return False
+
+
+def ask_for_configuration(dest_path):
+    """
+    Pregunta al usuario si desea configurar COCHAS ahora.
+    Retorna True si se configuró o se omitió correctamente.
+    """
+    print("\n" + "─" * 55)
+    print("\n   ¿Deseas configurar COCHAS para tu proyecto ahora?")
+    print("   (Puedes hacerlo después editando .cochas/config/CONFIG_USER.yaml)\n")
+    
+    response = input("   Configurar ahora (S/n): ").strip().lower()
+    
+    if response == 'n':
+        print_info("Configuración omitida. Puedes editar CONFIG_USER.yaml más tarde.")
+        return True
+    
+    return configure_user_settings(dest_path)
+
+
 def print_help():
     """Muestra la ayuda del comando."""
     print("""
@@ -410,7 +670,7 @@ def print_help():
     python instalar.py [RUTA]              Instala COCHAS en la ruta especificada
     python instalar.py                     Modo interactivo (pide la ruta)
     python instalar.py --update            Actualiza el repositorio en caché
-    python instalar.py --help              Muestra esta ayuda
+    python instalar.py --help              Muestra este mensaje de ayuda
 
 📍 EJEMPLOS:
     python instalar.py "C:/proyectos/mi-app"
@@ -429,13 +689,13 @@ def print_help():
     {repo_url}
     
     El repositorio se guarda en:
-    - Windows: %TEMP%/cochas_repo/
-    - Linux/Mac: /tmp/cochas_repo/
+    - Windows: %LOCALAPPDATA%\\cochas\\repo\\
+    - Linux/Mac: ~/.local/share/cochas/repo/
 """.format(repo_url=REPO_URL))
 
 
 def do_update():
-    """Ejecuta solo la actualización del repositorio."""
+    """Ejecuta la actualización del repositorio y opcionalmente instala."""
     print_banner()
     print("🔄 Modo actualización\n")
     
@@ -447,10 +707,65 @@ def do_update():
     
     if temp_repo_path.exists() and (temp_repo_path / ".git").exists():
         print_info(f"Repositorio en: {temp_repo_path}")
-        return update_repository(temp_repo_path)
+        configure_git_safe_directory(temp_repo_path)
+        success = update_repository(temp_repo_path)
     else:
         print_info("No existe repositorio en caché, clonando...")
-        return clone_repository(temp_repo_path)
+        success = clone_repository(temp_repo_path)
+        if success:
+            configure_git_safe_directory(temp_repo_path)
+    
+    if not success:
+        return False
+    
+    # Preguntar si desea instalar
+    print("\n" + "─" * 50)
+    response = input("\n   ¿Deseas instalar COCHAS en un proyecto ahora? (s/N): ").strip().lower()
+    
+    if response == 's':
+        print("\n📍 Ingresa la ruta donde instalar COCHAS:\n")
+        print("   (La carpeta debe existir)\n")
+        dest_path = input("   Ruta: ").strip()
+        
+        if not dest_path:
+            print_error("No se proporcionó una ruta")
+            return False
+        
+        # Expandir ~ y variables de entorno
+        dest_path = os.path.expanduser(dest_path)
+        dest_path = os.path.expandvars(dest_path)
+        dest_path = os.path.abspath(dest_path)
+        
+        # Validar destino
+        valid, error = validate_destination(dest_path)
+        if not valid:
+            print_error(error)
+            return False
+        
+        print(f"\n📍 Destino: {dest_path}")
+        print(f"📦 Fuente: {temp_repo_path}\n")
+        
+        # Verificar instalación existente
+        existing = check_existing_installation(dest_path)
+        if existing:
+            print_warning(f"Ya existe una instalación: {', '.join(existing)}")
+            overwrite = input("\n   ¿Sobrescribir? (s/N): ").strip().lower()
+            if overwrite != 's':
+                print_info("Instalación cancelada")
+                return True  # El update fue exitoso
+        
+        # Ejecutar instalación
+        install_success = install_cochas(dest_path, temp_repo_path)
+        
+        if install_success:
+            print_final_summary(dest_path)
+        else:
+            print_error("La instalación falló")
+            return False
+    else:
+        print_info("Puedes instalar más tarde con: python instalar.py \"RUTA\"")
+    
+    return True
 
 
 def main():
@@ -525,6 +840,7 @@ def main():
     
     if success:
         print_final_summary(dest_path)
+        ask_for_configuration(dest_path)
     else:
         print_error("La instalación falló")
         sys.exit(1)

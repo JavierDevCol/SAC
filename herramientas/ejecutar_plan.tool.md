@@ -16,6 +16,8 @@ mandatory:
     nunca_saltar: true
   - instruccion: "NO improvisar ni saltar tareas del plan"
     nunca_saltar: true
+  - instruccion: "Generar documentación en el idioma configurado en {{preferencias.idioma_documentacion}}"
+    nunca_saltar: true
 
 identificacion:
   nombre: "Ejecutar Plan de Implementación"
@@ -29,11 +31,11 @@ roles_autorizados:
 prerequisitos:
   archivos_requeridos:
     - descripcion: "Plan de implementación generado por ONAD"
-      ubicacion: "{{planes_location}}/[ID-HU]_plan_implementacion.md"
+      ubicacion: "{{artifacts.planes_folder}}/[ID-HU]_plan_implementacion.md"
       estado_requerido: "[P] Planificada"
   archivos_opcionales:
-    - "{{contexto_proyecto_location}}"
-    - "{{reglas_arquitectonicas_location}}"
+    - "{{archivos.contexto_proyecto}}"
+    - "{{archivos.reglas_arquitectonicas}}"
 
 parametros:
   requeridos:
@@ -55,7 +57,7 @@ proceso:
     nombre: "Cargar Plan de Implementación"
     obligatorio: true
     acciones:
-      - "Buscar plan en {{planes_location}}"
+      - "Buscar plan en {{artifacts.planes_folder}}"
       - "Parsear fases y tareas"
       - "Verificar estado [P] Planificada"
       - "Cambiar estado a [E] En Ejecución"
@@ -120,12 +122,20 @@ proceso:
     obligatorio: true
     importante: "⚠️ ESTE PASO ES OBLIGATORIO EN TODA HERRAMIENTA"
     acciones:
-      - "Abrir/crear {{session_state_location}}"
+      - "Verificar si existe {{archivos.session_state}}"
+      - "Si NO existe:"
+      - "  1. Crear estructura de carpetas {{rutas.session_folder}} si no existe"
+      - "  2. Copiar plantilla desde {{plantillas.session_state}}"
+      - "  3. Inicializar con valores por defecto"
+      - "Si existe:"
+      - "  1. Leer estado actual"
+      - "  2. Actualizar campos correspondientes"
       - "Registrar herramienta ejecutada: ejecutar_plan"
       - "Actualizar timestamp de ultima_actividad"
       - "Registrar artefactos generados en la sesión"
       - "Actualizar estado de la HU ejecutada"
-      - "Guardar cambios en session_state.json"
+      - "Guardar cambios en {{archivos.session_state}}"
+    plantilla_referencia: "{{plantillas.session_state}}"
     campos_a_actualizar:
       - campo: "ultima_herramienta"
         valor: "ejecutar_plan"
@@ -135,15 +145,18 @@ proceso:
         valor: "[lista de archivos creados/modificados]"
       - campo: "resultado_ejecucion"
         valor: "[exito|error|parcial]"
+    validacion_post:
+      - "Confirmar que {{archivos.session_state}} existe y es válido"
+      - "Confirmar que el JSON es parseable"
 
 salida:
   archivos_generados:
     - tipo: "registro_ejecucion"
-      ruta: "{{ejecuciones_location}}/[ID-HU]_ejecucion_[timestamp].md"
+      ruta: "{{artifacts.ejecuciones_folder}}/[ID-HU]_ejecucion_[timestamp].md"
   
   archivos_actualizados:
-    - "{{backlog_location}}"
-    - "{{session_state_location}}"
+    - "{{archivos.backlog}}"
+    - "{{archivos.session_state}}"
     - "Archivos de código según plan"
   
   estado_hu_final: "[X] Completada"

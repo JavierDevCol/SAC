@@ -21,6 +21,7 @@ rutas:
 # ============================================
 archivos:
   session_state: "{project-root}/.cochas/session/session_state.json"
+  config_user: "{project-root}/.cochas/config/CONFIG_USER.yaml" 
   backlog: "{project-root}/.cochas/artifacts/backlog_desarrollo.md"
   reglas_arquitectonicas: "{project-root}/.cochas/artifacts/reglas_arquitectonicas.md"
   # Proyecto único

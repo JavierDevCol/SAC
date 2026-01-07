@@ -17,10 +17,4 @@ idiomas:
 # === INFORMACIÓN DEL PROYECTO ===
 proyecto:
   nombre: ""                          # Nombre del proyecto
-  tipo: "single"                      # single | multi-repo
 
-# === PREFERENCIAS DE DESARROLLO ===
-preferencias:
-  convencion_commits: "conventional"  # conventional | angular | custom
-  formato_estimacion: "story_points"  # story_points | horas | ambos
-  framework_testing: "auto"           # auto | junit | jest | pytest

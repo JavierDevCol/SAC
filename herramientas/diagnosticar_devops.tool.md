@@ -14,6 +14,8 @@ mandatory:
     nunca_saltar: true
   - instruccion: "Incluir consideraciones de seguridad en cada área"
     nunca_saltar: true
+  - instruccion: "Generar diagnósticos en el idioma configurado en {{preferencias.idioma_documentacion}}"
+    nunca_saltar: true
 
 identificacion:
   nombre: "Diagnosticar DevOps"
@@ -28,7 +30,7 @@ prerequisitos:
   archivos_requeridos:
     - descripcion: "Acceso al repositorio del proyecto"
   archivos_opcionales:
-    - "{{contexto_proyecto_location}}"
+    - "{{archivos.contexto_proyecto}}"
     - ".github/workflows/ | .gitlab-ci.yml | Jenkinsfile"
     - "Dockerfile | docker-compose.yml"
     - "terraform/ | bicep/ | cloudformation/"
@@ -165,12 +167,20 @@ proceso:
     obligatorio: true
     importante: "⚠️ ESTE PASO ES OBLIGATORIO EN TODA HERRAMIENTA"
     acciones:
-      - "Abrir/crear {{session_state_location}}"
+      - "Verificar si existe {{archivos.session_state}}"
+      - "Si NO existe:"
+      - "  1. Crear estructura de carpetas {{rutas.session_folder}} si no existe"
+      - "  2. Copiar plantilla desde {{plantillas.session_state}}"
+      - "  3. Inicializar con valores por defecto"
+      - "Si existe:"
+      - "  1. Leer estado actual"
+      - "  2. Actualizar campos correspondientes"
       - "Registrar herramienta ejecutada: diagnosticar_devops"
       - "Actualizar timestamp de ultima_actividad"
       - "Registrar artefactos generados en la sesión"
       - "Si hay HU activa, actualizar su estado"
-      - "Guardar cambios en session_state.json"
+      - "Guardar cambios en {{archivos.session_state}}"
+    plantilla_referencia: "{{plantillas.session_state}}"
     campos_a_actualizar:
       - campo: "ultima_herramienta"
         valor: "diagnosticar_devops"
@@ -180,14 +190,17 @@ proceso:
         valor: "[lista de archivos creados/modificados]"
       - campo: "resultado_ejecucion"
         valor: "[exito|error|parcial]"
+    validacion_post:
+      - "Confirmar que {{archivos.session_state}} existe y es válido"
+      - "Confirmar que el JSON es parseable"
 
 salida:
   archivos_generados:
     - tipo: "diagnostico"
-      ruta: "{{artifacts_location}}/diagnostico_devops_[timestamp].md"
+      ruta: "{{rutas.artifacts_folder}}/diagnostico_devops_[timestamp].md"
   
   archivos_actualizados:
-    - "{{session_state_location}}"
+    - "{{archivos.session_state}}"
   
   mensaje_exito: |
     ✅ DIAGNÓSTICO DEVOPS COMPLETADO

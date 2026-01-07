@@ -14,6 +14,8 @@ mandatory:
     nunca_saltar: true
   - instruccion: "Documentar razones de rechazo o ajustes requeridos"
     nunca_saltar: true
+  - instruccion: "Generar documentación en el idioma configurado en {{preferencias.idioma_documentacion}}"
+    nunca_saltar: true
 
 identificacion:
   nombre: "Validar Historia de Usuario"
@@ -27,11 +29,11 @@ roles_autorizados:
 prerequisitos:
   archivos_requeridos:
     - descripcion: "HU refinada"
-      ubicacion: "{{hu_refinamiento_location}}/[ID-HU]_refinamiento.md"
+      ubicacion: "{{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md"
       estado_requerido: "[R] Refinada"
   archivos_opcionales:
-    - "{{reglas_arquitectonicas_location}}"
-    - "{{contexto_proyecto_location}}"
+    - "{{archivos.reglas_arquitectonicas}}"
+    - "{{archivos.contexto_proyecto}}"
 
 parametros:
   requeridos:
@@ -49,7 +51,7 @@ proceso:
     nombre: "Cargar HU y Contexto"
     obligatorio: true
     acciones:
-      - "Buscar HU en {{backlog_location}}"
+      - "Buscar HU en {{archivos.backlog}}"
       - "Verificar estado [R] Refinada"
       - "Cargar archivo de refinamiento"
       - "Cargar reglas arquitectónicas si existen"
@@ -112,12 +114,20 @@ proceso:
     obligatorio: true
     importante: "⚠️ ESTE PASO ES OBLIGATORIO EN TODA HERRAMIENTA"
     acciones:
-      - "Abrir/crear {{session_state_location}}"
+      - "Verificar si existe {{archivos.session_state}}"
+      - "Si NO existe:"
+      - "  1. Crear estructura de carpetas {{rutas.session_folder}} si no existe"
+      - "  2. Copiar plantilla desde {{plantillas.session_state}}"
+      - "  3. Inicializar con valores por defecto"
+      - "Si existe:"
+      - "  1. Leer estado actual"
+      - "  2. Actualizar campos correspondientes"
       - "Registrar herramienta ejecutada: validar_hu"
       - "Actualizar timestamp de ultima_actividad"
       - "Registrar artefactos generados en la sesión"
       - "Actualizar estado de la HU validada"
-      - "Guardar cambios en session_state.json"
+      - "Guardar cambios en {{archivos.session_state}}"
+    plantilla_referencia: "{{plantillas.session_state}}"
     campos_a_actualizar:
       - campo: "ultima_herramienta"
         valor: "validar_hu"
@@ -127,11 +137,14 @@ proceso:
         valor: "[lista de archivos creados/modificados]"
       - campo: "resultado_ejecucion"
         valor: "[exito|error|parcial]"
+    validacion_post:
+      - "Confirmar que {{archivos.session_state}} existe y es válido"
+      - "Confirmar que el JSON es parseable"
 
 salida:
   archivos_actualizados:
-    - "{{backlog_location}}"
-    - "{{session_state_location}}"
+    - "{{archivos.backlog}}"
+    - "{{archivos.session_state}}"
   
   estado_hu_aprobada: "[A] Aprobada"
   estado_hu_ajustes: "[R] Refinada"

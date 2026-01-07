@@ -14,6 +14,8 @@ mandatory:
     nunca_saltar: true
   - instruccion: "Priorizar por impacto en mantenibilidad"
     nunca_saltar: true
+  - instruccion: "Generar reportes en el idioma configurado en {{preferencias.idioma_documentacion}}"
+    nunca_saltar: true
 
 identificacion:
   nombre: "Analizar Code Smells"
@@ -119,19 +121,27 @@ proceso:
       - "Consolidar hallazgos"
       - "Ordenar por severidad"
       - "Incluir solución para cada smell"
-      - "Guardar en {{code_smells_location}}"
+      - "Guardar en {{artifacts.code_smells_folder}}"
 
   paso_final:
     nombre: "Actualizar Estado de Sesión"
     obligatorio: true
     importante: "⚠️ ESTE PASO ES OBLIGATORIO EN TODA HERRAMIENTA"
     acciones:
-      - "Abrir/crear {{session_state_location}}"
+      - "Verificar si existe {{archivos.session_state}}"
+      - "Si NO existe:"
+      - "  1. Crear estructura de carpetas {{rutas.session_folder}} si no existe"
+      - "  2. Copiar plantilla desde {{plantillas.session_state}}"
+      - "  3. Inicializar con valores por defecto"
+      - "Si existe:"
+      - "  1. Leer estado actual"
+      - "  2. Actualizar campos correspondientes"
       - "Registrar herramienta ejecutada: analizar_code_smells"
       - "Actualizar timestamp de ultima_actividad"
       - "Registrar artefactos generados en la sesión"
       - "Si hay HU activa, actualizar su estado"
-      - "Guardar cambios en session_state.json"
+      - "Guardar cambios en {{archivos.session_state}}"
+    plantilla_referencia: "{{plantillas.session_state}}"
     campos_a_actualizar:
       - campo: "ultima_herramienta"
         valor: "analizar_code_smells"
@@ -141,14 +151,17 @@ proceso:
         valor: "[lista de archivos creados/modificados]"
       - campo: "resultado_ejecucion"
         valor: "[exito|error|parcial]"
+    validacion_post:
+      - "Confirmar que {{archivos.session_state}} existe y es válido"
+      - "Confirmar que el JSON es parseable"
 
 salida:
   archivos_generados:
     - tipo: "reporte_smells"
-      ruta: "{{code_smells_location}}/code_smells_[timestamp].md"
+      ruta: "{{artifacts.code_smells_folder}}/code_smells_[timestamp].md"
   
   archivos_actualizados:
-    - "{{session_state_location}}"
+    - "{{archivos.session_state}}"
   
   mensaje_exito: |
     ✅ ANÁLISIS DE CODE SMELLS COMPLETADO
