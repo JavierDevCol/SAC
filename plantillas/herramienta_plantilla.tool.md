@@ -77,6 +77,8 @@ mandatory:
     nunca_saltar: true
   - instruccion: "Actualizar session_state.json al finalizar"
     nunca_saltar: true
+  - instruccion: "Nunca saltar proceso.paso_final"
+    nunca_saltar: true
   # === CONFIGURACIÓN DE IDIOMA ===
   - instruccion: "Generar TODOS los artefactos/documentos en el idioma definido en 'idiomas.documentacion'"
     nunca_saltar: true
@@ -166,23 +168,33 @@ proceso:
   paso_final:
     nombre: "Actualizar Estado de Sesión"
     obligatorio: true
-    importante: "⚠️ ESTE PASO ES OBLIGATORIO EN TODA HERRAMIENTA"
     acciones:
-      - "Abrir/crear {{session_state_location}}"
-      - "Registrar herramienta ejecutada: [nombre_herramienta]"
+      - "Verificar si existe {{archivos.session_state}}"
+      - "Si NO existe:"
+      - "  1. Crear estructura de carpetas {{rutas.session_folder}} si no existe"
+      - "  2. Copiar plantilla desde {{plantillas.session_state}}"
+      - "  3. Inicializar con valores por defecto"
+      - "Si existe:"
+      - "  1. Leer estado actual"
+      - "  2. Actualizar campos correspondientes"
+      - "Registrar herramienta ejecutada: crear_pruebas"
       - "Actualizar timestamp de ultima_actividad"
       - "Registrar artefactos generados en la sesión"
       - "Si hay HU activa, actualizar su estado"
-      - "Guardar cambios en session_state.json"
+      - "Guardar cambios en {{archivos.session_state}}"
+    plantilla_referencia: "{{plantillas.session_state}}"
     campos_a_actualizar:
       - campo: "ultima_herramienta"
-        valor: "[nombre_herramienta]"
+        valor: "crear_pruebas"
       - campo: "ultima_actividad"
         valor: "[timestamp ISO 8601]"
       - campo: "artefactos_generados"
         valor: "[lista de archivos creados/modificados]"
       - campo: "resultado_ejecucion"
         valor: "[exito|error|parcial]"
+    validacion_post:
+      - "Confirmar que {{archivos.session_state}} existe y es válido"
+      - "Confirmar que el JSON es parseable"
 
 # ============================================
 # SALIDA
