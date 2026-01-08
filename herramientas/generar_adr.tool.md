@@ -20,6 +20,8 @@ mandatory:
     nunca_saltar: true
   - instruccion: "Mantener numeración secuencial sin saltos (001, 002, 003...)"
     nunca_saltar: true
+  - instruccion: "Si se decide crear diagramas mermaid en el ADR Seguir el proceso paso a paso en orden secuencial de reglas_mermaid en el paso_5"
+    nunca_saltar: true
 
 identificacion:
   nombre: "Generar Architecture Decision Record (ADR)"
@@ -200,6 +202,7 @@ proceso:
       - "Generar diagrama Mermaid siguiendo las reglas de estilo definidas"
       - "Insertar el diagrama en la sección correspondiente del ADR"
     reglas_mermaid:
+      obligatorio: true
       paleta_colores:
         azul_procesos: "rgba(0, 150, 255, 0.15)"
         naranja_almacenamiento: "rgba(255, 165, 0, 0.15)"
