@@ -478,6 +478,26 @@ def replace_project_root_placeholder(config_path, project_root):
         print_warning(f"No se pudo actualizar CONFIG_SYSTEM.yaml: {e}")
 
 
+def replace_ruta_proyecto_in_agents(agents_folder, project_root):
+    """Reemplaza {ruta_proyecto} en los archivos .agent.md por la ruta real."""
+    try:
+        normalized_root = Path(project_root).resolve().as_posix()
+        replaced_count = 0
+        
+        for agent_file in agents_folder.glob("*.agent.md"):
+            content = agent_file.read_text(encoding="utf-8")
+            updated = content.replace("{ruta_proyecto}", normalized_root)
+            
+            if updated != content:
+                agent_file.write_text(updated, encoding="utf-8")
+                replaced_count += 1
+        
+        if replaced_count > 0:
+            print_success(f"Rutas actualizadas en {replaced_count} archivo(s) de agentes")
+    except Exception as e:
+        print_warning(f"No se pudo actualizar rutas en archivos de agentes: {e}")
+
+
 def install_cochas(dest_path, root_dir):
     """Ejecuta la instalación de COCHAS."""
     dest = Path(dest_path)
@@ -519,6 +539,9 @@ def install_cochas(dest_path, root_dir):
             except Exception as e:
                 print_error(f"{agent_file.name} - Error: {e}")
                 return False
+        
+        # 4.1 Reemplazar {ruta_proyecto} en los archivos de agentes copiados
+        replace_ruta_proyecto_in_agents(github_dest, dest)
     else:
         print_warning("No se encontró la carpeta de activadores .github/agents")
         print_info("Puedes copiarlos manualmente desde INSTALACION/.github/agents/")
