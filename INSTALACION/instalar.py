@@ -458,6 +458,26 @@ def get_github_agents_source(root_dir):
     return None
 
 
+def replace_project_root_placeholder(config_path, project_root):
+    """Reemplaza {project-root} en CONFIG_SYSTEM.yaml por la ruta real."""
+    try:
+        if not config_path.exists():
+            print_warning("No se encontró CONFIG_SYSTEM.yaml en la instalación")
+            return
+
+        content = config_path.read_text(encoding="utf-8")
+        normalized_root = Path(project_root).resolve().as_posix()
+        updated = content.replace("{project-root}", normalized_root)
+
+        if updated != content:
+            config_path.write_text(updated, encoding="utf-8")
+            print_success("CONFIG_SYSTEM.yaml actualizado con la ruta del proyecto")
+        else:
+            print_info("CONFIG_SYSTEM.yaml no requería reemplazos")
+    except Exception as e:
+        print_warning(f"No se pudo actualizar CONFIG_SYSTEM.yaml: {e}")
+
+
 def install_cochas(dest_path, root_dir):
     """Ejecuta la instalación de COCHAS."""
     dest = Path(dest_path)
@@ -478,6 +498,10 @@ def install_cochas(dest_path, root_dir):
         except Exception as e:
             print_error(f"{folder}/ - Error: {e}")
             return False
+
+    # 2.1 Reemplazar {project-root} en la configuración instalada
+    config_system_path = cochas_dest / "config" / "CONFIG_SYSTEM.yaml"
+    replace_project_root_placeholder(config_system_path, dest)
     
     # 3. Crear carpeta .github/agents
     github_dest = dest / ".github" / "agents"
