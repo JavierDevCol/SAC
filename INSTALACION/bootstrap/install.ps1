@@ -139,10 +139,11 @@ function Install-SAC {
             Remove-Item -Recurse -Force $repoPath
         }
         
-        & git clone --branch $REPO_BRANCH $REPO_URL $repoPath 2>&1 | Out-Null
+        $cloneOutput = git clone --branch $REPO_BRANCH $REPO_URL $repoPath 2>&1
         
-        if ($LASTEXITCODE -ne 0) {
+        if (-not (Test-Path $repoPath)) {
             Write-Error "Error al clonar el repositorio"
+            Write-Host "  Detalles: $cloneOutput" -ForegroundColor Yellow
             return $false
         }
         
