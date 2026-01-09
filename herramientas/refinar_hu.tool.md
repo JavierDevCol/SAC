@@ -1,279 +1,108 @@
+﻿---
+nombre: "Refinar Historia de Usuario"
+comando: ">refinar_hu"
+alias: [">refinar", ">hu"]
+version: "4.1"
+---
+
 ```yaml
 mandatory:
   - instruccion: "Seguir el proceso paso a paso en orden secuencial"
-    nunca_saltar: true
   - instruccion: "Validar prerequisitos antes de ejecutar"
-    nunca_saltar: true
-  - instruccion: "Los pasos marcados como obligatorio:true NO se pueden omitir"
-    nunca_saltar: true
+  - instruccion: "Pasos obligatorios NO se pueden omitir"
   - instruccion: "Generar archivo de refinamiento ANTES de actualizar estado"
-    nunca_saltar: true
   - instruccion: "NUNCA aceptar criterios de aceptación no medibles"
-    nunca_saltar: true
   - instruccion: "Usar desglose VERTICAL (end-to-end), nunca horizontal"
-    nunca_saltar: true
-  - instruccion: "Generar documentación en el idioma configurado en {{preferencias.idioma_documentacion}}"
-    nunca_saltar: true
-
-identificacion:
-  nombre: "Refinar Historia de Usuario"
-  comando: ">refinar_hu"
-  alias: [">refinar", ">hu"]
-  version: "4.0"
+  - instruccion: "Generar en idioma: {{preferencias.idioma_documentacion}}"
 
 prerequisitos:
   archivos_requeridos:
-    - descripcion: "Texto de la Historia de Usuario"
+    - descripcion: "Texto de la HU"
       formato: "Como [rol], quiero [funcionalidad], para [beneficio]"
   archivos_opcionales:
     - "{{archivos.contexto_proyecto}}"
     - "{{archivos.backlog}}"
-    - "Criterios de aceptación existentes"
 
 parametros:
   opcionales:
-    - nombre: formato_estimacion
-      tipo: string
-      valores: [story_points, horas, ambos]
-      defecto: story_points
-    - nombre: nivel_detalle
-      tipo: string
-      valores: [alto, medio, bajo]
-      defecto: medio
-    - nombre: incluir_riesgos
-      tipo: boolean
-      defecto: true
-    - nombre: generar_tareas
-      tipo: boolean
-      defecto: true
-    - nombre: incluir_testing
-      tipo: boolean
-      defecto: true
+    - {nombre: formato_estimacion, tipo: string, valores: [story_points, horas, ambos], defecto: ambos}
+    - {nombre: nivel_detalle, tipo: string, valores: [alto, medio, bajo], defecto: medio}
+    - {nombre: incluir_riesgos, tipo: boolean, defecto: true}
+    - {nombre: generar_tareas, tipo: boolean, defecto: true}
+    - {nombre: incluir_testing, tipo: boolean, defecto: true}
+
+matriz_complejidad:
+  bajo: {indicadores: "CRUD básico, sin integraciones", preguntas: "1-2", tareas: "3-5", sp: "2-3"}
+  medio: {indicadores: "Lógica moderada, 1-2 integraciones", preguntas: "3-5", tareas: "5-10", sp: "5-8"}
+  alto: {indicadores: "Múltiples integraciones, impacto arquitectónico", preguntas: "6-10+", tareas: "10-20", sp: "13+"}
+
+criterios_smart:
+  S: "Específico - qué debe ocurrir exactamente"
+  M: "Medible - métricas verificables"
+  A: "Alcanzable - realista en el sprint"
+  R: "Relevante - relacionado con objetivo"
+  T: "Temporal - condiciones de tiempo"
 
 proceso:
-  paso_0:
-    nombre: "Detectar Feedback de Validación Previa"
+  - paso: "Detectar Modo de Operación"
     obligatorio: true
-    acciones:
-      - "Buscar archivo existente en {{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md"
-      - "Si existe, buscar sección '## 📝 Feedback de Validación'"
-      - "Si hay feedback pendiente, cambiar a MODO AJUSTE"
-    modo_ajuste:
-      descripcion: "Re-refinamiento enfocado en resolver observaciones"
-      comportamiento:
-        - "Mostrar observaciones pendientes al usuario"
-        - "Enfocar preguntas de clarificación en las observaciones"
-        - "Priorizar resolución de feedback sobre nuevo refinamiento"
-        - "Marcar observaciones como resueltas al abordarlas"
-      mensaje_inicio: |
-        🔄 MODO AJUSTE ACTIVADO
-        
-        Se detectó feedback de validación previa (Iteración [N]):
-        
-        📝 Observaciones pendientes:
-        - [ ] [observación_1]
-        - [ ] [observación_2]
-        
-        Este refinamiento se enfocará en resolver estas observaciones.
-    modo_nuevo:
-      descripcion: "Refinamiento inicial de HU nueva"
-      comportamiento: "Flujo normal de refinamiento"
+    acciones: ["Buscar refinamiento existente en {{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md", "Si existe con feedback pendiente  MODO_AJUSTE", "Si no existe  MODO_NUEVO"]
+    modo_ajuste: "Re-refinamiento enfocado en resolver observaciones de validación previa"
+    modo_nuevo: "Refinamiento inicial de HU nueva"
 
-  paso_1:
-    nombre: "Evaluación de Nivel de Complejidad"
+  - paso: "Evaluación de Complejidad"
     obligatorio: true
-    acciones:
-      - "Analizar indicadores de la HU"
-      - "Clasificar como 🟢 BAJO | 🟡 MEDIO | 🔴 ALTO"
-      - "Anunciar nivel al usuario"
-    matriz_decision:
-      bajo:
-        indicadores: ["CRUD básico", "Sin integraciones", "CA claros"]
-        preguntas: "1-2"
-        tareas: "3-5"
-        sp_tipico: "2-3"
-      medio:
-        indicadores: ["Lógica moderada", "1-2 integraciones internas"]
-        preguntas: "3-5"
-        tareas: "5-10"
-        sp_tipico: "5-8"
-      alto:
-        indicadores: ["Múltiples integraciones", "Impacto arquitectónico"]
-        preguntas: "6-10+"
-        tareas: "10-20"
-        sp_tipico: "13+"
+    acciones: ["Analizar indicadores según matriz_complejidad", "Clasificar:  BAJO |  MEDIO |  ALTO", "Anunciar nivel al usuario"]
 
-  paso_2:
-    nombre: "Análisis y Preguntas de Clarificación"
+  - paso: "Preguntas de Clarificación"
     obligatorio: true
-    acciones:
-      - "Identificar ambigüedades en la narrativa"
-      - "Detectar lagunas de información"
-      - "Generar preguntas priorizadas (Alta/Media/Baja)"
-    categorias_preguntas:
-      alta_prioridad: "Afectan estimación o implementación"
-      media_prioridad: "Mejoran experiencia de usuario"
-      baja_prioridad: "Detalles de implementación"
+    acciones: ["Identificar ambigüedades en narrativa", "Generar preguntas priorizadas (Alta/Media/Baja)", "Alta: afectan estimación | Media: mejoran UX | Baja: detalles impl"]
 
-  paso_3:
-    nombre: "Refinamiento de Criterios de Aceptación"
+  - paso: "Refinamiento de Criterios de Aceptación"
     obligatorio: true
-    acciones:
-      - "Aplicar criterios SMART a cada CA"
-      - "Reformular CA ambiguos"
-      - "Agregar CA faltantes (error, validación, performance)"
-    formato_smart:
-      S: "Específico - qué debe ocurrir exactamente"
-      M: "Medible - métricas verificables"
-      A: "Alcanzable - realista en el sprint"
-      R: "Relevante - relacionado con objetivo"
-      T: "Temporal - condiciones de tiempo"
+    acciones: ["Aplicar criterios_smart a cada CA", "Reformular CA ambiguos", "Agregar CA faltantes (error, validación, performance)"]
 
-  paso_4:
-    nombre: "Desglose Técnico Vertical"
+  - paso: "Desglose Técnico Vertical"
     obligatorio: true
-    condicion: "si generar_tareas=true"
-    acciones:
-      - "Identificar slices end-to-end mínimos"
-      - "Generar tareas por slice"
-      - "Asignar identificadores (HU-XXX-UI-01)"
-      - "Incluir tareas de testing"
-    estructura_slice:
-      frontend: "Componentes UI, validaciones"
-      api: "Endpoints REST, validación entrada"
-      servicio: "Lógica de negocio"
-      persistencia: "Modelos, queries, migrations"
-      testing: "Unit, integration, acceptance"
+    condicion: "generar_tareas=true"
+    acciones: ["Identificar slices end-to-end mínimos", "Generar tareas por slice (frontendapiserviciopersistenciatesting)", "Asignar IDs: HU-XXX-UI-01, HU-XXX-API-01"]
 
-  paso_5:
-    nombre: "Estrategia y Estimación"
+  - paso: "Estrategia y Estimación"
     obligatorio: true
-    acciones:
-      - "Recomendar enfoque (TDD, incremental, feature toggle)"
-      - "Calcular Story Points con justificación"
-      - "Desglosar factores: complejidad, incertidumbre, riesgo"
+    acciones: ["Recomendar enfoque (TDD, incremental, feature toggle)", "Calcular Story Points con justificación", "Desglosar: complejidad + incertidumbre + riesgo"]
 
-  paso_6:
-    nombre: "Análisis de Riesgos"
-    obligatorio: false
-    condicion: "si incluir_riesgos=true"
-    acciones:
-      - "Identificar bloqueadores potenciales"
-      - "Proponer estrategias de mitigación"
-      - "Detectar dependencias de otras HU"
-
-  paso_7:
-    nombre: "Persistencia del Refinamiento"
+  - paso: "Análisis de Riesgos"
     obligatorio: true
-    acciones:
-      - "Verificar si existe {{archivos.backlog}}"
-      - "Si NO existe:"
-      - "  1. Crear estructura de carpetas {{rutas.artifacts_folder}} si no existe"
-      - "  2. Copiar plantilla desde {{plantillas.backlog}}"
-      - "  3. Inicializar backlog vacío con estructura correcta"
-      - "Actualizar {{archivos.backlog}} con estado [R] para la HU"
+    condicion: "incluir_riesgos=true"
+    acciones: ["Identificar bloqueadores potenciales", "Proponer mitigaciones", "Detectar dependencias de otras HUs"]
+
+  - paso: "Persistencia del Refinamiento"
+    obligatorio: true
     acciones_modo_nuevo:
-      - "Generar archivo [ID-HU]_refinamiento_[concepto].md"
-      - "Guardar en {{artifacts.hu_refinamientos}}"
+      - "Crear {{archivos.backlog}} desde {{plantillas.backlog}} si no existe"
+      - "Generar {{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento_[concepto].md"
+      - "Actualizar estado HU a [R] Refinada"
     acciones_modo_ajuste:
-      - "Actualizar archivo existente [ID-HU]_refinamiento.md"
-      - "Marcar observaciones resueltas: [ ] → [x]"
-      - "Agregar sección '## ✅ Ajustes Aplicados (Iteración N)'"
-      - "Documentar qué cambió para resolver cada observación"
-    formato_ajustes_aplicados: |
-      ## ✅ Ajustes Aplicados (Iteración [N])
-      
-      **Fecha:** [fecha_actual]
-      
-      ### Observaciones Resueltas
-      - [x] [observación_1]: [cómo se resolvió]
-      - [x] [observación_2]: [cómo se resolvió]
-      
-      ### Cambios Realizados
-      - [descripción del cambio 1]
-      - [descripción del cambio 2]
-    plantilla_referencia: "{{plantillas.backlog}}"
+      - "Actualizar refinamiento existente"
+      - "Marcar observaciones resueltas: [ ]  [x]"
+      - "Agregar sección '##  Ajustes Aplicados (Iteración N)'"
 
 salida:
   archivos_generados:
-    - tipo: "refinamiento"
-      ruta: "{{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento_[concepto].md"
-      nota: "Solo en modo nuevo"
-  
-  archivos_actualizados:
-    - "{{archivos.backlog}}"
-    - "{{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md (en modo ajuste)"
-  
+    ruta: "{{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento_[concepto].md"
+  archivos_actualizados: ["{{archivos.backlog}}"]
   estado_hu_final: "[R] Refinada"
-  
-  mensaje_exito_modo_nuevo: |
-    ✅ REFINAMIENTO COMPLETADO: [ID-HU]
-    
-    📄 Artefacto: {{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento_[concepto].md
-    
-    📊 Resumen:
-    - Criterios de Aceptación: [X] mejorados + [Y] nuevos
-    - Estimación: [Z] SP / [W] horas
-    - Riesgos: [N] identificados
-    
-    💡 Siguiente: >validar_hu [ID-HU]
-
-  mensaje_exito_modo_ajuste: |
-    ✅ AJUSTES COMPLETADOS: [ID-HU] (Iteración [N])
-    
-    📄 Artefacto actualizado: {{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md
-    
-    📊 Observaciones Resueltas:
-    - [x] [observación_1]
-    - [x] [observación_2]
-    
-    💡 Siguiente: >validar_hu [ID-HU] (re-validación)
-
-formato_salida:
-  estructura: |
-    📋 Refinamiento: [Título de la HU]
-    
-    ## 1️⃣ Preguntas de Clarificación
-    ### Alta Prioridad
-    - [pregunta]
-    ### Media Prioridad
-    - [pregunta]
-    
-    ## 2️⃣ Criterios de Aceptación Refinados
-    ### Mejorados
-    - ✅ [original] → [SMART]
-    ### Nuevos
-    - [nuevo CA]
-    
-    ## 3️⃣ Desglose Técnico
-    ### Slice 1: [Funcionalidad]
-    - [ ] [ID-TAREA]: [descripción] ([Xh])
-    
-    ## 4️⃣ Estrategia y Estimación
-    - Enfoque: [TDD/incremental/etc.]
-    - Total: [X] SP ([Y] horas)
-    
-    ## 5️⃣ Riesgos
-    - 🔴 Alto: [descripción] → Mitigación: [acción]
+  mensaje_exito: |
+     REFINAMIENTO COMPLETADO: [ID-HU]
+     Artefacto: {{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento_[concepto].md
+     CA: [X] mejorados + [Y] nuevos | SP: [Z] | Riesgos: [N]
+     Siguiente: >validar_hu [ID-HU]
 
 errores:
-  hu_mal_formateada:
-    mensaje: "⚠️ HU incompleta o mal formateada"
-    accion: "Solicitar formato: Como [rol], quiero [func], para [beneficio]"
-  sin_criterios:
-    mensaje: "ℹ️ HU sin criterios de aceptación"
-    accion: "Generar CA básicos inferidos, solicitar validación"
-  hu_muy_grande:
-    mensaje: "⚠️ HU de tamaño épica detectada"
-    accion: "Sugerir partición en HUs más pequeñas"
+  hu_mal_formateada: {msg: " HU incompleta o mal formateada", accion: "Solicitar formato: Como [rol], quiero [func], para [beneficio]"}
+  sin_criterios: {msg: "ℹ HU sin criterios de aceptación", accion: "Generar CA básicos inferidos, solicitar validación"}
+  hu_muy_grande: {msg: " HU tamaño épica detectada", accion: "Sugerir partición en HUs más pequeñas"}
 
 siguiente:
-  herramienta: "validar_hu"
-  comando: ">validar_hu [ID-HU]"
-  agente: "Arquitecto Onad"
-  descripcion: "Validación arquitectónica de la HU refinada"
-  accion_usuario: |
-    Para continuar:
-    1. Abre un nuevo chat con el agente **Arquitecto Onad**
-    2. Ejecuta: `>validar_hu [ID-HU]`
+  - {comando: ">validar_hu [ID-HU]", desc: "Validación arquitectónica de la HU refinada", chat_agente: "Arquitecto Onad"}
 ```

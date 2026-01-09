@@ -1,180 +1,77 @@
+﻿---
+nombre: "Analizar Code Smells"
+comando: ">analizar_code_smells"
+alias: [">smells", ">code_review"]
+version: "4.1"
+---
+
 ```yaml
 mandatory:
   - instruccion: "Seguir el proceso paso a paso en orden secuencial"
-    nunca_saltar: true
   - instruccion: "Validar prerequisitos antes de ejecutar"
-    nunca_saltar: true
-  - instruccion: "Los pasos marcados como obligatorio:true NO se pueden omitir"
-    nunca_saltar: true
+  - instruccion: "Pasos obligatorios NO se pueden omitir"
   - instruccion: "Clasificar smells por severidad (Alta/Media/Baja)"
-    nunca_saltar: true
   - instruccion: "Proponer solución específica para cada smell"
-    nunca_saltar: true
   - instruccion: "Priorizar por impacto en mantenibilidad"
-    nunca_saltar: true
-  - instruccion: "Generar reportes en el idioma configurado en {{preferencias.idioma_documentacion}}"
-    nunca_saltar: true
-
-identificacion:
-  nombre: "Analizar Code Smells"
-  comando: ">analizar_code_smells"
-  alias: [">smells", ">code_review"]
-  version: "4.0"
+  - instruccion: "Generar en idioma: {{preferencias.idioma_documentacion}}"
 
 catalogo_smells:
   bloaters:
-    - nombre: "Long Method"
-      indicador: "Método > 20 líneas"
-      solucion: "Extract Method"
-    - nombre: "Large Class / God Object"
-      indicador: "Clase > 300 líneas o > 10 métodos públicos"
-      solucion: "Extract Class, Single Responsibility"
-    - nombre: "Long Parameter List"
-      indicador: "> 3 parámetros"
-      solucion: "Introduce Parameter Object"
-    - nombre: "Data Clumps"
-      indicador: "Grupos de datos que aparecen juntos"
-      solucion: "Extract Class"
-  
+    - {smell: "Long Method", indicador: ">20 líneas", solucion: "Extract Method"}
+    - {smell: "Large Class/God Object", indicador: ">300 líneas o >10 métodos", solucion: "Extract Class, SRP"}
+    - {smell: "Long Parameter List", indicador: ">3 parámetros", solucion: "Parameter Object"}
+    - {smell: "Data Clumps", indicador: "Datos que aparecen juntos", solucion: "Extract Class"}
   oo_abusers:
-    - nombre: "Feature Envy"
-      indicador: "Método usa más datos de otra clase"
-      solucion: "Move Method"
-    - nombre: "Inappropriate Intimacy"
-      indicador: "Clases acceden a internals de otras"
-      solucion: "Move Method/Field, Extract Class"
-    - nombre: "Refused Bequest"
-      indicador: "Subclase no usa herencia del padre"
-      solucion: "Replace Inheritance with Delegation"
-  
+    - {smell: "Feature Envy", indicador: "Usa más datos de otra clase", solucion: "Move Method"}
+    - {smell: "Inappropriate Intimacy", indicador: "Accede a internals de otras", solucion: "Move Method/Field"}
+    - {smell: "Refused Bequest", indicador: "Subclase no usa herencia", solucion: "Replace Inheritance with Delegation"}
   change_preventers:
-    - nombre: "Divergent Change"
-      indicador: "Clase cambia por múltiples razones"
-      solucion: "Extract Class (SRP)"
-    - nombre: "Shotgun Surgery"
-      indicador: "Un cambio afecta múltiples clases"
-      solucion: "Move Method/Field, Inline Class"
-    - nombre: "Parallel Inheritance"
-      indicador: "Crear subclase en una requiere otra"
-      solucion: "Move Method/Field"
-  
+    - {smell: "Divergent Change", indicador: "Clase cambia por múltiples razones", solucion: "Extract Class (SRP)"}
+    - {smell: "Shotgun Surgery", indicador: "Un cambio afecta múltiples clases", solucion: "Move Method/Field"}
+    - {smell: "Parallel Inheritance", indicador: "Crear subclase requiere otra", solucion: "Move Method/Field"}
   dispensables:
-    - nombre: "Dead Code"
-      indicador: "Código no ejecutado"
-      solucion: "Remove Dead Code"
-    - nombre: "Speculative Generality"
-      indicador: "Abstracciones no usadas"
-      solucion: "Collapse Hierarchy, Inline Class"
-    - nombre: "Duplicate Code"
-      indicador: "Código repetido"
-      solucion: "Extract Method, Pull Up Method"
-  
+    - {smell: "Dead Code", indicador: "Código no ejecutado", solucion: "Remove Dead Code"}
+    - {smell: "Speculative Generality", indicador: "Abstracciones no usadas", solucion: "Collapse Hierarchy"}
+    - {smell: "Duplicate Code", indicador: "Código repetido", solucion: "Extract Method, Pull Up"}
   couplers:
-    - nombre: "Message Chains"
-      indicador: "a.getB().getC().getD()"
-      solucion: "Hide Delegate"
-    - nombre: "Middle Man"
-      indicador: "Clase solo delega"
-      solucion: "Remove Middle Man"
+    - {smell: "Message Chains", indicador: "a.getB().getC().getD()", solucion: "Hide Delegate"}
+    - {smell: "Middle Man", indicador: "Clase solo delega", solucion: "Remove Middle Man"}
+
+severidad:
+  alta: ["Afecta múltiples clases", "Bloquea testing", "Viola SOLID críticos"]
+  media: ["Afecta mantenibilidad", "Dificulta comprensión"]
+  baja: ["Mejora cosmética", "Convenciones de estilo"]
 
 proceso:
-  paso_1:
-    nombre: "Recepción de Código"
+  - paso: "Recepción de Código"
     obligatorio: true
-    acciones:
-      - "Recibir código a analizar"
-      - "Identificar lenguaje y contexto"
-      - "Cargar reglas arquitectónicas si existen"
+    acciones: ["Recibir código a analizar", "Identificar lenguaje y contexto", "Cargar reglas arquitectónicas si existen"]
 
-  paso_2:
-    nombre: "Detección de Smells"
+  - paso: "Detección de Smells"
     obligatorio: true
-    acciones:
-      - "Escanear código por categoría de smell"
-      - "Aplicar indicadores del catálogo"
-      - "Registrar ubicación exacta (línea, método)"
+    acciones: ["Escanear por cada categoría del catalogo_smells", "Aplicar indicadores", "Registrar ubicación exacta (clase:línea)"]
 
-  paso_3:
-    nombre: "Clasificación por Severidad"
+  - paso: "Clasificación por Severidad"
     obligatorio: true
-    criterios:
-      alta:
-        - "Afecta múltiples clases"
-        - "Bloquea testing"
-        - "Viola principios SOLID críticos"
-      media:
-        - "Afecta mantenibilidad"
-        - "Dificulta comprensión"
-      baja:
-        - "Mejora cosmética"
-        - "Convenciones de estilo"
+    acciones: ["Evaluar cada smell contra criterios de severidad", "Asignar  Alta |  Media |  Baja", "Ordenar por impacto"]
 
-  paso_4:
-    nombre: "Generación de Reporte"
+  - paso: "Generación de Reporte"
     obligatorio: true
-    acciones:
-      - "Consolidar hallazgos"
-      - "Ordenar por severidad"
-      - "Incluir solución para cada smell"
-      - "Guardar en {{artifacts.code_smells_folder}}"
+    acciones: ["Consolidar hallazgos ordenados por severidad", "Incluir solución del catálogo para cada smell", "Guardar en {{artifacts.code_smells_folder}}/code_smells_[timestamp].md"]
 
 salida:
   archivos_generados:
-    - tipo: "reporte_smells"
-      ruta: "{{artifacts.code_smells_folder}}/code_smells_[timestamp].md"
-  
+    ruta: "{{artifacts.code_smells_folder}}/code_smells_[timestamp].md"
   mensaje_exito: |
-    ✅ ANÁLISIS DE CODE SMELLS COMPLETADO
-    
-    📊 Resumen:
-    - 🔴 Alta severidad: [N]
-    - 🟡 Media severidad: [N]
-    - 🟢 Baja severidad: [N]
-    
-    🎯 Top 3 Prioridades:
-    1. [smell] en [ubicación] → [solución]
-    2. [smell] en [ubicación] → [solución]
-    3. [smell] en [ubicación] → [solución]
-    
-    💡 Siguiente: >solucionar_smells
-
-formato_reporte: |
-  # 🔍 Reporte de Code Smells
-  
-  ## Resumen Ejecutivo
-  - Total smells: [N]
-  - Severidad promedio: [Alta|Media|Baja]
-  
-  ## Hallazgos por Severidad
-  
-  ### 🔴 Alta Severidad
-  | Smell | Ubicación | Solución |
-  |-------|-----------|----------|
-  | [nombre] | [clase:línea] | [refactoring] |
-  
-  ### 🟡 Media Severidad
-  ...
-  
-  ### 🟢 Baja Severidad
-  ...
-  
-  ## Plan de Acción Sugerido
-  1. [acción prioritaria]
+     ANÁLISIS COMPLETADO
+      Alta: [N] |  Media: [N] |  Baja: [N]
+     Top 3: 1.[smellsolución] 2.[smellsolución] 3.[smellsolución]
+     Siguiente: >solucionar_smells
 
 errores:
-  sin_codigo:
-    mensaje: "❌ No se proporcionó código para analizar"
-    accion: "Solicitar código o archivo específico"
-  codigo_no_java:
-    mensaje: "⚠️ Código no es Java"
-    accion: "Aplicar análisis genérico de smells"
+  sin_codigo: {msg: " No se proporcionó código", accion: "Solicitar código o archivo específico"}
+  no_java: {msg: " Código no es Java", accion: "Aplicar análisis genérico de smells"}
 
 siguiente:
-  herramienta: "solucionar_smells"
-  comando: ">solucionar_smells"
-  agente: "ArchDev Pro"
-  descripcion: "Aplicar refactorings para resolver smells detectados"
-  accion_usuario: |
-    Para continuar:
-    1. Ejecuta: `>solucionar_smells` en el mismo chat o con **ArchDev Pro**
+  - {comando: ">solucionar_smells", desc: "Aplicar refactorings para resolver smells detectados", chat_agente: "ArchDev Pro"}
 ```

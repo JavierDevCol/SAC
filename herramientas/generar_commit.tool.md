@@ -1,32 +1,26 @@
+﻿---
+nombre: "Generar Commit"
+comando: ">generar_commit"
+alias: [">commit", ">gc"]
+version: "4.1"
+---
+
 ```yaml
 mandatory:
   - instruccion: "Seguir el proceso paso a paso en orden secuencial"
-    nunca_saltar: true
   - instruccion: "Validar prerequisitos antes de ejecutar"
-    nunca_saltar: true
-  - instruccion: "Los pasos marcados como obligatorio:true NO se pueden omitir"
-    nunca_saltar: true
+  - instruccion: "Pasos obligatorios NO se pueden omitir"
   - instruccion: "Seguir especificación Conventional Commits estrictamente"
-    nunca_saltar: true
   - instruccion: "Usar modo imperativo (Añadir, no Añadido)"
-    nunca_saltar: true
   - instruccion: "Limitar título a 50 caracteres, máximo 72"
-    nunca_saltar: true
   - instruccion: "NUNCA terminar título con punto"
-    nunca_saltar: true
-  - instruccion: "Generar mensajes de commit en el idioma configurado en {{preferencias.idioma_documentacion}}"
-    nunca_saltar: true
-
-identificacion:
-  nombre: "Generar Commit"
-  comando: ">generar_commit"
-  alias: [">commit", ">gc"]
-  version: "4.0"
+  - instruccion: "Primera letra mayúscula en descripción"
+  - instruccion: "Generar en idioma: {{preferencias.idioma_documentacion}}"
 
 prerequisitos:
   archivos_requeridos:
     - descripcion: "Git diff de cambios"
-      obtencion: "git diff > cochas/artifacts/diff.txt"
+      obtencion: "git diff > {{rutas.artifacts_folder}}/diff.txt"
   archivos_opcionales:
     - "Nombre de branch actual"
     - "Número de issue/ticket"
@@ -48,140 +42,79 @@ parametros:
       tipo: boolean
       defecto: false
 
+tipos_commit:
+  feat: {desc: "Nueva funcionalidad", semver: MINOR}
+  fix: {desc: "Corrección de bug", semver: PATCH}
+  refactor: {desc: "Mejora estructura sin cambiar comportamiento", semver: none}
+  perf: {desc: "Mejora de rendimiento", semver: PATCH}
+  test: {desc: "Añadir o corregir pruebas", semver: none}
+  docs: {desc: "Cambios en documentación", semver: none}
+  style: {desc: "Cambios de formato", semver: none}
+  ci: {desc: "Cambios en CI/CD", semver: none}
+  build: {desc: "Cambios en sistema de build", semver: none}
+  chore: {desc: "Tareas de mantenimiento", semver: none}
+
+reglas_deteccion:
+  feat: "Nuevos archivos de funcionalidad, nuevos métodos públicos"
+  fix: "Cambios en try-catch, correcciones de bugs"
+  refactor: "Renombrado, extracción de código"
+  test: "Archivos en carpetas de test"
+  docs: "Archivos .md, comentarios de documentación"
+  style: "Cambios de formato, espacios"
+  ci: "Archivos de CI/CD, Docker, pipelines"
+
 proceso:
-  paso_0:
-    nombre: "Captura Automática del Git Diff"
+  - paso: "Captura Automática del Git Diff"
     obligatorio: true
-    acciones:
-      - "Crear directorio {{rutas.artifacts_folder}} si no existe"
-      - "Ejecutar: git diff > {{rutas.artifacts_folder}}/diff.txt"
-      - "Validar que el archivo no esté vacío"
+    acciones: ["Crear {{rutas.artifacts_folder}} si no existe", "Ejecutar git diff > {{rutas.artifacts_folder}}/diff.txt", "Validar que el archivo no esté vacío"]
     si_error:
-      sin_repositorio: "❌ No es un repositorio git válido"
-      sin_cambios: "ℹ️ No hay cambios para documentar"
+      sin_repositorio: " No es un repositorio git válido"
+      sin_cambios: "ℹ No hay cambios para documentar"
 
-  paso_1:
-    nombre: "Análisis del Contexto"
+  - paso: "Análisis del Contexto"
     obligatorio: true
-    acciones:
-      - "Parsear {{rutas.artifacts_folder}}/diff.txt para identificar archivos modificados"
-      - "Extraer información del branch name"
-      - "Identificar si hay cambios en archivos críticos"
+    acciones: ["Parsear {{rutas.artifacts_folder}}/diff.txt", "Identificar archivos modificados", "Extraer información del branch name"]
 
-  paso_2:
-    nombre: "Clasificación del Tipo de Commit"
+  - paso: "Clasificación del Tipo de Commit"
     obligatorio: true
-    reglas_deteccion:
-      feat: "Nuevos archivos de funcionalidad, nuevos métodos públicos"
-      fix: "Cambios en try-catch, correcciones de bugs"
-      refactor: "Renombrado, extracción de código"
-      test: "Archivos en carpetas de test"
-      docs: "Archivos .md, comentarios de documentación"
-      style: "Cambios de formato, espacios"
-      ci: "Archivos de CI/CD, Docker"
+    acciones: ["Aplicar reglas_deteccion al diff", "Si tipo_commit=auto, inferir del contexto", "Validar tipo contra tipos_commit"]
 
-  paso_3:
-    nombre: "Determinación del Alcance"
+  - paso: "Determinación del Alcance"
     obligatorio: true
-    estrategias:
-      auto: "Inferir del contexto del proyecto"
-      archivo: "Nombre del archivo principal"
-      modulo: "Detectar módulo/paquete afectado"
-      componente: "Identificar componente arquitectónico"
+    acciones: ["Aplicar estrategia según formato_alcance", "auto: inferir del contexto", "archivo/modulo/componente: detectar según patrón"]
 
-  paso_4:
-    nombre: "Construcción del Título"
+  - paso: "Construcción del Título"
     obligatorio: true
-    formato: "tipo(alcance): descripción"
-    reglas:
-      - "Modo imperativo y tiempo presente"
-      - "Primera letra mayúscula"
-      - "Sin punto final"
-      - "Máximo 50-72 caracteres"
+    acciones: ["Formato: tipo(alcance): descripción", "Validar modo imperativo", "Validar longitud 50-72 chars", "Sin punto final"]
 
-  paso_5:
-    nombre: "Generación del Cuerpo"
+  - paso: "Generación del Cuerpo"
     obligatorio: false
-    condicion: "si incluir_body=true"
-    estructura:
-      - "Párrafo explicando el 'porqué'"
-      - "Lista de cambios con viñetas (-)"
-      - "Referencias a issues si disponibles"
-      - "BREAKING CHANGE si aplica"
+    condicion: "incluir_body=true"
+    acciones: ["Párrafo explicando el 'porqué'", "Lista de cambios con viñetas (-)", "Referencias a issues si disponibles", "BREAKING CHANGE si breaking_change=true"]
 
-  paso_6:
-    nombre: "Entrega del Mensaje"
+  - paso: "Entrega del Mensaje"
     obligatorio: true
-    acciones:
-      - "Validar formato Conventional Commits"
-      - "Presentar mensaje listo para usar"
+    acciones: ["Validar formato Conventional Commits", "Presentar mensaje listo para usar"]
 
 salida:
   archivos_generados:
-    - tipo: "diff temporal"
-      ruta: "{{rutas.artifacts_folder}}/diff.txt"
-      temporal: true
-  
+    ruta: "{{rutas.artifacts_folder}}/diff.txt"
+    temporal: true
   mensaje_exito: |
-    ✅ Mensaje de Commit Generado
-    
+     Mensaje de Commit Generado
     ```
-    [mensaje completo]
-    ```
+    [tipo](alcance): descripción
     
-    🚀 Ejecutar: git commit -m "[mensaje]"
-
-tipos_commit:
-  feat:
-    descripcion: "Nueva funcionalidad para el usuario"
-    semver: "MINOR"
-  fix:
-    descripcion: "Corrección de bug"
-    semver: "PATCH"
-  refactor:
-    descripcion: "Mejora de estructura sin cambiar comportamiento"
-    semver: "ninguno"
-  perf:
-    descripcion: "Mejora de rendimiento"
-    semver: "PATCH"
-  test:
-    descripcion: "Añadir o corregir pruebas"
-    semver: "ninguno"
-  docs:
-    descripcion: "Cambios en documentación"
-    semver: "ninguno"
-  style:
-    descripcion: "Cambios de formato sin afectar significado"
-    semver: "ninguno"
-  ci:
-    descripcion: "Cambios en integración continua"
-    semver: "ninguno"
-  build:
-    descripcion: "Cambios en sistema de compilación"
-    semver: "ninguno"
-  chore:
-    descripcion: "Otras tareas de mantenimiento"
-    semver: "ninguno"
+    [cuerpo opcional]
+    ```
+     Ejecutar: git commit -m "[mensaje]"
 
 errores:
-  sin_repositorio:
-    mensaje: "❌ No se encuentra repositorio git"
-    accion: "Verificar que está en directorio con git init"
-  diff_vacio:
-    mensaje: "ℹ️ No hay cambios pendientes"
-    accion: "Verificar con git status"
-  titulo_muy_largo:
-    mensaje: "⚠️ Título excede 72 caracteres"
-    accion: "Acortar automáticamente manteniendo palabras clave"
+  sin_repositorio: {msg: " No se encuentra repositorio git", accion: "Verificar git init"}
+  diff_vacio: {msg: "ℹ No hay cambios pendientes", accion: "Verificar git status"}
+  titulo_muy_largo: {msg: " Título excede 72 chars", accion: "Acortar manteniendo palabras clave"}
 
 siguiente:
-  descripcion: "Acciones disponibles tras generar el mensaje de commit"
-  opciones:
-    - comando: "git commit -m '[mensaje]'"
-      descripcion: "Aplicar el commit generado"
-      accion_usuario: "Copia el mensaje generado y ejecuta el comando en terminal"
-    - comando: "git add . && git commit -m '[mensaje]'"
-      descripcion: "Agregar cambios y commitear"
-      accion_usuario: "Usa este comando si tienes cambios sin agregar al staging"
+  - {accion: "git commit -m '[mensaje]'", desc: "Aplicar el commit generado"}
+  - {accion: "git add . && git commit -m '[mensaje]'", desc: "Agregar cambios y commitear"}
 ```
-````

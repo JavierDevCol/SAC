@@ -1,273 +1,147 @@
+﻿---
+nombre: "Generar Architecture Decision Record (ADR)"
+comando: ">generar_adr"
+alias: [">crear_adr", ">nuevo_adr", ">adr"]
+version: "2.3"
+---
+
 ```yaml
+objetivo: |
+  Generar documentación formal de decisiones arquitectónicas siguiendo estándares ADR,
+  soportando múltiples formatos, para mantener trazabilidad de decisiones técnicas críticas.
+
 mandatory:
   - instruccion: "Seguir el proceso paso a paso en orden secuencial"
-    nunca_saltar: true
   - instruccion: "Validar prerequisitos antes de ejecutar"
-    nunca_saltar: true
-  - instruccion: "Los pasos marcados como obligatorio:true NO se pueden omitir"
-    nunca_saltar: true
-  - instruccion: "Generar TODOS los artefactos/documentos en el idioma definido en 'idiomas.documentacion'"
-    nunca_saltar: true
-  - instruccion: "Validar que el formato de ADR seleccionado sea uno de los soportados (nygard, madr, y-statement, custom)"
-    nunca_saltar: true
-  - instruccion: "Asegurar que el título del ADR sea único y no exista duplicado en la carpeta de ADRs"
-    nunca_saltar: true
-  - instruccion: "Los ADRs son inmutables - nunca modificar ADRs existentes, crear nuevos que superseden"
-    nunca_saltar: true
-  - instruccion: "Mantener numeración secuencial sin saltos (001, 002, 003...)"
-    nunca_saltar: true
-  - instruccion: "Leer y almacenar parámetros desde {{reglas.mermaid}}"
-    nunca_saltar: true
-  - instruccion: "Si se decide crear diagramas mermaid en el ADR, seguir el proceso paso a paso en orden secuencial del paso_5"
-    nunca_saltar: true
-
-identificacion:
-  nombre: "Generar Architecture Decision Record (ADR)"
-  comando: ">generar_adr"
-  alias: [">crear_adr", ">nuevo_adr", ">adr"]
-  version: "2.2"
-
-objetivo: |
-  Generar documentación formal de decisiones arquitectónicas siguiendo estándares 
-  de Architecture Decision Records (ADR), soportando múltiples formatos y plantillas, 
-  para mantener trazabilidad y contexto de decisiones técnicas críticas a lo largo 
-  del ciclo de vida del proyecto.
-
-integracion:
-  herramientas_que_invocan:
-    - nombre: "define_arquitectura"
-      cuando: "Al finalizar análisis arquitectónico y obtener aprobación del usuario"
-      proposito: "Documentar formalmente la decisión arquitectónica en un ADR"
-    - nombre: "planificar_hu"
-      cuando: "Cuando una HU implica decisiones arquitectónicas significativas"
-      proposito: "Registrar decisiones técnicas antes de la implementación"
+  - instruccion: "Pasos obligatorios NO se pueden omitir"
+  - instruccion: "Generar en idioma: {{preferencias.idioma_documentacion}}"
+  - instruccion: "Validar formato ADR: nygard | madr | y-statement | custom"
+  - instruccion: "Título único - no duplicados en carpeta ADRs"
+  - instruccion: "ADRs INMUTABLES - nunca modificar existentes, crear nuevos que superseden"
+  - instruccion: "Numeración secuencial sin saltos (001, 002, 003...)"
+  - instruccion: "Un ADR por decisión - no mezclar múltiples decisiones"
+  - instruccion: "Si incluir_diagrama=true, seguir {{reglas.mermaid}}"
+  - instruccion: "Slug máximo 50 caracteres, kebab-case"
+  - instruccion: "Solo archivos Markdown (.md), sin HTML en Mermaid"
 
 prerequisitos:
   archivos_requeridos:
     - descripcion: "Archivo de configuración del proyecto"
       ubicacion: "{{project_root}}/.SAC/CONFIG_INIT.yaml"
   archivos_opcionales:
-    - descripcion: "Directorio de ADRs existentes (para auto-numeración)"
-      ubicacion: "{{adr_location}}"
-    - descripcion: "Archivo de contexto del proyecto"
-      ubicacion: "{{contexto_proyecto_location}}"
-    - descripcion: "Índice de ADRs existentes"
-      ubicacion: "{{adr_location}}/README.md"
+    - "{{adr_location}}"
+    - "{{contexto_proyecto_location}}"
+    - "{{adr_location}}/README.md"
 
 parametros:
   requeridos:
-    - nombre: "titulo"
+    - nombre: titulo
       tipo: string
-      descripcion: "Título descriptivo de la decisión arquitectónica"
-    - nombre: "contexto"
+      descripcion: "Título de la decisión (máx 100 chars)"
+    - nombre: contexto
       tipo: string
-      descripcion: "Descripción del problema o necesidad que motivó la decisión"
-    - nombre: "decision"
+      descripcion: "Problema o necesidad (mín 50 chars)"
+    - nombre: decision
       tipo: string
-      descripcion: "Opción arquitectónica seleccionada con justificación"
-    - nombre: "consecuencias"
+      descripcion: "Opción seleccionada con justificación (mín 30 chars)"
+    - nombre: consecuencias
       tipo: string
-      descripcion: "Trade-offs, beneficios y riesgos aceptados"
+      descripcion: "Trade-offs, beneficios y riesgos (mín 30 chars)"
   opcionales:
-    - nombre: "formato"
+    - nombre: formato
       tipo: string
-      valores: ["nygard", "madr", "y-statement", "custom"]
-      defecto: "nygard"
-      descripcion: "Formato de ADR a usar"
-    - nombre: "estado"
+      valores: [nygard, madr, y-statement, custom]
+      defecto: nygard
+    - nombre: estado
       tipo: string
-      valores: ["propuesto", "aceptado", "rechazado", "deprecado", "supersedido"]
-      defecto: "aceptado"
-      descripcion: "Estado de la decisión"
-    - nombre: "opciones_consideradas"
+      valores: [propuesto, aceptado, rechazado, deprecado, supersedido]
+      defecto: aceptado
+    - nombre: opciones_consideradas
       tipo: string
       descripcion: "Alternativas evaluadas y razones de descarte"
-    - nombre: "fecha"
-      tipo: string
-      defecto: "{{fecha_actual}}"
-      descripcion: "Fecha de la decisión (YYYY-MM-DD)"
-    - nombre: "autores"
-      tipo: string
-      defecto: "{{usuario.nombre}}"
-      descripcion: "Equipo o personas involucradas en la decisión"
-    - nombre: "referencias"
-      tipo: string
-      descripcion: "Links a documentos relacionados (análisis, benchmarks, RFCs)"
-    - nombre: "adr_relacionados"
-      tipo: string
-      descripcion: "ADRs que supersede o complementa"
-    - nombre: "incluir_diagrama"
+    - nombre: incluir_diagrama
       tipo: boolean
       defecto: true
-      descripcion: "Generar diagrama Mermaid visual de la decisión"
-    - nombre: "archivo_salida"
+    - nombre: referencias
       tipo: string
-      defecto: "{{adr_location}}/NNN-titulo-slug.md"
-      descripcion: "Ruta donde guardar el ADR"
-    - nombre: "numero_adr"
-      tipo: number
-      defecto: "auto"
-      descripcion: "Número secuencial del ADR (auto-detecta siguiente disponible)"
+      descripcion: "Links a docs relacionados"
+    - nombre: adr_relacionados
+      tipo: string
+      descripcion: "ADRs que supersede o complementa"
+
+plantillas:
+  nygard: {desc: "Clásico - Simple y directo", ruta: "{{plantillas_location}}/adr_nygard.plantilla.md"}
+  madr: {desc: "Estructurado - Más detallado", ruta: "{{plantillas_location}}/adr_madr.plantilla.md"}
+  y-statement: {desc: "Ultra-conciso - Una frase", ruta: "{{plantillas_location}}/adr_y_statement.plantilla.md"}
+  custom: {desc: "Personalizado por usuario", ruta: "Definida en runtime"}
 
 proceso:
-  paso_0:
-    nombre: "Carga de Configuración Crítica"
+  - paso: "Carga de Configuración"
     obligatorio: true
-    acciones:
-      - "Cargar y leer {{project_root}}/.SAC/CONFIG_INIT.yaml"
-      - "Extraer variables de configuración necesarias (idioma, rutas, etc.)"
+    acciones: ["Cargar {{project_root}}/.SAC/CONFIG_INIT.yaml", "Extraer variables (idioma, rutas)"]
     si_error:
-      "archivo_no_encontrado": "Notificar al usuario y solicitar ejecutar >tomar_contexto primero"
+      archivo_no_encontrado: "❌ Ejecutar >tomar_contexto primero"
 
-  paso_1:
-    nombre: "Validación de Entradas"
+  - paso: "Validación de Entradas"
     obligatorio: true
-    acciones:
-      - "Verificar que todos los parámetros requeridos estén presentes (titulo, contexto, decision, consecuencias)"
-      - "Validar que el formato seleccionado sea soportado"
-      - "Verificar que el título no exceda 100 caracteres"
-      - "Si falta información crítica, solicitar al usuario antes de continuar"
+    acciones: ["Verificar parámetros requeridos", "Validar formato soportado", "Verificar título único en {{adr_location}}"]
     validaciones:
-      - "titulo no vacío y no duplicado"
-      - "contexto mínimo 50 caracteres"
-      - "decision mínimo 30 caracteres"
-      - "consecuencias mínimo 30 caracteres"
+      - {campo: titulo, regla: "no vacío, máx 100 chars, único"}
+      - {campo: contexto, regla: "mín 50 chars"}
+      - {campo: decision, regla: "mín 30 chars"}
+      - {campo: consecuencias, regla: "mín 30 chars"}
     si_error:
-      "parametros_faltantes": "Solicitar explícitamente cada dato faltante antes de generar"
-      "formato_invalido": "Listar formatos disponibles: nygard, madr, y-statement, custom"
-      "titulo_duplicado": "Advertir y sugerir título alternativo"
+      parametros_faltantes: "Solicitar datos faltantes antes de continuar"
+      titulo_duplicado: "⚠️ Sugerir título alternativo"
 
-  paso_2:
-    nombre: "Determinación de Número ADR"
+  - paso: "Determinación de Número ADR"
     obligatorio: true
-    acciones:
-      - "Escanear carpeta {{adr_location}} para listar ADRs existentes"
-      - "Determinar el siguiente número secuencial disponible"
-      - "Formato de número: 001, 002, 003, etc. (3 dígitos con padding)"
-      - "Si la carpeta no existe, crearla y comenzar con 001"
-    si_error:
-      "error_lectura": "Crear carpeta {{adr_location}} y comenzar con número 001"
+    acciones: ["Escanear {{adr_location}} para ADRs existentes", "Determinar siguiente número (formato: 001, 002...)", "Si carpeta no existe, crear {{adr_location}} y comenzar con 001"]
 
-  paso_3:
-    nombre: "Selección de Plantilla"
+  - paso: "Selección y Carga de Plantilla"
     obligatorio: true
-    acciones:
-      - "Seleccionar plantilla según parámetro 'formato'"
-      - "Cargar estructura base de la plantilla correspondiente"
-    plantillas_disponibles:
-      nygard:
-        descripcion: "Formato clásico de Michael Nygard - Simple y directo"
-        ubicacion: "{{plantillas_location}}/adr_nygard.plantilla.md"
-      madr:
-        descripcion: "Markdown Any Decision Records - Más estructurado"
-        ubicacion: "{{plantillas_location}}/adr_madr.plantilla.md"
-      y-statement:
-        descripcion: "Formato ultra-conciso - Una sola frase estructurada"
-        ubicacion: "{{plantillas_location}}/adr_y_statement.plantilla.md"
-      custom:
-        descripcion: "Estructura personalizada definida por el usuario"
-        ubicacion: "Definida por el usuario en tiempo de ejecución"
+    acciones: ["Seleccionar plantilla desde {{plantillas_location}}", "Cargar estructura base según formato"]
     si_error:
-      "plantilla_no_encontrada": "Usar formato nygard por defecto"
+      plantilla_no_encontrada: "Usar nygard por defecto"
 
-  paso_4:
-    nombre: "Generación del Contenido ADR"
+  - paso: "Generación del Contenido"
     obligatorio: true
-    acciones:
-      - "Rellenar la plantilla seleccionada con los datos proporcionados"
-      - "Aplicar formato Markdown correcto (títulos, listas, tablas, énfasis)"
-      - "Asegurar que las secciones obligatorias estén completas"
-      - "Agregar metadatos: fecha, versión, autores, estado"
-      - "Generar slug del título para nombre de archivo (máximo 50 caracteres, kebab-case)"
-    formato_archivo: "[numero_adr]-[titulo-slug].md"
-    si_error:
-      "error_formato": "Notificar sección con error y solicitar corrección"
+    acciones: ["Rellenar plantilla con datos proporcionados", "Agregar metadatos (fecha, autores, estado)", "Generar slug del título (kebab-case, máx 50 chars)"]
+    formato_archivo: "[NNN]-[titulo-slug].md"
 
-  paso_5:
-    nombre: "Generación de Diagrama Mermaid"
+  - paso: "Diagrama Mermaid"
     obligatorio: false
-    condicion: "Si incluir_diagrama es true O la decisión involucra flujos/componentes/estados"
-    reglas_mermaid:
-      obligatorio: true
-      referencia: "{{reglas.mermaid}}"
-    acciones:
-      - "Cargar las reglas_mermaid"
-      - "Analizar el contexto y la decisión para determinar el tipo de diagrama más adecuado"
-      - "Generar diagrama Mermaid siguiendo las reglas de reglas_mermaid"
-      - "Insertar el diagrama en la sección correspondiente del ADR"
+    condicion: "incluir_diagrama=true"
+    acciones: ["Cargar reglas desde {{reglas.mermaid}}", "Determinar tipo de diagrama según decisión", "Generar e insertar diagrama en ADR"]
     si_error:
-      "diagrama_invalido": "Omitir diagrama y notificar al usuario"
+      diagrama_invalido: "⚠️ Omitir diagrama, notificar"
 
-  paso_6:
-    nombre: "Creación del Archivo"
+  - paso: "Creación del Archivo"
     obligatorio: true
-    acciones:
-      - "Generar nombre del archivo: [numero_adr]-[titulo-slug].md"
-      - "Crear estructura de carpetas {{adr_location}} si no existe"
-      - "Guardar el archivo en la ruta especificada"
-      - "Actualizar índice de ADRs si existe ({{adr_location}}/README.md)"
-    actualizacion_indice:
-      - "Agregar entrada al índice con número, título, estado y fecha"
-      - "Mantener orden cronológico/numérico"
-    si_error:
-      "error_escritura": "Verificar permisos y notificar al usuario"
-      "archivo_existe": "Preguntar si sobrescribir o crear nueva versión"
+    acciones: ["Crear carpeta {{adr_location}} si no existe", "Guardar archivo en {{adr_location}}/[NNN]-[slug].md", "Actualizar {{adr_location}}/README.md si existe"]
 
-  paso_7:
-    nombre: "Confirmación y Entrega"
+  - paso: "Confirmación"
     obligatorio: true
-    acciones:
-      - "Mostrar resumen del ADR generado"
-      - "Mostrar vista previa de las primeras líneas"
-
-# ============================================
-# RESTRICCIONES
-# ============================================
-restricciones:
-  - "Solo genera archivos Markdown (.md)"
-  - "Requiere parámetros mínimos: titulo, contexto, decision, consecuencias"
-  - "No modifica ADRs existentes - Son inmutables, se crean nuevos que superseden"
-  - "Numeración secuencial obligatoria - No permite saltos"
-  - "Un ADR por decisión - No mezcla múltiples decisiones"
-  - "Slug máximo 50 caracteres - Nombres truncados automáticamente"
-  - "Diagramas Mermaid sin HTML - Solo sintaxis estándar"
+    acciones: ["Mostrar resumen del ADR generado", "Vista previa primeras líneas"]
 
 salida:
   archivos_generados:
-    - tipo: "Archivo ADR"
-      ruta: "{{adr_location}}/[numero]-[titulo-slug].md"
-      descripcion: "Architecture Decision Record en formato Markdown"
-  archivos_actualizados:
-    - "{{adr_location}}/README.md (si existe)"
+    ruta: "{{adr_location}}/[NNN]-[titulo-slug].md"
+    template: |
+      # [NNN]. [Título]
+      - Estado: [estado]
+      - Fecha: [fecha]
+      ## Contexto / Decisión / Consecuencias
+  archivos_actualizados: ["{{adr_location}}/README.md"]
   mensaje_exito: |
-    ✅ **GENERACIÓN DE ADR COMPLETADA**
-    
-    📄 **Archivo generado:** {{adr_location}}/[numero]-[slug].md
-    
-    📊 **Resumen:**
-    - Formato: [formato]
-    - Estado: [estado]
-    - Fecha: [fecha]
-    - Diagrama incluido: [sí/no]
+     ADR GENERADO: [NNN]-[slug].md
+     Formato: [formato] | Estado: [estado] | Diagrama: [sí/no]
 
 errores:
-  "parametros_faltantes":
-    mensaje: "❌ Faltan parámetros requeridos para generar el ADR"
-    accion: "Solicitar al usuario: titulo, contexto, decision, consecuencias"
-  "formato_invalido":
-    mensaje: "❌ El formato especificado no es válido"
-    accion: "Formatos disponibles: nygard, madr, y-statement, custom"
-  "titulo_duplicado":
-    mensaje: "⚠️ Ya existe un ADR con título similar"
-    accion: "Sugerir título alternativo o confirmar creación"
-  "error_lectura":
-    mensaje: "❌ Error al leer la carpeta de ADRs"
-    accion: "Verificar permisos y existencia de {{adr_location}}"
-  "error_escritura":
-    mensaje: "❌ Error al guardar el archivo ADR"
-    accion: "Verificar permisos de escritura en la carpeta destino"
-  "diagrama_invalido":
-    mensaje: "⚠️ No se pudo generar el diagrama Mermaid"
-    accion: "ADR generado sin diagrama - revisar manualmente"
-siguiente:  "Esta herramienta no tiene flujo siguiente obligatorio, El ADR generado es un artefacto final independiente"
+  parametros_faltantes: {msg: " Faltan parámetros requeridos", accion: "Solicitar: titulo, contexto, decision, consecuencias"}
+  formato_invalido: {msg: " Formato no válido", accion: "Usar: nygard, madr, y-statement, custom"}
+  titulo_duplicado: {msg: " ADR con título similar existe", accion: "Sugerir alternativo"}
+  error_escritura: {msg: " Error al guardar", accion: "Verificar permisos"}
+
+siguiente: "Artefacto final independiente - sin flujo siguiente obligatorio"
 ```
