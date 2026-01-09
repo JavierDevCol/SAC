@@ -25,9 +25,6 @@ identificacion:
   alias: [">planificar", ">plan_hu"]
   version: "4.0"
 
-roles_autorizados:
-  - ONAD
-
 prerequisitos:
   archivos_requeridos:
     - descripcion: "HU aprobada arquitectónicamente"

@@ -33,11 +33,6 @@ objetivo: |
   para mantener trazabilidad y contexto de decisiones técnicas críticas a lo largo 
   del ciclo de vida del proyecto.
 
-roles_autorizados:
-  - "ArchDev Pro"
-  - "Arquitecto Onad"
-  - "Arquitecto DevOps"
-
 integracion:
   herramientas_que_invocan:
     - nombre: "define_arquitectura"

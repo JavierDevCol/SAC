@@ -14,6 +14,9 @@ rutas:
   output_folder: "{project-root}/.SAC"
   artifacts_folder: "{project-root}/.SAC/artifacts"
   config_folder: "{project-root}/.SAC/config"
+  herramientas_folder: "{project-root}/.SAC/herramientas"
+  agentes_folder: "{project-root}/.SAC/agentes"
+  plantillas_folder: "{project-root}/.SAC/plantillas"
 
 # ============================================
 # ARCHIVOS DEL SISTEMA
@@ -71,8 +74,25 @@ plantillas:
   workspace: "{project-root}/.SAC/plantillas/workspace_plantilla.md"
   stack_proyecto: "{project-root}/.SAC/plantillas/stack_proyecto_plantilla.md"
   plan_implementacion: "{project-root}/.SAC/plantillas/plan_implementacion_plantilla.md"
+
+# ============================================
+# RUTAS DE REGLAS
+# ============================================
+rutas_reglas:
+  reglas_folder: "{project-root}/.SAC/reglas"
+
 # ============================================
 # REGLAS DEL SISTEMA
 # ============================================
 reglas:
+  # Detección de stack
+  deteccion_stack: "{project-root}/.SAC/reglas/deteccion_stack.rules.md"
+  # Por ecosistema
+  java: "{project-root}/.SAC/reglas/java.rules.md"
+  javascript: "{project-root}/.SAC/reglas/javascript.rules.md"
+  python: "{project-root}/.SAC/reglas/python.rules.md"
+  dotnet: "{project-root}/.SAC/reglas/dotnet.rules.md"
+  go: "{project-root}/.SAC/reglas/go.rules.md"
+  rust: "{project-root}/.SAC/reglas/rust.rules.md"
+  # Otras reglas
   mermaid: "{project-root}/.SAC/reglas/mermaid.rules.md"

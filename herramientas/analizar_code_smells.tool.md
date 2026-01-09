@@ -21,9 +21,6 @@ identificacion:
   alias: [">smells", ">code_review"]
   version: "4.0"
 
-roles_autorizados:
-  - ARCHDEV
-
 catalogo_smells:
   bloaters:
     - nombre: "Long Method"

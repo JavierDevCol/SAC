@@ -21,12 +21,6 @@ identificacion:
   alias: [">contexto", ">tc"]
   version: "4.0"
 
-roles_autorizados:
-  - ONAD
-  - ARCHDEV
-  - DEVOPS
-  - REFINADOR
-
 prerequisitos:
   archivos_requeridos:
     - descripcion: "Acceso a la raíz del proyecto"

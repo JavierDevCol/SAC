@@ -23,12 +23,6 @@ identificacion:
   alias: [">commit", ">gc"]
   version: "4.0"
 
-roles_autorizados:
-  - ARTESANO
-  - ARCHDEV
-  - DEVOPS
-  - REFINADOR
-
 prerequisitos:
   archivos_requeridos:
     - descripcion: "Git diff de cambios"

@@ -21,9 +21,6 @@ identificacion:
   alias: [">diagnostico", ">madurez_devops"]
   version: "4.0"
 
-roles_autorizados:
-  - DEVOPS
-
 prerequisitos:
   archivos_requeridos:
     - descripcion: "Acceso al repositorio del proyecto"

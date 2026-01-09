@@ -21,11 +21,6 @@ identificacion:
   alias: [">refinar", ">hu"]
   version: "4.0"
 
-roles_autorizados:
-  - REFINADOR
-  - ARCHDEV
-  - DEVOPS
-
 prerequisitos:
   archivos_requeridos:
     - descripcion: "Texto de la Historia de Usuario"

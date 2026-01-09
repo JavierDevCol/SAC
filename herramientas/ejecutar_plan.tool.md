@@ -29,9 +29,6 @@ identificacion:
   alias: [">ejecutar", ">implementar"]
   version: "4.0"
 
-roles_autorizados:
-  - ARCHDEV
-
 prerequisitos:
   archivos_requeridos:
     - descripcion: "Plan de implementación generado por ONAD"

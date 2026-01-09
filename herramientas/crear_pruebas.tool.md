@@ -21,9 +21,6 @@ identificacion:
   alias: [">crear-pruebas", ">tests"]
   version: "4.0"
 
-roles_autorizados:
-  - ARCHDEV
-
 prerequisitos:
   archivos_requeridos:
     - descripcion: "Código fuente Java a testear"
