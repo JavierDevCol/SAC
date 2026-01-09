@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 ╔═══════════════════════════════════════════════════════════════╗
-║           INSTALADOR DE COCHAS v4.0                           ║
+║           INSTALADOR DE COCHAS v6.0                           ║
 ║   Sistema de Orquestación de Agentes IA para GitHub Copilot   ║
 ╚═══════════════════════════════════════════════════════════════╝
 
@@ -61,7 +61,8 @@ CARPETAS_COCHAS = [
     "herramientas", 
     "plantillas",
     "ejemplos",
-    "config"
+    "config",
+    "reglas"
 ]
 
 # Carpeta de agentes de GitHub (relativa a INSTALACION/)
@@ -823,6 +824,7 @@ def print_final_summary(dest_path):
     │   ├── plantillas/       (6 plantillas)
     │   ├── ejemplos/         (ejemplos de uso)
     │   ├── config/           (configuración)
+    │   ├── reglas/           (reglas por tecnología)
     │   ├── session/          (estado de sesión)
     │   └── artifacts/        (artefactos generados)
     │       └── HU/           (historias de usuario)
