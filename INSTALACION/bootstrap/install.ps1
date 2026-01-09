@@ -120,9 +120,9 @@ function Install-SAC {
         Write-Info "Repositorio existente, actualizando..."
         Push-Location $repoPath
         try {
-            & git fetch origin 2>&1 | Out-Null
-            & git checkout $REPO_BRANCH 2>&1 | Out-Null
-            & git pull origin $REPO_BRANCH 2>&1 | Out-Null
+            Start-Process -FilePath "git" -ArgumentList "fetch", "origin" -NoNewWindow -Wait
+            Start-Process -FilePath "git" -ArgumentList "checkout", $REPO_BRANCH -NoNewWindow -Wait
+            Start-Process -FilePath "git" -ArgumentList "pull", "origin", $REPO_BRANCH -NoNewWindow -Wait
             Write-Success "Repositorio actualizado"
         }
         catch {
@@ -139,11 +139,16 @@ function Install-SAC {
             Remove-Item -Recurse -Force $repoPath
         }
         
-        $cloneOutput = git clone --branch $REPO_BRANCH $REPO_URL $repoPath 2>&1
+        # Ejecutar git clone suprimiendo stderr (git escribe progreso a stderr)
+        $env:GIT_TERMINAL_PROMPT = "0"
+        Start-Process -FilePath "git" -ArgumentList "clone", "--branch", $REPO_BRANCH, $REPO_URL, $repoPath -NoNewWindow -Wait -RedirectStandardError "$env:TEMP\git_clone_err.txt"
         
-        if (-not (Test-Path $repoPath)) {
+        if (-not (Test-Path (Join-Path $repoPath ".git"))) {
             Write-Error "Error al clonar el repositorio"
-            Write-Host "  Detalles: $cloneOutput" -ForegroundColor Yellow
+            if (Test-Path "$env:TEMP\git_clone_err.txt") {
+                $errContent = Get-Content "$env:TEMP\git_clone_err.txt" -Raw
+                Write-Host "  Detalles: $errContent" -ForegroundColor Yellow
+            }
             return $false
         }
         
