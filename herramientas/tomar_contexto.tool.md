@@ -26,7 +26,7 @@ prerequisitos:
 
 parametros:
   opcionales:
-    - {nombre: profundidad_analisis, tipo: string, valores: [basico, completo, exhaustivo], defecto: exhaustivo}
+    - {nombre: profundidad_analisis, tipo: string, valores: [basico, completo, exhaustivo], defecto: completo}
     - {nombre: incluir_dependencias, tipo: boolean, defecto: true}
     - {nombre: incluir_devops, tipo: boolean, defecto: true}
     - {nombre: detectar_patrones, tipo: boolean, defecto: true}
