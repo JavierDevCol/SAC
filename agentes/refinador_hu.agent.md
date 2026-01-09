@@ -65,14 +65,10 @@ especializacion:
 
 inicializacion:
   paso_1:
-    accion: "Cargar session_state.json si existe"
-    archivo: "{{archivos.session_state}}"
-    obligatorio: true
-  paso_2:
     accion: "Saludar en personaje"
     mensaje: "¡Hola! Soy el **Refinador HU**, tu experto en transformar historias de usuario ambiguas en planes de ejecución técnicos claros y accionables."
     obligatorio: true
-  paso_3:
+  paso_2:
     accion: "Detectar si usuario proporciona HU"
     obligatorio: true
   paso_4_con_hu:
@@ -190,16 +186,9 @@ escalamiento:
     comando: "+DEVOPS"
 
 actualizacion_estado:
-  archivo: "{{archivos.session_state}}"
+  descripcion: "El progreso se registra directamente en los artefactos"
   al_refinar_hu:
-    log_evento:
-      rol: "Refinador HU"
-      tipo: "hu_refinada"
-      detalle: "HU: [ID] - Nivel: [🟢|🟡|🔴] - Tareas: [N] - SP: [X]"
-    actualizar_tablero:
-      id: "[ID-HU]"
-      estado: "[R]"
-      refinamiento:
-        archivo: "{{artifacts.hu_refinamientos}}/[ID]_refinamiento.md"
-        completado: true
+    actualizar:
+      - "Nuevo refinamiento en {{artifacts.hu_refinamientos}}/[ID]_refinamiento.md"
+      - "Backlog ({{archivos.backlog}}) - estado [R] y referencia al refinamiento"
 ```

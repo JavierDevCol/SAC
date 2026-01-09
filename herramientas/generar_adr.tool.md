@@ -6,10 +6,6 @@ mandatory:
     nunca_saltar: true
   - instruccion: "Los pasos marcados como obligatorio:true NO se pueden omitir"
     nunca_saltar: true
-  - instruccion: "Actualizar session_state.json al finalizar"
-    nunca_saltar: true
-  - instruccion: "Nunca saltar proceso.paso_final"
-    nunca_saltar: true
   - instruccion: "Generar TODOS los artefactos/documentos en el idioma definido en 'idiomas.documentacion'"
     nunca_saltar: true
   - instruccion: "Validar que el formato de ADR seleccionado sea uno de los soportados (nygard, madr, y-statement, custom)"
@@ -53,8 +49,6 @@ integracion:
 
 prerequisitos:
   archivos_requeridos:
-    - descripcion: "Archivo de estado de sesión"
-      ubicacion: "{{session_state_location}}"
     - descripcion: "Archivo de configuración del proyecto"
       ubicacion: "{{project_root}}/.SAC/CONFIG_INIT.yaml"
   archivos_opcionales:
@@ -125,7 +119,6 @@ proceso:
     nombre: "Carga de Configuración Crítica"
     obligatorio: true
     acciones:
-      - "Cargar y leer {{session_state_location}}"
       - "Cargar y leer {{project_root}}/.SAC/CONFIG_INIT.yaml"
       - "Extraer variables de configuración necesarias (idioma, rutas, etc.)"
     si_error:
@@ -232,46 +225,6 @@ proceso:
       - "Mostrar resumen del ADR generado"
       - "Mostrar vista previa de las primeras líneas"
 
-  paso_final:
-    nombre: "Actualizar Estado de Sesión"
-    obligatorio: true
-    acciones:
-      - "Verificar si existe {{session_state_location}}"
-      - "Si NO existe:"
-      - "  1. Crear estructura de carpetas si no existe"
-      - "  2. Copiar plantilla desde {{plantillas.session_state}}"
-      - "  3. Inicializar con valores por defecto"
-      - "Si existe:"
-      - "  1. Leer estado actual"
-      - "  2. Actualizar campos correspondientes"
-      - "Registrar herramienta ejecutada: generar_adr"
-      - "Actualizar timestamp de ultima_actividad"
-      - "Registrar artefactos generados en la sesión"
-      - "Actualizar registro de ADRs (ultimo_numero, total, lista)"
-      - "Guardar cambios en {{session_state_location}}"
-    campos_a_actualizar:
-      - campo: "ultima_herramienta"
-        valor: "generar_adr"
-      - campo: "ultima_actividad"
-        valor: "[timestamp ISO 8601]"
-      - campo: "artefactos_generados"
-        valor: "[ruta del ADR generado]"
-      - campo: "resultado_ejecucion"
-        valor: "[exito|error|parcial]"
-      - campo: "adrs.ultimo_numero"
-        valor: "[NNN]"
-      - campo: "adrs.total"
-        valor: "[incrementar en 1]"
-    registro_evento:
-      timestamp: "[timestamp_actual]"
-      rol: "[rol_actual]"
-      herramienta: "generar_adr"
-      tipo: "adr_generado"
-      detalle: "ADR [NNN]: [titulo] - Formato: [formato] - Estado: [estado]"
-    validacion_post:
-      - "Confirmar que {{session_state_location}} existe y es válido"
-      - "Confirmar que el JSON es parseable"
-
 # ============================================
 # RESTRICCIONES
 # ============================================
@@ -290,7 +243,6 @@ salida:
       ruta: "{{adr_location}}/[numero]-[titulo-slug].md"
       descripcion: "Architecture Decision Record en formato Markdown"
   archivos_actualizados:
-    - "{{session_state_location}}"
     - "{{adr_location}}/README.md (si existe)"
   mensaje_exito: |
     ✅ **GENERACIÓN DE ADR COMPLETADA**
@@ -322,20 +274,5 @@ errores:
   "diagrama_invalido":
     mensaje: "⚠️ No se pudo generar el diagrama Mermaid"
     accion: "ADR generado sin diagrama - revisar manualmente"
-  "session_state_error":
-    mensaje: "⚠️ Error al actualizar session_state"
-    accion: "ADR generado correctamente pero sin registro en sesión"
-
-metricas:
-  trackear_en_session_state:
-    - nombre: "adrs_generados_total"
-      descripcion: "Total de ADRs generados"
-    - nombre: "adrs_por_formato"
-      descripcion: "Distribución por formato (Nygard, MADR, Y-Statement)"
-    - nombre: "adrs_por_estado"
-      descripcion: "Distribución por estado (Aceptado, Propuesto, etc.)"
-    - nombre: "adrs_con_diagrama"
-      descripcion: "Total de ADRs que incluyen diagrama Mermaid"
-
 siguiente:  "Esta herramienta no tiene flujo siguiente obligatorio, El ADR generado es un artefacto final independiente"
 ```

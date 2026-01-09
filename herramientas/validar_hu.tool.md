@@ -6,8 +6,6 @@ mandatory:
     nunca_saltar: true
   - instruccion: "Los pasos marcados como obligatorio:true NO se pueden omitir"
     nunca_saltar: true
-  - instruccion: "Actualizar session_state.json al finalizar"
-    nunca_saltar: true
   - instruccion: "Verificar alineación con reglas arquitectónicas del proyecto"
     nunca_saltar: true
   - instruccion: "NO aprobar HU que violen principios arquitectónicos"
@@ -109,42 +107,35 @@ proceso:
         estado_nuevo: "[B] Bloqueada"
         siguiente: "Requiere rediseño significativo"
 
-  paso_final:
-    nombre: "Actualizar Estado de Sesión"
+  paso_6:
+    nombre: "Persistir Feedback de Validación"
     obligatorio: true
-    importante: "⚠️ ESTE PASO ES OBLIGATORIO EN TODA HERRAMIENTA"
+    condicion: "si resultado == AJUSTES"
     acciones:
-      - "Verificar si existe {{archivos.session_state}}"
-      - "Si NO existe:"
-      - "  1. Crear estructura de carpetas {{rutas.session_folder}} si no existe"
-      - "  2. Copiar plantilla desde {{plantillas.session_state}}"
-      - "  3. Inicializar con valores por defecto"
-      - "Si existe:"
-      - "  1. Leer estado actual"
-      - "  2. Actualizar campos correspondientes"
-      - "Registrar herramienta ejecutada: validar_hu"
-      - "Actualizar timestamp de ultima_actividad"
-      - "Registrar artefactos generados en la sesión"
-      - "Actualizar estado de la HU validada"
-      - "Guardar cambios en {{archivos.session_state}}"
-    plantilla_referencia: "{{plantillas.session_state}}"
-    campos_a_actualizar:
-      - campo: "ultima_herramienta"
-        valor: "validar_hu"
-      - campo: "ultima_actividad"
-        valor: "[timestamp ISO 8601]"
-      - campo: "artefactos_generados"
-        valor: "[lista de archivos creados/modificados]"
-      - campo: "resultado_ejecucion"
-        valor: "[exito|error|parcial]"
-    validacion_post:
-      - "Confirmar que {{archivos.session_state}} existe y es válido"
-      - "Confirmar que el JSON es parseable"
+      - "Abrir archivo {{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md"
+      - "Agregar sección '## 📝 Feedback de Validación' al final del archivo"
+      - "Incluir fecha, iteración y lista de observaciones"
+      - "Marcar observaciones como pendientes de resolver"
+    formato_feedback: |
+      ---
+      ## 📝 Feedback de Validación
+      
+      **Fecha:** [fecha_actual]
+      **Iteración:** [número_iteración]
+      **Validador:** Arquitecto Onad
+      **Veredicto:** ⚠️ REQUIERE AJUSTES
+      
+      ### Observaciones Pendientes
+      - [ ] [observación_1]: [detalle y razón]
+      - [ ] [observación_2]: [detalle y razón]
+      
+      ### Recomendaciones
+      - [recomendación para resolver cada observación]
 
 salida:
   archivos_actualizados:
     - "{{archivos.backlog}}"
-    - "{{archivos.session_state}}"
+    - "{{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md (si AJUSTES)"
   
   estado_hu_aprobada: "[A] Aprobada"
   estado_hu_ajustes: "[R] Refinada"
@@ -162,6 +153,11 @@ salida:
 
   mensaje_ajustes: |
     ⚠️ HU REQUIERE AJUSTES: [ID-HU]
+    
+    📋 Observaciones guardadas en:
+    {{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md
+    
+    📝 Feedback agregado - Iteración [N]
     
     📋 Observaciones:
     - [lista de ajustes requeridos]
@@ -183,9 +179,19 @@ siguiente:
   si_aprobada:
     herramienta: "planificar_hu"
     comando: ">planificar_hu [ID-HU]"
-    rol_requerido: "ONAD"
+    agente: "Arquitecto Onad"
+    descripcion: "Crear plan de implementación para la HU aprobada"
+    accion_usuario: |
+      Para continuar:
+      1. En este mismo chat de  **Arquitecto Onad**
+      2. Ejecuta: `>planificar_hu [ID-HU]`
   si_ajustes:
     herramienta: "refinar_hu"
     comando: ">refinar_hu [ID-HU]"
-    rol_requerido: "REFINADOR"
+    agente: "Refinador HU"
+    descripcion: "Aplicar ajustes solicitados a la HU"
+    accion_usuario: |
+      Para continuar:
+      1. Abre un nuevo chat con el agente **Refinador HU**
+      2. Ejecuta: `>refinar_hu [ID-HU]`
 ```

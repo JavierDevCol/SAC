@@ -6,8 +6,6 @@ mandatory:
     nunca_saltar: true
   - instruccion: "Los pasos marcados como obligatorio:true NO se pueden omitir"
     nunca_saltar: true
-  - instruccion: "Actualizar session_state.json al finalizar"
-    nunca_saltar: true
   - instruccion: "Clasificar smells por severidad (Alta/Media/Baja)"
     nunca_saltar: true
   - instruccion: "Proponer solución específica para cada smell"
@@ -123,45 +121,10 @@ proceso:
       - "Incluir solución para cada smell"
       - "Guardar en {{artifacts.code_smells_folder}}"
 
-  paso_final:
-    nombre: "Actualizar Estado de Sesión"
-    obligatorio: true
-    importante: "⚠️ ESTE PASO ES OBLIGATORIO EN TODA HERRAMIENTA"
-    acciones:
-      - "Verificar si existe {{archivos.session_state}}"
-      - "Si NO existe:"
-      - "  1. Crear estructura de carpetas {{rutas.session_folder}} si no existe"
-      - "  2. Copiar plantilla desde {{plantillas.session_state}}"
-      - "  3. Inicializar con valores por defecto"
-      - "Si existe:"
-      - "  1. Leer estado actual"
-      - "  2. Actualizar campos correspondientes"
-      - "Registrar herramienta ejecutada: analizar_code_smells"
-      - "Actualizar timestamp de ultima_actividad"
-      - "Registrar artefactos generados en la sesión"
-      - "Si hay HU activa, actualizar su estado"
-      - "Guardar cambios en {{archivos.session_state}}"
-    plantilla_referencia: "{{plantillas.session_state}}"
-    campos_a_actualizar:
-      - campo: "ultima_herramienta"
-        valor: "analizar_code_smells"
-      - campo: "ultima_actividad"
-        valor: "[timestamp ISO 8601]"
-      - campo: "artefactos_generados"
-        valor: "[lista de archivos creados/modificados]"
-      - campo: "resultado_ejecucion"
-        valor: "[exito|error|parcial]"
-    validacion_post:
-      - "Confirmar que {{archivos.session_state}} existe y es válido"
-      - "Confirmar que el JSON es parseable"
-
 salida:
   archivos_generados:
     - tipo: "reporte_smells"
       ruta: "{{artifacts.code_smells_folder}}/code_smells_[timestamp].md"
-  
-  archivos_actualizados:
-    - "{{archivos.session_state}}"
   
   mensaje_exito: |
     ✅ ANÁLISIS DE CODE SMELLS COMPLETADO
@@ -212,5 +175,9 @@ errores:
 siguiente:
   herramienta: "solucionar_smells"
   comando: ">solucionar_smells"
+  agente: "ArchDev Pro"
   descripcion: "Aplicar refactorings para resolver smells detectados"
+  accion_usuario: |
+    Para continuar:
+    1. Ejecuta: `>solucionar_smells` en el mismo chat o con **ArchDev Pro**
 ```

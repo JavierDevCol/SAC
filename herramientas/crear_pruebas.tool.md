@@ -6,8 +6,6 @@ mandatory:
     nunca_saltar: true
   - instruccion: "Los pasos marcados como obligatorio:true NO se pueden omitir"
     nunca_saltar: true
-  - instruccion: "Actualizar session_state.json al finalizar"
-    nunca_saltar: true
   - instruccion: "Generar tests ejecutables con patrón AAA (Arrange-Act-Assert)"
     nunca_saltar: true
   - instruccion: "Incluir casos felices, de borde y de error"
@@ -31,7 +29,6 @@ prerequisitos:
     - descripcion: "Código fuente Java a testear"
       formato: "[Clase].java"
   archivos_opcionales:
-    - "{{archivos.session_state}}"
     - "{{archivos.contexto_proyecto}}"
 
 parametros:
@@ -110,38 +107,6 @@ proceso:
       - "Proporcionar checklist de verificación"
       - "Sugerir comando de ejecución"
 
-  paso_final:
-    nombre: "Actualizar Estado de Sesión"
-    obligatorio: true
-    importante: "⚠️ ESTE PASO ES OBLIGATORIO EN TODA HERRAMIENTA"
-    acciones:
-      - "Verificar si existe {{archivos.session_state}}"
-      - "Si NO existe:"
-      - "  1. Crear estructura de carpetas {{rutas.session_folder}} si no existe"
-      - "  2. Copiar plantilla desde {{plantillas.session_state}}"
-      - "  3. Inicializar con valores por defecto"
-      - "Si existe:"
-      - "  1. Leer estado actual"
-      - "  2. Actualizar campos correspondientes"
-      - "Registrar herramienta ejecutada: crear_pruebas"
-      - "Actualizar timestamp de ultima_actividad"
-      - "Registrar artefactos generados en la sesión"
-      - "Si hay HU activa, actualizar su estado"
-      - "Guardar cambios en {{archivos.session_state}}"
-    plantilla_referencia: "{{plantillas.session_state}}"
-    campos_a_actualizar:
-      - campo: "ultima_herramienta"
-        valor: "crear_pruebas"
-      - campo: "ultima_actividad"
-        valor: "[timestamp ISO 8601]"
-      - campo: "artefactos_generados"
-        valor: "[lista de archivos creados/modificados]"
-      - campo: "resultado_ejecucion"
-        valor: "[exito|error|parcial]"
-    validacion_post:
-      - "Confirmar que {{archivos.session_state}} existe y es válido"
-      - "Confirmar que el JSON es parseable"
-
 salida:
   archivos_generados:
     - tipo: "test_unitario"
@@ -149,9 +114,6 @@ salida:
     - tipo: "test_integracion"
       ruta: "src/test/java/[paquete]/[Clase]IntegrationTest.java"
       condicion: "si tipo_test=INTEGRACION o AMBOS"
-  
-  archivos_actualizados:
-    - "{{archivos.session_state}}"
   
   mensaje_exito: |
     ✅ Tests Generados: [Clase]Test.java
@@ -200,5 +162,9 @@ errores:
 siguiente:
   herramienta: "verifica_pruebas"
   comando: ">verifica_pruebas"
+  agente: "ArchDev Pro"
   descripcion: "Validar que los tests pasen correctamente"
+  accion_usuario: |
+    Para continuar:
+    1. Ejecuta: `>verifica_pruebas` en el mismo chat o con **ArchDev Pro**
 ```

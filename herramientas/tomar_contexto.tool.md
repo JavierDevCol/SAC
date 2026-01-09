@@ -6,8 +6,6 @@ mandatory:
     nunca_saltar: true
   - instruccion: "Los pasos marcados como obligatorio:true NO se pueden omitir"
     nunca_saltar: true
-  - instruccion: "Actualizar session_state.json al finalizar"
-    nunca_saltar: true
   - instruccion: "Detectar si es proyecto único o multi-proyecto ANTES de analizar"
     nunca_saltar: true
   - instruccion: "En multi-proyecto, generar workspace.md + contextos individuales"
@@ -215,47 +213,12 @@ proceso_multi_proyecto:
       - "Guardar resultado en {{archivos.workspace_index}}"
     plantilla_referencia: "{{plantillas.workspace}}"
 
-  paso_final:
-    nombre: "Actualizar Estado de Sesión"
-    obligatorio: true
-    importante: "⚠️ ESTE PASO ES OBLIGATORIO EN TODA HERRAMIENTA"
-    acciones:
-      - "Verificar si existe {{archivos.session_state}}"
-      - "Si NO existe:"
-      - "  1. Crear estructura de carpetas {{rutas.session_folder}} si no existe"
-      - "  2. Copiar plantilla desde {{plantillas.session_state}}"
-      - "  3. Inicializar con valores por defecto"
-      - "Si existe:"
-      - "  1. Leer estado actual"
-      - "  2. Actualizar campos correspondientes"
-      - "Registrar herramienta ejecutada: tomar_contexto"
-      - "Actualizar timestamp de ultima_actividad"
-      - "Registrar artefactos generados en la sesión"
-      - "Si hay HU activa, actualizar su estado"
-      - "Guardar cambios en {{archivos.session_state}}"
-    plantilla_referencia: "{{plantillas.session_state}}"
-    campos_a_actualizar:
-      - campo: "ultima_herramienta"
-        valor: "tomar_contexto"
-      - campo: "ultima_actividad"
-        valor: "[timestamp ISO 8601]"
-      - campo: "artefactos_generados"
-        valor: "[lista de archivos creados/modificados]"
-      - campo: "resultado_ejecucion"
-        valor: "[exito|error|parcial]"
-    validacion_post:
-      - "Confirmar que {{archivos.session_state}} existe y es válido"
-      - "Confirmar que el JSON es parseable"
-
 salida_proyecto_unico:
   archivos_generados:
     - tipo: "contexto"
       ruta: "{{archivos.contexto_proyecto}}"
     - tipo: "stack"
       ruta: "{{archivos.stack_proyecto}}"
-  
-  archivos_actualizados:
-    - "{{archivos.session_state}}"
   
   mensaje_exito: |
     ✅ CONTEXTO GENERADO
@@ -290,9 +253,6 @@ salida_multi_proyecto:
     - "{{artifacts.contextos_folder}}"
     - "{{artifacts.hu_compartidas}}"
     - "{{artifacts.hu_folder}}/[nombre_proyecto]"
-  
-  archivos_actualizados:
-    - "{{archivos.session_state}}"
   
   mensaje_exito: |
     ✅ WORKSPACE MULTI-PROYECTO CONFIGURADO
@@ -338,14 +298,21 @@ errores:
     accion: "Usar --force para regenerar"
 
 siguiente:
+  descripcion: "Flujos recomendados según el tipo de proyecto"
   proyecto_unico:
     - comando: "*HU"
-      descripcion: "Ver historias de usuario"
-    - comando: ">refinar_hu [ID]"
+      descripcion: "Ver historias de usuario en el backlog"
+    - herramienta: "refinar_hu"
+      comando: ">refinar_hu [ID]"
+      agente: "Refinador HU"
       descripcion: "Refinar una historia de usuario"
+      accion_usuario: |
+        1. Abre un nuevo chat con el agente **Refinador HU**
+        2. Ejecuta: `>refinar_hu [ID-HU]`
   multi_proyecto:
     - comando: "*HU --compartidas"
       descripcion: "Ver HUs que afectan múltiples proyectos"
-    - comando: ">tomar_contexto [proyecto]"
+    - herramienta: "tomar_contexto"
+      comando: ">tomar_contexto [proyecto]"
       descripcion: "Actualizar contexto de un proyecto específico"
 ```

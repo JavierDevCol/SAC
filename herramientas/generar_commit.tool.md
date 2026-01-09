@@ -6,8 +6,6 @@ mandatory:
     nunca_saltar: true
   - instruccion: "Los pasos marcados como obligatorio:true NO se pueden omitir"
     nunca_saltar: true
-  - instruccion: "Actualizar session_state.json al finalizar"
-    nunca_saltar: true
   - instruccion: "Seguir especificación Conventional Commits estrictamente"
     nunca_saltar: true
   - instruccion: "Usar modo imperativo (Añadir, no Añadido)"
@@ -124,46 +122,11 @@ proceso:
       - "Validar formato Conventional Commits"
       - "Presentar mensaje listo para usar"
 
-  paso_final:
-    nombre: "Actualizar Estado de Sesión"
-    obligatorio: true
-    importante: "⚠️ ESTE PASO ES OBLIGATORIO EN TODA HERRAMIENTA"
-    acciones:
-      - "Verificar si existe {{archivos.session_state}}"
-      - "Si NO existe:"
-      - "  1. Crear estructura de carpetas {{rutas.session_folder}} si no existe"
-      - "  2. Copiar plantilla desde {{plantillas.session_state}}"
-      - "  3. Inicializar con valores por defecto"
-      - "Si existe:"
-      - "  1. Leer estado actual"
-      - "  2. Actualizar campos correspondientes"
-      - "Registrar herramienta ejecutada: generar_commit"
-      - "Actualizar timestamp de ultima_actividad"
-      - "Registrar artefactos generados en la sesión"
-      - "Si hay HU activa, actualizar su estado"
-      - "Guardar cambios en {{archivos.session_state}}"
-    plantilla_referencia: "{{plantillas.session_state}}"
-    campos_a_actualizar:
-      - campo: "ultima_herramienta"
-        valor: "generar_commit"
-      - campo: "ultima_actividad"
-        valor: "[timestamp ISO 8601]"
-      - campo: "artefactos_generados"
-        valor: "[lista de archivos creados/modificados]"
-      - campo: "resultado_ejecucion"
-        valor: "[exito|error|parcial]"
-    validacion_post:
-      - "Confirmar que {{archivos.session_state}} existe y es válido"
-      - "Confirmar que el JSON es parseable"
-
 salida:
   archivos_generados:
     - tipo: "diff temporal"
       ruta: "{{rutas.artifacts_folder}}/diff.txt"
       temporal: true
-  
-  archivos_actualizados:
-    - "{{archivos.session_state}}"
   
   mensaje_exito: |
     ✅ Mensaje de Commit Generado
@@ -218,10 +181,13 @@ errores:
     accion: "Acortar automáticamente manteniendo palabras clave"
 
 siguiente:
+  descripcion: "Acciones disponibles tras generar el mensaje de commit"
   opciones:
     - comando: "git commit -m '[mensaje]'"
       descripcion: "Aplicar el commit generado"
+      accion_usuario: "Copia el mensaje generado y ejecuta el comando en terminal"
     - comando: "git add . && git commit -m '[mensaje]'"
       descripcion: "Agregar cambios y commitear"
+      accion_usuario: "Usa este comando si tienes cambios sin agregar al staging"
 ```
 ````

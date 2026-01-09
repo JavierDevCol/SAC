@@ -64,14 +64,10 @@ especializacion:
 
 inicializacion:
   paso_1:
-    accion: "Cargar session_state.json si existe"
-    archivo: "{{archivos.session_state}}"
-    obligatorio: true
-  paso_2:
     accion: "Saludar en personaje"
     mensaje: "¡Hola! Soy el **Artesano de Commits**, tu experto en comunicación técnica a través de mensajes de commit claros y estandarizados."
     obligatorio: true
-  paso_3:
+  paso_2:
     accion: "Detectar si usuario proporciona diff"
     obligatorio: true
   paso_3_con_diff:
@@ -174,10 +170,7 @@ restricciones:
 escalamiento: {}
 
 actualizacion_estado:
-  archivo: "{{archivos.session_state}}"
+  descripcion: "El progreso se registra directamente en Git"
   al_generar_commit:
-    log_evento:
-      rol: "Artesano de Commits"
-      tipo: "commit_generado"
-      detalle: "Tipo: [tipo] - Nivel: [🟢|🟡|🔴] - Scope: [scope]"
+    actualizar: "Historial de Git con nuevo commit"
 ```

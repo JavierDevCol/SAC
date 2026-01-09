@@ -6,8 +6,6 @@ mandatory:
     nunca_saltar: true
   - instruccion: "Los pasos marcados como obligatorio:true NO se pueden omitir"
     nunca_saltar: true
-  - instruccion: "Actualizar session_state.json al finalizar"
-    nunca_saltar: true
   - instruccion: "Generar plan alineado con arquitectura del proyecto"
     nunca_saltar: true
   - instruccion: "Incluir tareas de testing en el plan"
@@ -15,6 +13,10 @@ mandatory:
   - instruccion: "Especificar orden de ejecución y dependencias"
     nunca_saltar: true
   - instruccion: "Generar documentación en el idioma configurado en {{preferencias.idioma_documentacion}}"
+    nunca_saltar: true
+  - instruccion: "Usar plantilla {{plantillas.plan_implementacion}} para generar el plan"
+    nunca_saltar: true
+  - instruccion: "Incluir TODOS los criterios de aceptación de la HU en Fase Final"
     nunca_saltar: true
 
 identificacion:
@@ -98,56 +100,30 @@ proceso:
     nombre: "Generación del Plan"
     obligatorio: true
     acciones:
-      - "Crear archivo de plan de implementación"
-      - "Incluir código esqueleto cuando sea útil"
-      - "Guardar en {{artifacts.planes_folder}}"
+      - "Leer plantilla desde {{plantillas.plan_implementacion}}"
+      - "Rellenar plantilla con:"
+      - "  - Metadata (ID-HU, título, fecha, estimación)"
+      - "  - Tareas organizadas por fases"
+      - "  - Código esqueleto cuando sea útil"
+      - "  - Criterios de aceptación copiados de la HU"
+      - "Guardar en {{artifacts.planes_folder}}/[ID-HU]_plan_implementacion.md"
+    plantilla_referencia: "{{plantillas.plan_implementacion}}"
 
   paso_6:
     nombre: "Actualización de Estado"
     obligatorio: true
     acciones:
-      - "Cambiar estado HU a [P] Planificada"
-
-  paso_final:
-    nombre: "Actualizar Estado de Sesión"
-    obligatorio: true
-    importante: "⚠️ ESTE PASO ES OBLIGATORIO EN TODA HERRAMIENTA"
-    acciones:
-      - "Verificar si existe {{archivos.session_state}}"
-      - "Si NO existe:"
-      - "  1. Crear estructura de carpetas {{rutas.session_folder}} si no existe"
-      - "  2. Copiar plantilla desde {{plantillas.session_state}}"
-      - "  3. Inicializar con valores por defecto"
-      - "Si existe:"
-      - "  1. Leer estado actual"
-      - "  2. Actualizar campos correspondientes"
-      - "Registrar herramienta ejecutada: planificar_hu"
-      - "Actualizar timestamp de ultima_actividad"
-      - "Registrar artefactos generados en la sesión"
-      - "Actualizar estado de la HU planificada"
-      - "Guardar cambios en {{archivos.session_state}}"
-    plantilla_referencia: "{{plantillas.session_state}}"
-    campos_a_actualizar:
-      - campo: "ultima_herramienta"
-        valor: "planificar_hu"
-      - campo: "ultima_actividad"
-        valor: "[timestamp ISO 8601]"
-      - campo: "artefactos_generados"
-        valor: "[lista de archivos creados/modificados]"
-      - campo: "resultado_ejecucion"
-        valor: "[exito|error|parcial]"
-    validacion_post:
-      - "Confirmar que {{archivos.session_state}} existe y es válido"
-      - "Confirmar que el JSON es parseable"
+      - "Cambiar estado HU a [P] Planificada en {{archivos.backlog}}"
+      - "Agregar referencia al plan en la HU"
 
 salida:
   archivos_generados:
     - tipo: "plan_implementacion"
       ruta: "{{artifacts.planes_folder}}/[ID-HU]_plan_implementacion.md"
+      plantilla: "{{plantillas.plan_implementacion}}"
   
   archivos_actualizados:
     - "{{archivos.backlog}}"
-    - "{{archivos.session_state}}"
   
   estado_hu_final: "[P] Planificada"
   
@@ -160,42 +136,9 @@ salida:
     - Fases: [N]
     - Tareas totales: [M]
     - Estimación: [X] horas
+    - Criterios de Aceptación: [Y]
     
     💡 Siguiente: +ARCHDEV >ejecutar_plan [ID-HU]
-
-formato_plan: |
-  📋 Plan de Implementación: [ID-HU] - [Título]
-  
-  ## Metadata
-  - **Generado por:** ONAD
-  - **Fecha:** [timestamp]
-  - **Estimación total:** [X] horas
-  
-  ## Fase 1: Infraestructura
-  ### Migraciones
-  - [ ] `V[XXX]__[descripcion].sql`
-    ```sql
-    -- Contenido de la migración
-    ```
-  
-  ## Fase 2: Dominio
-  ### Entidades
-  - [ ] Crear `[Entidad].java` en `domain/model/`
-  
-  ## Fase 3: Aplicación
-  ### Casos de Uso
-  - [ ] Crear `[CasoDeUso]UseCase.java`
-  
-  ## Fase 4: Adaptadores
-  ### Controllers
-  - [ ] Crear/Modificar `[Controller].java`
-  
-  ## Fase 5: Testing
-  - [ ] Tests unitarios para dominio
-  - [ ] Tests de integración para adaptadores
-  
-  ## Notas de Implementación
-  [Consideraciones especiales]
 
 errores:
   hu_no_aprobada:
@@ -208,6 +151,10 @@ errores:
 siguiente:
   herramienta: "ejecutar_plan"
   comando: ">ejecutar_plan [ID-HU]"
-  rol_requerido: "ARCHDEV"
+  agente: "ArchDev Pro"
   descripcion: "Ejecutar el plan de implementación generado"
+  accion_usuario: |
+    Para continuar:
+    1. Abre un nuevo chat con el agente **ArchDev Pro**
+    2. Ejecuta: `>ejecutar_plan [ID-HU]`
 ```

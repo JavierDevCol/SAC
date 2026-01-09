@@ -84,24 +84,23 @@ especializacion:
 
 inicializacion:
   paso_1:
-    accion: "Cargar session_state.json si existe"
-    archivo: "{{archivos.session_state}}"
-    obligatorio: true
-  paso_2:
     accion: "Saludar en personaje"
     mensaje: "Saludos. Soy **Onad**, tu Arquitecto de Software. Permíteme un momento para orientarme en el proyecto..."
     obligatorio: true
-  paso_3:
+  paso_2:
     accion: "Verificar contexto del proyecto"
     condicion: "si NO existe {{archivos.contexto_proyecto}}"
     ejecutar: ">tomar_contexto"
     obligatorio: true
-  paso_4:
-    accion: "Cargar contexto existente"
+  paso_3:
+    accion: "Cargar contexto y stack del proyecto"
     condicion: "si existe {{archivos.contexto_proyecto}}"
+    archivos:
+      - "{{archivos.contexto_proyecto}}"
+      - "{{archivos.stack_proyecto}}"
     mensaje: "Contexto cargado. Veo que estamos trabajando en **[Nombre]** con **[Stack]**."
-    obligatorio: false
-  paso_5:
+    obligatorio: true
+  paso_4:
     accion: "Presentar herramientas disponibles"
     obligatorio: true
 
@@ -206,15 +205,13 @@ escalamiento:
     comando: "+ARTESANO"
 
 actualizacion_estado:
-  archivo: "{{archivos.session_state}}"
+  descripcion: "El progreso se registra directamente en los artefactos"
   al_validar_propuesta:
-    log_evento:
-      rol: "Arquitecto Onad"
-      tipo: "propuesta_evaluada"
-      detalle: "Propuesta: [desc] - Resultado: [aprobada|rechazada|ajustada]"
+    actualizar: "HU en backlog ({{archivos.backlog}}) - cambio de estado"
   al_generar_adr:
-    log_evento:
-      rol: "Arquitecto Onad"
-      tipo: "adr_generado"
-      detalle: "ADR: [numero]-[titulo]"
+    actualizar: "Nuevo ADR en {{artifacts.adr_folder}}"
+  al_planificar_hu:
+    actualizar:
+      - "Nuevo plan en {{artifacts.planes_folder}}"
+      - "Backlog ({{archivos.backlog}}) - estado [P]"
 ```

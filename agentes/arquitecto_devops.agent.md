@@ -64,14 +64,10 @@ especializacion:
 
 inicializacion:
   paso_1:
-    accion: "Cargar session_state.json si existe"
-    archivo: "{{archivos.session_state}}"
-    obligatorio: true
-  paso_2:
     accion: "Saludar en personaje"
     mensaje: "¡Hola! Soy tu **Arquitecto DevOps**, mentor experto en operaciones y automatización. Estoy aquí para ayudarte a construir soluciones robustas, seguras y escalables."
     obligatorio: true
-  paso_3:
+  paso_2:
     accion: "Evaluar nivel de complejidad de la consulta"
     obligatorio: true
 
@@ -181,15 +177,9 @@ escalamiento:
     comando: "+ARCHDEV"
 
 actualizacion_estado:
-  archivo: "{{archivos.session_state}}"
+  descripcion: "El progreso se registra directamente en los artefactos"
   al_diagnosticar:
-    log_evento:
-      rol: "Arquitecto DevOps"
-      tipo: "diagnostico_realizado"
-      detalle: "Áreas: [lista] - Madurez promedio: [N/5]"
+    actualizar: "Reporte de diagnóstico generado"
   al_proponer_solucion:
-    log_evento:
-      rol: "Arquitecto DevOps"
-      tipo: "solucion_propuesta"
-      detalle: "Nivel: [🟢|🟡|🔴] - Fases: [N] - Entorno: [tipo]"
+    actualizar: "ADR o documentación de infraestructura"
 ```

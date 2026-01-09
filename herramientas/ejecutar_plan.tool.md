@@ -6,8 +6,6 @@ mandatory:
     nunca_saltar: true
   - instruccion: "Los pasos marcados como obligatorio:true NO se pueden omitir"
     nunca_saltar: true
-  - instruccion: "Actualizar session_state.json al finalizar"
-    nunca_saltar: true
   - instruccion: "Ejecutar tareas del plan en ORDEN ESTRICTO"
     nunca_saltar: true
   - instruccion: "DETENERSE INMEDIATAMENTE ante cualquier error"
@@ -17,6 +15,12 @@ mandatory:
   - instruccion: "NO improvisar ni saltar tareas del plan"
     nunca_saltar: true
   - instruccion: "Generar documentación en el idioma configurado en {{preferencias.idioma_documentacion}}"
+    nunca_saltar: true
+  - instruccion: "ACTUALIZAR el plan de implementación EN TIEMPO REAL según {{plantillas.plan_implementacion}}"
+    nunca_saltar: true
+  - instruccion: "Marcar pasos completados [ ] → [X] inmediatamente después de ejecutar"
+    nunca_saltar: true
+  - instruccion: "Cambiar estados de tareas: [PENDIENTE] → [EN_PROGRESO] → [EJECUTADA]"
     nunca_saltar: true
 
 identificacion:
@@ -57,13 +61,17 @@ proceso:
     nombre: "Cargar Plan de Implementación"
     obligatorio: true
     acciones:
-      - "Buscar plan en {{artifacts.planes_folder}}"
-      - "Parsear fases y tareas"
-      - "Verificar estado [P] Planificada"
-      - "Cambiar estado a [E] En Ejecución"
+      - "Buscar plan en {{artifacts.planes_folder}}/[ID-HU]_plan_implementacion.md"
+      - "Verificar que sigue estructura de {{plantillas.plan_implementacion}}"
+      - "Parsear fases, tareas y pasos"
+      - "Verificar estado [P] Planificada en {{archivos.backlog}}"
+      - "Cambiar estado HU a [E] En Ejecución en {{archivos.backlog}}"
+      - "Actualizar campo 'Estado' en Metadata del plan a 'EN_PROGRESO'"
+      - "Actualizar campo 'Última actualización' en Metadata"
     si_error:
       no_encontrado: "❌ Plan no encontrado para [ID-HU]"
       estado_invalido: "⚠️ HU debe estar en estado [P] Planificada"
+    plantilla_referencia: "{{plantillas.plan_implementacion}}"
 
   paso_2:
     nombre: "Ejecutar Fases Secuencialmente"
@@ -71,12 +79,26 @@ proceso:
     acciones:
       - "Para cada fase del plan:"
       - "  1. Anunciar inicio de fase"
-      - "  2. Ejecutar cada tarea en orden"
-      - "  3. Validar resultado de cada tarea"
-      - "  4. Marcar tarea como completada"
-      - "  5. Si error: DETENER y reportar"
+      - "  2. Actualizar estado de fase en tabla 'Progreso General'"
+      - "  3. Para cada tarea de la fase:"
+      - "     a. Cambiar estado tarea: [PENDIENTE] → [EN_PROGRESO]"
+      - "     b. Ejecutar cada paso de la tarea"
+      - "     c. Al completar paso: marcar [ ] → [X]"
+      - "     d. Al completar tarea: cambiar a [EJECUTADA]"
+      - "     e. Agregar entrada en 'Historial de Ejecución'"
+      - "  4. Si error: DETENER, marcar tarea como [ERROR], reportar"
+    actualizacion_plan:
+      cuando: "Después de CADA paso completado"
+      campos:
+        - "Checkbox del paso: [ ] → [X]"
+        - "Estado de tarea si aplica"
+        - "Tabla 'Progreso General'"
+        - "'Última actualización' en Metadata"
     comportamiento_error:
       accion: "DETENER ejecución inmediatamente"
+      actualizar_plan:
+        - "Marcar tarea como [ERROR]"
+        - "Agregar detalle en 'Historial de Ejecución'"
       reportar: "Fase, tarea y error específico"
       sugerir: "Corrección o escalamiento"
 
@@ -101,6 +123,17 @@ proceso:
       - "Si fallan: DETENER y reportar"
 
   paso_5:
+    nombre: "Validar Criterios de Aceptación"
+    obligatorio: true
+    acciones:
+      - "Revisar sección 'Fase Final: Validar Criterios de Aceptación' del plan"
+      - "Para cada criterio de aceptación:"
+      - "  1. Verificar que se cumple"
+      - "  2. Marcar [ ] → [X] en el plan"
+      - "  3. Marcar [ ] → [X] en la HU original"
+      - "Si algún criterio NO se cumple: DETENER y reportar"
+
+  paso_6:
     nombre: "Solicitar Confirmación de Commit"
     obligatorio: true
     condicion: "si auto_commit=false"
@@ -110,54 +143,22 @@ proceso:
       - "Si NO: pausar para revisión"
       - "Si SÍ: sugerir >generar_commit"
 
-  paso_6:
+  paso_7:
     nombre: "Finalización"
     obligatorio: true
     acciones:
-      - "Cambiar estado HU a [X] Completada"
-      - "Generar resumen de implementación"
-
-  paso_final:
-    nombre: "Actualizar Estado de Sesión"
-    obligatorio: true
-    importante: "⚠️ ESTE PASO ES OBLIGATORIO EN TODA HERRAMIENTA"
-    acciones:
-      - "Verificar si existe {{archivos.session_state}}"
-      - "Si NO existe:"
-      - "  1. Crear estructura de carpetas {{rutas.session_folder}} si no existe"
-      - "  2. Copiar plantilla desde {{plantillas.session_state}}"
-      - "  3. Inicializar con valores por defecto"
-      - "Si existe:"
-      - "  1. Leer estado actual"
-      - "  2. Actualizar campos correspondientes"
-      - "Registrar herramienta ejecutada: ejecutar_plan"
-      - "Actualizar timestamp de ultima_actividad"
-      - "Registrar artefactos generados en la sesión"
-      - "Actualizar estado de la HU ejecutada"
-      - "Guardar cambios en {{archivos.session_state}}"
-    plantilla_referencia: "{{plantillas.session_state}}"
-    campos_a_actualizar:
-      - campo: "ultima_herramienta"
-        valor: "ejecutar_plan"
-      - campo: "ultima_actividad"
-        valor: "[timestamp ISO 8601]"
-      - campo: "artefactos_generados"
-        valor: "[lista de archivos creados/modificados]"
-      - campo: "resultado_ejecucion"
-        valor: "[exito|error|parcial]"
-    validacion_post:
-      - "Confirmar que {{archivos.session_state}} existe y es válido"
-      - "Confirmar que el JSON es parseable"
+      - "Actualizar estado del plan a 'COMPLETADO' en Metadata"
+      - "Actualizar 'Última actualización' en Metadata"
+      - "Cambiar estado HU a [X] Completada en {{archivos.backlog}}"
+      - "Agregar entrada final en 'Historial de Ejecución'"
 
 salida:
-  archivos_generados:
-    - tipo: "registro_ejecucion"
-      ruta: "{{artifacts.ejecuciones_folder}}/[ID-HU]_ejecucion_[timestamp].md"
-  
   archivos_actualizados:
-    - "{{archivos.backlog}}"
-    - "{{archivos.session_state}}"
-    - "Archivos de código según plan"
+    - ruta: "{{artifacts.planes_folder}}/[ID-HU]_plan_implementacion.md"
+      descripcion: "Plan actualizado con progreso en tiempo real"
+    - ruta: "{{archivos.backlog}}"
+      descripcion: "Estado de HU actualizado"
+    - descripcion: "Archivos de código según plan"
   
   estado_hu_final: "[X] Completada"
   
@@ -167,7 +168,10 @@ salida:
     📊 Resumen:
     - Fases ejecutadas: [N/N]
     - Tareas completadas: [M/M]
+    - Criterios de Aceptación: [Y/Y] ✅
     - Tests: ✅ Pasando
+    
+    📄 Plan actualizado: {{artifacts.planes_folder}}/[ID-HU]_plan_implementacion.md
     
     💡 Siguiente: >generar_commit para documentar cambios
 
@@ -177,9 +181,35 @@ salida:
     🔴 Error en: Fase [X], Tarea [Y]
     📋 Detalle: [descripción del error]
     
+    📄 Plan actualizado con estado de error
+    
     💡 Acciones sugeridas:
+    - Revisar el plan para ver progreso actual
     - [corrección específica]
     - O escalar a +ONAD para rediseño
+
+actualizacion_plan_tiempo_real:
+  descripcion: "El plan de implementación se actualiza conforme se ejecuta"
+  plantilla_referencia: "{{plantillas.plan_implementacion}}"
+  campos_a_actualizar:
+    al_iniciar_tarea:
+      - "Estado de tarea: [PENDIENTE] → [EN_PROGRESO]"
+    al_completar_paso:
+      - "Checkbox: [ ] → [X]"
+      - "'Última actualización' en Metadata"
+    al_completar_tarea:
+      - "Estado de tarea: [EN_PROGRESO] → [EJECUTADA]"
+      - "Entrada en 'Historial de Ejecución'"
+      - "Progreso en tabla 'Progreso General'"
+    al_error:
+      - "Estado de tarea: → [ERROR]"
+      - "Detalle en 'Historial de Ejecución'"
+    al_finalizar:
+      - "Estado en Metadata: 'COMPLETADO'"
+      - "Todos los criterios de aceptación marcados"
+  beneficio: |
+    Si el usuario cierra el chat, puede retomar la ejecución
+    leyendo el plan y continuando desde la última tarea completada.
 
 manejo_errores:
   compilacion:
@@ -206,6 +236,10 @@ errores:
 siguiente:
   herramienta: "generar_commit"
   comando: ">generar_commit"
-  rol_requerido: "ARTESANO"
+  agente: "Artesano de Commits"
   descripcion: "Documentar los cambios realizados"
+  accion_usuario: |
+    Para continuar:
+    1. Abre un nuevo chat con el agente **Artesano de Commits**
+    2. Ejecuta: `>generar_commit`
 ```

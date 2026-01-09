@@ -6,8 +6,6 @@ mandatory:
     nunca_saltar: true
   - instruccion: "Los pasos marcados como obligatorio:true NO se pueden omitir"
     nunca_saltar: true
-  - instruccion: "Actualizar session_state.json al finalizar"
-    nunca_saltar: true
   - instruccion: "Generar archivo de refinamiento ANTES de actualizar estado"
     nunca_saltar: true
   - instruccion: "NUNCA aceptar criterios de aceptación no medibles"
@@ -58,6 +56,34 @@ parametros:
       defecto: true
 
 proceso:
+  paso_0:
+    nombre: "Detectar Feedback de Validación Previa"
+    obligatorio: true
+    acciones:
+      - "Buscar archivo existente en {{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md"
+      - "Si existe, buscar sección '## 📝 Feedback de Validación'"
+      - "Si hay feedback pendiente, cambiar a MODO AJUSTE"
+    modo_ajuste:
+      descripcion: "Re-refinamiento enfocado en resolver observaciones"
+      comportamiento:
+        - "Mostrar observaciones pendientes al usuario"
+        - "Enfocar preguntas de clarificación en las observaciones"
+        - "Priorizar resolución de feedback sobre nuevo refinamiento"
+        - "Marcar observaciones como resueltas al abordarlas"
+      mensaje_inicio: |
+        🔄 MODO AJUSTE ACTIVADO
+        
+        Se detectó feedback de validación previa (Iteración [N]):
+        
+        📝 Observaciones pendientes:
+        - [ ] [observación_1]
+        - [ ] [observación_2]
+        
+        Este refinamiento se enfocará en resolver estas observaciones.
+    modo_nuevo:
+      descripcion: "Refinamiento inicial de HU nueva"
+      comportamiento: "Flujo normal de refinamiento"
+
   paso_1:
     nombre: "Evaluación de Nivel de Complejidad"
     obligatorio: true
@@ -145,60 +171,47 @@ proceso:
     nombre: "Persistencia del Refinamiento"
     obligatorio: true
     acciones:
-      - "Generar archivo [ID-HU]_refinamiento_[concepto].md"
-      - "Guardar en {{artifacts.hu_refinamientos}}"
       - "Verificar si existe {{archivos.backlog}}"
       - "Si NO existe:"
       - "  1. Crear estructura de carpetas {{rutas.artifacts_folder}} si no existe"
       - "  2. Copiar plantilla desde {{plantillas.backlog}}"
       - "  3. Inicializar backlog vacío con estructura correcta"
       - "Actualizar {{archivos.backlog}} con estado [R] para la HU"
+    acciones_modo_nuevo:
+      - "Generar archivo [ID-HU]_refinamiento_[concepto].md"
+      - "Guardar en {{artifacts.hu_refinamientos}}"
+    acciones_modo_ajuste:
+      - "Actualizar archivo existente [ID-HU]_refinamiento.md"
+      - "Marcar observaciones resueltas: [ ] → [x]"
+      - "Agregar sección '## ✅ Ajustes Aplicados (Iteración N)'"
+      - "Documentar qué cambió para resolver cada observación"
+    formato_ajustes_aplicados: |
+      ## ✅ Ajustes Aplicados (Iteración [N])
+      
+      **Fecha:** [fecha_actual]
+      
+      ### Observaciones Resueltas
+      - [x] [observación_1]: [cómo se resolvió]
+      - [x] [observación_2]: [cómo se resolvió]
+      
+      ### Cambios Realizados
+      - [descripción del cambio 1]
+      - [descripción del cambio 2]
     plantilla_referencia: "{{plantillas.backlog}}"
-
-  paso_final:
-    nombre: "Actualizar Estado de Sesión"
-    obligatorio: true
-    importante: "⚠️ ESTE PASO ES OBLIGATORIO EN TODA HERRAMIENTA"
-    acciones:
-      - "Verificar si existe {{archivos.session_state}}"
-      - "Si NO existe:"
-      - "  1. Crear estructura de carpetas {{rutas.session_folder}} si no existe"
-      - "  2. Copiar plantilla desde {{plantillas.session_state}}"
-      - "  3. Inicializar con valores por defecto"
-      - "Si existe:"
-      - "  1. Leer estado actual"
-      - "  2. Actualizar campos correspondientes"
-      - "Registrar herramienta ejecutada: refinar_hu"
-      - "Actualizar timestamp de ultima_actividad"
-      - "Registrar artefactos generados en la sesión"
-      - "Actualizar estado de la HU refinada"
-      - "Guardar cambios en {{archivos.session_state}}"
-    plantilla_referencia: "{{plantillas.session_state}}"
-    campos_a_actualizar:
-      - campo: "ultima_herramienta"
-        valor: "refinar_hu"
-      - campo: "ultima_actividad"
-        valor: "[timestamp ISO 8601]"
-      - campo: "artefactos_generados"
-        valor: "[lista de archivos creados/modificados]"
-      - campo: "resultado_ejecucion"
-        valor: "[exito|error|parcial]"
-    validacion_post:
-      - "Confirmar que {{archivos.session_state}} existe y es válido"
-      - "Confirmar que el JSON es parseable"
 
 salida:
   archivos_generados:
     - tipo: "refinamiento"
       ruta: "{{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento_[concepto].md"
+      nota: "Solo en modo nuevo"
   
   archivos_actualizados:
     - "{{archivos.backlog}}"
-    - "{{archivos.session_state}}"
+    - "{{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md (en modo ajuste)"
   
   estado_hu_final: "[R] Refinada"
   
-  mensaje_exito: |
+  mensaje_exito_modo_nuevo: |
     ✅ REFINAMIENTO COMPLETADO: [ID-HU]
     
     📄 Artefacto: {{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento_[concepto].md
@@ -209,6 +222,17 @@ salida:
     - Riesgos: [N] identificados
     
     💡 Siguiente: >validar_hu [ID-HU]
+
+  mensaje_exito_modo_ajuste: |
+    ✅ AJUSTES COMPLETADOS: [ID-HU] (Iteración [N])
+    
+    📄 Artefacto actualizado: {{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md
+    
+    📊 Observaciones Resueltas:
+    - [x] [observación_1]
+    - [x] [observación_2]
+    
+    💡 Siguiente: >validar_hu [ID-HU] (re-validación)
 
 formato_salida:
   estructura: |
@@ -251,6 +275,10 @@ errores:
 siguiente:
   herramienta: "validar_hu"
   comando: ">validar_hu [ID-HU]"
-  rol_requerido: "ONAD"
+  agente: "Arquitecto Onad"
   descripcion: "Validación arquitectónica de la HU refinada"
+  accion_usuario: |
+    Para continuar:
+    1. Abre un nuevo chat con el agente **Arquitecto Onad**
+    2. Ejecuta: `>validar_hu [ID-HU]`
 ```

@@ -9,22 +9,116 @@
 
 | Componente | Versión Actual | Última Actualización |
 |------------|----------------|----------------------|
-| **Sistema COCHAS** | 4.0 | 2026-01-05 |
-| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 4.0 | 2026-01-05 |
+| **Sistema SAC (COCHAS)** | 6.0 | 2026-01-09 |
+| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 6.0 | 2026-01-09 |
 | **Configuración Usuario** (`config/CONFIG_USER.template.yaml`) | 4.0 | 2026-01-05 |
-| **Definiciones Personas** (`definiciones/personas/*.yaml`) | 2.1 | 2026-01-05 |
-| **Definiciones Herramientas** (`definiciones/herramientas/*.yaml`) | 2.0-2.1 | 2026-01-05 |
-| **Roles Activos** (`personas/roles-activos.md`) | 3.0 | 2026-01-05 |
-| **Herramientas Activas** (`herramientas/herramientas-activas.md`) | 3.1 | 2026-01-05 |
-| **Guía de Comandos** (`guia_comandos.md`) | 3.0 | 2026-01-05 |
-| **Guía de Roles** (`guia_roles_activos.md`) | 3.0 | 2026-01-05 |
-| **Guía Ciclo de Vida** (`guia_ciclo_vida_tareas.md`) | 3.1 | 2026-01-05 |
-| **Session State Schema** (`plantillas/estructura_session_state.md`) | 3.0 | 2026-01-05 |
-| **Tomar Contexto** (`herramientas/tomar_contexto.md`) | 2.1 | 2026-01-05 |
+| **Agentes** (`agentes/*.agent.md`) | 6.0 | 2026-01-09 |
+| **Herramientas** (`herramientas/*.tool.md`) | 6.0 | 2026-01-09 |
+| **Plantillas** (`plantillas/`) | 6.0 | 2026-01-09 |
+| **Guía de Comandos** (`guias/guia_comandos.md`) | 3.0 | 2026-01-05 |
+| **Guía de Roles** (`guias/guia_roles_activos.md`) | 3.0 | 2026-01-05 |
+| **Guía Ciclo de Vida** (`guias/guia_ciclo_vida_tareas.md`) | 3.1 | 2026-01-05 |
 
 ---
 
 ## 🚀 Historial de Versiones
+
+### [6.0] - 2026-01-09
+
+#### 🎯 Cambio Mayor: Agentes Technology-Agnostic y Deprecación de Session State
+
+**Objetivo:** Hacer el sistema SAC independiente de tecnología específica y simplificar la gestión de estado usando el backlog como única fuente de verdad.
+
+#### ⚠️ Breaking Changes
+
+| Cambio | Impacto | Migración |
+|--------|---------|----------|
+| `session_state.json` **DEPRECADO** | Proyectos existentes deben migrar | El backlog es ahora la única fuente de verdad |
+| Agentes ya no son Java/Spring específicos | Comportamiento genérico por defecto | Ejecutar `>tomar_contexto` para generar `stack_proyecto.md` |
+| Nuevo artefacto `stack_proyecto.md` requerido | `>tomar_contexto` tiene nuevo paso obligatorio | Se genera automáticamente |
+
+#### ✅ Nuevos Artefactos y Plantillas
+
+| Archivo | Propósito |
+|---------|-----------|
+| `plantillas/stack_proyecto_plantilla.md` | Plantilla para información del stack tecnológico |
+| `plantillas/plan_implementacion_plantilla.md` | Plantilla para planes de implementación de HUs |
+| `.SAC/artifacts/stack_proyecto.md` | Auto-generado con stack detectado del proyecto |
+
+#### ✅ Cambios en Agentes
+
+**Todos los agentes (`agentes/*.agent.md`):**
+- Eliminada inicialización de `session_state.json`
+- Nueva referencia dinámica: `referencia_stack: "{{archivos.stack_proyecto}}"`
+- Principios universales en lugar de prácticas Java-específicas
+- `actualizacion_estado` ahora referencia archivos de artefactos
+
+#### ✅ Cambios en Herramientas
+
+**`tomar_contexto.tool.md`:**
+- Nuevo `paso_6`: Generación automática de `stack_proyecto.md`
+- Detección de lenguajes, frameworks, herramientas de testing, convenciones
+
+**`validar_hu.tool.md`:**
+- Nuevo `paso_6`: Persistir feedback de validación en archivo de refinamiento
+- Cuando veredicto es AJUSTES, agrega sección `## 📝 Feedback de Validación`
+
+**`refinar_hu.tool.md`:**
+- Nuevo `paso_0`: Detectar feedback de validación previa
+- **MODO AJUSTE**: Re-refinamiento enfocado en resolver observaciones
+- Marca observaciones como resueltas `[x]` al completar
+
+**`planificar_hu.tool.md`:**
+- Referencia a `{{plantillas.plan_implementacion}}`
+
+**`ejecutar_plan.tool.md`:**
+- Nueva sección `actualizacion_plan_tiempo_real` con estados y reglas
+
+**Todas las herramientas:**
+- Eliminado `paso_final` que actualizaba `session_state.json`
+- Secciones `siguiente` sincronizadas con nombres de agentes correctos
+- Nuevo campo `accion_usuario` con instrucciones para flujo cross-chat
+
+#### ✅ Cambios en Configuración
+
+**`config/CONFIG_SYSTEM.yaml`:**
+- Eliminado: `rutas.session_folder`
+- Eliminado: `archivos.session_state`
+- Eliminado: `plantillas.session_state`
+- Agregado: `archivos.stack_proyecto`
+- Agregado: `plantillas.stack_proyecto`
+- Agregado: `plantillas.plan_implementacion`
+
+#### ✅ Archivos Deprecados/Eliminados
+
+| Archivo | Razón |
+|---------|-------|
+| `plantillas/session_state_plantilla.md` | Backlog es única fuente de verdad |
+| `.SAC/session/session_state.json` | Ya no se genera ni utiliza |
+
+#### ✅ Flujo de Feedback Validación ↔ Refinamiento
+
+```
+>refinar_hu → [R] Refinada → >validar_hu 
+                                   ↓
+                        ┌─────────────────────┐
+                        │   ¿Veredicto?       │
+                        └─────────────────────┘
+                           ↓           ↓
+                      APROBADA     AJUSTES
+                           ↓           ↓
+                    >planificar   Persiste feedback
+                                  en refinamiento.md
+                                          ↓
+                                    >refinar_hu
+                                    (MODO AJUSTE)
+                                          ↓
+                                    Resuelve [x]
+                                          ↓
+                                    >validar_hu
+```
+
+---
 
 ### [4.0] - 2026-01-05
 

@@ -6,8 +6,6 @@ mandatory:
     nunca_saltar: true
   - instruccion: "Los pasos marcados como obligatorio:true NO se pueden omitir"
     nunca_saltar: true
-  - instruccion: "Actualizar session_state.json al finalizar"
-    nunca_saltar: true
   - instruccion: "Evaluar TODAS las áreas DevOps antes de emitir diagnóstico"
     nunca_saltar: true
   - instruccion: "Priorizar backlog por impacto/esfuerzo"
@@ -162,45 +160,10 @@ proceso:
       - "Incluir recomendaciones específicas"
       - "Guardar en artifacts"
 
-  paso_final:
-    nombre: "Actualizar Estado de Sesión"
-    obligatorio: true
-    importante: "⚠️ ESTE PASO ES OBLIGATORIO EN TODA HERRAMIENTA"
-    acciones:
-      - "Verificar si existe {{archivos.session_state}}"
-      - "Si NO existe:"
-      - "  1. Crear estructura de carpetas {{rutas.session_folder}} si no existe"
-      - "  2. Copiar plantilla desde {{plantillas.session_state}}"
-      - "  3. Inicializar con valores por defecto"
-      - "Si existe:"
-      - "  1. Leer estado actual"
-      - "  2. Actualizar campos correspondientes"
-      - "Registrar herramienta ejecutada: diagnosticar_devops"
-      - "Actualizar timestamp de ultima_actividad"
-      - "Registrar artefactos generados en la sesión"
-      - "Si hay HU activa, actualizar su estado"
-      - "Guardar cambios en {{archivos.session_state}}"
-    plantilla_referencia: "{{plantillas.session_state}}"
-    campos_a_actualizar:
-      - campo: "ultima_herramienta"
-        valor: "diagnosticar_devops"
-      - campo: "ultima_actividad"
-        valor: "[timestamp ISO 8601]"
-      - campo: "artefactos_generados"
-        valor: "[lista de archivos creados/modificados]"
-      - campo: "resultado_ejecucion"
-        valor: "[exito|error|parcial]"
-    validacion_post:
-      - "Confirmar que {{archivos.session_state}} existe y es válido"
-      - "Confirmar que el JSON es parseable"
-
 salida:
   archivos_generados:
     - tipo: "diagnostico"
       ruta: "{{rutas.artifacts_folder}}/diagnostico_devops_[timestamp].md"
-  
-  archivos_actualizados:
-    - "{{archivos.session_state}}"
   
   mensaje_exito: |
     ✅ DIAGNÓSTICO DEVOPS COMPLETADO
@@ -238,10 +201,16 @@ errores:
     accion: "Marcar áreas como 'No evaluable'"
 
 siguiente:
+  descripcion: "Acciones recomendadas tras el diagnóstico"
   opciones:
-    - comando: "Implementar Quick Win #1"
+    - accion: "Implementar Quick Win #1"
       descripcion: "Comenzar con mejora de mayor impacto/menor esfuerzo"
+      accion_usuario: "Revisa el diagnóstico y prioriza los quick wins identificados"
     - herramienta: "tomar_contexto"
       comando: ">tomar_contexto"
+      agente: "ArchDev Pro"
       descripcion: "Generar contexto completo del proyecto"
+      accion_usuario: |
+        1. Abre un nuevo chat con el agente **ArchDev Pro** (o cualquier agente)
+        2. Ejecuta: `>tomar_contexto`
 ```

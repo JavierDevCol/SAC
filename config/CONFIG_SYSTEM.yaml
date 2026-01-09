@@ -5,14 +5,13 @@
 # SAC - Sistema Agéntico COCHAS
 # ============================================
 
-version: "5.1"
+version: "6.0"
 
 # ============================================
 # CARPETAS PRINCIPALES
 # ============================================
 rutas:
   output_folder: "{project-root}/.SAC"
-  session_folder: "{project-root}/.SAC/session"
   artifacts_folder: "{project-root}/.SAC/artifacts"
   config_folder: "{project-root}/.SAC/config"
 
@@ -20,7 +19,6 @@ rutas:
 # ARCHIVOS DEL SISTEMA
 # ============================================
 archivos:
-  session_state: "{project-root}/.SAC/session/session_state.json"
   config_user: "{project-root}/.SAC/config/CONFIG_USER.yaml" 
   backlog: "{project-root}/.SAC/artifacts/backlog_desarrollo.md"
   reglas_arquitectonicas: "{project-root}/.SAC/artifacts/reglas_arquitectonicas.md"
@@ -68,12 +66,11 @@ multi_proyecto:
 # PLANTILLAS DEL SISTEMA
 # ============================================
 plantillas:
-  session_state: "plantillas/session_state_plantilla.md"
-  backlog: "plantillas/backlog_desarrollo_plantilla.md"
-  contexto: "plantillas/contexto_proyecto_plantilla.md"
-  workspace: "plantillas/workspace_plantilla.md"
-  stack_proyecto: "plantillas/stack_proyecto_plantilla.md"
-
+  backlog: "{project-root}/.SAC/plantillas/backlog_desarrollo_plantilla.md"
+  contexto: "{project-root}/.SAC/plantillas/contexto_proyecto_plantilla.md"
+  workspace: "{project-root}/.SAC/plantillas/workspace_plantilla.md"
+  stack_proyecto: "{project-root}/.SAC/plantillas/stack_proyecto_plantilla.md"
+  plan_implementacion: "{project-root}/.SAC/plantillas/plan_implementacion_plantilla.md"
 # ============================================
 # REGLAS DEL SISTEMA
 # ============================================
