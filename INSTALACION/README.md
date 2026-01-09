@@ -1,18 +1,44 @@
-# 📦 Instalación de COCHAS v4.0
+# 📦 Instalación de SAC v5.0
 
-> **Sistema de Orquestación de Agentes IA para GitHub Copilot**
+> **SAC - Sistema Agéntico COCHAS**
+> Sistema de Orquestación de Agentes IA para GitHub Copilot
 
 ---
 
 ## 🚀 Instalación Rápida
 
-### Opción 1: Usando el Script (Recomendado)
+### Opción 1: Bootstrap (Primera Instalación) ⭐ Recomendado
+
+**Windows (PowerShell):**
+```powershell
+irm https://raw.githubusercontent.com/JavierDevCol/SAC/feature/instalacion/INSTALACION/bootstrap/install.ps1 | iex
+```
+
+**Linux/Mac (Bash):**
+```bash
+curl -fsSL https://raw.githubusercontent.com/JavierDevCol/SAC/feature/instalacion/INSTALACION/bootstrap/install.sh | bash
+```
+
+Esto:
+1. Clona el repositorio en caché del sistema
+2. Instala el comando global `sac`
+3. Agrega `sac` al PATH
+
+Después de reiniciar la terminal, puedes usar:
+```bash
+sac --help                    # Ver ayuda
+sac "C:/mi-proyecto"          # Instalar en un proyecto
+sac --update                  # Actualizar SAC
+sac --upgrade-all             # Actualizar todas las instalaciones
+```
+
+### Opción 2: Usando el Script Directamente
 
 ```bash
 python instalar.py
 ```
 
-El script te pedirá la ruta del proyecto donde instalar COCHAS.
+El script te pedirá la ruta del proyecto donde instalar SAC.
 
 También puedes pasar la ruta como argumento:
 
@@ -21,9 +47,9 @@ python instalar.py "C:/mi/proyecto"
 python instalar.py "/home/usuario/mi-proyecto"
 ```
 
-### Opción 2: Instalación Manual
+### Opción 3: Instalación Manual
 
-1. **Copia las siguientes carpetas** desde la raíz de `ia_prompts/` a `[tu-proyecto]/.cochas/`:
+1. **Copia las siguientes carpetas** desde la raíz de `ia_prompts/` a `[tu-proyecto]/.SAC/`:
    - `agentes/`
    - `herramientas/`
    - `plantillas/`
@@ -40,16 +66,16 @@ El script puede **descargar automáticamente** los archivos desde GitHub si no t
 
 ### Requisitos
 
-- **Python 3.6+**
+- **Python 3.8+**
 - **Git** instalado y disponible en el PATH
 
 ### ¿Cómo funciona?
 
 1. El script detecta si está dentro del proyecto `ia_prompts` completo
 2. Si **SÍ** → Usa los archivos locales
-3. Si **NO** → Clona automáticamente desde GitHub a una carpeta temporal:
-   - **Windows:** `%TEMP%\cochas_repo\`
-   - **Linux/Mac:** `/tmp/cochas_repo/`
+3. Si **NO** → Clona automáticamente desde GitHub a una ubicación permanente:
+   - **Windows:** `%LOCALAPPDATA%\SAC\repo\`
+   - **Linux/Mac:** `~/.local/share/SAC/repo/`
 
 ### Descargar solo el script
 
@@ -64,8 +90,14 @@ python instalar.py "C:/mi/proyecto"
 
 ## 🔄 Actualizar el Sistema
 
-Para obtener la última versión de COCHAS desde GitHub:
+Para obtener la última versión de SAC desde GitHub:
 
+**Con comando global:**
+```bash
+sac --update
+```
+
+**O con el script directamente:**
 ```bash
 python instalar.py --update
 ```
@@ -73,8 +105,20 @@ python instalar.py --update
 Esto actualiza el repositorio en caché (`git pull`). Luego puedes reinstalar en tu proyecto:
 
 ```bash
-python instalar.py "C:/mi/proyecto"
+sac "C:/mi/proyecto"
 ```
+
+---
+
+## 🔄 Actualizar Todas las Instalaciones
+
+Si tienes SAC instalado en múltiples proyectos:
+
+```bash
+sac --upgrade-all
+```
+
+Esto actualiza el repositorio y reinstala en todos los proyectos donde SAC ya está instalado.
 
 ---
 
@@ -82,10 +126,13 @@ python instalar.py "C:/mi/proyecto"
 
 | Comando | Descripción |
 |---------|-------------|
-| `python instalar.py` | Modo interactivo (pide la ruta) |
-| `python instalar.py "RUTA"` | Instala en la ruta especificada |
-| `python instalar.py --update` | Actualiza el repositorio desde GitHub |
-| `python instalar.py --help` | Muestra la ayuda |
+| `sac` | Modo interactivo (pide la ruta) |
+| `sac "RUTA"` | Instala en la ruta especificada |
+| `sac --update` | Actualiza el repositorio desde GitHub |
+| `sac --upgrade-all` | Actualiza todas las instalaciones |
+| `sac --help` | Muestra la ayuda |
+
+> **Nota:** Si no tienes el comando `sac` instalado, puedes usar `python instalar.py` en su lugar.
 
 ---
 
@@ -95,6 +142,11 @@ python instalar.py "C:/mi/proyecto"
 INSTALACION/
 ├── README.md              ← Este archivo
 ├── instalar.py            ← Script de instalación automática
+├── bootstrap/             ← Scripts de instalación global
+│   ├── install.ps1        ← Bootstrap para Windows
+│   ├── install.sh         ← Bootstrap para Linux/Mac
+│   ├── sac.bat            ← Comando global Windows
+│   └── sac.sh             ← Comando global Linux/Mac
 └── .github/
     └── agents/            ← Activadores para GitHub Copilot
         ├── arquitecto.agent.md
@@ -112,7 +164,7 @@ Después de la instalación, tu proyecto tendrá:
 
 ```
 tu-proyecto/
-├── .cochas/                          ← Sistema COCHAS
+├── .SAC/                          ← Sistema SAC
 │   ├── agentes/                      ← 5 agentes especializados
 │   ├── herramientas/                 ← 9 herramientas ejecutables
 │   ├── plantillas/                   ← Plantillas para personalización
@@ -174,13 +226,14 @@ Una vez activado un agente, puedes usar sus herramientas con el prefijo `>`:
 
 ## ⚠️ Notas Importantes
 
-1. **Python requerido**: El script necesita Python 3.6 o superior
+1. **Python requerido**: El script necesita Python 3.8 o superior
 2. **Git requerido**: Para descargar desde GitHub (si no tienes el repo local)
-3. **Rutas fijas**: No renombres los archivos en `.cochas/agentes/`
-4. **Gitignore**: Considera agregar a tu `.gitignore`:
+3. **Rutas fijas**: No renombres los archivos en `.SAC/agentes/`
+4. **Migración automática**: Si tienes una instalación anterior con `.cochas/`, el instalador la migrará automáticamente a `.SAC/`
+5. **Gitignore**: Considera agregar a tu `.gitignore`:
    ```
-   .cochas/session/
-   .cochas/artifacts/
+   .SAC/session/
+   .SAC/artifacts/
    ```
 
 ---
@@ -222,8 +275,8 @@ Asegúrate de que la carpeta destino exista antes de ejecutar el instalador.
 ## 📚 Más Información
 
 - Documentación completa: `ia_prompts/README.md`
-- Crear nuevos agentes: `.cochas/plantillas/agente_plantilla.agent.md`
-- Crear nuevas herramientas: `.cochas/plantillas/herramienta_plantilla.tool.md`
+- Crear nuevos agentes: `.SAC/plantillas/agente_plantilla.agent.md`
+- Crear nuevas herramientas: `.SAC/plantillas/herramienta_plantilla.tool.md`
 - Repositorio: https://github.com/JavierDevCol/SAC
 
 ---

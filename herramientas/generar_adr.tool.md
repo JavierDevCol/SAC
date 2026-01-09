@@ -20,7 +20,9 @@ mandatory:
     nunca_saltar: true
   - instruccion: "Mantener numeración secuencial sin saltos (001, 002, 003...)"
     nunca_saltar: true
-  - instruccion: "Si se decide crear diagramas mermaid en el ADR Seguir el proceso paso a paso en orden secuencial de reglas_mermaid en el paso_5"
+  - instruccion: "Leer y almacenar parámetros desde {{reglas.mermaid}}"
+    nunca_saltar: true
+  - instruccion: "Si se decide crear diagramas mermaid en el ADR, seguir el proceso paso a paso en orden secuencial del paso_5"
     nunca_saltar: true
 
 identificacion:
@@ -54,7 +56,7 @@ prerequisitos:
     - descripcion: "Archivo de estado de sesión"
       ubicacion: "{{session_state_location}}"
     - descripcion: "Archivo de configuración del proyecto"
-      ubicacion: "{{project_root}}/.cochas/CONFIG_INIT.yaml"
+      ubicacion: "{{project_root}}/.SAC/CONFIG_INIT.yaml"
   archivos_opcionales:
     - descripcion: "Directorio de ADRs existentes (para auto-numeración)"
       ubicacion: "{{adr_location}}"
@@ -124,7 +126,7 @@ proceso:
     obligatorio: true
     acciones:
       - "Cargar y leer {{session_state_location}}"
-      - "Cargar y leer {{project_root}}/.cochas/CONFIG_INIT.yaml"
+      - "Cargar y leer {{project_root}}/.SAC/CONFIG_INIT.yaml"
       - "Extraer variables de configuración necesarias (idioma, rutas, etc.)"
     si_error:
       "archivo_no_encontrado": "Notificar al usuario y solicitar ejecutar >tomar_contexto primero"
@@ -194,34 +196,17 @@ proceso:
       "error_formato": "Notificar sección con error y solicitar corrección"
 
   paso_5:
-    nombre: "Generación de Diagrama Mermaid (Opcional)"
+    nombre: "Generación de Diagrama Mermaid"
     obligatorio: false
     condicion: "Si incluir_diagrama es true O la decisión involucra flujos/componentes/estados"
-    acciones:
-      - "Analizar el contexto y la decisión para determinar el tipo de diagrama más adecuado"
-      - "Generar diagrama Mermaid siguiendo las reglas de estilo definidas"
-      - "Insertar el diagrama en la sección correspondiente del ADR"
     reglas_mermaid:
       obligatorio: true
-      paleta_colores:
-        azul_procesos: "rgba(0, 150, 255, 0.15)"
-        naranja_almacenamiento: "rgba(255, 165, 0, 0.15)"
-        verde_exito: "rgba(0, 255, 127, 0.15)"
-        rosa_seguridad: "rgba(255, 105, 180, 0.15)"
-        rojo_error: "rgba(255, 0, 0, 0.15)"
-      reglas_criticas:
-        - "PROHIBIDO usar etiquetas HTML (<span>, <br>, <b>) - Rompen el renderizado"
-        - "Usar sintaxis Markdown estándar para negritas (**Texto**)"
-        - "Mantener compatibilidad dark/light mode con transparencia 0.15"
-      tipos_diagrama:
-        flowchart:
-          cuando: "Flujos de decisión, procesos, pipelines"
-        sequence:
-          cuando: "Interacciones entre componentes/servicios"
-        state:
-          cuando: "Estados y transiciones del sistema"
-        c4_component:
-          cuando: "Arquitectura de componentes"
+      referencia: "{{reglas.mermaid}}"
+    acciones:
+      - "Cargar las reglas_mermaid"
+      - "Analizar el contexto y la decisión para determinar el tipo de diagrama más adecuado"
+      - "Generar diagrama Mermaid siguiendo las reglas de reglas_mermaid"
+      - "Insertar el diagrama en la sección correspondiente del ADR"
     si_error:
       "diagrama_invalido": "Omitir diagrama y notificar al usuario"
 

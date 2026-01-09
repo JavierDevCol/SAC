@@ -38,7 +38,7 @@
 Cada **agente/rol se carga en un chat independiente**. Esto permite:
 - 🎯 **Contexto enfocado**: El agente mantiene su personalidad sin interferencias
 - 📝 **Historial limpio**: Cada chat tiene su propia conversación
-- 🔄 **Estado compartido**: Los agentes comparten información vía `session_state.json` y artefactos en `.cochas/`
+- 🔄 **Estado compartido**: Los agentes comparten información vía `session_state.json` y artefactos en `.SAC/`
 
 ---
 
@@ -86,9 +86,9 @@ Los agentes comparten información a través de archivos en el proyecto del usua
 
 | Archivo | Ubicación | Propósito |
 |---------|-----------|-----------|
-| `session_state.json` | `.cochas/session/` | Memoria compartida entre agentes |
-| `contexto_proyecto.md` | `.cochas/artifacts/` | Análisis del proyecto |
-| `backlog_desarrollo.md` | `.cochas/artifacts/` | Backlog de HUs con estados |
+| `session_state.json` | `.SAC/session/` | Memoria compartida entre agentes |
+| `contexto_proyecto.md` | `.SAC/artifacts/` | Análisis del proyecto |
+| `backlog_desarrollo.md` | `.SAC/artifacts/` | Backlog de HUs con estados |
 
 ---
 
@@ -229,7 +229,7 @@ Cada agente tiene un identificador único:
 ```bash
 # Chat 1: Cargar refinador_hu.agent.md
 >refinar_hu
-# El agente refina la HU y genera artefactos en .cochas/
+# El agente refina la HU y genera artefactos en .SAC/
 
 # Chat 2: Cargar arquitecto_onad.agent.md
 >validar_hu HU-001
@@ -344,7 +344,7 @@ ia_prompts/
 ├── legacy/                                ← Archivos de versiones anteriores
 │
 └── [EN EL PROYECTO DEL USUARIO]
-    └── .cochas/                           ← Carpeta del sistema (auto-creada)
+    └── .SAC/                           ← Carpeta del sistema (auto-creada)
         ├── session/                       ← Estado compartido entre agentes
         │   └── session_state.json         ← Estado de la sesión
         └── artifacts/                     ← Artefactos generados
@@ -394,7 +394,7 @@ Ver: **[README_PLANTILLA.md](README_PLANTILLA.md)**
 - ✅ Nuevas extensiones: `.agent.md` y `.tool.md`
 - ✅ Sistema de prefijos: `+` (roles), `>` (herramientas), `*` (sistema)
 - ✅ Modelo de uso: cada agente en chat independiente
-- ✅ Estado compartido vía `.cochas/` en proyecto usuario
+- ✅ Estado compartido vía `.SAC/` en proyecto usuario
 - ✅ Paso final obligatorio en herramientas
 - ✅ Nuevos nombres: "Analista de Historias", "Narrador de Cambios"
 

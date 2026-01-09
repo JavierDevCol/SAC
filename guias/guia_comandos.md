@@ -124,7 +124,7 @@ Los comandos con `*` son utilidades del orquestador que no requieren rol activo.
 | HU-002 | Dashboard usuario | 🟢 Refinada | Media |
 | HU-003 | Notificaciones push | ⚪ Pendiente | Baja |
 
-📂 Ubicación: .cochas/artifacts/HU/
+📂 Ubicación: .SAC/artifacts/HU/
 💡 Usa +REFINADOR y >refinar_hu HU-XXX para trabajar una HU.
 ```
 

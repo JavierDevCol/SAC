@@ -26,7 +26,7 @@
 
 ```
 [nombre_workspace]/
-├── .cochas/
+├── .SAC/
 │   ├── artifacts/
 │   │   ├── workspace.md
 │   │   ├── contextos/

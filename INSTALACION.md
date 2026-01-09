@@ -37,7 +37,7 @@ python instalar.py "C:\mi\proyecto"
 
 ### Opción 2: Instalación Manual
 
-1. **Copia las carpetas** desde la raíz de `ia_prompts/` a `[tu-proyecto]/.cochas/`:
+1. **Copia las carpetas** desde la raíz de `ia_prompts/` a `[tu-proyecto]/.SAC/`:
    - `agentes/`
    - `herramientas/`
    - `plantillas/`
@@ -71,7 +71,7 @@ INSTALACION/
 
 ```
 tu-proyecto/
-├── .cochas/
+├── .SAC/
 │   ├── agentes/          ← 5 agentes especializados
 │   ├── herramientas/     ← 9 herramientas ejecutables
 │   ├── plantillas/       ← Plantillas para personalización
@@ -116,11 +116,11 @@ tu-proyecto/
 
 ## ⚠️ Notas Importantes
 
-1. **Rutas fijas**: No renombres archivos en `.cochas/agentes/`
+1. **Rutas fijas**: No renombres archivos en `.SAC/agentes/`
 2. **Gitignore**: Agrega a `.gitignore`:
    ```
-   .cochas/session/
-   .cochas/artifacts/
+   .SAC/session/
+   .SAC/artifacts/
    ```
 
 ---

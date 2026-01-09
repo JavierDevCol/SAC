@@ -12,6 +12,7 @@ Uso:
     python instalar.py                       # Modo interactivo
     python instalar.py "C:/mi/proyecto"      # Ruta como argumento
     python instalar.py --update              # Actualizar repo desde GitHub
+    python instalar.py --upgrade-all         # Actualizar todas las instalaciones
     python instalar.py --help                # Mostrar ayuda
 """
 
@@ -21,6 +22,7 @@ import shutil
 import subprocess
 import platform
 import tempfile
+import json
 from pathlib import Path
 from datetime import datetime
 
@@ -70,12 +72,41 @@ GITHUB_AGENTS_SOURCE = ".github/agents"
 # FUNCIONES DE UTILIDAD
 # ============================================
 
+def get_system_version():
+    """Obtiene la versión del sistema desde CONFIG_SYSTEM.yaml del repositorio."""
+    # Intentar obtener desde el repo local primero
+    script_dir = Path(__file__).parent.absolute()
+    root_dir = script_dir.parent
+    config_path = root_dir / "config" / "CONFIG_SYSTEM.yaml"
+    
+    if not config_path.exists():
+        # Intentar desde el repo en caché
+        if platform.system() == "Windows":
+            local_app_data = os.environ.get("LOCALAPPDATA")
+            if local_app_data:
+                config_path = Path(local_app_data) / "SAC" / "repo" / "config" / "CONFIG_SYSTEM.yaml"
+        else:
+            config_path = Path.home() / ".local" / "share" / "SAC" / "repo" / "config" / "CONFIG_SYSTEM.yaml"
+    
+    if config_path.exists():
+        try:
+            content = config_path.read_text(encoding="utf-8")
+            for line in content.split("\n"):
+                if line.strip().startswith("version:"):
+                    return line.split(":", 1)[1].strip().strip('"').strip("'")
+        except Exception:
+            pass
+    
+    return "not_fount"
+
+
 def print_banner():
     """Muestra el banner de bienvenida."""
-    print("""
+    version = get_system_version()
+    print(f"""
 ╔═══════════════════════════════════════════════════════════════╗
 ║                                                               ║
-║   🤖 INSTALADOR DE COCHAS v4.0                                ║
+║   🤖 SAC - Sistema Agéntico COCHAS v{version}                      ║
 ║   Sistema de Orquestación de Agentes IA                       ║
 ║                                                               ║
 ╚═══════════════════════════════════════════════════════════════╝
@@ -116,22 +147,172 @@ def get_temp_repo_path():
     """
     Obtiene la ruta donde se clonará/almacenará el repositorio.
     Usa ubicaciones permanentes según el sistema operativo:
-    - Windows: %LOCALAPPDATA%/cochas/repo/
-    - Linux/Mac: ~/.local/share/cochas/repo/
+    - Windows: %LOCALAPPDATA%/SAC/repo/
+    - Linux/Mac: ~/.local/share/SAC/repo/
     """
     if platform.system() == "Windows":
         # Usar %LOCALAPPDATA% (ej: C:\Users\Usuario\AppData\Local)
         local_app_data = os.environ.get("LOCALAPPDATA")
         if local_app_data:
-            base_path = Path(local_app_data) / "cochas" / "repo"
+            base_path = Path(local_app_data) / "SAC" / "repo"
         else:
             # Fallback si no existe la variable
-            base_path = Path.home() / "AppData" / "Local" / "cochas" / "repo"
+            base_path = Path.home() / "AppData" / "Local" / "SAC" / "repo"
     else:
-        # Linux/Mac: ~/.local/share/cochas/repo/
-        base_path = Path.home() / ".local" / "share" / "cochas" / "repo"
+        # Linux/Mac: ~/.local/share/SAC/repo/
+        base_path = Path.home() / ".local" / "share" / "SAC" / "repo"
     
     return base_path
+
+
+def get_installations_cache_path():
+    """
+    Obtiene la ruta del archivo de caché de instalaciones.
+    - Windows: %LOCALAPPDATA%/SAC/installations.json
+    - Linux/Mac: ~/.local/share/SAC/installations.json
+    """
+    if platform.system() == "Windows":
+        local_app_data = os.environ.get("LOCALAPPDATA")
+        if local_app_data:
+            base_path = Path(local_app_data) / "SAC"
+        else:
+            base_path = Path.home() / "AppData" / "Local" / "SAC"
+    else:
+        base_path = Path.home() / ".local" / "share" / "SAC"
+    
+    return base_path / "installations.json"
+
+
+def load_installations_cache():
+    """Carga el archivo de caché de instalaciones."""
+    cache_path = get_installations_cache_path()
+    
+    if not cache_path.exists():
+        return {"version": "1.0", "installations": []}
+    
+    try:
+        with open(cache_path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except (json.JSONDecodeError, Exception):
+        return {"version": "1.0", "installations": []}
+
+
+def save_installations_cache(cache_data):
+    """Guarda el archivo de caché de instalaciones."""
+    cache_path = get_installations_cache_path()
+    cache_path.parent.mkdir(parents=True, exist_ok=True)
+    
+    try:
+        with open(cache_path, "w", encoding="utf-8") as f:
+            json.dump(cache_data, f, indent=2, ensure_ascii=False)
+        return True
+    except Exception as e:
+        print_warning(f"No se pudo guardar caché de instalaciones: {e}")
+        return False
+
+
+def register_installation(dest_path, system_version):
+    """Registra una nueva instalación en la caché."""
+    cache = load_installations_cache()
+    normalized_path = Path(dest_path).resolve().as_posix()
+    now = datetime.now().isoformat()
+    
+    # Buscar si ya existe
+    existing_idx = None
+    for idx, inst in enumerate(cache["installations"]):
+        if inst["path"] == normalized_path:
+            existing_idx = idx
+            break
+    
+    installation_entry = {
+        "path": normalized_path,
+        "installed_at": now if existing_idx is None else cache["installations"][existing_idx].get("installed_at", now),
+        "last_updated": now,
+        "system_version": system_version
+    }
+    
+    if existing_idx is not None:
+        cache["installations"][existing_idx] = installation_entry
+    else:
+        cache["installations"].append(installation_entry)
+    
+    save_installations_cache(cache)
+
+
+def get_installed_version(dest_path):
+    """Obtiene la versión instalada en una ruta desde CONFIG_SYSTEM.yaml."""
+    # Buscar primero en .SAC, luego en .cochas (migración)
+    config_path = Path(dest_path) / ".SAC" / "config" / "CONFIG_SYSTEM.yaml"
+    if not config_path.exists():
+        config_path = Path(dest_path) / ".cochas" / "config" / "CONFIG_SYSTEM.yaml"
+    
+    if not config_path.exists():
+        return None
+    
+    try:
+        content = config_path.read_text(encoding="utf-8")
+        for line in content.split("\n"):
+            if line.strip().startswith("version:"):
+                # Extraer versión: version: "4.0" -> 4.0
+                version = line.split(":", 1)[1].strip().strip('"').strip("'")
+                return version
+        return None
+    except Exception:
+        return None
+
+
+def get_repo_version(root_dir):
+    """Obtiene la versión del repositorio desde CONFIG_SYSTEM.yaml."""
+    config_path = Path(root_dir) / "config" / "CONFIG_SYSTEM.yaml"
+    
+    if not config_path.exists():
+        return None
+    
+    try:
+        content = config_path.read_text(encoding="utf-8")
+        for line in content.split("\n"):
+            if line.strip().startswith("version:"):
+                version = line.split(":", 1)[1].strip().strip('"').strip("'")
+                return version
+        return None
+    except Exception:
+        return None
+
+
+def validate_and_clean_cache():
+    """
+    Valida las instalaciones en caché y elimina las rutas huérfanas.
+    Retorna lista de instalaciones válidas con su estado.
+    """
+    cache = load_installations_cache()
+    valid_installations = []
+    removed_paths = []
+    
+    for inst in cache["installations"]:
+        path = inst["path"]
+        # Verificar tanto .SAC como .cochas (para migración)
+        sac_path = Path(path) / ".SAC"
+        cochas_path = Path(path) / ".cochas"
+        
+        if sac_path.exists() or cochas_path.exists():
+            installed_version = get_installed_version(path)
+            valid_installations.append({
+                **inst,
+                "current_version": installed_version,
+                "exists": True
+            })
+        else:
+            removed_paths.append(path)
+    
+    # Actualizar caché eliminando rutas huérfanas
+    if removed_paths:
+        cache["installations"] = [
+            inst for inst in cache["installations"]
+            if inst["path"] not in removed_paths
+        ]
+        save_installations_cache(cache)
+    
+    return valid_installations, removed_paths
 
 
 def is_git_available():
@@ -415,13 +596,16 @@ def validate_destination(dest_path):
 
 
 def check_existing_installation(dest_path):
-    """Verifica si ya existe una instalación de COCHAS."""
-    cochas_path = Path(dest_path) / ".cochas"
+    """Verifica si ya existe una instalación de SAC (o COCHAS legacy)."""
+    sac_path = Path(dest_path) / ".SAC"
+    cochas_path = Path(dest_path) / ".cochas"  # Legacy
     github_agents_path = Path(dest_path) / ".github" / "agents"
     
     existing = []
+    if sac_path.exists():
+        existing.append(".SAC/")
     if cochas_path.exists():
-        existing.append(".cochas/")
+        existing.append(".cochas/ (legacy)")
     if github_agents_path.exists():
         existing.append(".github/agents/")
     
@@ -498,29 +682,81 @@ def replace_ruta_proyecto_in_agents(agents_folder, project_root):
         print_warning(f"No se pudo actualizar rutas en archivos de agentes: {e}")
 
 
-def install_cochas(dest_path, root_dir):
-    """Ejecuta la instalación de COCHAS."""
+def migrate_cochas_to_sac(dest_path):
+    """
+    Migra una instalación existente de .cochas a .SAC.
+    Preserva CONFIG_USER.yaml y session_state.json.
+    Retorna True si se realizó migración, False si no había nada que migrar.
+    """
+    dest = Path(dest_path)
+    cochas_path = dest / ".cochas"
+    sac_path = dest / ".SAC"
+    
+    if not cochas_path.exists():
+        return False
+    
+    if sac_path.exists():
+        print_warning("Ya existe .SAC/, no se puede migrar automáticamente")
+        return False
+    
+    print_info("Detectada instalación legacy .cochas/, migrando a .SAC/...")
+    
+    try:
+        # Renombrar carpeta
+        cochas_path.rename(sac_path)
+        print_success("Carpeta .cochas/ renombrada a .SAC/")
+        
+        # Actualizar rutas en CONFIG_SYSTEM.yaml
+        config_system = sac_path / "config" / "CONFIG_SYSTEM.yaml"
+        if config_system.exists():
+            content = config_system.read_text(encoding="utf-8")
+            updated = content.replace(".cochas", ".SAC")
+            config_system.write_text(updated, encoding="utf-8")
+            print_success("CONFIG_SYSTEM.yaml actualizado con nuevas rutas")
+        
+        # Actualizar .gitignore si existe
+        gitignore = dest / ".gitignore"
+        if gitignore.exists():
+            content = gitignore.read_text(encoding="utf-8")
+            if ".cochas" in content and ".SAC" not in content:
+                updated = content.replace(".cochas", ".SAC")
+                gitignore.write_text(updated, encoding="utf-8")
+                print_success(".gitignore actualizado")
+        
+        return True
+    except Exception as e:
+        print_error(f"Error durante la migración: {e}")
+        return False
+
+
+def install_sac(dest_path, root_dir):
+    """Ejecuta la instalación de SAC."""
     dest = Path(dest_path)
     
     print("\n📦 Iniciando instalación...\n")
     
-    # 1. Crear carpeta .cochas
-    cochas_dest = dest / ".cochas"
-    cochas_dest.mkdir(exist_ok=True)
-    print_info(f"Creando {cochas_dest}")
+    # 0. Verificar si hay instalación legacy y migrar
+    cochas_legacy = dest / ".cochas"
+    if cochas_legacy.exists():
+        migrate_cochas_to_sac(dest_path)
+    
+    # 1. Crear carpeta .SAC
+    sac_dest = dest / ".SAC"
+    sac_dest.mkdir(exist_ok=True)
+    print_info(f"Creando {sac_dest}")
     
     # 2. Copiar carpetas desde la raíz
     print("\n📂 Copiando carpetas del sistema:\n")
     for folder in CARPETAS_COCHAS:
         try:
-            copy_folder(root_dir, cochas_dest, folder)
+            copy_folder(root_dir, sac_dest, folder)
             print_success(f"{folder}/")
         except Exception as e:
             print_error(f"{folder}/ - Error: {e}")
             return False
 
     # 2.1 Reemplazar {project-root} en la configuración instalada
-    config_system_path = cochas_dest / "config" / "CONFIG_SYSTEM.yaml"
+    config_system_path = sac_dest / "config" / "CONFIG_SYSTEM.yaml"
     replace_project_root_placeholder(config_system_path, dest)
     
     # 3. Crear carpeta .github/agents
@@ -549,18 +785,22 @@ def install_cochas(dest_path, root_dir):
     # 5. Crear carpetas de artefactos (vacías)
     print("\n📂 Creando estructura de artefactos:\n")
     
-    session_dir = cochas_dest / "session"
-    artifacts_dir = cochas_dest / "artifacts"
+    session_dir = sac_dest / "session"
+    artifacts_dir = sac_dest / "artifacts"
     hu_dir = artifacts_dir / "HU"
     
     session_dir.mkdir(exist_ok=True)
-    print_success(".cochas/session/")
+    print_success(".SAC/session/")
     
     artifacts_dir.mkdir(exist_ok=True)
-    print_success(".cochas/artifacts/")
+    print_success(".SAC/artifacts/")
     
     hu_dir.mkdir(exist_ok=True)
-    print_success(".cochas/artifacts/HU/")
+    print_success(".SAC/artifacts/HU/")
+    
+    # 6. Registrar instalación en caché
+    system_version = get_installed_version(dest) or "unknown"
+    register_installation(dest, system_version)
     
     return True
 
@@ -577,7 +817,7 @@ def print_final_summary(dest_path):
     
     print("📁 Estructura creada:\n")
     print(f"""    {dest_path}/
-    ├── .cochas/
+    ├── .SAC/
     │   ├── agentes/          (5 agentes)
     │   ├── herramientas/     (9 herramientas)
     │   ├── plantillas/       (6 plantillas)
@@ -680,12 +920,12 @@ proyecto:
 """
     
     # Guardar archivo
-    config_path = Path(dest_path) / ".cochas" / "config" / "CONFIG_USER.yaml"
+    config_path = Path(dest_path) / ".SAC" / "config" / "CONFIG_USER.yaml"
     
     try:
         with open(config_path, "w", encoding="utf-8") as f:
             f.write(config_content)
-        print_success(f"Configuración guardada en: .cochas/config/CONFIG_USER.yaml")
+        print_success(f"Configuración guardada en: .SAC/config/CONFIG_USER.yaml")
         return True
     except Exception as e:
         print_error(f"Error al guardar configuración: {e}")
@@ -694,12 +934,12 @@ proyecto:
 
 def ask_for_configuration(dest_path):
     """
-    Pregunta al usuario si desea configurar COCHAS ahora.
+    Pregunta al usuario si desea configurar SAC ahora.
     Retorna True si se configuró o se omitió correctamente.
     """
     print("\n" + "─" * 55)
-    print("\n   ¿Deseas configurar COCHAS para tu proyecto ahora?")
-    print("   (Puedes hacerlo después editando .cochas/config/CONFIG_USER.yaml)\n")
+    print("\n   ¿Deseas configurar SAC para tu proyecto ahora?")
+    print("   (Puedes hacerlo después editando .SAC/config/CONFIG_USER.yaml)\n")
     
     response = input("   Configurar ahora (S/n): ").strip().lower()
     
@@ -714,21 +954,27 @@ def print_help():
     """Muestra la ayuda del comando."""
     print("""
 📖 USO:
-    python instalar.py [RUTA]              Instala COCHAS en la ruta especificada
-    python instalar.py                     Modo interactivo (pide la ruta)
-    python instalar.py --update            Actualiza el repositorio en caché
-    python instalar.py --help              Muestra este mensaje de ayuda
+    sac [RUTA]                 Instala SAC en la ruta especificada
+    sac                        Modo interactivo (pide la ruta)
+    sac --update               Actualiza el repositorio en caché
+    sac --upgrade-all          Actualiza todas las instalaciones registradas
+    sac --help                 Muestra este mensaje de ayuda
 
 📍 EJEMPLOS:
-    python instalar.py "C:/proyectos/mi-app"
-    python instalar.py "/home/user/mi-proyecto"
-    python instalar.py --update
+    sac "C:/proyectos/mi-app"
+    sac "/home/user/mi-proyecto"
+    sac --update
+    sac --upgrade-all
 
 🔧 OPCIONES:
-    --update    Actualiza el repositorio COCHAS desde GitHub sin instalar.
-                Útil para obtener la última versión antes de instalar.
+    --update       Actualiza el repositorio SAC desde GitHub.
+                   Luego muestra las instalaciones registradas y permite
+                   seleccionar cuáles actualizar.
     
-    --help      Muestra este mensaje de ayuda.
+    --upgrade-all  Actualiza automáticamente todas las instalaciones
+                   registradas sin preguntar (útil para CI/CD).
+    
+    --help         Muestra este mensaje de ayuda.
 
 📦 FUENTES:
     El script primero busca los archivos localmente.
@@ -736,12 +982,262 @@ def print_help():
     {repo_url}
     
     El repositorio se guarda en:
-    - Windows: %LOCALAPPDATA%\\cochas\\repo\\
-    - Linux/Mac: ~/.local/share/cochas/repo/
+    - Windows: %LOCALAPPDATA%\\SAC\\repo\\
+    - Linux/Mac: ~/.local/share/SAC/repo/
+    
+    Las instalaciones se registran en:
+    - Windows: %LOCALAPPDATA%\\SAC\\installations.json
+    - Linux/Mac: ~/.local/share/SAC/installations.json
 """.format(repo_url=REPO_URL))
 
 
-def do_update():
+def upgrade_installation(dest_path, root_dir, preserve_user_config=True):
+    """
+    Actualiza una instalación existente preservando CONFIG_USER.yaml.
+    Retorna True si la actualización fue exitosa.
+    """
+    dest = Path(dest_path)
+    sac_dest = dest / ".SAC"
+    
+    # Si existe .cochas legacy, migrar primero
+    cochas_legacy = dest / ".cochas"
+    if cochas_legacy.exists() and not sac_dest.exists():
+        migrate_cochas_to_sac(dest_path)
+        sac_dest = dest / ".SAC"
+    
+    # Guardar CONFIG_USER.yaml si existe
+    config_user_path = sac_dest / "config" / "CONFIG_USER.yaml"
+    config_user_backup = None
+    
+    if preserve_user_config and config_user_path.exists():
+        try:
+            config_user_backup = config_user_path.read_text(encoding="utf-8")
+        except Exception:
+            pass
+    
+    # Ejecutar instalación normal
+    success = install_sac(dest_path, root_dir)
+    
+    # Restaurar CONFIG_USER.yaml
+    if success and config_user_backup and preserve_user_config:
+        try:
+            config_user_path.write_text(config_user_backup, encoding="utf-8")
+            print_success("CONFIG_USER.yaml preservado")
+        except Exception as e:
+            print_warning(f"No se pudo restaurar CONFIG_USER.yaml: {e}")
+    
+    return success
+
+
+def do_update(upgrade_all=False):
+    """Ejecuta la actualización del repositorio y opcionalmente actualiza instalaciones."""
+    print_banner()
+    print("🔄 Modo actualización\n")
+    
+    if not is_git_available():
+        print_error("Git no está instalado o no está disponible en el PATH")
+        return False
+    
+    temp_repo_path = get_temp_repo_path()
+    
+    if temp_repo_path.exists() and (temp_repo_path / ".git").exists():
+        print_info(f"Repositorio en: {temp_repo_path}")
+        configure_git_safe_directory(temp_repo_path)
+        success = update_repository(temp_repo_path)
+    else:
+        print_info("No existe repositorio en caché, clonando...")
+        success = clone_repository(temp_repo_path)
+        if success:
+            configure_git_safe_directory(temp_repo_path)
+    
+    if not success:
+        return False
+    
+    # Obtener versión del repositorio
+    root_dir = find_cochas_root(temp_repo_path)
+    if not root_dir:
+        print_error("No se encontró la estructura de COCHAS en el repositorio")
+        return False
+    
+    repo_version = get_repo_version(root_dir) or "unknown"
+    print_info(f"Versión disponible: {repo_version}")
+    
+    # Validar y limpiar caché de instalaciones
+    print("\n📋 Verificando instalaciones registradas...\n")
+    valid_installations, removed_paths = validate_and_clean_cache()
+    
+    # Mostrar rutas eliminadas
+    if removed_paths:
+        print_warning(f"Se eliminaron {len(removed_paths)} ruta(s) huérfana(s) de la caché:")
+        for path in removed_paths:
+            print(f"      └─ {path}")
+        print()
+    
+    if not valid_installations:
+        print_info("No hay instalaciones registradas.")
+        print("\n" + "─" * 50)
+        response = input("\n   ¿Deseas instalar COCHAS en un proyecto nuevo? (s/N): ").strip().lower()
+        
+        if response == 's':
+            return do_new_installation(root_dir)
+        else:
+            print_info("Puedes instalar más tarde con: python instalar.py \"RUTA\"")
+        return True
+    
+    # Identificar instalaciones desactualizadas
+    outdated = []
+    up_to_date = []
+    
+    for inst in valid_installations:
+        if inst["current_version"] != repo_version:
+            outdated.append(inst)
+        else:
+            up_to_date.append(inst)
+    
+    # Mostrar estado de instalaciones
+    print(f"   Instalaciones registradas ({len(valid_installations)}):\n")
+    
+    for idx, inst in enumerate(valid_installations, 1):
+        path = inst["path"]
+        current = inst["current_version"] or "?"
+        
+        if inst in outdated:
+            print(f"   {idx}. {path}")
+            print(f"      └─ v{current} → v{repo_version} (desactualizada)")
+        else:
+            print(f"   {idx}. {path}")
+            print(f"      └─ v{current} ✅ Actualizada")
+        print()
+    
+    if not outdated:
+        print_success("Todas las instalaciones están actualizadas")
+        return True
+    
+    # Modo --upgrade-all: actualizar sin preguntar
+    if upgrade_all:
+        print_info(f"Actualizando {len(outdated)} instalación(es)...\n")
+        return do_bulk_upgrade(outdated, root_dir)
+    
+    # Modo interactivo: permitir selección
+    print("─" * 50)
+    print(f"\n   {len(outdated)} instalación(es) desactualizada(s).\n")
+    print("   Opciones:")
+    print("     [A] Actualizar todas las desactualizadas")
+    print("     [S] Seleccionar cuáles actualizar")
+    print("     [N] Nueva instalación en otro proyecto")
+    print("     [X] Salir\n")
+    
+    response = input("   Selecciona una opción: ").strip().upper()
+    
+    if response == 'A':
+        return do_bulk_upgrade(outdated, root_dir)
+    elif response == 'S':
+        return do_selective_upgrade(outdated, root_dir)
+    elif response == 'N':
+        return do_new_installation(root_dir)
+    else:
+        print_info("Operación cancelada")
+        return True
+
+
+def do_bulk_upgrade(installations, root_dir):
+    """Actualiza múltiples instalaciones."""
+    success_count = 0
+    fail_count = 0
+    
+    for inst in installations:
+        path = inst["path"]
+        print(f"\n   Actualizando: {path}")
+        
+        if upgrade_installation(path, root_dir, preserve_user_config=True):
+            success_count += 1
+        else:
+            fail_count += 1
+    
+    print("\n" + "─" * 50)
+    print(f"\n   ✅ Actualizadas: {success_count}")
+    if fail_count > 0:
+        print(f"   ❌ Fallidas: {fail_count}")
+    
+    return fail_count == 0
+
+
+def do_selective_upgrade(outdated, root_dir):
+    """Permite al usuario seleccionar qué instalaciones actualizar."""
+    print("\n   Ingresa los números de las instalaciones a actualizar")
+    print("   (separados por coma, ej: 1,3,4):\n")
+    
+    # Mostrar lista numerada
+    for idx, inst in enumerate(outdated, 1):
+        print(f"     {idx}. {inst['path']}")
+    
+    selection = input("\n   Selección: ").strip()
+    
+    if not selection:
+        print_info("No se seleccionó ninguna instalación")
+        return True
+    
+    try:
+        indices = [int(x.strip()) - 1 for x in selection.split(",")]
+        selected = [outdated[i] for i in indices if 0 <= i < len(outdated)]
+    except (ValueError, IndexError):
+        print_error("Selección inválida")
+        return False
+    
+    if not selected:
+        print_info("No se seleccionó ninguna instalación válida")
+        return True
+    
+    return do_bulk_upgrade(selected, root_dir)
+
+
+def do_new_installation(root_dir):
+    """Ejecuta una nueva instalación interactiva."""
+    print("\n📍 Ingresa la ruta donde instalar COCHAS:\n")
+    print("   (La carpeta debe existir)\n")
+    dest_path = input("   Ruta: ").strip()
+    
+    if not dest_path:
+        print_error("No se proporcionó una ruta")
+        return False
+    
+    # Expandir ~ y variables de entorno
+    dest_path = os.path.expanduser(dest_path)
+    dest_path = os.path.expandvars(dest_path)
+    dest_path = os.path.abspath(dest_path)
+    
+    # Validar destino
+    valid, error = validate_destination(dest_path)
+    if not valid:
+        print_error(error)
+        return False
+    
+    print(f"\n📍 Destino: {dest_path}")
+    print(f"📦 Fuente: {root_dir}\n")
+    
+    # Verificar instalación existente
+    existing = check_existing_installation(dest_path)
+    if existing:
+        print_warning(f"Ya existe una instalación: {', '.join(existing)}")
+        overwrite = input("\n   ¿Sobrescribir? (s/N): ").strip().lower()
+        if overwrite != 's':
+            print_info("Instalación cancelada")
+            return True
+    
+    # Ejecutar instalación
+    install_success = install_sac(dest_path, root_dir)
+    
+    if install_success:
+        print_final_summary(dest_path)
+        ask_for_configuration(dest_path)
+    else:
+        print_error("La instalación falló")
+        return False
+    
+    return True
+
+
+def do_update_legacy():
     """Ejecuta la actualización del repositorio y opcionalmente instala."""
     print_banner()
     print("🔄 Modo actualización\n")
@@ -802,7 +1298,7 @@ def do_update():
                 return True  # El update fue exitoso
         
         # Ejecutar instalación
-        install_success = install_cochas(dest_path, temp_repo_path)
+        install_success = install_sac(dest_path, temp_repo_path)
         
         if install_success:
             print_final_summary(dest_path)
@@ -827,9 +1323,14 @@ def main():
         print_help()
         sys.exit(0)
     
+    # --upgrade-all
+    if "--upgrade-all" in args:
+        success = do_update(upgrade_all=True)
+        sys.exit(0 if success else 1)
+    
     # --update
     if "--update" in args:
-        success = do_update()
+        success = do_update(upgrade_all=False)
         sys.exit(0 if success else 1)
     
     print_banner()
@@ -883,7 +1384,7 @@ def main():
             sys.exit(0)
     
     # Ejecutar instalación
-    success = install_cochas(dest_path, root_dir)
+    success = install_sac(dest_path, root_dir)
     
     if success:
         print_final_summary(dest_path)
