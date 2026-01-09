@@ -23,6 +23,7 @@ import subprocess
 import platform
 import tempfile
 import json
+import hashlib
 from pathlib import Path
 from datetime import datetime
 
@@ -67,6 +68,52 @@ CARPETAS_COCHAS = [
 
 # Carpeta de agentes de GitHub (relativa a INSTALACION/)
 GITHUB_AGENTS_SOURCE = ".github/agents"
+
+# Flag interno para evitar bucles de reinicio
+RELAUNCH_FLAG = "--_relaunched"
+
+
+# ============================================
+# FUNCIONES DE AUTO-REINICIO
+# ============================================
+
+def get_file_hash(file_path):
+    """
+    Calcula el hash MD5 de un archivo.
+    Retorna None si el archivo no existe.
+    """
+    try:
+        with open(file_path, "rb") as f:
+            return hashlib.md5(f.read()).hexdigest()
+    except Exception:
+        return None
+
+
+def relaunch_script(new_script_path, original_args):
+    """
+    Relanza el script con la nueva versión.
+    Agrega flag para evitar bucles infinitos.
+    """
+    print()
+    print("─" * 55)
+    print_info("🔄 El instalador se actualizó. Reiniciando con la nueva versión...")
+    print("─" * 55)
+    print()
+    
+    # Filtrar argumentos internos y agregar flag de relanzamiento
+    clean_args = [arg for arg in original_args if arg != RELAUNCH_FLAG]
+    
+    # Construir comando
+    cmd = [sys.executable, str(new_script_path)] + clean_args + [RELAUNCH_FLAG]
+    
+    try:
+        # Ejecutar el nuevo script y esperar a que termine
+        result = subprocess.run(cmd)
+        sys.exit(result.returncode)
+    except Exception as e:
+        print_error(f"Error al relanzar el script: {e}")
+        print_info("Ejecuta 'sac --update' nuevamente para usar la nueva versión")
+        return False
 
 
 # ============================================
@@ -1036,11 +1083,21 @@ def do_update(upgrade_all=False):
     print_banner()
     print("🔄 Modo actualización\n")
     
+    # Verificar si ya fue relanzado (evitar bucle infinito)
+    is_relaunched = RELAUNCH_FLAG in sys.argv
+    
     if not is_git_available():
         print_error("Git no está instalado o no está disponible en el PATH")
         return False
     
     temp_repo_path = get_temp_repo_path()
+    
+    # Calcular hash del script ANTES del update (solo si no fue relanzado)
+    new_script_path = None
+    old_hash = None
+    if not is_relaunched:
+        new_script_path = temp_repo_path / "INSTALACION" / "instalar.py"
+        old_hash = get_file_hash(new_script_path) if new_script_path.exists() else None
     
     if temp_repo_path.exists() and (temp_repo_path / ".git").exists():
         print_info(f"Repositorio en: {temp_repo_path}")
@@ -1054,6 +1111,25 @@ def do_update(upgrade_all=False):
     
     if not success:
         return False
+    
+    # Verificar si el script cambió y necesita relanzarse
+    if not is_relaunched and new_script_path and new_script_path.exists():
+        new_hash = get_file_hash(new_script_path)
+        if old_hash and new_hash and old_hash != new_hash:
+            print_success("Se detectó una nueva versión del instalador")
+            # Relanzar con la nueva versión
+            original_args = [arg for arg in sys.argv[1:] if arg != RELAUNCH_FLAG]
+            relaunch_script(new_script_path, original_args)
+            return True  # No debería llegar aquí, pero por si acaso
+        elif old_hash is None and new_hash:
+            # Primera vez que se clona, verificar si es diferente al actual
+            current_script = Path(__file__).resolve()
+            current_hash = get_file_hash(current_script)
+            if current_hash and new_hash != current_hash:
+                print_success("Se detectó una nueva versión del instalador")
+                original_args = [arg for arg in sys.argv[1:] if arg != RELAUNCH_FLAG]
+                relaunch_script(new_script_path, original_args)
+                return True
     
     # Obtener versión del repositorio
     root_dir = find_cochas_root(temp_repo_path)
