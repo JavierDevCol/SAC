@@ -129,6 +129,25 @@ proceso_proyecto_unico:
       - "Guardar resultado en {{archivos.contexto_proyecto}}"
     plantilla_referencia: "{{plantillas.contexto}}"
 
+  paso_6:
+    nombre: "Generar Stack del Proyecto"
+    obligatorio: true
+    descripcion: "Genera archivo con especificaciones técnicas del stack detectado"
+    acciones:
+      - "Leer plantilla desde {{plantillas.stack_proyecto}}"
+      - "Rellenar con datos detectados en pasos anteriores:"
+      - "  - Lenguajes y versiones (de archivos de configuración)"
+      - "  - Frameworks principales (de dependencias)"
+      - "  - Librerías relevantes (de dependencias)"
+      - "  - Herramientas de build (de archivos de proyecto)"
+      - "  - Frameworks de testing (de dependencias de test)"
+      - "  - Comandos de ejecución (inferidos del build tool)"
+      - "  - Patrones sugeridos (según framework detectado)"
+      - "  - Convenciones del ecosistema (según lenguaje)"
+      - "Guardar resultado en {{archivos.stack_proyecto}}"
+    plantilla_referencia: "{{plantillas.stack_proyecto}}"
+    nota: "Este archivo permite que los agentes se adapten al stack específico del proyecto"
+
 proceso_multi_proyecto:
   paso_1:
     nombre: "Detectar Proyectos"
@@ -169,7 +188,8 @@ proceso_multi_proyecto:
     acciones:
       - "Para cada proyecto seleccionado:"
       - "  - Ejecutar proceso_proyecto_unico pasos 1-4"
-      - "  - Guardar en: {{artifacts.contextos_folder}}/contexto_proyecto_[nombre].md"
+      - "  - Guardar contexto en: {{artifacts.contextos_folder}}/contexto_proyecto_[nombre].md"
+      - "  - Guardar stack en: {{artifacts.contextos_folder}}/stack_proyecto_[nombre].md"
 
   paso_5:
     nombre: "Detectar Relaciones entre Proyectos"
@@ -231,6 +251,8 @@ salida_proyecto_unico:
   archivos_generados:
     - tipo: "contexto"
       ruta: "{{archivos.contexto_proyecto}}"
+    - tipo: "stack"
+      ruta: "{{archivos.stack_proyecto}}"
   
   archivos_actualizados:
     - "{{archivos.session_state}}"
@@ -238,7 +260,10 @@ salida_proyecto_unico:
   mensaje_exito: |
     ✅ CONTEXTO GENERADO
     
-    📄 Archivo: {{archivos.contexto_proyecto}}
+    📄 Archivos generados:
+       - {{archivos.contexto_proyecto}}
+       - {{archivos.stack_proyecto}}
+    
     📊 Confianza: [Alto|Medio|Bajo]
     
     🎯 Scorecard:
@@ -248,6 +273,9 @@ salida_proyecto_unico:
     | Stack | [X]/10 |
     | Testing | [X]/10 |
     | DevOps | [X]/10 |
+    
+    💡 El archivo stack_proyecto.md contiene las especificaciones
+       técnicas detectadas. Puedes editarlo si necesitas ajustes.
 
 salida_multi_proyecto:
   archivos_generados:
@@ -255,6 +283,8 @@ salida_multi_proyecto:
       ruta: "{{archivos.workspace_index}}"
     - tipo: "contextos"
       ruta: "{{artifacts.contextos_folder}}/contexto_proyecto_[nombre].md"
+    - tipo: "stacks"
+      ruta: "{{artifacts.contextos_folder}}/stack_proyecto_[nombre].md"
   
   carpetas_creadas:
     - "{{artifacts.contextos_folder}}"
@@ -272,7 +302,9 @@ salida_multi_proyecto:
     ├── workspace.md
     ├── contextos/
     │   ├── contexto_proyecto_[proyecto_1].md
-    │   └── contexto_proyecto_[proyecto_2].md
+    │   ├── stack_proyecto_[proyecto_1].md
+    │   ├── contexto_proyecto_[proyecto_2].md
+    │   └── stack_proyecto_[proyecto_2].md
     └── HU/
         ├── compartidas/
         ├── [proyecto_1]/

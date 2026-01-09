@@ -26,6 +26,7 @@ archivos:
   reglas_arquitectonicas: "{project-root}/.SAC/artifacts/reglas_arquitectonicas.md"
   # Proyecto único
   contexto_proyecto: "{project-root}/.SAC/artifacts/contexto_proyecto.md"
+  stack_proyecto: "{project-root}/.SAC/artifacts/stack_proyecto.md"
   # Multi-proyecto
   workspace_index: "{project-root}/.SAC/artifacts/workspace.md"
 
@@ -71,6 +72,7 @@ plantillas:
   backlog: "plantillas/backlog_desarrollo_plantilla.md"
   contexto: "plantillas/contexto_proyecto_plantilla.md"
   workspace: "plantillas/workspace_plantilla.md"
+  stack_proyecto: "plantillas/stack_proyecto_plantilla.md"
 
 # ============================================
 # REGLAS DEL SISTEMA
