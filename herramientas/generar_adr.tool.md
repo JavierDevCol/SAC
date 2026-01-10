@@ -27,7 +27,7 @@ mandatory:
 prerequisitos:
   archivos_requeridos:
     - descripcion: "Archivo de configuración del proyecto"
-      ubicacion: "{{project_root}}/.SAC/CONFIG_INIT.yaml"
+      ubicacion: "{{project_root}}/.SAC/CONFIG_SYSTEM.yaml"
   archivos_opcionales:
     - "{{adr_location}}"
     - "{{contexto_proyecto_location}}"
