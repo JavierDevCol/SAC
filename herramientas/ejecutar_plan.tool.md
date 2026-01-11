@@ -42,27 +42,21 @@ parametros:
       defecto: false
 
 proceso:
+  - paso: "Inicialización de Parámetros"
+    obligatorio: true
+    acciones: ["Establecer valores por defecto para parámetros opcionales no especificados: modo_ejecucion='fase_por_fase', auto_commit=false"]
+    nota: "Garantiza evaluación correcta de condiciones en pasos posteriores"
+
   - paso: "Cargar Plan de Implementación"
     obligatorio: true
-    acciones:
-      - "Buscar plan en {{artifacts.planes_folder}}/[ID-HU]_plan_implementacion.md"
-      - "Verificar estructura según {{plantillas.plan_implementacion}}"
-      - "Verificar estado [P] Planificada en {{archivos.backlog}}"
-      - "Cambiar estado HU a [E] En Ejecución"
-      - "Actualizar Metadata del plan: Estado  EN_PROGRESO"
+    acciones: ["Buscar plan en {{artifacts.planes_folder}}/[ID-HU]_plan_implementacion.md", "Verificar estructura según {{plantillas.plan_implementacion}}", "Verificar estado [P] Planificada en {{archivos.backlog}}", "Cambiar estado HU a [E] En Ejecución", "Actualizar Metadata del plan: Estado  EN_PROGRESO"]
     si_error:
       no_encontrado: " Plan no encontrado. Ejecutar >planificar_hu primero"
       estado_invalido: " HU debe estar en estado [P] Planificada"
 
   - paso: "Ejecutar Fases Secuencialmente"
     obligatorio: true
-    acciones:
-      - "Para cada fase del plan:"
-      - "  1. Anunciar inicio de fase"
-      - "  2. Para cada tarea: [PENDIENTE]  [EN_PROGRESO]"
-      - "  3. Ejecutar pasos, marcar [ ]  [X] al completar"
-      - "  4. Al completar tarea: [EN_PROGRESO]  [EJECUTADA]"
-      - "  5. Agregar entrada en Historial de Ejecución"
+    acciones: ["Para cada fase del plan: 1. Anunciar inicio de fase", "2. Para cada tarea: [PENDIENTE]  [EN_PROGRESO]", "3. Ejecutar pasos, marcar [ ]  [X] al completar", "4. Al completar tarea: [EN_PROGRESO]  [EJECUTADA]", "5. Agregar entrada en Historial de Ejecución"]
     si_error:
       cualquier_error:
         accion: "DETENER inmediatamente"
@@ -83,28 +77,18 @@ proceso:
 
   - paso: "Validar Criterios de Aceptación"
     obligatorio: true
-    acciones:
-      - "Para cada criterio de aceptación:"
-      - "  1. Verificar cumplimiento"
-      - "  2. Marcar [ ]  [X] en plan Y en HU original"
+    acciones: ["Para cada criterio de aceptación: 1. Verificar cumplimiento", "2. Marcar [ ]  [X] en plan Y en HU original"]
     si_error:
       criterio_no_cumplido: " DETENER. Criterio [X] no cumplido"
 
   - paso: "Confirmación de Commit"
     obligatorio: true
     condicion: "si auto_commit=false"
-    acciones:
-      - "Mostrar resumen de cambios"
-      - "Preguntar: ¿Proceder con commit?"
-      - "Si NO: pausar para revisión"
-      - "Si SÍ: sugerir >generar_commit"
+    acciones: ["Mostrar resumen de cambios", "Preguntar: ¿Proceder con commit?", "Si NO: pausar para revisión", "Si SÍ: sugerir >generar_commit"]
 
   - paso: "Finalización"
     obligatorio: true
-    acciones:
-      - "Actualizar Metadata del plan: Estado  COMPLETADO"
-      - "Cambiar estado HU a [X] Completada en {{archivos.backlog}}"
-      - "Agregar entrada final en Historial de Ejecución"
+    acciones: ["Actualizar Metadata del plan: Estado  COMPLETADO", "Cambiar estado HU a [X] Completada en {{archivos.backlog}}", "Agregar entrada final en Historial de Ejecución"]
 
 actualizacion_tiempo_real:
   descripcion: "Plan se actualiza conforme se ejecuta para permitir retomar si se interrumpe"

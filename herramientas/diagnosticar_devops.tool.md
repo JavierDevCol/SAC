@@ -61,6 +61,11 @@ areas_evaluacion:
     niveles: {1: Silos, 2: Colaboración reactiva, 3: Ownership compartido, 4: Equipos autónomos, 5: Excelencia}
 
 proceso:
+  - paso: "Inicialización de Parámetros"
+    obligatorio: true
+    acciones: ["Establecer valores por defecto para parámetros opcionales no especificados: areas=[cicd, iac, observabilidad, seguridad, cultura], nivel_detalle='completo'"]
+    nota: "Garantiza evaluación correcta de condiciones en pasos posteriores"
+
   - paso: "Recolección de Contexto"
     obligatorio: true
     acciones: [Escanear repo, Identificar CI/CD, Detectar IaC, Analizar docs]

@@ -20,7 +20,7 @@ mandatory:
   - instruccion: "ADRs INMUTABLES - nunca modificar existentes, crear nuevos que superseden"
   - instruccion: "Numeración secuencial sin saltos (001, 002, 003...)"
   - instruccion: "Un ADR por decisión - no mezclar múltiples decisiones"
-  - instruccion: "Si incluir_diagrama=true, seguir {{reglas.mermaid}}"
+  - instruccion: "SIEMPRE seguir {{reglas.mermaid}} para diagramas, EXCEPTO si incluir_diagrama=false explícitamente"
   - instruccion: "Slug máximo 50 caracteres, kebab-case"
   - instruccion: "Solo archivos Markdown (.md), sin HTML en Mermaid"
 
@@ -76,6 +76,11 @@ plantillas:
   custom: {desc: "Personalizado por usuario", ruta: "Definida en runtime"}
 
 proceso:
+  - paso: "Inicialización de Parámetros"
+    obligatorio: true
+    acciones: ["Establecer valores por defecto para parámetros opcionales no especificados: formato='nygard', estado='aceptado', incluir_diagrama=true"]
+    nota: "Este paso garantiza que las condiciones en mandatory se evalúen correctamente"
+
   - paso: "Carga de Configuración"
     obligatorio: true
     acciones: ["Cargar {{project_root}}/.SAC/CONFIG_INIT.yaml", "Extraer variables (idioma, rutas)"]

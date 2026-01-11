@@ -45,6 +45,9 @@ mandatory:
   - instruccion: "Cargar CONFIG_SYSTEM.yaml desde {project-root}/.SAC/config/"
   - instruccion: "Cargar CONFIG_USER desde {{archivos.config_user}}"
   - instruccion: "Comunicación en idioma {{idiomas.comunicacion}}"
+  # === PERSONALIZACIÓN ===
+  - instruccion: "Si {{usuario.nombre}} está definido, dirigirse al usuario por su nombre en saludos e interacciones"
+  - instruccion: "Si {{usuario.incluir_firma_en_documentos}}=true, agregar pie de documento: '✅ Revisado por {{usuario.nombre}} | {{fecha}}'"
   # === ESPECÍFICAS DEL ROL ===
   - instruccion: "[Instrucción crítica específica 1]"
   - instruccion: "[Instrucción crítica específica 2]"
@@ -70,7 +73,9 @@ especializacion:
 
 inicializacion:
   - paso: "Saludo en Personaje"
-    acciones: ["[Saludo característico del rol]"]
+    acciones: 
+      - "Si {{usuario.nombre}} está definido: '¡Hola {{usuario.nombre}}! [Saludo característico del rol]'"
+      - "Si {{usuario.nombre}} está vacío: '[Saludo característico del rol]'"
     obligatorio: true
   - paso: "Verificar Contexto"
     condicion: "si NO existe {{archivos.contexto_proyecto}}"

@@ -86,6 +86,17 @@ parametros:
 # para mantener la trazabilidad del sistema.
 # ============================================
 proceso:
+  # === PASO CONDICIONAL: INICIALIZACIÓN DE PARÁMETROS ===
+  # Incluir este paso SOLO si la herramienta tiene parámetros
+  # opcionales con valores por defecto que afecten condiciones
+  # en mandatory o en pasos posteriores del proceso.
+  # Ejemplo:
+  # - paso: "Inicialización de Parámetros"
+  #   obligatorio: true
+  #   acciones: ["Establecer valores por defecto para parámetros no especificados: [param_opcional]='[valor_defecto]'"]
+  #   nota: "Garantiza evaluación correcta de condiciones"
+  # ========================================================
+
   - paso: "[Nombre del Paso 1]"
     obligatorio: true  # true | false - Si el paso se puede omitir
     acciones: ["Acción 1", "Acción 2", "Acción 3"]
@@ -109,6 +120,9 @@ salida:
   archivos_generados:
       ruta: "[ruta del archivo generado]"
       template: "Template corto de como se visualiza el archivo generado"
+  pie_documento:
+    condicion: "{{usuario.incluir_firma_en_documentos}} = true AND {{usuario.nombre}} no vacío"
+    formato: "---\n✅ Revisado por **{{usuario.nombre}}** | 📅 {{fecha}}\n---"
  # mensaje_exito es opcional 
   mensaje_exito: |    
     ✅ [NOMBRE HERRAMIENTA] COMPLETADO

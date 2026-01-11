@@ -47,6 +47,11 @@ estructura_fases:
   fase_5: "Testing (unitarios, integración)"
 
 proceso:
+  - paso: "Inicialización de Parámetros"
+    obligatorio: true
+    acciones: ["Establecer valores por defecto para parámetros opcionales no especificados: incluir_migraciones=true, incluir_rollback=true"]
+    nota: "Garantiza evaluación correcta de condiciones en pasos posteriores"
+
   - paso: "Cargar HU y Contexto"
     obligatorio: true
     acciones: ["Buscar HU en {{archivos.backlog}}", "Verificar estado [A] Aprobada", "Cargar refinamiento y {{archivos.contexto_proyecto}}"]

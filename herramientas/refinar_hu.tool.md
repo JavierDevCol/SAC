@@ -44,6 +44,11 @@ criterios_smart:
   T: "Temporal - condiciones de tiempo"
 
 proceso:
+  - paso: "Inicialización de Parámetros"
+    obligatorio: true
+    acciones: ["Establecer valores por defecto para parámetros opcionales no especificados: formato_estimacion='ambos', nivel_detalle='medio', incluir_riesgos=true, generar_tareas=true, incluir_testing=true"]
+    nota: "Garantiza evaluación correcta de condiciones en pasos posteriores"
+
   - paso: "Detectar Modo de Operación"
     obligatorio: true
     acciones: ["Buscar refinamiento existente en {{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md", "Si existe con feedback pendiente  MODO_AJUSTE", "Si no existe  MODO_NUEVO"]

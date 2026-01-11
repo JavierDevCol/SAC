@@ -38,6 +38,11 @@ veredictos:
   rechazada: {estado: "[B] Bloqueada", siguiente: "Requiere rediseño significativo"}
 
 proceso:
+  - paso: "Inicialización de Parámetros"
+    obligatorio: true
+    acciones: ["Establecer valores por defecto para parámetros opcionales no especificados: nivel_validacion='completo'"]
+    nota: "Garantiza evaluación correcta de condiciones en pasos posteriores"
+
   - paso: "Cargar HU y Contexto"
     obligatorio: true
     acciones: ["Buscar HU en {{archivos.backlog}}", "Verificar estado [R] Refinada", "Cargar refinamiento y reglas arquitectónicas"]

@@ -8,6 +8,7 @@
 # === INFORMACIÓN DEL USUARIO ===
 usuario:
   nombre: ""                          # Tu nombre para personalización
+  incluir_firma_en_documentos: true   # Agregar pie "✅ Revisado por [nombre]" en archivos generados
 
 # === PREFERENCIAS DE IDIOMA ===
 idiomas:

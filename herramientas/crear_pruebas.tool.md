@@ -35,6 +35,11 @@ tipos_prueba:
   carga: {herramientas: "JMeter o Gatling", output: "Plan de pruebas (no código)"}
 
 proceso:
+  - paso: "Inicialización de Parámetros"
+    obligatorio: true
+    acciones: ["Establecer valores por defecto para parámetros opcionales no especificados: tipo_test='UNITARIO', framework_test='junit5', nivel_cobertura='COMPLETO', cobertura_objetivo=80"]
+    nota: "Garantiza evaluación correcta de condiciones en pasos posteriores"
+
   - paso: "Análisis Automático del Código"
     obligatorio: true
     acciones: ["Identificar métodos públicos testeables", "Analizar parámetros, retornos y excepciones", "Detectar dependencias para mocking", "Calcular complejidad"]

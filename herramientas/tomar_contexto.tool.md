@@ -47,6 +47,11 @@ deteccion_tipo:
   multi: "0 marcadores en raíz + 2+ subcarpetas con marcadores"
 
 proceso:
+  - paso: "Inicialización de Parámetros"
+    obligatorio: true
+    acciones: ["Establecer valores por defecto para parámetros opcionales no especificados: profundidad_analisis='completo', incluir_dependencias=true, incluir_devops=true, detectar_patrones=true"]
+    nota: "Garantiza evaluación correcta de condiciones en pasos posteriores"
+
   - paso: "Detectar Tipo de Workspace"
     obligatorio: true
     acciones: ["Buscar marcadores en raíz según marcadores_proyecto", "Si 1+ en raíz  MODO_UNICO", "Si 0 en raíz  buscar en subcarpetas  MODO_MULTI si 2+"]

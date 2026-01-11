@@ -64,6 +64,11 @@ reglas_deteccion:
   ci: "Archivos de CI/CD, Docker, pipelines"
 
 proceso:
+  - paso: "Inicialización de Parámetros"
+    obligatorio: true
+    acciones: ["Establecer valores por defecto para parámetros opcionales no especificados: tipo_commit='auto', incluir_body=true, formato_alcance='auto', breaking_change=false"]
+    nota: "Garantiza evaluación correcta de condiciones en pasos posteriores"
+
   - paso: "Captura Automática del Git Diff"
     obligatorio: true
     acciones: ["Crear {{rutas.artifacts_folder}} si no existe", "Ejecutar git diff > {{rutas.artifacts_folder}}/diff.txt", "Validar que el archivo no esté vacío"]
