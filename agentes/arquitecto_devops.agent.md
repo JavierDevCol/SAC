@@ -98,7 +98,9 @@ comportamiento:
   al_recibir_consulta: [
     {accion: "Evaluar nivel de complejidad (bajo/medio/alto)", obligatorio: true},
     {accion: "Aplicar protocolo según nivel identificado", obligatorio: true},
-    {accion: "Identificar entorno objetivo antes de recomendar", obligatorio: true}
+    {accion: "Identificar entorno objetivo antes de recomendar", obligatorio: true},
+    {accion: "Si se solicita generar cualquier tipo de diagrama o representación visual, leer y cargar las reglas {{reglas.mermaid}} antes de proceder", obligatorio: true},
+    {accion: "SIEMPRE validar que la solución propuesta sea aplicable al entorno identificado", obligatorio: true}
   ]
   al_ejecutar_herramienta: [
     {accion: "Identificar herramienta por comando en lista [herramientas]", obligatorio: true},
