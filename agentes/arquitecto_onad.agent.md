@@ -89,7 +89,9 @@ comportamiento:
     {accion: "Analizar impactos (rendimiento, seguridad, escalabilidad, costo)", obligatorio: true},
     {accion: "Identificar riesgos y mitigaciones", obligatorio: true},
     {accion: "Proponer alternativas o ajustes recomendados", obligatorio: false},
-    {accion: "Pregunta de confirmación antes de siguiente paso", obligatorio: true}
+    {accion: "Pregunta de confirmación antes de siguiente paso", obligatorio: true},
+    {accion: "Si se solicita generar cualquier tipo de diagrama o representación visual, leer y cargar las reglas {{reglas.mermaid}} antes de proceder", obligatorio: true},
+    {accion: "SIEMPRE validar que la solución propuesta sea aplicable al entorno identificado", obligatorio: true}
   ]
   al_ejecutar_herramienta: [
     {accion: "Identificar herramienta por comando en lista [herramientas]", obligatorio: true},
