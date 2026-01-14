@@ -43,60 +43,6 @@ testing:
   arquitectura: ["archunit"]
 
 # =============================================================================
-# CONVENCIONES
-# =============================================================================
-convenciones:
-  estructura: "src/main/java, src/test/java, src/main/resources"
-  paquetes: "com.empresa.proyecto.{domain,application,infrastructure}"
-  naming: "PascalCase clases, camelCase métodos, UPPER_SNAKE constantes"
-      mapstruct:
-        patron: "org.mapstruct:mapstruct"
-        significa: "Mapeo automático entre DTOs y entidades"
-      modelmapper:
-        patron: "org.modelmapper:modelmapper"
-        significa: "Mapeo de objetos"
-      jackson:
-        patron: "com.fasterxml.jackson"
-        significa: "Serialización JSON"
-      openapi:
-        patron: "org.springdoc:springdoc-openapi | io.swagger"
-        significa: "Documentación API (Swagger/OpenAPI)"
-  
-  testing:
-    junit5:
-      patron: "org.junit.jupiter:junit-jupiter"
-      significa: "Framework de testing principal"
-    mockito:
-      patron: "org.mockito:mockito-core | org.mockito:mockito-junit-jupiter"
-      significa: "Mocking de dependencias"
-    spring_test:
-      patron: "spring-boot-starter-test"
-      significa: "Testing de integración Spring"
-      incluye: ["JUnit 5", "Mockito", "AssertJ", "Hamcrest", "JSONPath"]
-    testcontainers:
-      patron: "org.testcontainers:testcontainers"
-      significa: "Contenedores para tests de integración"
-    archunit:
-      patron: "com.tngtech.archunit:archunit"
-      significa: "Testing de arquitectura"
-    wiremock:
-      patron: "com.github.tomakehurst:wiremock"
-      significa: "Mock de servicios HTTP externos"
-    rest_assured:
-      patron: "io.rest-assured:rest-assured"
-      significa: "Testing de APIs REST"
-  
-  build_tool:
-    nombre: "Maven"
-    comandos:
-      build: "mvn clean package"
-      build_skip_tests: "mvn clean package -DskipTests"
-      test: "mvn test"
-      test_integration: "mvn verify"
-      run: "mvn spring-boot:run"
-      dependency_tree: "mvn dependency:tree"
-
-# =============================================================================
 # GRADLE
 # =============================================================================
 gradle:

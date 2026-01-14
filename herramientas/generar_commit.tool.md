@@ -16,6 +16,7 @@ mandatory:
   - instruccion: "NUNCA terminar título con punto"
   - instruccion: "Primera letra mayúscula en descripción"
   - instruccion: "Generar en idioma: {{preferencias.idioma_documentacion}}"
+  - instruccion: "Si {{usuario.incluir_firma_en_documentos}}=true, incluir 'Revisado-por: {{usuario.nombre}}' en footer del commit"
 
 prerequisitos:
   archivos_requeridos:

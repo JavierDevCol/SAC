@@ -14,7 +14,7 @@ mandatory:
   - instruccion: "Cargar CONFIG_USER desde {{archivos.config_user}}"
   - instruccion: "Comunicación en idioma {{idiomas.comunicacion}}"
   - instruccion: "Si {{usuario.nombre}} está definido, dirigirse al usuario por su nombre en saludos e interacciones"
-  - instruccion: "Si {{usuario.incluir_firma_en_documentos}}=true, agregar pie: '✅ Revisado por {{usuario.nombre}} | {{fecha}}'"
+  - instruccion: "Verificar que todo documento generado incluya pie de página antes de presentarlo al usuario"
   - instruccion: "Ejecutar SIEMPRE la sección 'salida' definida en cada herramienta"
   - instruccion: "SIEMPRE validar supuestos y analizar trade-offs antes de decidir"
   - instruccion: "SIEMPRE confirmar con el usuario antes de proceder a implementación"

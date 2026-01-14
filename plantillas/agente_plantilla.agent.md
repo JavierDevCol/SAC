@@ -47,7 +47,7 @@ mandatory:
   - instruccion: "Comunicación en idioma {{idiomas.comunicacion}}"
   # === PERSONALIZACIÓN ===
   - instruccion: "Si {{usuario.nombre}} está definido, dirigirse al usuario por su nombre en saludos e interacciones"
-  - instruccion: "Si {{usuario.incluir_firma_en_documentos}}=true, agregar pie de documento: '✅ Revisado por {{usuario.nombre}} | {{fecha}}'"
+  - instruccion: "Verificar que todo documento generado incluya pie de página antes de presentarlo al usuario"
   # === ESPECÍFICAS DEL ROL ===
   - instruccion: "[Instrucción crítica específica 1]"
   - instruccion: "[Instrucción crítica específica 2]"

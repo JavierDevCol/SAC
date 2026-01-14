@@ -5,7 +5,7 @@
 # SAC - Sistema Agéntico COCHAS
 # ============================================
 
-version: "6.6"
+version: "6.7"
 
 # ============================================
 # CARPETAS PRINCIPALES
@@ -93,6 +93,6 @@ reglas:
   python: "{project-root}/.SAC/reglas/python.rules.md"
   dotnet: "{project-root}/.SAC/reglas/dotnet.rules.md"
   go: "{project-root}/.SAC/reglas/go.rules.md"
-  rust: "{project-root}/.SAC/reglas/rust.rules.md"
   # Otras reglas
   mermaid: "{project-root}/.SAC/reglas/mermaid.rules.md"
+  patrones_diseno: "{project-root}/.SAC/reglas/patrones_diseno.rules.md"

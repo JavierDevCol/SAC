@@ -17,6 +17,7 @@ mandatory:
   - instruccion: "Generar en idioma: {{preferencias.idioma_documentacion}}"
   - instruccion: "ACTUALIZAR plan EN TIEMPO REAL: [ ]  [X], estados de tareas"
   - instruccion: "Estados de tareas: [PENDIENTE]  [EN_PROGRESO]  [EJECUTADA]"
+  - instruccion: "Si {{usuario.incluir_firma_en_documentos}}=true, agregar pie: '---\n✅ Revisado por **{{usuario.nombre}}** | 📅 {{fecha}}\n---'"
 
 prerequisitos:
   archivos_requeridos:
@@ -103,6 +104,9 @@ salida:
     - ruta: "{{artifacts.planes_folder}}/[ID-HU]_plan_implementacion.md"
     - ruta: "{{archivos.backlog}}"
     - descripcion: "Archivos de código según plan"
+  pie_documento:
+    condicion: "{{usuario.incluir_firma_en_documentos}} = true AND {{usuario.nombre}} no vacío"
+    formato: "---\n✅ Revisado por **{{usuario.nombre}}** | 📅 {{fecha}}\n---"
   mensaje_exito: |
      IMPLEMENTACIÓN COMPLETADA: [ID-HU]
     

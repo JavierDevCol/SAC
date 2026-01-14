@@ -59,63 +59,6 @@ testing:
   component: ["@testing-library/react", "@testing-library/vue"]
 
 # =============================================================================
-# CONVENCIONES
-# =============================================================================
-convenciones:
-  estructura: "src/, components/, pages/ | app/, lib/, utils/"
-  naming: "camelCase archivos, PascalCase componentes, kebab-case rutas"
-  
-  vue:
-    detectar: "dependencies.vue"
-    version: "dependencies.vue"
-    ejemplo: '"vue": "^3.4.0"'
-    variantes:
-      nuxt:
-        detectar: "dependencies.nuxt"
-        significa: "Nuxt - Vue con SSR/SSG"
-        version: "dependencies.nuxt"
-        config: "nuxt.config.ts | nuxt.config.js"
-      vite_vue:
-        detectar: "devDependencies.@vitejs/plugin-vue"
-        significa: "Vue con Vite como bundler"
-    
-    dependencias_comunes:
-      vue_router: "vue-router → Routing"
-      pinia: "pinia → State management (recomendado Vue 3)"
-      vuex: "vuex → State management (legacy)"
-      vueuse: "@vueuse/core → Composables utilities"
-  
-  angular:
-    detectar: "dependencies.@angular/core"
-    version: "dependencies.@angular/core"
-    ejemplo: '"@angular/core": "^17.0.0"'
-    config: "angular.json"
-    dependencias_comunes:
-      angular_router: "@angular/router → Routing"
-      ngrx: "@ngrx/store → State management"
-      angular_material: "@angular/material → UI Components"
-      rxjs: "rxjs → Programación reactiva"
-  
-  svelte:
-    detectar: "devDependencies.svelte"
-    version: "devDependencies.svelte"
-    variantes:
-      sveltekit:
-        detectar: "devDependencies.@sveltejs/kit"
-        significa: "SvelteKit - Full Stack Svelte"
-        config: "svelte.config.js"
-  
-  solid:
-    detectar: "dependencies.solid-js"
-    version: "dependencies.solid-js"
-    significa: "SolidJS - Reactivo sin Virtual DOM"
-  
-  astro:
-    detectar: "dependencies.astro"
-    significa: "Astro - Content-focused static sites"
-    config: "astro.config.mjs"
-
-# =============================================================================
 # FRAMEWORKS BACKEND
 # =============================================================================
 frameworks_backend:

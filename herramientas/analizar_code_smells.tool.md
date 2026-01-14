@@ -14,6 +14,7 @@ mandatory:
   - instruccion: "Proponer solución específica para cada smell"
   - instruccion: "Priorizar por impacto en mantenibilidad"
   - instruccion: "Generar en idioma: {{preferencias.idioma_documentacion}}"
+  - instruccion: "Si {{usuario.incluir_firma_en_documentos}}=true, agregar pie: '---\n✅ Revisado por **{{usuario.nombre}}** | 📅 {{fecha}}\n---'"
 
 catalogo_smells:
   bloaters:
@@ -62,6 +63,9 @@ proceso:
 salida:
   archivos_generados:
     ruta: "{{artifacts.code_smells_folder}}/code_smells_[timestamp].md"
+  pie_documento:
+    condicion: "{{usuario.incluir_firma_en_documentos}} = true AND {{usuario.nombre}} no vacío"
+    formato: "---\n✅ Revisado por **{{usuario.nombre}}** | 📅 {{fecha}}\n---"
   mensaje_exito: |
      ANÁLISIS COMPLETADO
       Alta: [N] |  Media: [N] |  Baja: [N]

@@ -11,6 +11,7 @@
 # .cochas/session/exports/
 
 .github/
+.vscode/
 
 __pycache__/
 *.pyc

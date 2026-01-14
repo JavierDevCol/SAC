@@ -14,6 +14,7 @@ mandatory:
   - instruccion: "NUNCA aceptar criterios de aceptación no medibles"
   - instruccion: "Usar desglose VERTICAL (end-to-end), nunca horizontal"
   - instruccion: "Generar en idioma: {{preferencias.idioma_documentacion}}"
+  - instruccion: "Si {{usuario.incluir_firma_en_documentos}}=true, agregar pie: '---\n✅ Revisado por **{{usuario.nombre}}** | 📅 {{fecha}}\n---'"
 
 prerequisitos:
   archivos_requeridos:
@@ -97,6 +98,9 @@ salida:
     ruta: "{{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento_[concepto].md"
   archivos_actualizados: ["{{archivos.backlog}}"]
   estado_hu_final: "[R] Refinada"
+  pie_documento:
+    condicion: "{{usuario.incluir_firma_en_documentos}} = true AND {{usuario.nombre}} no vacío"
+    formato: "---\n✅ Revisado por **{{usuario.nombre}}** | 📅 {{fecha}}\n---"
   mensaje_exito: |
      REFINAMIENTO COMPLETADO: [ID-HU]
      Artefacto: {{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento_[concepto].md

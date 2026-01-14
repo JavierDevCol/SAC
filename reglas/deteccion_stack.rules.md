@@ -37,11 +37,6 @@ ecosistemas:
     extensiones: [".go"]
     reglas: "go.rules.md"
   
-  rust:
-    marcadores: ["Cargo.toml"]
-    extensiones: [".rs"]
-    reglas: "rust.rules.md"
-  
   php:
     marcadores: ["composer.json"]
     extensiones: [".php"]

@@ -13,6 +13,7 @@ mandatory:
   - instruccion: "Priorizar backlog por impacto/esfuerzo"
   - instruccion: "Incluir seguridad en cada área"
   - instruccion: "Generar en idioma: {{preferencias.idioma_documentacion}}"
+  - instruccion: "Si {{usuario.incluir_firma_en_documentos}}=true, agregar pie: '---\n✅ Revisado por **{{usuario.nombre}}** | 📅 {{fecha}}\n---'"
 
 prerequisitos:
   archivos_requeridos:
@@ -95,6 +96,9 @@ salida:
       🎯 Top 3 Quick Wins: [lista priorizada]
   formato_matriz:
     emojis: {1: 🔴, 2: 🟠, 3: 🟡, 4: 🟢, 5: ⭐}
+  pie_documento:
+    condicion: "{{usuario.incluir_firma_en_documentos}} = true AND {{usuario.nombre}} no vacío"
+    formato: "---\n✅ Revisado por **{{usuario.nombre}}** | 📅 {{fecha}}\n---"
   mensaje_exito: |
     ✅ DIAGNÓSTICO DEVOPS COMPLETADO
     

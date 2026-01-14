@@ -1,3 +1,5 @@
+# Reglas de Generación: MermaidJS
+
 ```yaml
 # ============================================
 # REGLAS MERMAID - ESTÁNDARES TÉCNICOS Y VISUALES

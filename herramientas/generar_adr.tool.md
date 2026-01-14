@@ -18,6 +18,7 @@ mandatory:
   - instruccion: "Validar formato ADR: nygard | madr | y-statement | custom"
   - instruccion: "Título único - no duplicados en carpeta ADRs"
   - instruccion: "ADRs INMUTABLES - nunca modificar existentes, crear nuevos que superseden"
+  - instruccion: "Si {{usuario.incluir_firma_en_documentos}}=true, agregar pie: '---\n✅ Revisado por **{{usuario.nombre}}** | 📅 {{fecha}}\n---'"
   - instruccion: "Numeración secuencial sin saltos (001, 002, 003...)"
   - instruccion: "Un ADR por decisión - no mezclar múltiples decisiones"
   - instruccion: "SIEMPRE seguir {{reglas.mermaid}} para diagramas, EXCEPTO si incluir_diagrama=false explícitamente"
@@ -138,6 +139,9 @@ salida:
       - Fecha: [fecha]
       ## Contexto / Decisión / Consecuencias
   archivos_actualizados: ["{{adr_location}}/README.md"]
+  pie_documento:
+    condicion: "{{usuario.incluir_firma_en_documentos}} = true AND {{usuario.nombre}} no vacío"
+    formato: "---\n✅ Revisado por **{{usuario.nombre}}** | 📅 {{fecha}}\n---"
   mensaje_exito: |
      ADR GENERADO: [NNN]-[slug].md
      Formato: [formato] | Estado: [estado] | Diagrama: [sí/no]

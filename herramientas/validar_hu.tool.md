@@ -14,6 +14,7 @@ mandatory:
   - instruccion: "NO aprobar HU que violen principios arquitectónicos"
   - instruccion: "Documentar razones de rechazo o ajustes requeridos"
   - instruccion: "Generar en idioma: {{preferencias.idioma_documentacion}}"
+  - instruccion: "Si {{usuario.incluir_firma_en_documentos}}=true, agregar pie: '---\n✅ Revisado por **{{usuario.nombre}}** | 📅 {{fecha}}\n---'"
 
 prerequisitos:
   archivos_requeridos:
@@ -75,6 +76,9 @@ proceso:
 
 salida:
   archivos_actualizados: ["{{archivos.backlog}}", "{{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md (si AJUSTES)"]
+  pie_documento:
+    condicion: "{{usuario.incluir_firma_en_documentos}} = true AND {{usuario.nombre}} no vacío"
+    formato: "---\n✅ Revisado por **{{usuario.nombre}}** | 📅 {{fecha}}\n---"
   mensaje_aprobada: |
      HU APROBADA: [ID-HU]
      Validaciones:  CA |  Arquitectura |  Viabilidad

@@ -16,6 +16,7 @@ mandatory:
   - instruccion: "Generar en idioma: {{preferencias.idioma_documentacion}}"
   - instruccion: "Usar plantilla {{plantillas.plan_implementacion}}"
   - instruccion: "Incluir TODOS los criterios de aceptación de la HU en Fase Final"
+  - instruccion: "Si {{usuario.incluir_firma_en_documentos}}=true, agregar pie: '---\n✅ Revisado por **{{usuario.nombre}}** | 📅 {{fecha}}\n---'"
 
 prerequisitos:
   archivos_requeridos:
@@ -85,6 +86,9 @@ salida:
     plantilla: "{{plantillas.plan_implementacion}}"
   archivos_actualizados: ["{{archivos.backlog}}"]
   estado_hu_final: "[P] Planificada"
+  pie_documento:
+    condicion: "{{usuario.incluir_firma_en_documentos}} = true AND {{usuario.nombre}} no vacío"
+    formato: "---\n✅ Revisado por **{{usuario.nombre}}** | 📅 {{fecha}}\n---"
   mensaje_exito: |
      PLAN GENERADO: [ID-HU]
      Artefacto: {{artifacts.planes_folder}}/[ID-HU]_plan_implementacion.md
