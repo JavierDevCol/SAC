@@ -310,17 +310,97 @@ mapeo_smells:
     razon: "Extraer variación a puntos de extensión"
 
 # =============================================================================
-# INTEGRACIÓN CON HERRAMIENTAS
+# INDICADORES DE DETECCIÓN (para agentes)
 # =============================================================================
-integracion:
-  herramientas_aplicables:
-    - comando: ">analizar_code_smells"
-      uso: "Sugerir patrón según smell detectado usando mapeo_smells"
-    - comando: ">planificar_hu"
-      uso: "Recomendar patrones según complejidad de la solución"
-    - comando: ">generar_adr"
-      uso: "Documentar decisión de usar un patrón específico"
+indicadores_deteccion:
+  descripcion: "Patrones regex y estructurales para detectar patrones en código"
+  herramientas: ["grep_search", "semantic_search", "file_search"]
   
+  patrones_por_nombre_clase:
+    # Buscar con: grep_search("Factory|Builder|Singleton|Adapter|...", isRegexp=true)
+    alta_confianza:
+      - {patron: "factory_method", regex: "Factory|FactoryMethod|Creator", archivos: "**/*[Ff]actory*"}
+      - {patron: "abstract_factory", regex: "AbstractFactory|FactoryProvider", archivos: "**/*[Ff]actory*"}
+      - {patron: "builder", regex: "Builder|Director", archivos: "**/*[Bb]uilder*"}
+      - {patron: "singleton", regex: "getInstance|_instance|INSTANCE", archivos: "*"}
+      - {patron: "adapter", regex: "Adapter|Wrapper", archivos: "**/*[Aa]dapter*|**/*[Ww]rapper*"}
+      - {patron: "decorator", regex: "Decorator|Wrapper", archivos: "**/*[Dd]ecorator*"}
+      - {patron: "facade", regex: "Facade|Gateway", archivos: "**/*[Ff]acade*|**/*[Gg]ateway*"}
+      - {patron: "proxy", regex: "Proxy|Surrogate", archivos: "**/*[Pp]roxy*"}
+      - {patron: "observer", regex: "Observer|Listener|Subscriber|EventEmitter", archivos: "**/*[Oo]bserver*|**/*[Ll]istener*"}
+      - {patron: "strategy", regex: "Strategy|Policy", archivos: "**/*[Ss]trategy*|**/*[Pp]olicy*"}
+      - {patron: "command", regex: "Command|Handler|Executor", archivos: "**/*[Cc]ommand*|**/*[Hh]andler*"}
+      - {patron: "repository", regex: "Repository|Repo|DAO", archivos: "**/*[Rr]epository*|**/*[Rr]epo*|**/*DAO*"}
+    
+    media_confianza:
+      - {patron: "state", regex: "State|Context", requiere_validacion: "Verificar máquina de estados"}
+      - {patron: "template_method", regex: "Template|Abstract.*Step", requiere_validacion: "Verificar herencia con métodos abstractos"}
+      - {patron: "composite", regex: "Composite|Component|Leaf|Node", requiere_validacion: "Verificar estructura de árbol"}
+  
+  patrones_por_estructura_carpetas:
+    # Buscar con: file_search("**/domain/**") o list_dir
+    arquitectura:
+      - {patron: "clean_architecture", indicadores: ["domain/", "application/", "infrastructure/", "usecases/"]}
+      - {patron: "hexagonal", indicadores: ["ports/", "adapters/", "driven/", "driving/"]}
+      - {patron: "mvc", indicadores: ["controllers/", "models/", "views/"]}
+      - {patron: "mvvm", indicadores: ["viewmodels/", "views/", "models/"]}
+      - {patron: "cqrs", indicadores: ["commands/", "queries/", "handlers/"]}
+      - {patron: "ddd", indicadores: ["entities/", "valueobjects/", "aggregates/", "repositories/"]}
+    
+    organizacion:
+      - {patron: "feature_based", indicadores: ["features/*/components", "features/*/hooks", "features/*/services"]}
+      - {patron: "layer_based", indicadores: ["src/services/", "src/controllers/", "src/models/", "src/utils/"]}
+  
+  patrones_por_codigo:
+    # Buscar con: grep_search dentro de archivos específicos
+    singleton:
+      java: "private static .* instance|getInstance\\(\\)"
+      python: "_instance|__new__|@singleton"
+      typescript: "private static instance|getInstance\\(\\)"
+      csharp: "private static readonly .* _instance|Lazy<"
+    
+    observer:
+      all: "subscribe|unsubscribe|notify|emit|addEventListener|removeEventListener|on\\(|off\\("
+    
+    dependency_injection:
+      java: "@Inject|@Autowired|@Resource"
+      typescript: "@Injectable|@Inject|constructor\\(.*private.*service"
+      python: "@inject|Depends\\("
+      csharp: "\\[Inject\\]|IServiceProvider|AddScoped|AddTransient|AddSingleton"
+
+  algoritmo_deteccion:
+    paso_1:
+      nombre: "Buscar por nombre de clase/archivo"
+      herramienta: "file_search"
+      accion: "Buscar archivos que coincidan con patrones de alta_confianza"
+    paso_2:
+      nombre: "Buscar por estructura de carpetas"
+      herramienta: "list_dir + file_search"
+      accion: "Detectar patrones arquitectónicos por organización"
+    paso_3:
+      nombre: "Validar por código"
+      herramienta: "grep_search + read_file"
+      accion: "Confirmar implementación real del patrón"
+    paso_4:
+      nombre: "Asignar confianza"
+      accion: |
+        SI nombre_clase + estructura + código coinciden → confianza: alta
+        SI solo nombre_clase coincide → confianza: media
+        SI solo estructura coincide → confianza: baja (requiere validación manual)
+
+  output_deteccion:
+    formato: |
+      patrones_detectados:
+        - patron: "[nombre]"
+          categoria: "[creacional|estructural|comportamiento|arquitectura]"
+          confianza: "[alta|media|baja]"
+          ubicaciones:
+            - archivo: "[path]"
+              linea: [numero]
+              evidencia: "[fragmento de código]"
+          referencia: "[URL de patrones_diseno.rules.md]"
+
+
   formato_sugerencia: |
     📚 **Patrón sugerido:** {nombre}
     **Problema que resuelve:** {problema}

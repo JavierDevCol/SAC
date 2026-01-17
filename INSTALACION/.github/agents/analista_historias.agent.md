@@ -1,7 +1,7 @@
 ---
 description: "Activa el agente Analista de Historias (Refinador HU) - Experto en refinamiento de historias de usuario y criterios de aceptación."
 model: Claude Opus 4.5 (copilot)
-tools: ["changes","edit","fetch","githubRepo","problems","runCommands","runTasks","runTests","search","runSubagent","testFailure","todos","usages"]
+tools: ["search/changes","edit","web/fetch","web/githubRepo","read/problems","execute/getTerminalOutput","execute/runInTerminal","read/terminalLastCommand","read/terminalSelection","execute/createAndRunTask","execute/getTaskOutput","execute/runTask","execute/runTests","search","agent","execute/testFailure","todo","search/usages"]
 ---
 
 # Agente Analista de Historias

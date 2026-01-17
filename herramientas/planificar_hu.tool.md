@@ -55,7 +55,14 @@ proceso:
 
   - paso: "Cargar HU y Contexto"
     obligatorio: true
-    acciones: ["Buscar HU en {{archivos.backlog}}", "Verificar estado [A] Aprobada", "Cargar refinamiento y {{archivos.contexto_proyecto}}"]
+    acciones: 
+      - "Buscar HU en {{archivos.backlog}}"
+      - "Verificar estado [A] Aprobada"
+      - "Cargar stack del proyecto en {{rutas.artifacts_folder}} o {{artifacts.contextos_folder}}, si existe"
+      - "Cargar refinamiento y {{archivos.contexto_proyecto}}"
+      - "Identificar HUs relacionadas en {{archivos.backlog}} (misma épica, feature o dominio)"
+      - "Detectar componentes reutilizables de HUs ya implementadas [I]"
+      - "Registrar dependencias o conflictos potenciales con HUs en progreso [E]"
     si_error:
       no_aprobada: " HU debe estar aprobada. Ejecutar >validar_hu primero"
 

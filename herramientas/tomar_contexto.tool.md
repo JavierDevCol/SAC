@@ -27,10 +27,7 @@ prerequisitos:
 
 parametros:
   opcionales:
-    - {nombre: profundidad_analisis, tipo: string, valores: [basico, completo, exhaustivo], defecto: completo}
-    - {nombre: incluir_dependencias, tipo: boolean, defecto: true}
-    - {nombre: incluir_devops, tipo: boolean, defecto: true}
-    - {nombre: detectar_patrones, tipo: boolean, defecto: true}
+    - {nombre: profundidad_analisis, tipo: string, valores: [basico, completo, exhaustivo], defecto: exhaustivo}
     - {nombre: nombre_proyecto, tipo: string, descripcion: "Proyecto específico en multi-proyecto"}
     - {nombre: all, tipo: flag, descripcion: "Analizar todos los proyectos"}
     - {nombre: force, tipo: flag, descripcion: "Regenerar aunque exista"}
@@ -50,7 +47,7 @@ deteccion_tipo:
 proceso:
   - paso: "Inicialización de Parámetros"
     obligatorio: true
-    acciones: ["Establecer valores por defecto para parámetros opcionales no especificados: profundidad_analisis='completo', incluir_dependencias=true, incluir_devops=true, detectar_patrones=true"]
+    acciones: ["Establecer valores por defecto para parámetros opcionales no especificados: profundidad_analisis='exhaustivo'"]
     nota: "Garantiza evaluación correcta de condiciones en pasos posteriores"
 
   - paso: "Detectar Tipo de Workspace"
@@ -64,66 +61,109 @@ proceso:
 
   - paso: "Detectar Stack Tecnológico"
     obligatorio: true
-    acciones: ["Identificar lenguaje principal", "Detectar framework y versión", "Listar dependencias principales"]
+    acciones: ["Identificar lenguaje principal", "Detectar framework y versión"]
 
   - paso: "Analizar Arquitectura"
     obligatorio: true
-    acciones: ["Identificar estilo arquitectónico", "Mapear estructura de carpetas", "Detectar componentes principales"]
+    acciones: ["Identificar estilo arquitectónico", "Mapear estructura de carpetas", "Detectar componentes principales", "Si es multirepo/proyecto identificar relaciones entre proyectos/repos como se comunican, etc."]
 
   - paso: "Evaluar DevOps"
     obligatorio: true
     condicion: "incluir_devops=true"
     acciones: ["Buscar Dockerfile, docker-compose", "Detectar CI/CD (GitHub Actions, GitLab CI)", "Identificar IaC"]
 
+  - paso: "Detectar Patrones"
+    obligatorio: true
+    regla_referencia: "{{reglas.patrones_diseno}}"
+    herramientas: ["file_search", "grep_search", "list_dir", "read_file"]
+    acciones:
+      - "Ejecutar {{reglas.patrones_diseno}}.indicadores_deteccion.algoritmo_deteccion"
+      - "Paso 1: file_search para archivos con nombres de patrones (Factory, Builder, Repository...)"
+      - "Paso 2: list_dir + file_search para detectar patrones arquitectónicos por estructura"
+      - "Paso 3: grep_search + read_file para validar implementación real en código"
+      - "Paso 4: Asignar confianza según coincidencias (nombre + estructura + código = alta)"
+      - "SI detecta code smell → consultar {{reglas.patrones_diseno}}.mapeo_smells para sugerir patrón"
+      - "Obtener URL de ejemplo según stack: {{reglas.patrones_diseno}}.urls_por_patron[patron][lenguaje]"
+    output:
+      usar: "{{reglas.patrones_diseno}}.indicadores_deteccion.output_deteccion"
+    validacion:
+      - "Verificar consistencia patrones ↔ stack del proyecto"
+      - "SI confianza = baja → marcar para revisión manual"
+      - "SI no encuentra patrones → reportar 'Sin patrones identificables'"
+      - "SI encuentra anti-patrones → agregar warning con sugerencia de {{reglas.patrones_diseno}}"
+
   - paso: "Generar Scorecard"
     obligatorio: true
     acciones: ["Evaluar: Arquitectura, Stack, Testing, DevOps (1-10)", "Identificar puntos de atención"]
+  
+  - paso: "Generar Diagramas de Estructura, clases, secuencia"
+    obligatorio: true
+    acciones: ["Generar diagramas mermaid", "Seguir estrcitamente los pasos  de creacion de diagramas {{reglas.mermaid}} "]
 
   - paso: "Crear Archivos de Contexto"
     obligatorio: true
+    dependencias: ["Detectar Stack Tecnológico"] 
     acciones_unico:
+      - "Generar Listas detallada de cada componente identificado en el analisis especificando la version de cada uno"
       - "Crear {{rutas.artifacts_folder}} si no existe"
       - "Generar {{archivos.contexto_proyecto}} desde {{plantillas.contexto}}"
-      - "Generar {{archivos.stack_proyecto}} desde {{plantillas.stack_proyecto}}"
+      - "Incluir resumen básico del stack en contexto_proyecto (datos de 'Detectar Stack Tecnológico')"
     acciones_multi:
+      - "Generar Listas detallada de cada componente identificado en el analisis especificando la version de cada uno"
       - "Crear estructura: {{artifacts.contextos_folder}}, {{artifacts.hu_compartidas}}, {{artifacts.hu_folder}}/[proyecto]"
-      - "Por cada proyecto: contexto_proyecto_[nombre].md + stack_proyecto_[nombre].md"
+      - "Por cada proyecto: contexto_proyecto_[nombre].md (incluye resumen básico del stack)"
       - "Detectar relaciones entre proyectos"
       - "Generar {{archivos.workspace_index}} desde {{plantillas.workspace}}"
 
 salida:
-  archivos_unico:
-    - "{{archivos.contexto_proyecto}}"
-    - "{{archivos.stack_proyecto}}"
-  archivos_multi:
-    - "{{archivos.workspace_index}}"
-    - "{{artifacts.contextos_folder}}/contexto_proyecto_[nombre].md"
-    - "{{artifacts.contextos_folder}}/stack_proyecto_[nombre].md"
-  carpetas_multi:
-    - "{{artifacts.contextos_folder}}"
-    - "{{artifacts.hu_compartidas}}"
-    - "{{artifacts.hu_folder}}/[proyecto]"
-  pie_documento:
-    condicion: "{{usuario.incluir_firma_en_documentos}} = true AND {{usuario.nombre}} no vacío"
-    formato: "---\n✅ Revisado por **{{usuario.nombre}}** | 📅 {{fecha}}\n---"
-  mensaje_unico: |
-     CONTEXTO GENERADO
-     {{archivos.contexto_proyecto}} + {{archivos.stack_proyecto}}
-     Scorecard: Arq [X]/10 | Stack [X]/10 | Test [X]/10 | DevOps [X]/10
-  mensaje_multi: |
-     WORKSPACE MULTI-PROYECTO CONFIGURADO
-     workspace.md + [N] contextos generados
-     Comandos: *HU --compartidas | *HU --proyecto=[nombre]
+  descripcion: "Archivos y carpetas generados. Paths definidos en CONFIG_SYSTEM.yaml"
+  
+  modo_unico:
+    carpetas_a_crear:
+      - "{{rutas.artifacts_folder}}"         
+    archivos_a_generar:
+      - path: "{{archivos.contexto_proyecto}}"
+        plantilla: "{{plantillas.contexto}}"
+        datos_requeridos: [arquitectura, componentes, patrones, scorecard, diagramas, stack_basico]
+    mensaje_exito: |
+      ✅ CONTEXTO GENERADO
+      📁 {{archivos.contexto_proyecto}}
+      📊 Scorecard: Arq ${scorecard.arquitectura}/10 | Stack ${scorecard.stack}/10 | Test ${scorecard.testing}/10 | DevOps ${scorecard.devops}/10
+      
+      💡 Para análisis detallado del stack: >tomar_stack
+  
+  modo_multi:
+    carpetas_a_crear:
+      - "{{rutas.artifacts_folder}}"          
+      - "{{artifacts.contextos_folder}}"    
+      - "{{artifacts.hu_compartidas}}"         
+      - "{{artifacts.hu_folder}}/${proyecto.nombre}" 
+         ↑ Iterar: PARA CADA proyecto en proyectos[]
+    archivos_a_generar:
+      - path: "{{archivos.workspace_index}}"   
+        plantilla: "{{plantillas.workspace}}"
+        datos_requeridos: [lista_proyectos, relaciones, stack_consolidado, scorecard_global]
+      - path: "{{artifacts.contextos_folder}}/contexto_proyecto_${proyecto.nombre}.md"
+        plantilla: "{{plantillas.contexto}}"
+        iterar: "PARA CADA proyecto en proyectos[]"
+        datos_requeridos: [proyecto.arquitectura, proyecto.componentes, proyecto.patrones, proyecto.stack_basico]
+    mensaje_exito: |
+      ✅ WORKSPACE MULTI-PROYECTO CONFIGURADO
+      📁 {{archivos.workspace_index}}
+      📁 {{artifacts.contextos_folder}}/ (${proyectos.length} contextos)
+      📊 Scorecard Global: ${scorecard.promedio}/10
+      
+      🔧 Comandos disponibles:
+        >planificar_hu --compartidas
+        >planificar_hu --proyecto=${proyectos[0].nombre}
+
+validar: 
+  obligatorio: true
+  acciones: ["Siempre verificar que los documentos contengan la informacion correcta del analsiis realizado.", "Preguntar al uisuario si el contexto lo ve correcto [OK] o si tiene alguna sugerencia sobre el contexto y editarlo [EDITAR]", "Especificar el flag con el cual se realizo el analisis [basico, completo, exhaustivo]"]
 
 errores:
-  sin_permisos: {msg: " Sin permisos de lectura", accion: "Solicitar acceso"}
-  proyecto_vacio: {msg: " Sin archivos detectables", accion: "Generar contexto básico"}
+  si_proyecto_vacio: {msg: " Sin archivos detectables", accion: "Generar contexto básico"}
   sin_marcadores: {msg: " No se detectó ningún proyecto", accion: "Verificar carpeta correcta"}
-  proyecto_no_encontrado: {msg: " Proyecto '[nombre]' no encontrado", accion: "Ejecutar sin parámetros para listar"}
-  workspace_existente: {msg: "ℹ Ya existe contexto", accion: "Usar --force para regenerar"}
-
-siguiente:
-  - {comando: "*HU", desc: "Ver historias de usuario en backlog"}
-  - {comando: ">refinar_hu [ID]", desc: "Refinar una HU", chat_agente: "Refinador HU"}
-  - {comando: "*HU --compartidas", desc: "Ver HUs cross-proyecto (multi)"}
+  si_proyecto_no_encontrado: {msg: " Proyecto '[nombre]' no encontrado", accion: "Ejecutar sin parámetros para listar"}
+  workspace_existente: {msg: "ℹ Ya existe contexto", accion: "Preguntar al usuario si Usar --force para regenerar"}
 ```

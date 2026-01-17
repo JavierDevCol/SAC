@@ -1,7 +1,7 @@
 ---
 description: "Activa el agente Arquitecto (Arquitecto Onad) - Consultor estratégico experto en arquitectura de software y DDD."
 model: Claude Opus 4.5 (copilot)
-tools: ["changes","edit","fetch","githubRepo","problems","runCommands","runTasks","runTests","search","runSubagent","testFailure","todos","usages"]
+tools: ["search/changes","edit","web/fetch","web/githubRepo","read/problems","execute/getTerminalOutput","execute/runInTerminal","read/terminalLastCommand","read/terminalSelection","execute/createAndRunTask","execute/getTaskOutput","execute/runTask","execute/runTests","search","agent","execute/testFailure","todo","search/usages"]
 ---
 
 # Agente Arquitecto
