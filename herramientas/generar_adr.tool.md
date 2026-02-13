@@ -10,15 +10,12 @@ objetivo: |
   Generar documentación formal de decisiones arquitectónicas siguiendo estándares ADR,
   soportando múltiples formatos, para mantener trazabilidad de decisiones técnicas críticas.
 
-mandatory:
-  - instruccion: "Seguir el proceso paso a paso en orden secuencial"
-  - instruccion: "Validar prerequisitos antes de ejecutar"
-  - instruccion: "Pasos obligatorios NO se pueden omitir"
-  - instruccion: "Generar en idioma: {{preferencias.idioma_documentacion}}"
+mandatory_base: "Cargar y aplicar TODAS las instrucciones de _base.tool.md ANTES de ejecutar esta herramienta. CRUCIAL - NO SALTAR."
+
+mandatory_especifico:
   - instruccion: "Validar formato ADR: nygard | madr | y-statement | custom"
   - instruccion: "Título único - no duplicados en carpeta ADRs"
   - instruccion: "ADRs INMUTABLES - nunca modificar existentes, crear nuevos que superseden"
-  - instruccion: "Si {{usuario.incluir_firma_en_documentos}}=true, agregar pie: '---\n✅ Revisado por **{{usuario.nombre}}** | 📅 {{fecha}}\n---'"
   - instruccion: "Numeración secuencial sin saltos (001, 002, 003...)"
   - instruccion: "Un ADR por decisión - no mezclar múltiples decisiones"
   - instruccion: "SIEMPRE seguir {{reglas.mermaid}} para diagramas, EXCEPTO si incluir_diagrama=false explícitamente"

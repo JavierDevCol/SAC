@@ -6,15 +6,12 @@ version: "4.1"
 ---
 
 ```yaml
-mandatory:
-  - instruccion: "Seguir el proceso paso a paso en orden secuencial"
-  - instruccion: "Validar prerequisitos antes de ejecutar"
-  - instruccion: "Pasos obligatorios NO se pueden omitir"
+mandatory_base: "Cargar y aplicar TODAS las instrucciones de _base.tool.md ANTES de ejecutar esta herramienta. CRUCIAL - NO SALTAR."
+
+mandatory_especifico:
   - instruccion: "Verificar alineación con reglas arquitectónicas del proyecto"
   - instruccion: "NO aprobar HU que violen principios arquitectónicos"
   - instruccion: "Documentar razones de rechazo o ajustes requeridos"
-  - instruccion: "Generar en idioma: {{preferencias.idioma_documentacion}}"
-  - instruccion: "Si {{usuario.incluir_firma_en_documentos}}=true, agregar pie: '---\n✅ Revisado por **{{usuario.nombre}}** | 📅 {{fecha}}\n---'"
 
 prerequisitos:
   archivos_requeridos:
@@ -46,10 +43,42 @@ proceso:
 
   - paso: "Cargar HU y Contexto"
     obligatorio: true
-    acciones: ["Buscar HU en {{archivos.backlog}}", "Verificar estado [R] Refinada", "Cargar refinamiento y reglas arquitectónicas"]
+    acciones: 
+      - "Buscar HU en {{archivos.backlog}}"
+      - "Verificar estado [R] Refinada"
+      - "Cargar refinamiento desde {{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md"
+      - "SI HU tiene campo ADR_Ref → Cargar ADR referenciado desde {{artifacts.adr_folder}}"
+      - "Cargar {{archivos.contexto_proyecto}} si existe"
+      - "Cargar {{archivos.reglas_arquitectonicas}} si existe"
     si_error:
       no_encontrada: "HU [id_hu] no encontrada en backlog"
       estado_invalido: "HU debe estar en estado [R] Refinada"
+
+  - paso: "Detección de Ambigüedades"
+    obligatorio: true
+    descripcion: "NUNCA asumir. Ante cualquier duda, preguntar al usuario."
+    acciones:
+      - "Analizar HU y CA buscando: términos vagos, información faltante, contradicciones, casos no cubiertos"
+      - "SI se detectan ambigüedades → Listar preguntas claras y específicas"
+      - "PAUSAR y esperar respuestas del usuario antes de continuar"
+      - "Incorporar respuestas al contexto de validación"
+    comportamiento:
+      si_hay_dudas: "PREGUNTAR y ESPERAR respuesta"
+      si_no_hay_dudas: "Continuar al siguiente paso"
+    ejemplo_preguntas:
+      - "El CA dice 'respuesta rápida' — ¿Cuál es el tiempo máximo aceptable en ms?"
+      - "¿El usuario debe estar autenticado para esta funcionalidad?"
+      - "¿Qué debe ocurrir si [caso X] falla?"
+
+  - paso: "Validación contra ADR"
+    obligatorio: false
+    condicion: "HU tiene ADR_Ref definido (no 'ninguno')"
+    acciones:
+      - "Leer sección '## Decisión' del ADR referenciado"
+      - "Verificar que la HU implementa la decisión correctamente"
+      - "Detectar contradicciones entre HU y ADR"
+      - "SI hay contradicción → Agregar a observaciones de validación"
+    checklist: ["HU alineada con decisión del ADR", "No contradice consecuencias documentadas"]
 
   - paso: "Validación de Criterios de Aceptación"
     obligatorio: true
@@ -58,8 +87,18 @@ proceso:
 
   - paso: "Validación Arquitectónica"
     obligatorio: true
-    acciones: ["Verificar alineación con patrones del proyecto", "Detectar violaciones a reglas arquitectónicas", "Evaluar impacto en componentes existentes"]
-    checklist: ["Respeta separación de capas", "No introduce acoplamiento indebido", "Sigue convenciones del proyecto"]
+    nota: "Valida la HU como REQUISITO, no define implementación (eso es planificar_hu)"
+    acciones:
+      - "Verificar que la funcionalidad propuesta encaja en arquitectura existente"
+      - "Detectar si los CA fuerzan implementaciones que violarían patrones"
+      - "Evaluar si la HU introduce responsabilidades que no corresponden a su dominio"
+      - "Consultar {{archivos.reglas_arquitectonicas}} si existe"
+    checklist:
+      - "La funcionalidad respeta la separación de responsabilidades del proyecto"
+      - "Los CA no imponen decisiones técnicas que violen la arquitectura"
+      - "No cruza boundaries entre módulos/capas indebidamente"
+      - "Es coherente con el contexto técnico documentado"
+      - "No contradice decisiones arquitectónicas previas (ADRs)"
 
   - paso: "Análisis de Viabilidad Técnica"
     obligatorio: true

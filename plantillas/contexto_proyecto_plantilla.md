@@ -1,19 +1,19 @@
-# Contexto del Proyecto: [Nombre]
+﻿# Contexto del Proyecto: [Nombre]
 
 > **Generado:** [timestamp]  
 > **Confianza:** [Alto|Medio|Bajo]
 
 ---
 
-## 📊 Scorecard Ejecutivo
+##  Scorecard Ejecutivo
 
 | Aspecto | Puntuación | Estado |
 |---------|------------|--------|
-| Arquitectura | [X]/10 | [🟢🟡🔴] |
-| Stack | [X]/10 | [🟢🟡🔴] |
-| Testing | [X]/10 | [🟢🟡🔴] |
-| DevOps | [X]/10 | [🟢🟡🔴] |
-| Documentación | [X]/10 | [🟢🟡🔴] |
+| Arquitectura | [X]/10 | [] |
+| Stack | [X]/10 | [] |
+| Testing | [X]/10 | [] |
+| DevOps | [X]/10 | [] |
+| Documentación | [X]/10 | [] |
 
 ---
 
@@ -21,20 +21,33 @@
 
 - **Nombre:** [nombre del proyecto]
 - **Descripción:** [1-2 líneas]
-- **Tipo:** [API|Web|CLI|Librería|Monolito|Microservicio]
+- **Tipo:** [API|Web|CLI|Librería|Monolito|Microservicio|Script]
 - **Estado:** [Desarrollo|Producción|Mantenimiento|Legacy]
 
 ---
 
 ## 2. Stack Tecnológico
 
+### Resumen
 | Categoría | Tecnología | Versión |
 |-----------|------------|---------|
-| Lenguaje | [Java/Python/JS/etc.] | [versión] |
-| Framework | [Spring/Django/React/etc.] | [versión] |
+| Lenguaje | [Java/Python/JS/Go/etc.] | [versión] |
+| Framework | [Spring/Django/React/Gin/etc.] | [versión] |
 | Base de Datos | [PostgreSQL/MongoDB/etc.] | [versión] |
 | Testing | [JUnit/Jest/PyTest/etc.] | [versión] |
 | Build | [Maven/Gradle/NPM/etc.] | [versión] |
+
+### Dependencias Core
+| Dependencia | Versión | Propósito |
+|-------------|---------|-----------|
+| [dependencia_1] | [versión] | [propósito] |
+| [dependencia_2] | [versión] | [propósito] |
+
+### Herramientas de Desarrollo
+| Herramienta | Propósito | Config |
+|-------------|-----------|--------|
+| [linter] | Análisis estático | [archivo] |
+| [formatter] | Formateo | [archivo] |
 
 ---
 
@@ -58,22 +71,20 @@
 
 ## 4. Arquitectura
 
-- **Estilo:** [Hexagonal|Capas|MVC|Event-Driven|Microservicios]
-- **Patrón Principal:** [DDD|CQRS|Repository|etc.]
+- **Estilo:** [Hexagonal|Capas|MVC|Event-Driven|Microservicios|Script|Monolito]
+- **Patrón Principal:** [DDD|CQRS|Repository|MVC|Funcional|etc.]
 
-### Estructura de Capas
+### Estructura del Proyecto
 ```
-[capa-1]/        # [Propósito]
-[capa-2]/        # [Propósito]
-[capa-3]/        # [Propósito]
+[carpeta-1]/     # [Propósito]
+[carpeta-2]/     # [Propósito]
+[carpeta-3]/     # [Propósito]
 ```
 
 ### Componentes Principales
 | Componente | Ubicación | Responsabilidad |
 |------------|-----------|-----------------|
-| [Entidad/Servicio] | [ruta] | [descripción breve] |
-| [Entidad/Servicio] | [ruta] | [descripción breve] |
-| [Entidad/Servicio] | [ruta] | [descripción breve] |
+| [componente] | [ruta] | [descripción breve] |
 
 ---
 
@@ -92,41 +103,46 @@
 
 | Aspecto | Estado | Archivo |
 |---------|--------|---------|
-| Dockerfile | [✅/❌] | [ruta] |
-| Docker Compose | [✅/❌] | [ruta] |
-| CI/CD | [✅/❌] | [ruta] |
-| IaC | [✅/❌] | [ruta] |
+| Dockerfile | [/] | [ruta] |
+| Docker Compose | [/] | [ruta] |
+| CI/CD | [/] | [ruta] |
+| IaC | [/] | [ruta] |
 
 **Puertos:** [lista de puertos expuestos]  
 **Profiles:** [lista de profiles/entornos]
 
 ---
 
-## 7. Convenciones del Proyecto
+## 7. Convenciones
 
-- **Nomenclatura Commits:** [Conventional|Angular|Otro]
+### Código
+| Elemento | Convención | Ejemplo |
+|----------|------------|---------|
+| Clases/Tipos | [PascalCase/snake_case/etc.] | [ejemplo] |
+| Funciones | [camelCase/snake_case/etc.] | [ejemplo] |
+| Variables | [camelCase/snake_case/etc.] | [ejemplo] |
+
+### Proyecto
+- **Commits:** [Conventional|Angular|Otro]
 - **Branching:** [GitFlow|Trunk|Feature Branch]
-- **Estructura Paquetes:** [por capa|por feature|híbrido]
+- **Estructura:** [por capa|por feature|híbrido]
 
 ---
 
 ## 8. Puntos de Atención
 
-### 🔴 Críticos
+###  Críticos
 - [Punto crítico 1]
-- [Punto crítico 2]
 
-### 🟡 Importantes
+###  Importantes
 - [Punto importante 1]
-- [Punto importante 2]
 
-### 🟢 Sugerencias
+###  Sugerencias
 - [Sugerencia 1]
-- [Sugerencia 2]
 
 ---
 
-## 📝 Historial
+##  Historial
 
 | Fecha | Acción | Detalle |
 |-------|--------|---------|

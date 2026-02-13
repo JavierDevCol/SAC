@@ -6,31 +6,14 @@ version: "1.0"
 ---
 
 ```yaml
-# ============================================
-# ANALIZAR STACK TECNOLÓGICO - Herramienta de IA
-# ============================================
-# Archivo: analizar_stack.tool.md
-# Versión: 1.0
-# ============================================
+mandatory_base: "Cargar y aplicar TODAS las instrucciones de _base.tool.md ANTES de ejecutar esta herramienta. CRUCIAL - NO SALTAR."
 
-# ============================================
-# MANDATORY - INSTRUCCIONES INVIOLABLES
-# ============================================
-mandatory:
-  # === BASE ESTÁNDAR (NO MODIFICAR) ===
-  - instruccion: "Seguir el proceso paso a paso en orden secuencial"
-  - instruccion: "Validar prerequisitos antes de ejecutar"
-  - instruccion: "Los pasos marcados como obligatorio:true NO se pueden omitir"
-  - instruccion: "Actualizar session_state.json al finalizar"
-  - instruccion: "Nunca saltar proceso.paso_final"
-  # === CONFIGURACIÓN DE IDIOMA ===
-  - instruccion: "Generar TODOS los artefactos/documentos en el idioma definido en 'idiomas.documentacion'"
-  # === ESPECÍFICAS DE LA HERRAMIENTA ===
+mandatory_especifico:
   - instruccion: "SIEMPRE solicitar ruta_proyecto si no se proporciona"
   - instruccion: "Ejecutar algoritmo completo de {{reglas.deteccion_stack}}"
   - instruccion: "Calcular confidence score para cada detección"
   - instruccion: "SI confidence < 0.6: agregar warning y solicitar confirmación al usuario"
-  - instruccion: "Generar archivo {{archivos.stack_proyecto}} al finalizar"
+  - instruccion: "Actualizar sección '## 2. Stack Tecnológico' en {{archivos.contexto_proyecto}}"
 
 # ============================================
 # PREREQUISITOS
@@ -85,10 +68,10 @@ proceso:
     acciones:
       - "Verificar que {{ruta_proyecto}} existe y es accesible"
       - "Verificar permisos de lectura"
-      - "Detectar si existe {{archivos.stack_proyecto}} previo"
+      - "Detectar si existe {{archivos.contexto_proyecto}}"
     validaciones:
-      - condicion: "Existe archivo stack previo AND force=false"
-        si_cumple: "Preguntar: ¿Usar existente o regenerar?"
+      - condicion: "NO existe {{archivos.contexto_proyecto}}"
+        si_cumple: "Informar: 'No existe contexto_proyecto.md. Ejecutar >tomar_contexto primero o continuar para crear solo análisis de stack'"
         si_no_cumple: "Continuar con análisis"
     si_error:
       ruta_invalida: "❌ La ruta especificada no existe o no es accesible"
@@ -141,51 +124,39 @@ proceso:
     usar_de_rules:
       threshold: "{{reglas.deteccion_stack}}.proceso.paso_8.accion"
 
-  - paso: "Generar Archivo de Stack"
-    obligatorio: true
-    descripcion: "Genera 1 archivo MD con documentación legible del stack"
-    acciones:
-      - "Determinar ruta base según contexto existente:"
-      - "  SI existe contexto_proyecto.md → usar {{rutas.artifacts_folder}}"
-      - "  SI existe contexto_proyecto_{nombre}.md → usar {{artifacts.contextos_folder}}"
-      - "Crear carpeta destino si no existe"
-      - "Generar archivo MD:"
-      - "  Ruta modo_unico: {{archivos.stack_proyecto}}"
-      - "  Ruta modo_multi: {{artifacts.contextos_folder}}/{{multi_proyecto.patron_stack}}"
-      - "  Formato: {{reglas.deteccion_stack}}.output.formato_legible"
-      - "Agregar timestamp de generación"
-      - "Agregar warnings de {{reglas.deteccion_stack}}.output si existen"
-    rutas:
-      modo_unico: "{{archivos.stack_proyecto}}"
-      modo_multi: "{{artifacts.contextos_folder}}/{{multi_proyecto.patron_stack}}"
-
   - paso: "Actualizar Sección Stack en Contexto"
     obligatorio: true
+    descripcion: "Actualiza la sección '## 2. Stack Tecnológico' en contexto_proyecto.md"
     acciones:
-      - "SI existe archivo contexto_proyecto*.md:"
-      - "  Agregar/actualizar referencia al archivo stack generado"
-      - "  Formato: '📊 Stack detallado: [stack_proyecto.md](./stack_proyecto.md)'"
-      - "SI NO existe contexto: omitir este paso"
-
-  - paso: "Actualizar Estado de Sesión"
-    obligatorio: true
-    acciones:
-      - "Registrar ejecución en session_state.json"
-      - "Actualizar última_herramienta_ejecutada: 'tomar_stack'"
-      - "Guardar ruta del archivo generado"
+      - "SI existe {{archivos.contexto_proyecto}}:"
+      - "  Buscar sección '## 2. Stack Tecnológico'"
+      - "  Reemplazar contenido completo de la sección (hasta siguiente ##) con:"
+      - "    ### Resumen"
+      - "    | Categoría | Tecnología | Versión |"
+      - "    | Lenguaje | {{stack.ecosistema}} | {{stack.version}} |"
+      - "    | Framework | {{stack.framework}} | {{stack.framework_version}} |"
+      - "    | Base de Datos | {{stack.database}} | {{stack.db_version}} |"
+      - "    | Testing | {{stack.testing}} | - |"
+      - "    | Build | {{stack.build_tool}} | {{stack.build_version}} |"
+      - "    ### Dependencias Core"
+      - "    [tabla de dependencias principales]"
+      - "    ### Herramientas de Desarrollo"
+      - "    [tabla de linters/formatters detectados]"
+      - "  Actualizar timestamp en Historial"
+      - "SI NO existe {{archivos.contexto_proyecto}}:"
+      - "  Mostrar resultado en consola"
+      - "  Sugerir: '>tomar_contexto para crear archivo completo'"
 
 # ============================================
 # SALIDA
 # ============================================
 salida:
-  descripcion: "Genera 1 archivo MD en la misma ubicación que contexto_proyecto"
+  descripcion: "Actualiza sección Stack en contexto_proyecto.md existente"
   
-  archivos_generados:
-    nombre: "Stack MD (documentación)"
-    ruta_unico: "{{archivos.stack_proyecto}}"
-    ruta_multi: "{{artifacts.contextos_folder}}/stack_proyecto_{nombre}.md"
-    formato: "{{reglas.deteccion_stack}}.output.formato_legible"
-    proposito: "Documentación legible del stack tecnológico"
+  archivos_actualizados:
+    - archivo: "{{archivos.contexto_proyecto}}"
+      seccion: "## 2. Stack Tecnológico"
+      accion: "Reemplazar contenido de la sección"
   
   pie_documento:
     condicion: "{{usuario.incluir_firma_en_documentos}} = true AND {{usuario.nombre}} no vacío"
@@ -200,14 +171,14 @@ salida:
     - Tipo: {{stack.tipo_proyecto}}
     - Confidence: {{stack.confidence}}%
     
-    📄 Artefacto generado:
-    - 📝 {{archivos.stack_proyecto}}
+    📄 Actualizado:
+    - {{archivos.contexto_proyecto}} → Sección "## 2. Stack Tecnológico"
     
     ⚠️ Warnings: {{stack.metadata.warnings | default: "Ninguno"}}
     
     💡 Siguiente paso sugerido:
-    - >tomar_contexto (si no existe contexto)
-    - >planificar_hu (si ya existe contexto)
+    - >planificar_hu (si hay HUs pendientes)
+    - >analizar_code_smells (análisis de calidad)
 
 # ============================================
 # ERRORES
@@ -215,6 +186,7 @@ salida:
 errores:
   ruta_no_proporcionada: {msg: "❌ Parámetro ruta_proyecto es obligatorio", accion: "Proporcionar ruta del proyecto a analizar"}
   ruta_invalida: {msg: "❌ La ruta especificada no existe", accion: "Verificar que la ruta es correcta y accesible"}
+  sin_contexto: {msg: "⚠️ No existe contexto_proyecto.md", accion: "Ejecutar >tomar_contexto primero para crear el archivo base"}
   sin_marcadores: 
     msg: "❌ No se detectaron archivos de configuración de proyecto"
     accion: "Aplicar {{reglas.deteccion_stack}}.fallback.sin_marcadores"
@@ -224,7 +196,6 @@ errores:
   confidence_baja: 
     msg: "⚠️ Confidence score bajo (<0.6)"
     accion: "Mostrar top 3 ecosistemas y solicitar confirmación manual"
-  archivo_existente: {msg: "ℹ️ Ya existe archivo de stack", accion: "Usar --force para regenerar"}
 
 siguiente:
   - { comando: ">tomar_contexto", desc: "Generar contexto completo del proyecto", chat_agente: "archdev_pro" }

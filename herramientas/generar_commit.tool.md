@@ -6,17 +6,14 @@ version: "4.1"
 ---
 
 ```yaml
-mandatory:
-  - instruccion: "Seguir el proceso paso a paso en orden secuencial"
-  - instruccion: "Validar prerequisitos antes de ejecutar"
-  - instruccion: "Pasos obligatorios NO se pueden omitir"
+mandatory_base: "Cargar y aplicar TODAS las instrucciones de _base.tool.md ANTES de ejecutar esta herramienta. CRUCIAL - NO SALTAR."
+
+mandatory_especifico:
   - instruccion: "Seguir especificación Conventional Commits estrictamente"
   - instruccion: "Usar modo imperativo (Añadir, no Añadido)"
   - instruccion: "Limitar título a 50 caracteres, máximo 72"
   - instruccion: "NUNCA terminar título con punto"
   - instruccion: "Primera letra mayúscula en descripción"
-  - instruccion: "Generar en idioma: {{preferencias.idioma_documentacion}}"
-  - instruccion: "Si {{usuario.incluir_firma_en_documentos}}=true, incluir 'Revisado-por: {{usuario.nombre}}' en footer del commit"
 
 prerequisitos:
   archivos_requeridos:

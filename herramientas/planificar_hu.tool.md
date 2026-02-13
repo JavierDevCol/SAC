@@ -6,17 +6,14 @@ version: "4.1"
 ---
 
 ```yaml
-mandatory:
-  - instruccion: "Seguir el proceso paso a paso en orden secuencial"
-  - instruccion: "Validar prerequisitos antes de ejecutar"
-  - instruccion: "Pasos obligatorios NO se pueden omitir"
+mandatory_base: "Cargar y aplicar TODAS las instrucciones de _base.tool.md ANTES de ejecutar esta herramienta. CRUCIAL - NO SALTAR."
+
+mandatory_especifico:
   - instruccion: "Generar plan alineado con arquitectura del proyecto"
   - instruccion: "Incluir tareas de testing en el plan"
   - instruccion: "Especificar orden de ejecución y dependencias"
-  - instruccion: "Generar en idioma: {{preferencias.idioma_documentacion}}"
   - instruccion: "Usar plantilla {{plantillas.plan_implementacion}}"
   - instruccion: "Incluir TODOS los criterios de aceptación de la HU en Fase Final"
-  - instruccion: "Si {{usuario.incluir_firma_en_documentos}}=true, agregar pie: '---\n✅ Revisado por **{{usuario.nombre}}** | 📅 {{fecha}}\n---'"
 
 prerequisitos:
   archivos_requeridos:
@@ -41,11 +38,39 @@ parametros:
       defecto: true
 
 estructura_fases:
-  fase_1: "Infraestructura (migraciones, configuración)"
-  fase_2: "Dominio (entidades, value objects)"
-  fase_3: "Aplicación (casos de uso, servicios)"
-  fase_4: "Adaptadores (controllers, repositorios)"
-  fase_5: "Testing (unitarios, integración)"
+  # Fases dinámicas según arquitectura detectada en contexto_proyecto.md
+  hexagonal:
+    fase_1: "Infraestructura (migraciones, configuración)"
+    fase_2: "Dominio (entidades, value objects, puertos)"
+    fase_3: "Aplicación (casos de uso, DTOs)"
+    fase_4: "Adaptadores (controllers, repositorios)"
+    fase_5: "Testing (unitarios, integración)"
+  mvc:
+    fase_1: "Infraestructura (migraciones, configuración)"
+    fase_2: "Modelos (entidades, validaciones)"
+    fase_3: "Controladores (rutas, lógica)"
+    fase_4: "Vistas (templates, respuestas)"
+    fase_5: "Testing (unitarios, integración)"
+  capas:
+    fase_1: "Infraestructura (migraciones, configuración)"
+    fase_2: "Datos (entidades, repositorios)"
+    fase_3: "Negocio (servicios, lógica)"
+    fase_4: "Presentación (API, UI)"
+    fase_5: "Testing (unitarios, integración)"
+  script:
+    fase_1: "Setup (dependencias, configuración)"
+    fase_2: "Lógica Principal (funciones core)"
+    fase_3: "Testing (unitarios)"
+  frontend:
+    fase_1: "Setup (dependencias, estructura)"
+    fase_2: "Componentes (UI, props/state)"
+    fase_3: "Hooks/Services (lógica, API)"
+    fase_4: "Integración (rutas, estado global)"
+    fase_5: "Testing (unitarios, e2e)"
+  default:
+    fase_1: "Preparación (setup, configuración)"
+    fase_2: "Implementación (lógica principal)"
+    fase_3: "Testing (validación)"
 
 proceso:
   - paso: "Inicialización de Parámetros"
@@ -58,17 +83,65 @@ proceso:
     acciones: 
       - "Buscar HU en {{archivos.backlog}}"
       - "Verificar estado [A] Aprobada"
-      - "Cargar stack del proyecto en {{rutas.artifacts_folder}} o {{artifacts.contextos_folder}}, si existe"
-      - "Cargar refinamiento y {{archivos.contexto_proyecto}}"
+      - "Cargar refinamiento de la HU (contiene decisiones técnicas del ADR si aplica)"
+      - "Cargar {{archivos.contexto_proyecto}} si existe"
+      - "Cargar {{archivos.reglas_arquitectonicas}} si existe"
       - "Identificar HUs relacionadas en {{archivos.backlog}} (misma épica, feature o dominio)"
-      - "Detectar componentes reutilizables de HUs ya implementadas [I]"
+      - "Detectar componentes reutilizables de HUs ya implementadas [C]"
       - "Registrar dependencias o conflictos potenciales con HUs en progreso [E]"
+    nota: "El ADR ya fue validado en >validar_hu. Info técnica está en el refinamiento."
     si_error:
       no_aprobada: " HU debe estar aprobada. Ejecutar >validar_hu primero"
 
+  - paso: "Detección de Ambigüedades"
+    obligatorio: true
+    descripcion: "NUNCA asumir. Ante cualquier duda técnica, preguntar al usuario."
+    acciones:
+      - "Analizar HU, CA y ADR buscando: tecnologías no especificadas, rutas ambiguas, decisiones técnicas faltantes"
+      - "SI se detectan ambigüedades → Listar preguntas claras y específicas"
+      - "PAUSAR y esperar respuestas del usuario antes de continuar"
+      - "Incorporar respuestas al contexto de planificación"
+    comportamiento:
+      si_hay_dudas: "PREGUNTAR y ESPERAR respuesta"
+      si_no_hay_dudas: "Continuar al siguiente paso"
+    ejemplo_preguntas:
+      - "¿El nuevo servicio debe ir en app/Services/ o en app/Domain/Services/?"
+      - "¿Qué librería usar para validaciones: nativa o externa?"
+      - "¿La migración debe ser reversible o irreversible?"
+
+  - paso: "Detectar Arquitectura y Validar Estructura"
+    obligatorio: true
+    acciones:
+      - "Leer sección '## 4. Arquitectura' en {{archivos.contexto_proyecto}}"
+      - "Extraer campo 'Estilo' para determinar tipo de fases"
+      - "Validar que '### Estructura del Proyecto' esté documentada y sea coherente"
+      - "SI estructura es ambigua o incompleta → PREGUNTAR al usuario"
+      - "Mapear estilo a estructura_fases:"
+      - "  SI estilo CONTIENE 'Hexagonal' → usar estructura_fases.hexagonal"
+      - "  SI estilo CONTIENE 'MVC' → usar estructura_fases.mvc"
+      - "  SI estilo CONTIENE 'Capas' → usar estructura_fases.capas"
+      - "  SI estilo CONTIENE 'Script' OR tipo='CLI' → usar estructura_fases.script"
+      - "  SI estilo CONTIENE 'Frontend' OR framework IN [React, Vue, Angular] → usar estructura_fases.frontend"
+      - "  DEFAULT → usar estructura_fases.default"
+      - "Guardar fases seleccionadas en variable 'fases_plan'"
+      - "Aplicar convenciones de {{archivos.reglas_arquitectonicas}} si existe"
+    si_no_existe_contexto: "Usar estructura_fases.default y PREGUNTAR rutas al usuario"
+    si_inconsistencia: "PAUSAR y confirmar con usuario antes de continuar"
+
   - paso: "Diseño de Componentes"
     obligatorio: true
-    acciones: ["Identificar componentes a crear/modificar", "Definir interfaces y contratos", "Especificar ubicación de archivos"]
+    acciones: 
+      - "Identificar componentes a crear/modificar según HU y refinamiento"
+      - "Definir interfaces y contratos según {{archivos.reglas_arquitectonicas}}"
+      - "Consultar sección '## 4. Arquitectura' > '### Estructura del Proyecto' en {{archivos.contexto_proyecto}}"
+      - "Usar rutas REALES documentadas (NO genéricas)"
+    si_ruta_no_existe:
+      - "SI no existe ruta clara para un componente → PREGUNTAR al usuario:"
+      - "  1. ¿Crear carpeta nueva? Sugerir ruta siguiendo convención de la arquitectura detectada"
+      - "     Ejemplo Hexagonal: 'Sugiero src/Application/UseCases/[NuevoUseCase]/ ¿Es correcto?'"
+      - "     Ejemplo MVC: 'Sugiero app/Services/[NuevoServicio]/ ¿Es correcto?'"
+      - "  2. ¿Ubicar en carpeta existente? ¿Cuál de las documentadas?"
+      - "ESPERAR respuesta antes de continuar"
 
   - paso: "Planificación de Migraciones"
     obligatorio: false
@@ -77,11 +150,25 @@ proceso:
 
   - paso: "Secuenciación de Tareas"
     obligatorio: true
-    acciones: ["Ordenar tareas por dependencias", "Agrupar en fases según estructura_fases", "Asignar estimación por tarea"]
+    acciones: 
+      - "Ordenar tareas por dependencias"
+      - "Agrupar en fases según 'fases_plan' detectado"
+      - "Asignar rutas consultando '## 4. Arquitectura' > '### Estructura del Proyecto'"
+      - "Asignar estimación por tarea"
 
   - paso: "Generación del Plan"
     obligatorio: true
-    acciones: ["Leer plantilla desde {{plantillas.plan_implementacion}}", "Rellenar metadata (ID-HU, título, fecha, estimación)", "Incluir tareas organizadas por fases", "Copiar criterios de aceptación de la HU", "Guardar en {{artifacts.planes_folder}}/[ID-HU]_plan_implementacion.md"]
+    acciones: 
+      - "Leer plantilla desde {{plantillas.plan_implementacion}}"
+      - "Rellenar metadata (ID-HU, título, fecha, estimación)"
+      - "Rellenar campo 'Arquitectura' con estilo de '## 4. Arquitectura'"
+      - "Generar tabla 'Progreso General' con fases de 'fases_plan'"
+      - "Generar secciones de fase según 'fases_plan'"
+      - "En cada tarea, usar rutas de '### Estructura del Proyecto' (NO genéricas)"
+      - "Ejemplo correcto: 'Crear User.php en app/Models/' (ruta real)"
+      - "Ejemplo incorrecto: 'Crear User en models/' (ruta genérica)"
+      - "Copiar criterios de aceptación de la HU a Fase Final"
+      - "Guardar en {{artifacts.planes_folder}}/[ID-HU]_plan_implementacion.md"
 
   - paso: "Actualización de Estado"
     obligatorio: true

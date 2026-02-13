@@ -6,18 +6,15 @@ version: "4.1"
 ---
 
 ```yaml
-mandatory:
-  - instruccion: "Seguir el proceso paso a paso en orden secuencial"
-  - instruccion: "Validar prerequisitos antes de ejecutar"
-  - instruccion: "Pasos obligatorios NO se pueden omitir"
+mandatory_base: "Cargar y aplicar TODAS las instrucciones de _base.tool.md ANTES de ejecutar esta herramienta. CRUCIAL - NO SALTAR."
+
+mandatory_especifico:
   - instruccion: "Ejecutar tareas del plan en ORDEN ESTRICTO"
   - instruccion: "DETENERSE INMEDIATAMENTE ante cualquier error"
   - instruccion: "Solicitar CONFIRMACIÓN antes de comandos Git"
   - instruccion: "NO improvisar ni saltar tareas del plan"
-  - instruccion: "Generar en idioma: {{preferencias.idioma_documentacion}}"
   - instruccion: "ACTUALIZAR plan EN TIEMPO REAL: [ ]  [X], estados de tareas"
   - instruccion: "Estados de tareas: [PENDIENTE]  [EN_PROGRESO]  [EJECUTADA]"
-  - instruccion: "Si {{usuario.incluir_firma_en_documentos}}=true, agregar pie: '---\n✅ Revisado por **{{usuario.nombre}}** | 📅 {{fecha}}\n---'"
 
 prerequisitos:
   archivos_requeridos:
@@ -104,6 +101,7 @@ salida:
     - ruta: "{{artifacts.planes_folder}}/[ID-HU]_plan_implementacion.md"
     - ruta: "{{archivos.backlog}}"
     - descripcion: "Archivos de código según plan"
+  estado_hu_final: "[C] Completada"
   pie_documento:
     condicion: "{{usuario.incluir_firma_en_documentos}} = true AND {{usuario.nombre}} no vacío"
     formato: "---\n✅ Revisado por **{{usuario.nombre}}** | 📅 {{fecha}}\n---"

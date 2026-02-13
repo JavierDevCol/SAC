@@ -5,7 +5,7 @@
 # SAC - Sistema Agéntico COCHAS
 # ============================================
 
-version: "6.7.1"
+version: "7.0"
 
 # ============================================
 # CARPETAS PRINCIPALES
@@ -27,7 +27,7 @@ archivos:
   reglas_arquitectonicas: "{project-root}/.SAC/artifacts/reglas_arquitectonicas.md"
   # Proyecto único
   contexto_proyecto: "{project-root}/.SAC/artifacts/contexto_proyecto.md"
-  stack_proyecto: "{project-root}/.SAC/artifacts/stack_proyecto.md"
+  # stack_proyecto: ELIMINADO - unificado en sección de contexto_proyecto.md
   # Multi-proyecto
   workspace_index: "{project-root}/.SAC/artifacts/workspace.md"
 
@@ -73,8 +73,9 @@ plantillas:
   backlog: "{project-root}/.SAC/plantillas/backlog_desarrollo_plantilla.md"
   contexto: "{project-root}/.SAC/plantillas/contexto_proyecto_plantilla.md"
   workspace: "{project-root}/.SAC/plantillas/workspace_plantilla.md"
-  stack_proyecto: "{project-root}/.SAC/plantillas/stack_proyecto_plantilla.md"
+  # stack_proyecto: ELIMINADO - unificado con contexto_proyecto_plantilla.md
   plan_implementacion: "{project-root}/.SAC/plantillas/plan_implementacion_plantilla.md"
+  refinamiento_hu: "{project-root}/.SAC/plantillas/refinamiento_hu_plantilla.md"
 
 # ============================================
 # RUTAS DE REGLAS
@@ -86,14 +87,7 @@ rutas_reglas:
 # REGLAS DEL SISTEMA
 # ============================================
 reglas:
-  # Detección de stack
-  deteccion_stack: "{project-root}/.SAC/reglas/deteccion_stack.rules.md"
-  # Por ecosistema
-  java: "{project-root}/.SAC/reglas/java.rules.md"
-  javascript: "{project-root}/.SAC/reglas/javascript.rules.md"
-  python: "{project-root}/.SAC/reglas/python.rules.md"
-  dotnet: "{project-root}/.SAC/reglas/dotnet.rules.md"
-  go: "{project-root}/.SAC/reglas/go.rules.md"
-  # Otras reglas
+  # Solo reglas con valor único (no conocimiento implícito del LLM)
   mermaid: "{project-root}/.SAC/reglas/mermaid.rules.md"
-  patrones_diseno: "{project-root}/.SAC/reglas/patrones_diseno.rules.md"
+  # ELIMINADOS - conocimiento implícito del LLM:
+  # - deteccion_stack, java, javascript, python, dotnet, go, patrones_diseno

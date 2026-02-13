@@ -82,7 +82,7 @@ El sistema define **7 estados** para el ciclo de vida de una HU/Tarea:
 - Casos de borde considerados
 - Desglose técnico vertical
 
-**Artefacto generado:** `{{hu_refinamiento_location}}/[ID-HU]_refinamiento_[concepto].md`
+**Artefacto generado:** `{{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md`
 
 **Responsable de avanzar:** `Arquitecto Onad` mediante `validar_hu`
 
@@ -92,7 +92,7 @@ El sistema define **7 estados** para el ciclo de vida de una HU/Tarea:
 ```markdown
 ### ARCHDEV-001: Implementar Auth Service
 - **Estado:** [R] Refinada
-- **Refinamiento:** `{{hu_refinamiento_location}}/ARCHDEV-001_refinamiento_auth_jwt.md`
+- **Refinamiento:** `{{artifacts.hu_refinamientos}}/ARCHDEV-001_refinamiento.md`
 - **Fecha refinamiento:** 2026-01-04T10:00:00
 - **Estimación:** 8 SP / 12 horas
 
@@ -145,7 +145,7 @@ El sistema define **7 estados** para el ciclo de vida de una HU/Tarea:
 - Tests especificados
 - Checklist de validación por sección
 
-**Artefacto generado:** `{{plan_desarrollo_location}}/plan_[ID-HU]_[timestamp].md`
+**Artefacto generado:** `{{artifacts.planes_folder}}/[ID-HU]_plan_implementacion.md`
 
 **Responsable de avanzar:** `ArchDev Pro` mediante `ejecutar-plan`
 
@@ -155,7 +155,7 @@ El sistema define **7 estados** para el ciclo de vida de una HU/Tarea:
 ```markdown
 ### ARCHDEV-001: Implementar Auth Service
 - **Estado:** [P] Planificada
-- **Plan:** `{{plan_desarrollo_location}}/plan_ARCHDEV-001_20260104_120000.md`
+- **Plan:** `{{artifacts.planes_folder}}/ARCHDEV-001_plan_implementacion.md`
 - **Fecha planificación:** 2026-01-04T12:00:00
 - **Secciones:** 7
 - **Archivos a modificar:** 8
@@ -478,10 +478,10 @@ El sistema define **7 estados** para el ciclo de vida de una HU/Tarea:
 ```
 
 **Archivos centrales:**
-- Backlog: `{{backlog_location}}`
-- Session State: `{{session_state_location}}`
-- Refinamientos: `{{hu_refinamiento_location}}/`
-- Planes: `{{plan_desarrollo_location}}/`
-- Ejecuciones: `{{ejecuciones_location}}/`
+- Backlog: `{{archivos.backlog}}`
+- Contexto: `{{archivos.contexto_proyecto}}`
+- Refinamientos: `{{artifacts.hu_refinamientos}}/`
+- Planes: `{{artifacts.planes_folder}}/`
+- Ejecuciones: `{{artifacts.ejecuciones}}/`
 
 **Comando útil:** `/cochas status` para ver progreso general

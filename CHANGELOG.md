@@ -9,12 +9,12 @@
 
 | Componente | Versión Actual | Última Actualización |
 |------------|----------------|----------------------|
-| **Sistema SAC (COCHAS)** | 6.0 | 2026-01-09 |
-| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 6.0 | 2026-01-09 |
+| **Sistema SAC (COCHAS)** | 7.0 | 2026-02-13 |
+| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.0 | 2026-02-13 |
 | **Configuración Usuario** (`config/CONFIG_USER.template.yaml`) | 4.0 | 2026-01-05 |
-| **Agentes** (`agentes/*.agent.md`) | 6.0 | 2026-01-09 |
-| **Herramientas** (`herramientas/*.tool.md`) | 6.0 | 2026-01-09 |
-| **Plantillas** (`plantillas/`) | 6.0 | 2026-01-09 |
+| **Agentes** (`agentes/*.agent.md`) | 7.0 | 2026-02-13 |
+| **Herramientas** (`herramientas/*.tool.md`) | 7.0 | 2026-02-13 |
+| **Plantillas** (`plantillas/`) | 7.0 | 2026-02-13 |
 | **Guía de Comandos** (`guias/guia_comandos.md`) | 3.0 | 2026-01-05 |
 | **Guía de Roles** (`guias/guia_roles_activos.md`) | 3.0 | 2026-01-05 |
 | **Guía Ciclo de Vida** (`guias/guia_ciclo_vida_tareas.md`) | 3.1 | 2026-01-05 |
@@ -22,6 +22,93 @@
 ---
 
 ## 🚀 Historial de Versiones
+
+### [7.0] - 2026-02-13
+
+#### 🎯 Cambio Mayor: Sistema Mandatory Base, Limpieza de Reglas y Mejoras en Herramientas
+
+**Objetivo:** Centralizar instrucciones mandatory comunes en `_base.tool.md` y `_base.agent.md`, eliminar reglas de stack que son conocimiento implícito del LLM, mejorar herramientas de validación y refinamiento, y unificar plantillas.
+
+#### ⚠️ Breaking Changes
+
+| Cambio | Impacto | Migración |
+|--------|---------|----------|
+| Bloque `mandatory` en herramientas reemplazado por `mandatory_base` + `mandatory_especifico` | Herramientas heredan instrucciones comunes de `_base.tool.md` | Actualizar herramientas personalizadas |
+| Reglas de stack eliminadas (`java.rules.md`, `go.rules.md`, etc.) | Movidas a legacy / conocimiento implícito del LLM | No se requiere acción |
+| `stack_proyecto_plantilla.md` eliminada | Unificada con `contexto_proyecto_plantilla.md` | Usar plantilla de contexto |
+| `session_state_plantilla.md` movida a legacy | Ya deprecada en v6.0 | Sin impacto |
+
+#### ✅ Nuevos Archivos
+
+| Archivo | Propósito |
+|---------|----------|
+| `agentes/_base.agent.md` | Instrucciones base compartidas por todos los agentes |
+| `herramientas/_base.tool.md` | Instrucciones mandatory compartidas por todas las herramientas |
+| `plantillas/refinamiento_hu_plantilla.md` | Plantilla estándar para refinamientos de HU |
+
+#### ✅ Cambios en Herramientas
+
+**Todas las herramientas (`herramientas/*.tool.md`):**
+- Bloque `mandatory` reemplazado por `mandatory_base` (referencia a `_base.tool.md`) + `mandatory_especifico`
+- Eliminadas instrucciones repetidas de idioma y firma (ahora en `_base.tool.md`)
+
+**`validar_hu.tool.md`:**
+- Nuevo paso "Detección de Ambigüedades" — NUNCA asumir, preguntar al usuario
+- Nuevo paso "Validación contra ADR" — Verificar coherencia con decisiones arquitectónicas
+- Validación Arquitectónica mejorada con checklist ampliado
+- Acciones desglosadas en formato lista para mayor claridad
+
+**`refinar_hu.tool.md`:**
+- Referencia a `{{plantillas.refinamiento_hu}}` para generación de archivo
+- Nuevo campo "Iteración" en acciones de modo nuevo y ajuste
+- Acciones de modo ajuste mejoradas con sección de ajustes aplicados
+
+**`tomar_contexto.tool.md`:**
+- Mandatory reestructurado con mandatory_base + mandatory_especifico
+
+#### ✅ Cambios en Plantillas
+
+**`backlog_desarrollo_plantilla.md`:**
+- Nuevo campo `ADR_Ref` en todas las secciones de HU
+- Rutas unificadas a `{{artifacts.*}}` en lugar de variables legacy
+- Nueva sección "Deuda Técnica" para tracking de tech debt
+- Estado `[X]` Completada renombrado a `[C]` Completada
+
+**`contexto_proyecto_plantilla.md`:**
+- Estructura mejorada con subsecciones de Dependencias Core y Herramientas de Desarrollo
+- Sección de arquitectura generalizada (no solo "capas")
+- Convenciones reorganizadas en Código y Proyecto
+
+**`plan_implementacion_plantilla.md`:**
+- Versión actualizada a 2.0
+- Fases dinámicas según arquitectura del proyecto (Hexagonal, MVC, Capas, Script, Frontend)
+- Comentarios instructivos para `>planificar_hu`
+- Eliminados ejemplos hardcodeados Java/Spring
+
+#### ✅ Archivos Eliminados (movidos a legacy o eliminados)
+
+| Archivo | Razón |
+|---------|-------|
+| `reglas/arquitectura.rules.md` | Conocimiento implícito del LLM |
+| `reglas/deteccion_stack.rules.md` | Conocimiento implícito del LLM |
+| `reglas/java.rules.md` | Conocimiento implícito del LLM |
+| `reglas/javascript.rules.md` | Conocimiento implícito del LLM |
+| `reglas/python.rules.md` | Conocimiento implícito del LLM |
+| `reglas/dotnet.rules.md` | Conocimiento implícito del LLM |
+| `reglas/go.rules.md` | Conocimiento implícito del LLM |
+| `reglas/patrones_diseno.rules.md` | Conocimiento implícito del LLM |
+| `plantillas/session_state_plantilla.md` | Movida a legacy (deprecada desde v6.0) |
+| `plantillas/stack_proyecto_plantilla.md` | Unificada con contexto_proyecto_plantilla.md |
+
+#### ✅ Cambios en Configuración
+
+**`config/CONFIG_SYSTEM.yaml`:**
+- Versión actualizada a 7.0
+- Eliminado: `archivos.stack_proyecto` (unificado en contexto)
+- Agregado: `plantillas.refinamiento_hu`
+- Reglas simplificadas: solo `mermaid.rules.md` permanece
+
+---
 
 ### [6.0] - 2026-01-09
 

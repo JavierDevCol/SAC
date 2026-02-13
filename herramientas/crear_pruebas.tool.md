@@ -6,15 +6,12 @@ version: "4.1"
 ---
 
 ```yaml
-mandatory:
-  - instruccion: "Seguir el proceso paso a paso en orden secuencial"
-  - instruccion: "Validar prerequisitos antes de ejecutar"
-  - instruccion: "Pasos obligatorios NO se pueden omitir"
+mandatory_base: "Cargar y aplicar TODAS las instrucciones de _base.tool.md ANTES de ejecutar esta herramienta. CRUCIAL - NO SALTAR."
+
+mandatory_especifico:
   - instruccion: "Generar tests ejecutables con patrón AAA (Arrange-Act-Assert)"
   - instruccion: "Incluir casos felices, de borde y de error"
   - instruccion: "Nomenclatura: should[Comportamiento]When[Condicion]()"
-  - instruccion: "Comentarios en idioma: {{preferencias.idioma_documentacion}}"
-  - instruccion: "Si {{usuario.incluir_firma_en_documentos}}=true, agregar pie: '---\n✅ Revisado por **{{usuario.nombre}}** | 📅 {{fecha}}\n---'"
 
 prerequisitos:
   archivos_requeridos:

@@ -6,15 +6,12 @@ version: "4.1"
 ---
 
 ```yaml
-mandatory:
-  - instruccion: "Seguir el proceso paso a paso en orden secuencial"
-  - instruccion: "Validar prerequisitos antes de ejecutar"
-  - instruccion: "Pasos obligatorios NO se pueden omitir"
+mandatory_base: "Cargar y aplicar TODAS las instrucciones de _base.tool.md ANTES de ejecutar esta herramienta. CRUCIAL - NO SALTAR."
+
+mandatory_especifico:
   - instruccion: "Generar archivo de refinamiento ANTES de actualizar estado"
   - instruccion: "NUNCA aceptar criterios de aceptación no medibles"
   - instruccion: "Usar desglose VERTICAL (end-to-end), nunca horizontal"
-  - instruccion: "Generar en idioma: {{preferencias.idioma_documentacion}}"
-  - instruccion: "Si {{usuario.incluir_firma_en_documentos}}=true, agregar pie: '---\n✅ Revisado por **{{usuario.nombre}}** | 📅 {{fecha}}\n---'"
 
 prerequisitos:
   archivos_requeridos:
@@ -86,16 +83,19 @@ proceso:
     obligatorio: true
     acciones_modo_nuevo:
       - "Crear {{archivos.backlog}} desde {{plantillas.backlog}} si no existe"
-      - "Generar {{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento_[concepto].md"
+      - "Generar {{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento_[concepto].md desde {{plantillas.refinamiento_hu}}"
+      - "Rellenar Iteración: 1"
       - "Actualizar estado HU a [R] Refinada"
     acciones_modo_ajuste:
       - "Actualizar refinamiento existente"
-      - "Marcar observaciones resueltas: [ ]  [x]"
-      - "Agregar sección '##  Ajustes Aplicados (Iteración N)'"
+      - "Incrementar campo Iteración en Metadata"
+      - "Marcar observaciones resueltas: [ ] → [x]"
+      - "Agregar entrada en sección '## 7. Ajustes Aplicados'"
 
 salida:
   archivos_generados:
     ruta: "{{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento_[concepto].md"
+    plantilla: "{{plantillas.refinamiento_hu}}"
   archivos_actualizados: ["{{archivos.backlog}}"]
   estado_hu_final: "[R] Refinada"
   pie_documento:

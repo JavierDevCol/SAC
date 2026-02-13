@@ -82,7 +82,8 @@ Como [rol], quiero [funcionalidad] para [beneficio].
 - **Estado:** [R] Refinada
 - **Origen:** [ID origen]
 - **Prioridad:** [Alta | Media | Baja]
-- **Refinamiento:** `{{hu_refinamiento_location}}/[ID-HU]_refinamiento_[concepto].md`
+- **ADR_Ref:** [ADR-XXX]({{artifacts.adr_folder}}/ADR-XXX.md) | ninguno
+- **Refinamiento:** `{{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md`
 - **Fecha refinamiento:** [timestamp]
 - **Estimación:** [X] SP / [Y] horas
 
@@ -108,7 +109,8 @@ Como [rol], quiero [funcionalidad] para [beneficio].
 - **Estado:** [A] Aprobada
 - **Origen:** [ID origen]
 - **Prioridad:** [Alta | Media | Baja]
-- **Refinamiento:** `{{hu_refinamiento_location}}/[ID-HU]_refinamiento_[concepto].md`
+- **ADR_Ref:** [ADR-XXX]({{artifacts.adr_folder}}/ADR-XXX.md) | ninguno
+- **Refinamiento:** `{{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md`
 - **Fecha refinamiento:** [timestamp]
 - **Estimación:** [X] SP / [Y] horas
 - **Fecha aprobación:** [timestamp]
@@ -137,11 +139,12 @@ Como [rol], quiero [funcionalidad] para [beneficio].
 - **Estado:** [P] Planificada
 - **Origen:** [ID origen]
 - **Prioridad:** [Alta | Media | Baja]
-- **Refinamiento:** `{{hu_refinamiento_location}}/[ID-HU]_refinamiento_[concepto].md`
+- **ADR_Ref:** [ADR-XXX]({{artifacts.adr_folder}}/ADR-XXX.md) | ninguno
+- **Refinamiento:** `{{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md`
 - **Fecha refinamiento:** [timestamp]
 - **Estimación:** [X] SP / [Y] horas
 - **Fecha aprobación:** [timestamp]
-- **Plan:** `{{plan_desarrollo_location}}/plan_[ID-HU]_[timestamp].md`
+- **Plan:** `{{artifacts.planes_folder}}/[ID-HU]_plan_implementacion.md`
 - **Fecha planificación:** [timestamp]
 - **Secciones:** [N]
 - **Archivos a modificar:** [N]
@@ -165,10 +168,11 @@ Como [rol], quiero [funcionalidad] para [beneficio].
 - **Estado:** [E] En Ejecución
 - **Origen:** [ID origen]
 - **Prioridad:** [Alta | Media | Baja]
-- **Refinamiento:** `{{hu_refinamiento_location}}/[ID-HU]_refinamiento_[concepto].md`
+- **ADR_Ref:** [ADR-XXX]({{artifacts.adr_folder}}/ADR-XXX.md) | ninguno
+- **Refinamiento:** `{{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md`
 - **Fecha refinamiento:** [timestamp]
 - **Estimación:** [X] SP / [Y] horas
-- **Plan:** `{{plan_desarrollo_location}}/plan_[ID-HU]_[timestamp].md`
+- **Plan:** `{{artifacts.planes_folder}}/[ID-HU]_plan_implementacion.md`
 - **Fecha planificación:** [timestamp]
 - **Inicio ejecución:** [timestamp]
 - **Progreso:** [X]% ([Y]/[Z] pasos)
@@ -191,13 +195,14 @@ Como [rol], quiero [funcionalidad] para [beneficio].
 ─────────────────────────────────────
 
 ### [ID-HU]: [Título]
-- **Estado:** [X] Completada
+- **Estado:** [C] Completada
 - **Origen:** [ID origen]
 - **Prioridad:** [Alta | Media | Baja]
-- **Refinamiento:** `{{hu_refinamiento_location}}/[ID-HU]_refinamiento_[concepto].md`
+- **ADR_Ref:** [ADR-XXX]({{artifacts.adr_folder}}/ADR-XXX.md) | ninguno
+- **Refinamiento:** `{{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md`
 - **Fecha refinamiento:** [timestamp]
 - **Estimación:** [X] SP / [Y] horas
-- **Plan:** `{{plan_desarrollo_location}}/plan_[ID-HU]_[timestamp].md`
+- **Plan:** `{{artifacts.planes_folder}}/[ID-HU]_plan_implementacion.md`
 - **Completado:** [timestamp]
 - **Duración:** [X]h [Y]min
 - **Commit:** `[hash]`
@@ -227,7 +232,8 @@ Como [rol], quiero [funcionalidad] para [beneficio].
 - **Estado previo:** [estado anterior al bloqueo]
 - **Origen:** [ID origen]
 - **Prioridad:** [Alta | Media | Baja]
-- **Refinamiento:** `{{hu_refinamiento_location}}/[ID-HU]_refinamiento_[concepto].md`
+- **ADR_Ref:** [ADR-XXX]({{artifacts.adr_folder}}/ADR-XXX.md) | ninguno
+- **Refinamiento:** `{{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md`
 - **Fecha refinamiento:** [timestamp]
 - **Estimación:** [X] SP / [Y] horas
 - **Motivo bloqueo:** [descripción del bloqueo]
@@ -250,7 +256,22 @@ Como [rol], quiero [funcionalidad] para [beneficio].
 
 ---
 
-## 📈 Métricas del Backlog
+## � Deuda Técnica
+
+| ID | Descripción | Origen | Prioridad | Estado |
+|----|-------------|--------|-----------|--------|
+| DT-001 | [Descripción del tech debt] | [HU-XXX \| Análisis \| Code Review] | [Alta \| Media \| Baja] | [Pendiente \| En progreso \| Resuelta] |
+
+<!-- 
+Agregar items de deuda técnica detectados por:
+- analizar_code_smells
+- validar_hu (recomendaciones de arquitectura)
+- ejecutar_plan (hallazgos durante implementación)
+-->
+
+---
+
+## �📈 Métricas del Backlog
 
 | Métrica | Valor |
 |---------|-------|

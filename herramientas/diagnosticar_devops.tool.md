@@ -5,15 +5,12 @@ alias: [">diagnostico", ">madurez_devops"]
 ---
 
 ```yaml
-mandatory:
-  - instruccion: "Seguir proceso en orden secuencial"
-  - instruccion: "Validar prerequisitos antes de ejecutar"
-  - instruccion: "Pasos obligatorios NO se pueden omitir"
+mandatory_base: "Cargar y aplicar TODAS las instrucciones de _base.tool.md ANTES de ejecutar esta herramienta. CRUCIAL - NO SALTAR."
+
+mandatory_especifico:
   - instruccion: "Evaluar TODAS las áreas antes del diagnóstico"
   - instruccion: "Priorizar backlog por impacto/esfuerzo"
   - instruccion: "Incluir seguridad en cada área"
-  - instruccion: "Generar en idioma: {{preferencias.idioma_documentacion}}"
-  - instruccion: "Si {{usuario.incluir_firma_en_documentos}}=true, agregar pie: '---\n✅ Revisado por **{{usuario.nombre}}** | 📅 {{fecha}}\n---'"
 
 prerequisitos:
   archivos_requeridos:
