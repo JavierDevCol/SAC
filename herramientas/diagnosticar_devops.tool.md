@@ -5,21 +5,24 @@ alias: [">diagnostico", ">madurez_devops"]
 ---
 
 ```yaml
-mandatory_base: "Cargar y aplicar TODAS las instrucciones de _base.tool.md ANTES de ejecutar esta herramienta. CRUCIAL - NO SALTAR."
-
-mandatory_especifico:
+mandatory:
   - instruccion: "Evaluar TODAS las áreas antes del diagnóstico"
   - instruccion: "Priorizar backlog por impacto/esfuerzo"
   - instruccion: "Incluir seguridad en cada área"
 
-prerequisitos:
-  archivos_requeridos:
-    - descripcion: "Acceso al repositorio del proyecto"
-  archivos_opcionales:
-    - "{{archivos.contexto_proyecto}}"
-    - ".github/workflows/ | .gitlab-ci.yml | Jenkinsfile"
-    - "Dockerfile | docker-compose.yml"
-    - "terraform/ | bicep/ | cloudformation/"
+reglas_arquitectonicas_requeridas:
+  descripcion: "Si hay reglas arquitectónicas cargadas, considerar:"
+  secciones:
+    - seccion: "seguridad.secrets_policy"
+      aplicar: "Verificar manejo de secretos según política (env vars, vault, secrets manager)"
+    - seccion: "seguridad.sast_herramienta"
+      aplicar: "Verificar integración de herramienta SAST en pipeline"
+    - seccion: "dependencias.herramientas"
+      aplicar: "Validar consistencia con herramientas de build aprobadas"
+  si_no_existe: "Usar checklist DevOps estándar"
+
+condiciones_entrada:
+  - condicion: "Acceso al repositorio del proyecto"
 
 parametros:
   opcionales:

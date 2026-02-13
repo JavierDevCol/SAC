@@ -1,7 +1,7 @@
 # 🛠️ Herramientas del Sistema COCHAS
 
-> **Versión:** 4.0  
-> **Última actualización:** 6 de enero de 2026
+> **Versión:** 7.0  
+> **Última actualización:** 13 de febrero de 2026
 
 ---
 
@@ -16,6 +16,7 @@
 | Herramienta | Comando | Roles Autorizados | Archivo |
 |-------------|---------|-------------------|---------|
 | Tomar Contexto | `>tomar_contexto` | ONAD, ARCHDEV, DEVOPS, REFINADOR | `herramientas/tomar_contexto.tool.md` |
+| Init Reglas Arquitectónicas | `>init_reglas_arquitectonicas` | ONAD | `herramientas/init_reglas_arquitectonicas.tool.md` |
 | Refinar HU | `>refinar_hu` | REFINADOR | `herramientas/refinar_hu.tool.md` |
 | Validar HU | `>validar_hu` | ONAD | `herramientas/validar_hu.tool.md` |
 | Planificar HU | `>planificar_hu` | ONAD | `herramientas/planificar_hu.tool.md` |
@@ -25,7 +26,7 @@
 | Diagnosticar DevOps | `>diagnosticar_devops` | DEVOPS | `herramientas/diagnosticar_devops.tool.md` |
 | Generar Commit | `>generar_commit` | ARTESANO, ARCHDEV, DEVOPS, REFINADOR | `herramientas/generar_commit.tool.md` |
 
-**Total:** 9 herramientas activas
+**Total:** 10 herramientas activas
 
 ---
 
@@ -36,7 +37,7 @@
 | Herramienta | Comando |
 |-------------|---------|
 | Tomar Contexto | `>tomar_contexto` |
-| Validar HU | `>validar_hu` |
+| Init Reglas Arquitectónicas | `>init_reglas_arquitectonicas` || Generar ADR | `>generar_adr` || Validar HU | `>validar_hu` |
 | Planificar HU | `>planificar_hu` |
 
 ### +ARCHDEV (ArchDev Pro)
@@ -77,7 +78,8 @@
 
 | Categoría | Herramientas |
 |-----------|--------------|
-| **Contexto** | `>tomar_contexto` |
+| **Contexto** | `>tomar_contexto`, `>analizar_stack` |
+| **Arquitectura** | `>init_reglas_arquitectonicas`, `>generar_adr` |
 | **Historias de Usuario** | `>refinar_hu`, `>validar_hu`, `>planificar_hu` |
 | **Implementación** | `>ejecutar_plan`, `>crear_pruebas` |
 | **Calidad de Código** | `>analizar_code_smells` |

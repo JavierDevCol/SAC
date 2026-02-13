@@ -6,20 +6,26 @@ version: "4.1"
 ---
 
 ```yaml
-mandatory_base: "Cargar y aplicar TODAS las instrucciones de _base.tool.md ANTES de ejecutar esta herramienta. CRUCIAL - NO SALTAR."
-
-mandatory_especifico:
+mandatory:
   - instruccion: "Generar archivo de refinamiento ANTES de actualizar estado"
   - instruccion: "NUNCA aceptar criterios de aceptación no medibles"
   - instruccion: "Usar desglose VERTICAL (end-to-end), nunca horizontal"
 
-prerequisitos:
-  archivos_requeridos:
-    - descripcion: "Texto de la HU"
-      formato: "Como [rol], quiero [funcionalidad], para [beneficio]"
-  archivos_opcionales:
-    - "{{archivos.contexto_proyecto}}"
-    - "{{archivos.backlog}}"
+reglas_arquitectonicas_requeridas:
+  descripcion: "Si hay reglas arquitectónicas cargadas, considerar:"
+  secciones:
+    - seccion: "arquitectura.estilo"
+      aplicar: "Alinear desglose técnico con arquitectura definida (Hexagonal, MVC, Capas)"
+    - seccion: "testing.metodologia"
+      aplicar: "Incluir criterios de aceptación alineados con metodología (TDD, BDD)"
+    - seccion: "testing.cobertura_global"
+      aplicar: "Mencionar cobertura esperada en estimación"
+  si_no_existe: "Refinar sin restricciones arquitectónicas específicas"
+
+condiciones_entrada:
+  - condicion: "Usuario proporciona texto de HU"
+    formato: "Como [rol], quiero [funcionalidad], para [beneficio]"
+    si_no_cumple: "Solicitar HU en formato correcto"
 
 parametros:
   opcionales:

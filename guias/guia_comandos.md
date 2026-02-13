@@ -1,8 +1,8 @@
 # 📋 Guía Completa de Comandos del Sistema
 
 > **Sistema:** COCHAS - Orquestación de Agentes IA  
-> **Versión:** 3.0  
-> **Última Actualización:** 5 de enero de 2026
+> **Versión:** 7.0  
+> **Última Actualización:** 13 de febrero de 2026
 
 ---
 
@@ -231,11 +231,11 @@ Rol nuevo: Arquitecto ONAD (+ONAD)
 
 | Comando | Rol | Herramientas Disponibles |
 |---------|-----|--------------------------|
-| `+ONAD` | Arquitecto ONAD | `>tomar_contexto`, `>define_arquitectura`, `>generar_adr` |
-| `+ARCHDEV` | ArchDev Pro | `>refactorizar`, `>crear_pruebas`, `>analizar_code_smells`, `>ejecutar_plan` |
-| `+REFINADOR` | Refinador HU | `>refinar_hu`, `>validar_hu`, `>planificar_hu` |
+| `+ONAD` | Arquitecto ONAD | `>tomar_contexto`, `>init_reglas_arquitectonicas`, `>generar_adr`, `>validar_hu`, `>planificar_hu` |
+| `+ARCHDEV` | ArchDev Pro | `>tomar_contexto`, `>ejecutar_plan`, `>crear_pruebas`, `>analizar_code_smells`, `>generar_commit` |
+| `+REFINADOR` | Refinador HU | `>tomar_contexto`, `>refinar_hu`, `>generar_commit` |
 | `+ARTESANO` | Artesano de Commits | `>generar_commit` |
-| `+DEVOPS` | Arquitecto DevOps | `>diagnosticar_devops` |
+| `+DEVOPS` | Arquitecto DevOps | `>tomar_contexto`, `>diagnosticar_devops`, `>generar_commit` |
 
 ---
 

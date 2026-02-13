@@ -1,8 +1,8 @@
 # 👥 Guía de Roles Activos del Sistema
 
 > **Sistema:** COCHAS - Orquestación de Agentes IA  
-> **Versión:** 3.0  
-> **Última Actualización:** 5 de enero de 2026
+> **Versión:** 7.0  
+> **Última Actualización:** 13 de febrero de 2026
 
 ---
 
@@ -53,7 +53,7 @@ El sistema COCHAS usa **3 prefijos** para diferentes tipos de acciones:
 
 **Herramientas:**
 - `>tomar_contexto` - Analiza el proyecto completo
-- `>define_arquitectura` - Diseña arquitecturas con visión estratégica
+- `>init_reglas_arquitectonicas` - Configura reglas arquitectónicas del proyecto
 - `>generar_adr` - Documenta decisiones arquitectónicas importantes
 - `>validar_hu` - Valida viabilidad arquitectónica de HUs
 - `>planificar_hu` - Crea planes de implementación alineados con arquitectura
@@ -113,20 +113,16 @@ Interesante. Antes de diseñar la implementación, validemos:
 
 **Herramientas:**
 - `>tomar_contexto` - Analiza el proyecto completo
-- `>refactorizar` - Mejora código existente aplicando patrones
-- `>analizar_code_smells` - Detecta problemas de calidad en el código
-- `>solucionar_smells` - Aplica soluciones a code smells detectados
-- `>crear_pruebas` - Genera tests unitarios y de integración
-- `>verifica_pruebas` - Valida calidad y cobertura de tests
 - `>ejecutar_plan` - Ejecuta planes de implementación generados
-- `>generar_adr` - Documenta decisiones técnicas de implementación
+- `>crear_pruebas` - Genera tests unitarios y de integración
+- `>analizar_code_smells` - Detecta problemas de calidad en el código
+- `>generar_commit` - Documenta cambios con Conventional Commits
 
 **Cuándo usarlo:**
-- ✅ Implementar código basado en diseños arquitectónicos
-- ✅ Refactorizar código existente
+- ✅ Implementar código basado en planes de implementación
 - ✅ Crear tests unitarios y de integración
-- ✅ Aplicar patrones de diseño ya decididos
-- ✅ Resolver code smells y problemas de calidad
+- ✅ Detectar y analizar code smells
+- ✅ Aplicar patrones de diseño
 - ✅ Mejorar legibilidad y mantenibilidad del código
 
 **Cuándo NO usarlo:**

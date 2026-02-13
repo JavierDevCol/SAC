@@ -6,21 +6,13 @@ version: "4.1"
 ---
 
 ```yaml
-mandatory_base: "Cargar y aplicar TODAS las instrucciones de _base.tool.md ANTES de ejecutar esta herramienta. CRUCIAL - NO SALTAR."
-
-mandatory_especifico:
+mandatory:
   - instruccion: "Detectar tipo de workspace (unico/multi) ANTES de analizar"
   - instruccion: "En multi-proyecto: workspace.md + contextos individuales"
   - instruccion: "NUNCA mezclar contextos de diferentes proyectos"
 
-prerequisitos:
-  archivos_requeridos:
-    - descripcion: "Acceso a raíz del proyecto"
-      validacion: "Permisos de lectura"
-  archivos_opcionales:
-    - "README.md"
-    - "pom.xml | build.gradle | package.json"
-    - "Dockerfile | docker-compose.yml"
+condiciones_entrada:
+  - condicion: "Acceso a raíz del proyecto"
 
 parametros:
   opcionales:

@@ -6,19 +6,29 @@ version: "4.1"
 ---
 
 ```yaml
-mandatory_base: "Cargar y aplicar TODAS las instrucciones de _base.tool.md ANTES de ejecutar esta herramienta. CRUCIAL - NO SALTAR."
-
-mandatory_especifico:
+mandatory:
   - instruccion: "Generar tests ejecutables con patrón AAA (Arrange-Act-Assert)"
   - instruccion: "Incluir casos felices, de borde y de error"
   - instruccion: "Nomenclatura: should[Comportamiento]When[Condicion]()"
 
-prerequisitos:
-  archivos_requeridos:
-    - descripcion: "Código fuente Java a testear"
-      formato: "[Clase].java"
-  archivos_opcionales:
-    - "{{archivos.contexto_proyecto}}"
+reglas_arquitectonicas_requeridas:
+  descripcion: "Si hay reglas arquitectónicas cargadas, aplicar:"
+  secciones:
+    - seccion: "testing.metodologia"
+      aplicar: "Usar TDD estricto/flexible según configuración"
+    - seccion: "testing.cobertura_*"
+      aplicar: "Respetar cobertura mínima por capa (domain, application, infrastructure)"
+    - seccion: "testing.patron_nombres"
+      aplicar: "Usar convención de nombres definida (should_when, given_when_then, etc.)"
+    - seccion: "testing.herramienta_integracion"
+      aplicar: "Usar Testcontainers/Mocks según configuración"
+    - seccion: "dependencias.testing"
+      aplicar: "Usar SOLO librerías aprobadas (JUnit5, Mockito, AssertJ, etc.)"
+  si_no_existe: "Usar valores por defecto de la herramienta"
+
+condiciones_entrada:
+  - condicion: "Código fuente a testear"
+    formato: "Clase o módulo existente"
 
 parametros:
   opcionales:

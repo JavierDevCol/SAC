@@ -1,7 +1,7 @@
 # 🤖 Sistema de Orquestación de Agentes IA (COCHAS)
 
-> **Versión:** 4.0  
-> **Última actualización:** 6 de enero de 2026
+> **Versión:** 7.0  
+> **Última actualización:** 13 de febrero de 2026
 
 ---
 
@@ -9,6 +9,7 @@
 
 - [¿Qué es este sistema?](#-qué-es-este-sistema)
 - [Conceptos Clave](#-conceptos-clave)
+- [Instalación](#-instalación)
 - [Inicio Rápido](#-inicio-rápido)
 - [Sistema de Comandos](#-sistema-de-comandos)
 - [Roles Disponibles](#-roles-disponibles)
@@ -77,6 +78,9 @@ Funcionalidades ejecutables que los roles pueden invocar:
 | Ejecutar Plan | `>ejecutar_plan` | Ejecuta planes de implementación |
 | Crear Pruebas | `>crear_pruebas` | Genera tests unitarios e integración |
 | Analizar Code Smells | `>analizar_code_smells` | Detecta problemas de diseño |
+| Analizar Stack | `>analizar_stack` | Detecta tecnologías del proyecto |
+| Generar ADR | `>generar_adr` | Genera Architecture Decision Records |
+| Init Reglas Arquitectónicas | `>init_reglas_arquitectonicas` | Configura reglas arquitectónicas |
 | Diagnosticar DevOps | `>diagnosticar_devops` | Analiza madurez DevOps |
 | Generar Commit | `>generar_commit` | Crea mensajes Conventional Commits |
 
@@ -92,7 +96,30 @@ Los agentes comparten información a través de archivos en el proyecto del usua
 
 ---
 
-## 🚀 Inicio Rápido
+## � Instalación
+
+### Opción Rápida: Bootstrap (Recomendado)
+
+**Windows (PowerShell):**
+```powershell
+irm https://raw.githubusercontent.com/JavierDevCol/SAC/feature/instalacion/INSTALACION/bootstrap/install.ps1 | iex
+```
+
+**Linux/Mac (Bash):**
+```bash
+curl -fsSL https://raw.githubusercontent.com/JavierDevCol/SAC/feature/instalacion/INSTALACION/bootstrap/install.sh | bash
+```
+
+Después de reiniciar la terminal:
+```bash
+sac "C:/mi-proyecto"    # Instalar en un proyecto
+```
+
+📚 **Guía completa:** [INSTALACION/README.md](INSTALACION/README.md)
+
+---
+
+## �🚀 Inicio Rápido
 
 ### Paso 1: Elegir el Agente Adecuado
 
@@ -211,12 +238,15 @@ Cada agente tiene un identificador único:
 | Herramienta | Comando | Roles Autorizados |
 |-------------|---------|-------------------|
 | Tomar Contexto | `>tomar_contexto` | ONAD, ARCHDEV, DEVOPS, REFINADOR |
-| Refinar HU | `>refinar_hu` | REFINADOR, ARCHDEV, DEVOPS |
+| Refinar HU | `>refinar_hu` | REFINADOR |
 | Validar HU | `>validar_hu` | ONAD |
 | Planificar HU | `>planificar_hu` | ONAD |
 | Ejecutar Plan | `>ejecutar_plan` | ARCHDEV |
 | Crear Pruebas | `>crear_pruebas` | ARCHDEV |
 | Analizar Code Smells | `>analizar_code_smells` | ARCHDEV |
+| Analizar Stack | `>analizar_stack` | Todos |
+| Generar ADR | `>generar_adr` | ONAD |
+| Init Reglas Arquitectónicas | `>init_reglas_arquitectonicas` | ONAD |
 | Diagnosticar DevOps | `>diagnosticar_devops` | DEVOPS |
 | Generar Commit | `>generar_commit` | ARTESANO, ARCHDEV, DEVOPS, REFINADOR |
 
@@ -300,25 +330,33 @@ ia_prompts/
 ├── ROLES.md                               ← Índice de roles del sistema
 ├── HERRAMIENTAS.md                        ← Índice de herramientas del sistema
 ├── CHANGELOG.md                           ← Historial de cambios
-├── estructura_directorio.md               ← Documentación de estructura
+├── INSTALACION.md                         ← Guía rápida de instalación
 │
 ├── agentes/                               ← Roles/Agentes (cargar en chat separado)
+│   ├── _base.agent.md                     ← Instrucciones base compartidas
 │   ├── arquitecto_onad.agent.md           ← Arquitecto estratégico
 │   ├── archdev_pro.agent.md               ← Desarrollador pragmático
 │   ├── arquitecto_devops.agent.md         ← Especialista en infraestructura
-│   ├── refinador_hu.agent.md              ← Analista de historias
-│   └── artesano_de_commits.agent.md       ← Narrador de cambios
+│   ├── refinador_hu.agent.md              ← Refinador de historias
+│   └── artesano_de_commits.agent.md       ← Artesano de commits
 │
-├── herramientas/                          ← Herramientas ejecutables
+├── herramientas/                          ← Herramientas ejecutables (12 activas)
+│   ├── _base.tool.md                      ← [DEPRECADO] Ver _base.agent.md
 │   ├── tomar_contexto.tool.md             ← Análisis del proyecto
+│   ├── analizar_stack.tool.md             ← Detección de tecnologías
+│   ├── init_reglas_arquitectonicas.tool.md ← Configuración de reglas
 │   ├── refinar_hu.tool.md                 ← Refinamiento de HUs
 │   ├── validar_hu.tool.md                 ← Validación arquitectónica
 │   ├── planificar_hu.tool.md              ← Planificación de implementación
 │   ├── ejecutar_plan.tool.md              ← Ejecución de planes
 │   ├── crear_pruebas.tool.md              ← Generación de tests
 │   ├── analizar_code_smells.tool.md       ← Detección de problemas
+│   ├── generar_adr.tool.md                ← Architecture Decision Records
 │   ├── diagnosticar_devops.tool.md        ← Análisis DevOps
 │   └── generar_commit.tool.md             ← Mensajes de commit
+│
+├── reglas/                                ← Reglas por tecnología
+│   └── mermaid.rules.md                   ← Reglas para diagramas Mermaid
 │
 ├── config/                                ← Configuración del sistema
 │   ├── CONFIG_SYSTEM.yaml                 ← Variables del sistema
@@ -328,28 +366,40 @@ ia_prompts/
 │   ├── guia_comandos.md                   ← Guía de comandos
 │   ├── guia_roles_activos.md              ← Guía de roles
 │   ├── guia_ciclo_vida_tareas.md          ← Ciclo de vida de tareas
-│   └── guia_creacion_roles.md             ← Crear roles personalizados
+│   ├── guia_creacion_roles.md             ← Crear roles personalizados
+│   └── guia_creacion_agentes_vscode.md    ← Crear agentes para VS Code
 │
 ├── plantillas/                            ← Plantillas del sistema
 │   ├── agente_plantilla.agent.md          ← Plantilla para roles
 │   ├── herramienta_plantilla.tool.md      ← Plantilla para herramientas
 │   ├── backlog_desarrollo_plantilla.md    ← Plantilla de backlog
 │   ├── contexto_proyecto_plantilla.md     ← Plantilla de contexto
-│   ├── session_state_plantilla.md         ← Estructura del estado
+│   ├── refinamiento_hu_plantilla.md       ← Plantilla de refinamiento
+│   ├── plan_implementacion_plantilla.md   ← Plantilla de plan
+│   ├── adr_*.plantilla.md                 ← Plantillas de ADR (3 formatos)
 │   └── workspace_plantilla.md             ← Plantilla multi-proyecto
 │
 ├── ejemplos/                              ← Ejemplos de uso
-│   └── herramientas/                      ← Ejemplos de herramientas
+│   ├── herramientas/                      ← Ejemplos de herramientas
+│   └── adr/                               ← Ejemplos de ADRs
+│
+├── INSTALACION/                           ← Scripts de instalación
+│   ├── README.md                          ← Instrucciones detalladas
+│   ├── instalar.py                        ← Script de instalación
+│   └── bootstrap/                         ← Instaladores globales
 │
 ├── legacy/                                ← Archivos de versiones anteriores
 │
 └── [EN EL PROYECTO DEL USUARIO]
-    └── .SAC/                           ← Carpeta del sistema (auto-creada)
-        ├── session/                       ← Estado compartido entre agentes
-        │   └── session_state.json         ← Estado de la sesión
+    └── .SAC/                              ← Carpeta del sistema (auto-creada)
+        ├── agentes/                       ← Agentes instalados
+        ├── herramientas/                  ← Herramientas instaladas
+        ├── reglas/                        ← Reglas instaladas
+        ├── session/                       ← Estado de sesión
         └── artifacts/                     ← Artefactos generados
             ├── contexto_proyecto.md       ← Análisis del proyecto
             ├── backlog_desarrollo.md      ← Backlog de tareas
+            ├── ADR/                       ← Architecture Decision Records
             └── HU/                        ← Historias de usuario
 ```
 
@@ -389,14 +439,24 @@ Ver: **[README_PLANTILLA.md](README_PLANTILLA.md)**
 
 ## 📝 Notas de Versión
 
+### v7.0 (Febrero 2026) - Actual
+- ✅ Sistema `_base.agent.md` centralizado (agentes + herramientas)
+- ✅ `_base.tool.md` deprecado
+- ✅ 12 herramientas activas (nuevas: `>analizar_stack`, `>generar_adr`, `>init_reglas_arquitectonicas`)
+- ✅ Carga automática de artifacts al inicio
+- ✅ Carpeta `reglas/` para reglas arquitectónicas
+- ✅ Terminología unificada: `condiciones_entrada` reemplaza `prerequisitos`
+
+### v6.0 (Enero 2026)
+- ✅ Agentes technology-agnostic
+- ✅ Deprecación de `session_state.json`
+- ✅ Backlog como única fuente de verdad
+
 ### v4.0 (Enero 2026)
 - ✅ Migración a formato YAML estructurado
 - ✅ Nuevas extensiones: `.agent.md` y `.tool.md`
 - ✅ Sistema de prefijos: `+` (roles), `>` (herramientas), `*` (sistema)
-- ✅ Modelo de uso: cada agente en chat independiente
 - ✅ Estado compartido vía `.SAC/` en proyecto usuario
-- ✅ Paso final obligatorio en herramientas
-- ✅ Nuevos nombres: "Analista de Historias", "Narrador de Cambios"
 
 ### v3.0 (Enero 2026)
 - Sintaxis con `@rol` y `> herramienta`

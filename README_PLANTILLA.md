@@ -1,7 +1,7 @@
 # 📘 Plantillas del Sistema COCHAS
 
-> **Versión:** 4.0  
-> **Última actualización:** 6 de enero de 2026
+> **Versión:** 7.0  
+> **Última actualización:** 13 de febrero de 2026
 
 ---
 
@@ -16,10 +16,14 @@ Este documento es el **índice central** de plantillas para crear nuevos roles (
 ```
 plantillas/
 ├── agente_plantilla.agent.md          # Plantilla para roles/agentes
+├── herramienta_plantilla.tool.md      # Plantilla para herramientas
 ├── backlog_desarrollo_plantilla.md    # Plantilla para backlog de HU
 ├── contexto_proyecto_plantilla.md     # Plantilla para contexto de proyecto
-├── herramienta_plantilla.tool.md      # Plantilla para herramientas
-├── session_state_plantilla.md         # Estructura del estado de sesión
+├── refinamiento_hu_plantilla.md       # Plantilla para refinamientos de HU
+├── plan_implementacion_plantilla.md   # Plantilla para planes de implementación
+├── adr_nygard.plantilla.md            # Plantilla ADR formato Nygard
+├── adr_madr.plantilla.md              # Plantilla ADR formato MADR
+├── adr_y_statement.plantilla.md       # Plantilla ADR formato Y-Statement
 └── workspace_plantilla.md             # Plantilla para workspace multi-proyecto
 ```
 
@@ -51,14 +55,13 @@ La plantilla de agentes incluye:
 
 La plantilla de herramientas incluye:
 
-- ✅ Sección `mandatory` con instrucciones base estándar
-- ✅ Estructura completa de `identificacion`, `prerequisitos`, `parametros`
-- ✅ Proceso con pasos y **`paso_final` obligatorio** para actualizar sesión
+- ✅ Sección `condiciones_entrada` con validaciones requeridas
+- ✅ Estructura completa de `identificacion`, `parametros`
+- ✅ Proceso con pasos definidos
 - ✅ Secciones de `salida`, `errores` y `siguiente`
 - ✅ Guía de uso detallada
-- ✅ Ejemplo de `session_state.json` actualizado
 
-⚠️ **Importante:** El `paso_final` de "Actualizar Estado de Sesión" es **OBLIGATORIO** en toda herramienta.
+⚠️ **Importante:** Las instrucciones base ahora están centralizadas en `_base.agent.md`.
 
 ---
 
@@ -107,13 +110,12 @@ La plantilla de herramientas incluye:
 
 | Sección | Obligatoria | Notas |
 |---------|-------------|-------|
-| `mandatory` | ✅ | Incluir las 4 instrucciones base + específicas |
 | `identificacion` | ✅ | Nombre, comando, alias |
 | `roles_autorizados` | ✅ | Al menos un rol |
-| `prerequisitos` | ✅ | Puede estar vacío |
+| `condiciones_entrada` | ✅ | Validaciones requeridas (puede estar vacío) |
 | `parametros` | ⚠️ Opcional | Si la herramienta los requiere |
-| `proceso` | ✅ | Mínimo paso_1 + paso_final |
-| `salida` | ✅ | Incluir session_state en actualizados |
+| `proceso` | ✅ | Mínimo paso_1 |
+| `salida` | ✅ | Archivos generados/actualizados |
 | `errores` | ✅ | Al menos un error común |
 | `siguiente` | ⚠️ Recomendado | Guía el flujo de trabajo |
 

@@ -6,21 +6,14 @@ version: "4.1"
 ---
 
 ```yaml
-mandatory_base: "Cargar y aplicar TODAS las instrucciones de _base.tool.md ANTES de ejecutar esta herramienta. CRUCIAL - NO SALTAR."
-
-mandatory_especifico:
+mandatory:
   - instruccion: "Verificar alineación con reglas arquitectónicas del proyecto"
   - instruccion: "NO aprobar HU que violen principios arquitectónicos"
   - instruccion: "Documentar razones de rechazo o ajustes requeridos"
 
-prerequisitos:
-  archivos_requeridos:
-    - descripcion: "HU refinada"
-      ubicacion: "{{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md"
-      estado_requerido: "[R] Refinada"
-  archivos_opcionales:
-    - "{{archivos.reglas_arquitectonicas}}"
-    - "{{archivos.contexto_proyecto}}"
+condiciones_entrada:
+  - condicion: "HU en estado [R] Refinada"
+    si_no_cumple: "Ejecutar >refinar_hu primero"
 
 parametros:
   requeridos:
@@ -44,12 +37,10 @@ proceso:
   - paso: "Cargar HU y Contexto"
     obligatorio: true
     acciones: 
-      - "Buscar HU en {{archivos.backlog}}"
+      - "Buscar HU en backlog"
       - "Verificar estado [R] Refinada"
       - "Cargar refinamiento desde {{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md"
       - "SI HU tiene campo ADR_Ref → Cargar ADR referenciado desde {{artifacts.adr_folder}}"
-      - "Cargar {{archivos.contexto_proyecto}} si existe"
-      - "Cargar {{archivos.reglas_arquitectonicas}} si existe"
     si_error:
       no_encontrada: "HU [id_hu] no encontrada en backlog"
       estado_invalido: "HU debe estar en estado [R] Refinada"
@@ -92,7 +83,7 @@ proceso:
       - "Verificar que la funcionalidad propuesta encaja en arquitectura existente"
       - "Detectar si los CA fuerzan implementaciones que violarían patrones"
       - "Evaluar si la HU introduce responsabilidades que no corresponden a su dominio"
-      - "Consultar {{archivos.reglas_arquitectonicas}} si existe"
+      - "Aplicar reglas_arquitectonicas si están disponibles"
     checklist:
       - "La funcionalidad respeta la separación de responsabilidades del proyecto"
       - "Los CA no imponen decisiones técnicas que violen la arquitectura"

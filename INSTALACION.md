@@ -1,4 +1,4 @@
-# 📦 Guía de Instalación - Sistema COCHAS v4.0
+# 📦 Guía de Instalación - Sistema COCHAS v7.0
 
 > **Sistema de Orquestación de Agentes IA para GitHub Copilot**
 
@@ -12,9 +12,10 @@ COCHAS es un sistema de agentes de IA especializados que se integra con **GitHub
 
 ## 📋 Requisitos Previos
 
-- **Python 3.6+** (para el script de instalación)
+- **Python 3.8+** (para el script de instalación)
 - **VS Code** con la extensión **GitHub Copilot** instalada
 - **GitHub Copilot Chat** habilitado
+- **Git** (para descarga automática)
 
 ---
 
@@ -43,6 +44,7 @@ python instalar.py "C:\mi\proyecto"
    - `plantillas/`
    - `ejemplos/`
    - `config/`
+   - `reglas/`
 
 2. **Copia `.github/agents/`** desde `INSTALACION/` a `[tu-proyecto]/.github/agents/`
 
@@ -54,13 +56,19 @@ python instalar.py "C:\mi\proyecto"
 INSTALACION/
 ├── README.md              ← Instrucciones detalladas
 ├── instalar.py            ← Script de instalación automática
+├── bootstrap/             ← Scripts de instalación global
+│   ├── install.ps1
+│   ├── install.sh
+│   ├── sac.bat
+│   └── sac.sh
 └── .github/
     └── agents/            ← Activadores para Copilot (5 archivos)
-        ├── arquitecto.agent.md
-        ├── desarrollador.agent.md
-        ├── devops.agent.md
-        ├── analista_historias.agent.md
-        └── narrador_commit.agent.md
+        ├── arquitecto_onad.agent.md
+        ├── archdev_pro.agent.md
+        ├── arquitecto_devops.agent.md
+        ├── refinador_hu.agent.md
+        └── artesano_de_commits.agent.md
+```
 ```
 
 **Nota:** Las carpetas del sistema (`agentes/`, `herramientas/`, etc.) se copian directamente desde la raíz de `ia_prompts/`, evitando duplicación.
@@ -73,16 +81,18 @@ INSTALACION/
 tu-proyecto/
 ├── .SAC/
 │   ├── agentes/          ← 5 agentes especializados
-│   ├── herramientas/     ← 9 herramientas ejecutables
+│   ├── herramientas/     ← 12 herramientas ejecutables
 │   ├── plantillas/       ← Plantillas para personalización
 │   ├── ejemplos/         ← Ejemplos de uso
 │   ├── config/           ← Configuración
+│   ├── reglas/           ← Reglas por tecnología
 │   ├── session/          ← Estado de sesión
 │   └── artifacts/        ← Artefactos generados
 │       └── HU/
 ├── .github/
 │   └── agents/           ← Activadores Copilot
 └── ... (tu código)
+```
 ```
 
 ---
@@ -91,11 +101,11 @@ tu-proyecto/
 
 | Invocación en Copilot | Agente | Especialidad |
 |-----------------------|--------|--------------|
-| `@arquitecto` | Arquitecto Onad | Arquitectura, DDD, decisiones técnicas |
-| `@desarrollador` | ArchDev Pro | Java/Spring Boot, TDD, refactoring |
-| `@devops` | Arquitecto DevOps | CI/CD, infraestructura, DevSecOps |
-| `@analista_historias` | Analista de Historias | Refinamiento de HUs |
-| `@narrador_commit` | Narrador de Cambios | Conventional Commits |
+| `@arquitecto_onad` | Arquitecto Onad | Arquitectura, DDD, decisiones técnicas, ADRs |
+| `@archdev_pro` | ArchDev Pro | Implementación, TDD, refactoring |
+| `@arquitecto_devops` | Arquitecto DevOps | CI/CD, infraestructura, DevSecOps |
+| `@refinador_hu` | Refinador de HU | Refinamiento de HUs |
+| `@artesano_de_commits` | Artesano de Commits | Conventional Commits |
 
 ---
 

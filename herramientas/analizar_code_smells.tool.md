@@ -6,12 +6,25 @@ version: "4.1"
 ---
 
 ```yaml
-mandatory_base: "Cargar y aplicar TODAS las instrucciones de _base.tool.md ANTES de ejecutar esta herramienta. CRUCIAL - NO SALTAR."
-
-mandatory_especifico:
+mandatory:
   - instruccion: "Clasificar smells por severidad (Alta/Media/Baja)"
   - instruccion: "Proponer solución específica para cada smell"
   - instruccion: "Priorizar por impacto en mantenibilidad"
+
+reglas_arquitectonicas_requeridas:
+  descripcion: "Si hay reglas arquitectónicas cargadas, aplicar:"
+  secciones:
+    - seccion: "calidad.max_lineas_metodo"
+      aplicar: "Usar límite personalizado en lugar de 20 líneas por defecto"
+    - seccion: "calidad.max_lineas_clase"
+      aplicar: "Usar límite personalizado en lugar de 300 líneas por defecto"
+    - seccion: "calidad.max_parametros"
+      aplicar: "Usar límite personalizado en lugar de 3 parámetros por defecto"
+    - seccion: "patrones.prohibidos"
+      aplicar: "Agregar patrones prohibidos del proyecto a detección de smells"
+    - seccion: "principios.nivel_solid"
+      aplicar: "Ajustar severidad de violaciones SOLID según nivel (estricto/flexible)"
+  si_no_existe: "Usar valores por defecto del catálogo de smells"
 
 catalogo_smells:
   bloaters:
@@ -43,7 +56,7 @@ severidad:
 proceso:
   - paso: "Recepción de Código"
     obligatorio: true
-    acciones: ["Recibir código a analizar", "Identificar lenguaje y contexto", "Cargar reglas arquitectónicas si existen"]
+    acciones: ["Recibir código a analizar", "Identificar lenguaje y contexto"]
 
   - paso: "Detección de Smells"
     obligatorio: true

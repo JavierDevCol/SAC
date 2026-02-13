@@ -1,7 +1,7 @@
 # 👥 Roles del Sistema COCHAS
 
-> **Versión:** 4.0  
-> **Última actualización:** 6 de enero de 2026
+> **Versión:** 7.0  
+> **Última actualización:** 13 de febrero de 2026
 
 ---
 
@@ -35,8 +35,8 @@
 |-------|-------|
 | **Principio** | "No Comer Entero" |
 | **Especialidad** | Arquitectura estratégica, DDD, decisiones técnicas |
-| **Herramientas** | `>tomar_contexto`, `>validar_hu`, `>planificar_hu` |
-| **Cuándo usar** | Decisiones arquitectónicas, validación de HUs, planificación |
+| **Herramientas** | `>tomar_contexto`, `>validar_hu`, `>planificar_hu`, `>generar_adr`, `>init_reglas_arquitectonicas` |
+| **Cuándo usar** | Decisiones arquitectónicas, validación de HUs, planificación, ADRs |
 
 ### +ARCHDEV (ArchDev Pro)
 

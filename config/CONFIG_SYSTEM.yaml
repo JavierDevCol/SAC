@@ -76,6 +76,7 @@ plantillas:
   # stack_proyecto: ELIMINADO - unificado con contexto_proyecto_plantilla.md
   plan_implementacion: "{project-root}/.SAC/plantillas/plan_implementacion_plantilla.md"
   refinamiento_hu: "{project-root}/.SAC/plantillas/refinamiento_hu_plantilla.md"
+  reglas_arquitectonicas: "{project-root}/.SAC/plantillas/reglas_arquitectonicas_plantilla.md"
 
 # ============================================
 # RUTAS DE REGLAS

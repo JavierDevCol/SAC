@@ -6,22 +6,16 @@ version: "4.1"
 ---
 
 ```yaml
-mandatory_base: "Cargar y aplicar TODAS las instrucciones de _base.tool.md ANTES de ejecutar esta herramienta. CRUCIAL - NO SALTAR."
-
-mandatory_especifico:
+mandatory:
   - instruccion: "Seguir especificación Conventional Commits estrictamente"
   - instruccion: "Usar modo imperativo (Añadir, no Añadido)"
   - instruccion: "Limitar título a 50 caracteres, máximo 72"
   - instruccion: "NUNCA terminar título con punto"
   - instruccion: "Primera letra mayúscula en descripción"
 
-prerequisitos:
-  archivos_requeridos:
-    - descripcion: "Git diff de cambios"
-      obtencion: "git diff > {{rutas.artifacts_folder}}/diff.txt"
-  archivos_opcionales:
-    - "Nombre de branch actual"
-    - "Número de issue/ticket"
+condiciones_entrada:
+  - condicion: "Cambios en staging (git diff)"
+    si_no_cumple: "Ejecutar 'git add' primero"
 
 parametros:
   opcionales:

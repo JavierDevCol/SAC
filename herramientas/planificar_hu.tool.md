@@ -6,23 +6,29 @@ version: "4.1"
 ---
 
 ```yaml
-mandatory_base: "Cargar y aplicar TODAS las instrucciones de _base.tool.md ANTES de ejecutar esta herramienta. CRUCIAL - NO SALTAR."
-
-mandatory_especifico:
+mandatory:
   - instruccion: "Generar plan alineado con arquitectura del proyecto"
   - instruccion: "Incluir tareas de testing en el plan"
   - instruccion: "Especificar orden de ejecución y dependencias"
   - instruccion: "Usar plantilla {{plantillas.plan_implementacion}}"
   - instruccion: "Incluir TODOS los criterios de aceptación de la HU en Fase Final"
 
-prerequisitos:
-  archivos_requeridos:
-    - descripcion: "HU aprobada arquitectónicamente"
-      ubicacion: "{{archivos.backlog}}"
-      estado_requerido: "[A] Aprobada"
-  archivos_opcionales:
-    - "{{archivos.contexto_proyecto}}"
-    - "{{archivos.reglas_arquitectonicas}}"
+reglas_arquitectonicas_requeridas:
+  descripcion: "Si hay reglas arquitectónicas cargadas, aplicar:"
+  secciones:
+    - seccion: "arquitectura.estructura"
+      aplicar: "Planificar creación de archivos en carpetas según estructura definida"
+    - seccion: "nomenclatura.*"
+      aplicar: "Usar convenciones de nombres en tareas del plan"
+    - seccion: "testing.metodologia"
+      aplicar: "Si TDD, incluir tarea de tests ANTES de implementación"
+    - seccion: "documentacion.adr_obligatorio"
+      aplicar: "Si aplica, incluir tarea de ADR en el plan"
+  si_no_existe: "Planificar con mejores prácticas estándar del stack"
+
+condiciones_entrada:
+  - condicion: "HU en estado [A] Aprobada"
+    si_no_cumple: "Ejecutar >validar_hu primero"
 
 parametros:
   requeridos:
@@ -81,15 +87,13 @@ proceso:
   - paso: "Cargar HU y Contexto"
     obligatorio: true
     acciones: 
-      - "Buscar HU en {{archivos.backlog}}"
+      - "Buscar HU en backlog"
       - "Verificar estado [A] Aprobada"
       - "Cargar refinamiento de la HU (contiene decisiones técnicas del ADR si aplica)"
-      - "Cargar {{archivos.contexto_proyecto}} si existe"
-      - "Cargar {{archivos.reglas_arquitectonicas}} si existe"
-      - "Identificar HUs relacionadas en {{archivos.backlog}} (misma épica, feature o dominio)"
+      - "Identificar HUs relacionadas en backlog (misma épica, feature o dominio)"
       - "Detectar componentes reutilizables de HUs ya implementadas [C]"
       - "Registrar dependencias o conflictos potenciales con HUs en progreso [E]"
-    nota: "El ADR ya fue validado en >validar_hu. Info técnica está en el refinamiento."
+
     si_error:
       no_aprobada: " HU debe estar aprobada. Ejecutar >validar_hu primero"
 
@@ -112,7 +116,7 @@ proceso:
   - paso: "Detectar Arquitectura y Validar Estructura"
     obligatorio: true
     acciones:
-      - "Leer sección '## 4. Arquitectura' en {{archivos.contexto_proyecto}}"
+      - "Leer sección '## 4. Arquitectura' en contexto_proyecto"
       - "Extraer campo 'Estilo' para determinar tipo de fases"
       - "Validar que '### Estructura del Proyecto' esté documentada y sea coherente"
       - "SI estructura es ambigua o incompleta → PREGUNTAR al usuario"
@@ -124,7 +128,7 @@ proceso:
       - "  SI estilo CONTIENE 'Frontend' OR framework IN [React, Vue, Angular] → usar estructura_fases.frontend"
       - "  DEFAULT → usar estructura_fases.default"
       - "Guardar fases seleccionadas en variable 'fases_plan'"
-      - "Aplicar convenciones de {{archivos.reglas_arquitectonicas}} si existe"
+      - "Aplicar convenciones de reglas_arquitectonicas si están disponibles"
     si_no_existe_contexto: "Usar estructura_fases.default y PREGUNTAR rutas al usuario"
     si_inconsistencia: "PAUSAR y confirmar con usuario antes de continuar"
 
@@ -132,8 +136,8 @@ proceso:
     obligatorio: true
     acciones: 
       - "Identificar componentes a crear/modificar según HU y refinamiento"
-      - "Definir interfaces y contratos según {{archivos.reglas_arquitectonicas}}"
-      - "Consultar sección '## 4. Arquitectura' > '### Estructura del Proyecto' en {{archivos.contexto_proyecto}}"
+      - "Definir interfaces y contratos según reglas_arquitectonicas"
+      - "Consultar sección '## 4. Arquitectura' > '### Estructura del Proyecto' en contexto_proyecto"
       - "Usar rutas REALES documentadas (NO genéricas)"
     si_ruta_no_existe:
       - "SI no existe ruta clara para un componente → PREGUNTAR al usuario:"

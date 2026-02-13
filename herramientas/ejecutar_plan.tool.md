@@ -6,9 +6,7 @@ version: "4.1"
 ---
 
 ```yaml
-mandatory_base: "Cargar y aplicar TODAS las instrucciones de _base.tool.md ANTES de ejecutar esta herramienta. CRUCIAL - NO SALTAR."
-
-mandatory_especifico:
+mandatory:
   - instruccion: "Ejecutar tareas del plan en ORDEN ESTRICTO"
   - instruccion: "DETENERSE INMEDIATAMENTE ante cualquier error"
   - instruccion: "Solicitar CONFIRMACIÓN antes de comandos Git"
@@ -16,14 +14,28 @@ mandatory_especifico:
   - instruccion: "ACTUALIZAR plan EN TIEMPO REAL: [ ]  [X], estados de tareas"
   - instruccion: "Estados de tareas: [PENDIENTE]  [EN_PROGRESO]  [EJECUTADA]"
 
-prerequisitos:
-  archivos_requeridos:
-    - descripcion: "Plan de implementación generado"
-      ubicacion: "{{artifacts.planes_folder}}/[ID-HU]_plan_implementacion.md"
-      estado_requerido: "[P] Planificada"
-  archivos_opcionales:
-    - "{{archivos.contexto_proyecto}}"
-    - "{{archivos.reglas_arquitectonicas}}"
+reglas_arquitectonicas_requeridas:
+  descripcion: "Si hay reglas arquitectónicas cargadas, aplicar:"
+  secciones:
+    - seccion: "nomenclatura.*"
+      aplicar: "Nombrar clases, métodos, variables según convenciones definidas"
+    - seccion: "arquitectura.estructura"
+      aplicar: "Crear archivos en carpetas según estructura definida (domain/, application/, infrastructure/)"
+    - seccion: "patrones.obligatorios"
+      aplicar: "Usar patrones requeridos (Repository, Factory, Builder, etc.)"
+    - seccion: "patrones.prohibidos"
+      aplicar: "NUNCA usar patrones prohibidos (Singleton, Service Locator, etc.)"
+    - seccion: "principios.inmutabilidad"
+      aplicar: "Usar final/readonly/const según política"
+    - seccion: "principios.null_policy"
+      aplicar: "Manejar nulls según política (Optional, Null Object, etc.)"
+    - seccion: "calidad.max_*"
+      aplicar: "Respetar límites de líneas por método/clase/parámetros"
+  si_no_existe: "Usar mejores prácticas estándar del stack detectado"
+
+condiciones_entrada:
+  - condicion: "HU en estado [P] Planificada con plan generado"
+    si_no_cumple: "Ejecutar >planificar_hu primero"
 
 parametros:
   requeridos:

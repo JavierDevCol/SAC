@@ -10,9 +10,7 @@ objetivo: |
   Generar documentación formal de decisiones arquitectónicas siguiendo estándares ADR,
   soportando múltiples formatos, para mantener trazabilidad de decisiones técnicas críticas.
 
-mandatory_base: "Cargar y aplicar TODAS las instrucciones de _base.tool.md ANTES de ejecutar esta herramienta. CRUCIAL - NO SALTAR."
-
-mandatory_especifico:
+mandatory:
   - instruccion: "Validar formato ADR: nygard | madr | y-statement | custom"
   - instruccion: "Título único - no duplicados en carpeta ADRs"
   - instruccion: "ADRs INMUTABLES - nunca modificar existentes, crear nuevos que superseden"
@@ -22,14 +20,9 @@ mandatory_especifico:
   - instruccion: "Slug máximo 50 caracteres, kebab-case"
   - instruccion: "Solo archivos Markdown (.md), sin HTML en Mermaid"
 
-prerequisitos:
-  archivos_requeridos:
-    - descripcion: "Archivo de configuración del proyecto"
-      ubicacion: "{{project_root}}/.SAC/CONFIG_SYSTEM.yaml"
-  archivos_opcionales:
-    - "{{adr_location}}"
-    - "{{contexto_proyecto_location}}"
-    - "{{adr_location}}/README.md"
+condiciones_entrada:
+  - condicion: "Decisión arquitectónica a documentar"
+    si_no_cumple: "Proporcionar título, contexto, decisión y consecuencias"
 
 parametros:
   requeridos:

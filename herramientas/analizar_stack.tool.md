@@ -6,9 +6,7 @@ version: "1.0"
 ---
 
 ```yaml
-mandatory_base: "Cargar y aplicar TODAS las instrucciones de _base.tool.md ANTES de ejecutar esta herramienta. CRUCIAL - NO SALTAR."
-
-mandatory_especifico:
+mandatory:
   - instruccion: "SIEMPRE solicitar ruta_proyecto si no se proporciona"
   - instruccion: "Ejecutar algoritmo completo de {{reglas.deteccion_stack}}"
   - instruccion: "Calcular confidence score para cada detección"
@@ -16,11 +14,10 @@ mandatory_especifico:
   - instruccion: "Actualizar sección '## 2. Stack Tecnológico' en {{archivos.contexto_proyecto}}"
 
 # ============================================
-# PREREQUISITOS
+# CONDICIONES DE ENTRADA
 # ============================================
-prerequisitos:
-  archivos_requeridos: none
-  archivos_opcionales: none
+condiciones_entrada:
+  - condicion: "Ruta del proyecto a analizar"
 
 # ============================================
 # PARÁMETROS

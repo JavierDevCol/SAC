@@ -142,7 +142,19 @@
 
 ---
 
-##  Historial
+## 9. Artefactos Relacionados
+
+| Artefacto | Ubicación | Estado | Fecha |
+|-----------|-----------|--------|-------|
+| Reglas Arquitectónicas | {{archivos.reglas_arquitectonicas}} | [⏳ Pendiente / ✅ Configurado] | [fecha] |
+| Backlog | {{archivos.backlog}} | [⏳ Pendiente / ✅ Configurado] | [fecha] |
+| ADRs | {{artifacts.adr_folder}} | [⏳ Pendiente / ✅ Configurado] | [fecha] |
+
+> 💡 Para configurar reglas arquitectónicas: `>init_reglas_arquitectonicas`
+
+---
+
+## 📜 Historial
 
 | Fecha | Acción | Detalle |
 |-------|--------|---------|

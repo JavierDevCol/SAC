@@ -55,6 +55,7 @@ python instalar.py "/home/usuario/mi-proyecto"
    - `plantillas/`
    - `ejemplos/`
    - `config/`
+   - `reglas/`
 
 2. **Copia la carpeta `.github/agents/`** de esta instalación a `[tu-proyecto]/.github/agents/`
 
@@ -149,11 +150,11 @@ INSTALACION/
 │   └── sac.sh             ← Comando global Linux/Mac
 └── .github/
     └── agents/            ← Activadores para GitHub Copilot
-        ├── arquitecto.agent.md
-        ├── desarrollador.agent.md
-        ├── devops.agent.md
-        ├── analista_historias.agent.md
-        └── narrador_commit.agent.md
+        ├── arquitecto_onad.agent.md
+        ├── archdev_pro.agent.md
+        ├── arquitecto_devops.agent.md
+        ├── refinador_hu.agent.md
+        └── artesano_de_commits.agent.md
 ```
 
 ---
@@ -166,20 +167,21 @@ Después de la instalación, tu proyecto tendrá:
 tu-proyecto/
 ├── .SAC/                          ← Sistema SAC
 │   ├── agentes/                      ← 5 agentes especializados
-│   ├── herramientas/                 ← 9 herramientas ejecutables
+│   ├── herramientas/                 ← 12 herramientas ejecutables
 │   ├── plantillas/                   ← Plantillas para personalización
 │   ├── ejemplos/                     ← Ejemplos de uso
 │   ├── config/                       ← Configuración del sistema
+│   ├── reglas/                       ← Reglas por tecnología
 │   ├── session/                      ← Estado de sesión (auto-creado)
 │   └── artifacts/                    ← Artefactos generados
 │       └── HU/                       ← Historias de usuario
 ├── .github/
 │   └── agents/                       ← Activadores Copilot
-│       ├── arquitecto.agent.md
-│       ├── desarrollador.agent.md
-│       ├── devops.agent.md
-│       ├── analista_historias.agent.md
-│       └── narrador_commit.agent.md
+│       ├── arquitecto_onad.agent.md
+│       ├── archdev_pro.agent.md
+│       ├── arquitecto_devops.agent.md
+│       ├── refinador_hu.agent.md
+│       └── artesano_de_commits.agent.md
 └── ... (tu código)
 ```
 
@@ -198,11 +200,11 @@ tu-proyecto/
 
 | Invocación | Agente | Cuándo Usar |
 |------------|--------|-------------|
-| `@arquitecto` | Arquitecto Onad | Decisiones de arquitectura, validar HUs |
-| `@desarrollador` | ArchDev Pro | Implementar código, tests, refactoring |
-| `@devops` | Arquitecto DevOps | CI/CD, infraestructura, pipelines |
-| `@analista_historias` | Analista de Historias | Refinar historias de usuario |
-| `@narrador_commit` | Narrador de Cambios | Crear mensajes de commit |
+| `@arquitecto_onad` | Arquitecto Onad | Decisiones de arquitectura, ADRs, validar HUs |
+| `@archdev_pro` | ArchDev Pro | Implementar código, tests, refactoring |
+| `@arquitecto_devops` | Arquitecto DevOps | CI/CD, infraestructura, pipelines |
+| `@refinador_hu` | Refinador de HU | Refinar historias de usuario |
+| `@artesano_de_commits` | Artesano de Commits | Crear mensajes de commit semánticos |
 
 ---
 
@@ -213,14 +215,17 @@ Una vez activado un agente, puedes usar sus herramientas con el prefijo `>`:
 | Herramienta | Comando | Agentes |
 |-------------|---------|---------|
 | Tomar Contexto | `>tomar_contexto` | Todos |
-| Refinar HU | `>refinar_hu` | Analista |
+| Refinar HU | `>refinar_hu` | Refinador |
 | Validar HU | `>validar_hu` | Arquitecto |
 | Planificar HU | `>planificar_hu` | Arquitecto |
-| Ejecutar Plan | `>ejecutar_plan` | Desarrollador |
-| Crear Pruebas | `>crear_pruebas` | Desarrollador |
-| Analizar Code Smells | `>analizar_code_smells` | Desarrollador |
+| Ejecutar Plan | `>ejecutar_plan` | ArchDev Pro |
+| Crear Pruebas | `>crear_pruebas` | ArchDev Pro |
+| Analizar Code Smells | `>analizar_code_smells` | ArchDev Pro |
+| Analizar Stack | `>analizar_stack` | Todos |
+| Generar ADR | `>generar_adr` | Arquitecto |
+| Init Reglas Arquitectónicas | `>init_reglas_arquitectonicas` | Arquitecto |
 | Diagnosticar DevOps | `>diagnosticar_devops` | DevOps |
-| Generar Commit | `>generar_commit` | Todos |
+| Generar Commit | `>generar_commit` | Artesano de Commits |
 
 ---
 
