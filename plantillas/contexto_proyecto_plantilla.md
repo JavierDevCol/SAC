@@ -99,7 +99,21 @@
 
 ---
 
-## 6. DevOps
+## 6. Dependencias de Proyecto
+
+> **Nota:** Solo aplica en workspaces multi-proyecto. Omitir en mono-proyecto.
+
+| Proyecto | Dirección | Tipo | Descripción |
+|----------|-----------|------|-------------|
+| [proyecto] | [→ Consume / ← Depende] | [RabbitMQ/REST/gRPC/Maven/etc.] | [descripción] |
+
+**Leyenda:** 
+- `→ Consume`: Este proyecto llama/usa al otro
+- `← Depende`: Este proyecto es usado por el otro (dependencia entrante)
+
+---
+
+## 7. DevOps
 
 | Aspecto | Estado | Archivo |
 |---------|--------|---------|
@@ -113,7 +127,7 @@
 
 ---
 
-## 7. Convenciones
+## 8. Convenciones
 
 ### Código
 | Elemento | Convención | Ejemplo |
@@ -129,7 +143,7 @@
 
 ---
 
-## 8. Puntos de Atención
+## 9. Puntos de Atención
 
 ###  Críticos
 - [Punto crítico 1]
@@ -142,7 +156,7 @@
 
 ---
 
-## 9. Artefactos Relacionados
+## 10. Artefactos Relacionados
 
 | Artefacto | Ubicación | Estado | Fecha |
 |-----------|-----------|--------|-------|

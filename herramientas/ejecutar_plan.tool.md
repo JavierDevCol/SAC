@@ -43,6 +43,10 @@ parametros:
       tipo: string
       descripcion: "Identificador de la HU a implementar"
   opcionales:
+    - nombre: proyecto
+      tipo: string
+      descripcion: "Proyecto específico (auto-detectado desde campo Proyecto de la HU)"
+      defecto: null
     - nombre: modo_ejecucion
       tipo: string
       valores: [completo, fase_por_fase, tarea_por_tarea]
@@ -59,7 +63,17 @@ proceso:
 
   - paso: "Cargar Plan de Implementación"
     obligatorio: true
-    acciones: ["Buscar plan en {{artifacts.planes_folder}}/[ID-HU]_plan_implementacion.md", "Verificar estructura según {{plantillas.plan_implementacion}}", "Verificar estado [P] Planificada en {{archivos.backlog}}", "Cambiar estado HU a [E] En Ejecución", "Actualizar Metadata del plan: Estado  EN_PROGRESO"]
+    acciones:
+      - "Buscar plan en {{artifacts.planes_folder}}/[ID-HU]_plan_implementacion.md"
+      - "Verificar estructura según {{plantillas.plan_implementacion}}"
+      - "Verificar estado [P] Planificada en {{archivos.backlog}}"
+      - "Extraer campo '- **Proyecto:**' de la HU"
+      - "SI Proyecto = 'compartida':"
+      - "  1. Leer sección '**Proyectos afectados:**' de la HU (lista de proyectos)"
+      - "  2. Ejecutar tareas en el directorio de cada proyecto según corresponda"
+      - "SI Multi-Proyecto → Establecer directorio base del proyecto como CWD"
+      - "Cambiar estado HU a [E] En Ejecución"
+      - "Actualizar Metadata del plan: Estado  EN_PROGRESO"
     si_error:
       no_encontrado: " Plan no encontrado. Ejecutar >planificar_hu primero"
       estado_invalido: " HU debe estar en estado [P] Planificada"
@@ -98,7 +112,11 @@ proceso:
 
   - paso: "Finalización"
     obligatorio: true
-    acciones: ["Actualizar Metadata del plan: Estado  COMPLETADO", "Cambiar estado HU a [X] Completada en {{archivos.backlog}}", "Agregar entrada final en Historial de Ejecución"]
+    acciones:
+      - "Actualizar Metadata del plan: Estado  COMPLETADO"
+      - "Cambiar estado HU a [X] Completada en {{archivos.backlog}}"
+      - "SI Multi-Proyecto → Actualizar contadores en sección 'Resumen por Proyecto'"
+      - "Agregar entrada final en Historial de Ejecución (incluir columna Proyecto)"
 
 actualizacion_tiempo_real:
   descripcion: "Plan se actualiza conforme se ejecuta para permitir retomar si se interrumpe"
@@ -114,9 +132,6 @@ salida:
     - ruta: "{{archivos.backlog}}"
     - descripcion: "Archivos de código según plan"
   estado_hu_final: "[C] Completada"
-  pie_documento:
-    condicion: "{{usuario.incluir_firma_en_documentos}} = true AND {{usuario.nombre}} no vacío"
-    formato: "---\n✅ Revisado por **{{usuario.nombre}}** | 📅 {{fecha}}\n---"
   mensaje_exito: |
      IMPLEMENTACIÓN COMPLETADA: [ID-HU]
     

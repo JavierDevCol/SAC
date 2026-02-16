@@ -85,7 +85,7 @@ proceso:
 
   - paso: "Reporte"
     obligatorio: true
-    acciones: [Crear reporte, Recomendaciones, Guardar en artifacts, Referenciar en {{contexto_proyecto}}]
+    acciones: [Crear reporte, Recomendaciones, Guardar en artifacts, Referenciar en contexto del proyecto activo]
 
 salida:
   archivos_generados:
@@ -96,9 +96,6 @@ salida:
       🎯 Top 3 Quick Wins: [lista priorizada]
   formato_matriz:
     emojis: {1: 🔴, 2: 🟠, 3: 🟡, 4: 🟢, 5: ⭐}
-  pie_documento:
-    condicion: "{{usuario.incluir_firma_en_documentos}} = true AND {{usuario.nombre}} no vacío"
-    formato: "---\n✅ Revisado por **{{usuario.nombre}}** | 📅 {{fecha}}\n---"
   mensaje_exito: |
     ✅ DIAGNÓSTICO DEVOPS COMPLETADO
     

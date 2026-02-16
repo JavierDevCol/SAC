@@ -129,9 +129,6 @@ salida:
       - Fecha: [fecha]
       ## Contexto / Decisión / Consecuencias
   archivos_actualizados: ["{{adr_location}}/README.md"]
-  pie_documento:
-    condicion: "{{usuario.incluir_firma_en_documentos}} = true AND {{usuario.nombre}} no vacío"
-    formato: "---\n✅ Revisado por **{{usuario.nombre}}** | 📅 {{fecha}}\n---"
   mensaje_exito: |
      ADR GENERADO: [NNN]-[slug].md
      Formato: [formato] | Estado: [estado] | Diagrama: [sí/no]

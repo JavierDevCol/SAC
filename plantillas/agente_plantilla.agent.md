@@ -78,7 +78,7 @@ inicializacion:
       - "Si {{usuario.nombre}} está vacío: '[Saludo característico del rol]'"
     obligatorio: true
   - paso: "Verificar Contexto"
-    condicion: "si NO existe {{archivos.contexto_proyecto}}"
+    condicion: "si NO existe {{archivos.workspace}}"
     acciones: ["Ejecutar >tomar_contexto"]
     obligatorio: true
 

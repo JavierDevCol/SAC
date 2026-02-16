@@ -29,6 +29,10 @@ condiciones_entrada:
 
 parametros:
   opcionales:
+    - nombre: proyecto
+      tipo: string
+      descripcion: "Proyecto destino (requerido en multi-proyecto, ignorado en mono)"
+      defecto: null
     - {nombre: formato_estimacion, tipo: string, valores: [story_points, horas, ambos], defecto: ambos}
     - {nombre: nivel_detalle, tipo: string, valores: [alto, medio, bajo], defecto: medio}
     - {nombre: incluir_riesgos, tipo: boolean, defecto: true}
@@ -52,6 +56,20 @@ proceso:
     obligatorio: true
     acciones: ["Establecer valores por defecto para parámetros opcionales no especificados: formato_estimacion='ambos', nivel_detalle='medio', incluir_riesgos=true, generar_tareas=true, incluir_testing=true"]
     nota: "Garantiza evaluación correcta de condiciones en pasos posteriores"
+
+  - paso: "Detectar Tipo de Workspace"
+    obligatorio: true
+    acciones:
+      - "Leer {{archivos.workspace}} y extraer campo 'Tipo'"
+      - "SI Tipo='Multi-Proyecto':"
+      - "  - SI parámetro 'proyecto' no especificado → PREGUNTAR proyecto destino"
+      - "  - Validar proyecto existe en tabla de workspace.md"
+      - "  - Cargar contexto desde {{artifacts.contextos_folder}}/[proyecto]_contexto.md"
+      - "SI Tipo='Mono-Proyecto':"
+      - "  - Ignorar parámetro 'proyecto', usar proyecto único"
+      - "  - Cargar contexto desde {{artifacts.contextos_folder}}/[nombre]_contexto.md"
+    si_error:
+      proyecto_no_existe: "Proyecto '[proyecto]' no encontrado en workspace"
 
   - paso: "Detectar Modo de Operación"
     obligatorio: true
@@ -92,6 +110,49 @@ proceso:
       - "Generar {{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento_[concepto].md desde {{plantillas.refinamiento_hu}}"
       - "Rellenar Iteración: 1"
       - "Actualizar estado HU a [R] Refinada"
+      - "Determinar proyecto de la HU:"
+      - "  SI parámetro 'proyecto' especificado → usar ese valor"
+      - "  SI Mono-Proyecto → usar nombre del proyecto único"
+      - "  SI Multi-Proyecto sin parámetro → PREGUNTAR al usuario:"
+      - "    '¿A qué proyecto(s) pertenece esta HU?'"
+      - "    Proyectos disponibles:"
+      - "      [1] backend_users"
+      - "      [2] backend_orders"
+      - "      [3] backend_payments"
+      - "      [4] frontend_web"
+      - "      [5] frontend_mobile"
+      - "    Opciones de respuesta:"
+      - "      • Número único: '2' → proyecto específico"
+      - "      • Números separados por coma: '1,3' → proyectos seleccionados manualmente"
+      - "      • 'AP' → analizar impacto en TODOS los proyectos"
+      - "      • Números + AP: '1,2,3 AP' → analizar impacto solo entre los proyectos indicados"
+      - "  Interpretación de respuestas:"
+      - "    '2'       → Proyecto: backend_orders (directo, sin análisis)"
+      - "    '1,3'     → Proyectos: backend_users, backend_payments (directo, compartida)"
+      - "    'AP'      → Ejecutar análisis de impacto en los 5 proyectos"
+      - "    '1,2,3 AP'→ Ejecutar análisis de impacto SOLO en backend_users, backend_orders, backend_payments"
+      - "  SI respuesta contiene 'AP':"
+      - "    1. Determinar scope de análisis:"
+      - "       - Si solo 'AP' → todos los proyectos del workspace"
+      - "       - Si 'N,M,... AP' → solo los proyectos indicados por números"
+      - "    2. Leer contextos de proyectos en scope desde {{artifacts.contextos_folder}}/"
+      - "    3. Analizar sección '## 6. Dependencias de Proyecto' de cada contexto"
+      - "    4. Evaluar la HU contra:"
+      - "       - Dominio/bounded context de cada proyecto"
+      - "       - Stack tecnológico (¿la HU requiere tecnologías de qué proyecto?)"
+      - "       - APIs/interfaces expuestas entre proyectos"
+      - "       - Dependencias declaradas entre proyectos"
+      - "    5. Presentar análisis al usuario:"
+      - "       '📊 Análisis de Impacto para [ID-HU] (scope: [N proyectos]):'"
+      - "       '- [proyecto_1]: ✅ AFECTADO - [razón]'"
+      - "       '- [proyecto_2]: ❌ NO afectado'"
+      - "       '- [proyecto_3]: ⚠️ POSIBLE - [razón de incertidumbre]'"
+      - "    6. PREGUNTAR: '¿Confirmas estos proyectos? (S/N/Editar lista)'"
+      - "  SI respuesta son solo números (sin AP):"
+      - "    - Asignar directamente sin análisis"
+      - "Poblar campo '- **Proyecto:**' con nombre del proyecto o 'compartida'"
+      - "SI es compartida → Agregar sección '**Proyectos afectados:**' con lista de proyectos"
+      - "SI Multi-Proyecto → Actualizar sección 'Resumen por Proyecto' en backlog"
     acciones_modo_ajuste:
       - "Actualizar refinamiento existente"
       - "Incrementar campo Iteración en Metadata"
@@ -104,9 +165,6 @@ salida:
     plantilla: "{{plantillas.refinamiento_hu}}"
   archivos_actualizados: ["{{archivos.backlog}}"]
   estado_hu_final: "[R] Refinada"
-  pie_documento:
-    condicion: "{{usuario.incluir_firma_en_documentos}} = true AND {{usuario.nombre}} no vacío"
-    formato: "---\n✅ Revisado por **{{usuario.nombre}}** | 📅 {{fecha}}\n---"
   mensaje_exito: |
      REFINAMIENTO COMPLETADO: [ID-HU]
      Artefacto: {{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento_[concepto].md

@@ -478,8 +478,9 @@ El sistema define **7 estados** para el ciclo de vida de una HU/Tarea:
 ```
 
 **Archivos centrales:**
+- Workspace: `{{archivos.workspace}}`
 - Backlog: `{{archivos.backlog}}`
-- Contexto: `{{archivos.contexto_proyecto}}`
+- Contextos: `{{artifacts.contextos_folder}}/`
 - Refinamientos: `{{artifacts.hu_refinamientos}}/`
 - Planes: `{{artifacts.planes_folder}}/`
 - Ejecuciones: `{{artifacts.ejecuciones}}/`

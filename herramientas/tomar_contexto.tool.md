@@ -93,33 +93,36 @@ proceso:
     obligatorio: true
     dependencias: ["Detectar Stack Tecnológico"] 
     acciones_unico:
-      - "Generar Listas detallada de cada componente identificado en el analisis especificando la version de cada uno"
-      - "Crear {{rutas.artifacts_folder}} si no existe"
-      - "Generar {{archivos.contexto_proyecto}} desde {{plantillas.contexto}}"
-      - "Incluir resumen básico del stack en contexto_proyecto (datos de 'Detectar Stack Tecnológico')"
+      - "Generar lista detallada de cada componente identificado en el análisis especificando la versión de cada uno"
+      - "Crear {{rutas.artifacts_folder}} y {{artifacts.contextos_folder}} si no existen"
+      - "Generar contexto del proyecto en {{artifacts.contextos_folder}}/contexto_proyecto.md desde {{plantillas.contexto}}"
+      - "Generar {{archivos.workspace}} desde {{plantillas.workspace}} con Tipo: Mono-Proyecto"
     acciones_multi:
-      - "Generar Listas detallada de cada componente identificado en el analisis especificando la version de cada uno"
+      - "Generar lista detallada de cada componente identificado en el análisis especificando la versión de cada uno"
       - "Crear estructura: {{artifacts.contextos_folder}}, {{artifacts.hu_compartidas}}, {{artifacts.hu_folder}}/[proyecto]"
-      - "Por cada proyecto: contexto_proyecto_[nombre].md (incluye resumen básico del stack)"
-      - "Detectar relaciones entre proyectos"
-      - "Generar {{archivos.workspace_index}} desde {{plantillas.workspace}}"
+      - "Por cada proyecto: contexto_proyecto_[nombre].md en {{artifacts.contextos_folder}}"
+      - "Detectar relaciones entre proyectos (incluir en sección 'Dependencias de Proyecto' de cada contexto)"
+      - "Generar {{archivos.workspace}} desde {{plantillas.workspace}} con Tipo: Multi-Proyecto"
 
 salida:
   descripcion: "Archivos y carpetas generados. Paths definidos en CONFIG_SYSTEM.yaml"
   
   modo_unico:
     carpetas_a_crear:
-      - "{{rutas.artifacts_folder}}"         
+      - "{{rutas.artifacts_folder}}"
+      - "{{artifacts.contextos_folder}}"
     archivos_a_generar:
-      - path: "{{archivos.contexto_proyecto}}"
+      - path: "{{archivos.workspace}}"
+        plantilla: "{{plantillas.workspace}}"
+        datos_requeridos: [tipo: "Mono-Proyecto", lista_proyectos: 1]
+      - path: "{{artifacts.contextos_folder}}/contexto_proyecto.md"
         plantilla: "{{plantillas.contexto}}"
         datos_requeridos: [arquitectura, componentes, patrones, scorecard, diagramas, stack_basico]
     mensaje_exito: |
-      ✅ CONTEXTO GENERADO
-      📁 {{archivos.contexto_proyecto}}
+      ✅ WORKSPACE CONFIGURADO (Mono-Proyecto)
+      📁 {{archivos.workspace}}
+      📁 {{artifacts.contextos_folder}}/contexto_proyecto.md
       📊 Scorecard: Arq ${scorecard.arquitectura}/10 | Stack ${scorecard.stack}/10 | Test ${scorecard.testing}/10 | DevOps ${scorecard.devops}/10
-      
-      💡 Para análisis detallado del stack: >tomar_stack
   
   modo_multi:
     carpetas_a_crear:
@@ -129,16 +132,16 @@ salida:
       - "{{artifacts.hu_folder}}/${proyecto.nombre}" 
          ↑ Iterar: PARA CADA proyecto en proyectos[]
     archivos_a_generar:
-      - path: "{{archivos.workspace_index}}"   
+      - path: "{{archivos.workspace}}"   
         plantilla: "{{plantillas.workspace}}"
-        datos_requeridos: [lista_proyectos, relaciones, stack_consolidado, scorecard_global]
+        datos_requeridos: [tipo: "Multi-Proyecto", lista_proyectos, total_proyectos]
       - path: "{{artifacts.contextos_folder}}/contexto_proyecto_${proyecto.nombre}.md"
         plantilla: "{{plantillas.contexto}}"
         iterar: "PARA CADA proyecto en proyectos[]"
-        datos_requeridos: [proyecto.arquitectura, proyecto.componentes, proyecto.patrones, proyecto.stack_basico]
+        datos_requeridos: [proyecto.arquitectura, proyecto.componentes, proyecto.patrones, proyecto.stack_basico, proyecto.dependencias]
     mensaje_exito: |
-      ✅ WORKSPACE MULTI-PROYECTO CONFIGURADO
-      📁 {{archivos.workspace_index}}
+      ✅ WORKSPACE CONFIGURADO (Multi-Proyecto)
+      📁 {{archivos.workspace}}
       📁 {{artifacts.contextos_folder}}/ (${proyectos.length} contextos)
       📊 Scorecard Global: ${scorecard.promedio}/10
       

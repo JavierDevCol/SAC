@@ -11,7 +11,7 @@ mandatory:
   - instruccion: "Ejecutar algoritmo completo de {{reglas.deteccion_stack}}"
   - instruccion: "Calcular confidence score para cada detección"
   - instruccion: "SI confidence < 0.6: agregar warning y solicitar confirmación al usuario"
-  - instruccion: "Actualizar sección '## 2. Stack Tecnológico' en {{archivos.contexto_proyecto}}"
+  - instruccion: "Actualizar sección '## 2. Stack Tecnológico' en el contexto del proyecto activo (ver {{archivos.workspace}})"
 
 # ============================================
 # CONDICIONES DE ENTRADA
@@ -65,10 +65,11 @@ proceso:
     acciones:
       - "Verificar que {{ruta_proyecto}} existe y es accesible"
       - "Verificar permisos de lectura"
-      - "Detectar si existe {{archivos.contexto_proyecto}}"
+      - "Detectar si existe {{archivos.workspace}}"
+      - "SI existe workspace: identificar contexto del proyecto activo desde {{artifacts.contextos_folder}}"
     validaciones:
-      - condicion: "NO existe {{archivos.contexto_proyecto}}"
-        si_cumple: "Informar: 'No existe contexto_proyecto.md. Ejecutar >tomar_contexto primero o continuar para crear solo análisis de stack'"
+      - condicion: "NO existe {{archivos.workspace}}"
+        si_cumple: "Informar: 'No existe workspace. Ejecutar >tomar_contexto primero'"
         si_no_cumple: "Continuar con análisis"
     si_error:
       ruta_invalida: "❌ La ruta especificada no existe o no es accesible"
@@ -123,9 +124,12 @@ proceso:
 
   - paso: "Actualizar Sección Stack en Contexto"
     obligatorio: true
-    descripcion: "Actualiza la sección '## 2. Stack Tecnológico' en contexto_proyecto.md"
+    descripcion: "Actualiza la sección '## 2. Stack Tecnológico' en el contexto del proyecto"
     acciones:
-      - "SI existe {{archivos.contexto_proyecto}}:"
+      - "Obtener ruta del contexto activo desde {{archivos.workspace}}:"
+      - "  - Mono-proyecto: {{artifacts.contextos_folder}}/contexto_proyecto.md"
+      - "  - Multi-proyecto: {{artifacts.contextos_folder}}/contexto_proyecto_[nombre].md"
+      - "SI existe el contexto:"
       - "  Buscar sección '## 2. Stack Tecnológico'"
       - "  Reemplazar contenido completo de la sección (hasta siguiente ##) con:"
       - "    ### Resumen"
@@ -140,24 +144,20 @@ proceso:
       - "    ### Herramientas de Desarrollo"
       - "    [tabla de linters/formatters detectados]"
       - "  Actualizar timestamp en Historial"
-      - "SI NO existe {{archivos.contexto_proyecto}}:"
+      - "SI NO existe workspace:"
       - "  Mostrar resultado en consola"
-      - "  Sugerir: '>tomar_contexto para crear archivo completo'"
+      - "  Sugerir: '>tomar_contexto para crear workspace'"
 
 # ============================================
 # SALIDA
 # ============================================
 salida:
-  descripcion: "Actualiza sección Stack en contexto_proyecto.md existente"
+  descripcion: "Actualiza sección Stack en el contexto del proyecto activo"
   
   archivos_actualizados:
-    - archivo: "{{archivos.contexto_proyecto}}"
+    - archivo: "{{artifacts.contextos_folder}}/contexto_proyecto[_nombre].md"
       seccion: "## 2. Stack Tecnológico"
       accion: "Reemplazar contenido de la sección"
-  
-  pie_documento:
-    condicion: "{{usuario.incluir_firma_en_documentos}} = true AND {{usuario.nombre}} no vacío"
-    formato: "---\n✅ Revisado por **{{usuario.nombre}}** | 📅 {{fecha}}\n---"
   
   mensaje_exito: |
     ✅ ANÁLISIS DE STACK COMPLETADO
@@ -169,7 +169,7 @@ salida:
     - Confidence: {{stack.confidence}}%
     
     📄 Actualizado:
-    - {{archivos.contexto_proyecto}} → Sección "## 2. Stack Tecnológico"
+    - Contexto del proyecto → Sección "## 2. Stack Tecnológico"
     
     ⚠️ Warnings: {{stack.metadata.warnings | default: "Ninguno"}}
     
@@ -183,7 +183,7 @@ salida:
 errores:
   ruta_no_proporcionada: {msg: "❌ Parámetro ruta_proyecto es obligatorio", accion: "Proporcionar ruta del proyecto a analizar"}
   ruta_invalida: {msg: "❌ La ruta especificada no existe", accion: "Verificar que la ruta es correcta y accesible"}
-  sin_contexto: {msg: "⚠️ No existe contexto_proyecto.md", accion: "Ejecutar >tomar_contexto primero para crear el archivo base"}
+  sin_contexto: {msg: "⚠️ No existe workspace", accion: "Ejecutar >tomar_contexto primero para crear el workspace"}
   sin_marcadores: 
     msg: "❌ No se detectaron archivos de configuración de proyecto"
     accion: "Aplicar {{reglas.deteccion_stack}}.fallback.sin_marcadores"

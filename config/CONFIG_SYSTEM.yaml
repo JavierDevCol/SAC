@@ -5,7 +5,7 @@
 # SAC - Sistema Agéntico COCHAS
 # ============================================
 
-version: "7.0"
+version: "7.1.0"
 
 # ============================================
 # CARPETAS PRINCIPALES
@@ -25,11 +25,8 @@ archivos:
   config_user: "{project-root}/.SAC/config/CONFIG_USER.yaml" 
   backlog: "{project-root}/.SAC/artifacts/backlog_desarrollo.md"
   reglas_arquitectonicas: "{project-root}/.SAC/artifacts/reglas_arquitectonicas.md"
-  # Proyecto único
-  contexto_proyecto: "{project-root}/.SAC/artifacts/contexto_proyecto.md"
-  # stack_proyecto: ELIMINADO - unificado en sección de contexto_proyecto.md
-  # Multi-proyecto
-  workspace_index: "{project-root}/.SAC/artifacts/workspace.md"
+  # Workspace unificado (mono y multi proyecto)
+  workspace: "{project-root}/.SAC/artifacts/workspace.md"
 
 # ============================================
 # SUBCARPETAS DE ARTIFACTS

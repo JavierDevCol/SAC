@@ -21,6 +21,10 @@ parametros:
       tipo: string
       descripcion: "Identificador de la HU a validar"
   opcionales:
+    - nombre: proyecto
+      tipo: string
+      descripcion: "Proyecto específico (auto-detectado desde campo Proyecto de la HU)"
+      defecto: null
     - {nombre: nivel_validacion, tipo: string, valores: [basico, completo, exhaustivo], defecto: completo}
 
 veredictos:
@@ -39,11 +43,18 @@ proceso:
     acciones: 
       - "Buscar HU en backlog"
       - "Verificar estado [R] Refinada"
+      - "Extraer campo '- **Proyecto:**' de la HU"
+      - "SI Proyecto = 'compartida':"
+      - "  1. Leer sección '**Proyectos afectados:**' de la HU (lista de proyectos)"
+      - "  2. Para cada proyecto listado → Cargar contexto desde {{artifacts.contextos_folder}}/[proyecto]_contexto.md"
+      - "  3. Cargar reglas arquitectónicas de cada proyecto"
+      - "SI Proyecto = [nombre] → Cargar contexto desde {{artifacts.contextos_folder}}/[proyecto]_contexto.md"
       - "Cargar refinamiento desde {{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md"
       - "SI HU tiene campo ADR_Ref → Cargar ADR referenciado desde {{artifacts.adr_folder}}"
     si_error:
       no_encontrada: "HU [id_hu] no encontrada en backlog"
       estado_invalido: "HU debe estar en estado [R] Refinada"
+      contexto_no_encontrado: " Contexto del proyecto '[proyecto]' no encontrado"
 
   - paso: "Detección de Ambigüedades"
     obligatorio: true
@@ -106,9 +117,6 @@ proceso:
 
 salida:
   archivos_actualizados: ["{{archivos.backlog}}", "{{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md (si AJUSTES)"]
-  pie_documento:
-    condicion: "{{usuario.incluir_firma_en_documentos}} = true AND {{usuario.nombre}} no vacío"
-    formato: "---\n✅ Revisado por **{{usuario.nombre}}** | 📅 {{fecha}}\n---"
   mensaje_aprobada: |
      HU APROBADA: [ID-HU]
      Validaciones:  CA |  Arquitectura |  Viabilidad

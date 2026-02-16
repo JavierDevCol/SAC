@@ -510,18 +510,14 @@ salida:
     plantilla: "{{plantillas.reglas_arquitectonicas}}"
   
   archivos_actualizados:
-    - ruta: "{{archivos.contexto_proyecto}}"
+    - ruta: "Contexto del proyecto activo (desde {{archivos.workspace}})"
       cambio: "Agregada/actualizada sección de referencia a reglas arquitectónicas"
-  
-  pie_documento:
-    condicion: "{{usuario.incluir_firma_en_documentos}} = true AND {{usuario.nombre}} no vacío"
-    formato: "---\n✅ Aprobado por **{{usuario.nombre}}** | 📅 {{fecha}}\n---"
   
   mensaje_exito: |
     ✅ REGLAS ARQUITECTÓNICAS CONFIGURADAS
     
     📁 Archivo generado: {{archivos.reglas_arquitectonicas}}
-    📝 Contexto actualizado: {{archivos.contexto_proyecto}}
+    📝 Contexto actualizado: (ver workspace)
     
     📊 Configuración aplicada:
     - Nomenclatura: [resumen]

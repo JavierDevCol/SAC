@@ -22,21 +22,25 @@
 
 ## Inicialización de Contexto
 
-### Paso: Verificar Contexto ✅ Obligatorio
+### Paso: Cargar Workspace ✅ Obligatorio
 
-**Condición:** Si **NO** existe `{{archivos.contexto_proyecto}}`
-
-**Acciones:**
-- Informar: "No se encontró contexto del proyecto. Recomiendo ejecutar análisis de contexto. `>tomar_contexto`"
-
-### Paso: Cargar Contexto Existente ✅ Obligatorio
-
-**Condición:** Si **existe** `{{archivos.contexto_proyecto}}`
+**Condición:** Si **existe** `{{archivos.workspace}}`
 
 **Acciones:**
-- Cargar `{{archivos.contexto_proyecto}}`
-- Cargar `{{archivos.stack_proyecto}}`
-- Informar: "Contexto cargado"
+1. Cargar `{{archivos.workspace}}`
+2. Identificar tipo de workspace (Mono-Proyecto / Multi-Proyecto)
+3. Informar: "Workspace cargado. Tipo: [tipo]. [N] proyecto(s) disponible(s)."
+
+**Estrategia de carga de contextos:**
+- Los contextos individuales de cada proyecto se cargan **bajo demanda**
+- Usar enlaces de la tabla de Proyectos en workspace.md para acceder al contexto específico
+- En mono-proyecto: cargar automáticamente el único contexto disponible
+- En multi-proyecto: cargar contexto solo cuando se trabaje en ese proyecto
+
+**Condición:** Si **NO** existe `{{archivos.workspace}}`
+
+**Acciones:**
+- Informar: "⚠️ No se encontró workspace del proyecto. Recomiendo ejecutar `>tomar_contexto`"
 
 ### Paso: Cargar Reglas Arquitectónicas ✅ Obligatorio
 
@@ -55,18 +59,30 @@
 
 ### Paso: Cargar Artifacts Disponibles ✅ Obligatorio
 
-**Acciones:** Cargar contenido de las siguientes carpetas y archivos si existen:
+**Estrategia de carga:** Lazy loading para optimizar tokens.
 
-| Artifact | Ruta | Descripción |
-|----------|------|-------------|
-| Backlog | `{{archivos.backlog}}` | Estados de HU, prioridades |
-| HUs | `{{artifacts.hu_folder}}` | Historias de Usuario |
-| Refinamientos | `{{artifacts.hu_refinamientos}}` | Refinamientos de HU |
-| ADRs | `{{artifacts.adr_folder}}` | Architecture Decision Records |
-| Planes | `{{artifacts.planes_folder}}` | Planes de implementación |
-| Ejecuciones | `{{artifacts.ejecuciones_folder}}` | Registros de ejecución |
+#### Carga Obligatoria (siempre)
 
-**Nota:** Solo listar/indexar contenido. Cargar archivo específico cuando la herramienta lo requiera.
+| Artifact | Ruta | Propósito |
+|----------|------|-----------|
+| Backlog | `{{archivos.backlog}}` | Índice maestro con estados, prioridades y **referencias a todos los artifacts** |
+
+> El Backlog contiene enlaces a ADRs (`ADR_Ref`), Refinamientos y Planes de cada HU. Usar estas referencias para acceder a artifacts específicos.
+
+#### Carga Bajo Demanda (solo cuando se necesite)
+
+| Artifact | Ruta | Cargar cuando... |
+|----------|------|------------------|
+| HU específica | `{{artifacts.hu_folder}}` | Se trabaje en esa HU |
+| Refinamiento | `{{artifacts.hu_refinamientos}}` | Se requiera detalle técnico de una HU |
+| ADR | `{{artifacts.adr_folder}}` | Se consulte decisión arquitectónica referenciada |
+| Plan | `{{artifacts.planes_folder}}` | Se ejecute o consulte implementación |
+| Ejecución | `{{artifacts.ejecuciones_folder}}` | Se retome o verifique ejecución previa |
+
+**Flujo recomendado:**
+1. Consultar Backlog para identificar HU objetivo
+2. Extraer referencias (`ADR_Ref`, `Plan`, `Refinamiento`) de la HU en el Backlog
+3. Cargar **solo** los artifacts referenciados que la tarea requiera
 
 ### Paso: Cargar Reglas de Dominio ✅ Obligatorio
 
@@ -82,19 +98,27 @@
 
 ## Resumen de Contexto Disponible
 
-Tras la inicialización, el agente tiene acceso a:
+Tras la inicialización, el agente tiene en memoria:
 
-| Recurso | Referencia | Uso |
-|---------|------------|-----|
-| Contexto del proyecto | `contexto_proyecto` | Consulta de arquitectura, stack, estructura |
-| Reglas arquitectónicas | `reglas_arquitectonicas` | Nomenclatura, patrones, testing |
-| Backlog | `backlog` | Estados de HU, búsqueda |
-| ADRs indexados | `artifacts/ADR/` | Decisiones arquitectónicas |
-| Refinamientos indexados | `artifacts/HU/refinamientos/` | HUs refinadas |
-| Planes indexados | `artifacts/planes/` | Planes de implementación |
-| Reglas de dominio | `reglas/` | Mermaid, etc. |
+| Recurso | Estado | Uso |
+|---------|--------|-----|
+| Workspace | ✅ Cargado | Índice de proyectos, tipo (mono/multi) |
+| Reglas arquitectónicas | ✅ Cargado | Nomenclatura, patrones, testing |
+| Backlog | ✅ Cargado | **Índice maestro** - Estados, prioridades, referencias a artifacts |
+| Reglas de dominio | ✅ Cargado | Mermaid, etc. |
 
-**Importante:** Para **crear/guardar archivos**, usar sintaxis `{{seccion.variable}}` para obtener rutas. Para **consultar**, usar nombre simple.
+**Disponibles bajo demanda:**
+
+| Artifact | Ruta | Acceso |
+|----------|------|--------|
+| Contextos de proyecto | `{{artifacts.contextos_folder}}` | Via tabla de Proyectos en workspace.md |
+| HUs | `{{artifacts.hu_folder}}` | Via Backlog |
+| Refinamientos | `{{artifacts.hu_refinamientos}}` | Via `Refinamiento:` en HU |
+| ADRs | `{{artifacts.adr_folder}}` | Via `ADR_Ref:` en HU |
+| Planes | `{{artifacts.planes_folder}}` | Via `Plan:` en HU |
+| Ejecuciones | `{{artifacts.ejecuciones_folder}}` | Via `Tracking:` en HU |
+
+**Importante:** Para **crear/guardar archivos**, usar sintaxis `{{seccion.variable}}` para obtener rutas. Para **consultar**, usar referencias del Workspace/Backlog.
 
 ---
 
@@ -123,8 +147,22 @@ Tras la inicialización, el agente tiene acceso a:
 ### Formato de Salida de Herramientas
 
 - **Idioma:** Generar en `{{preferencias.idioma_documentacion}}`
-- **Firma:** Si `{{usuario.incluir_firma_en_documentos}}` = true, agregar pie de documento
 - **Definir siempre:** archivos_generados, archivos_actualizados, mensaje_exito, siguiente
+
+#### Pie de Documento (Firma)
+
+**Condición:** Agregar solo si `{{usuario.incluir_firma_en_documentos}}` = true **Y** `{{usuario.nombre}}` no está vacío
+
+**Formato estándar:**
+```markdown
+---
+✅ Revisado por **{{usuario.nombre}}** | 📅 {{fecha}}
+---
+```
+
+**Ubicación:** Al final del documento generado, antes de cualquier sección de historial o metadata.
+
+**Nota:** Las herramientas heredan este formato. Solo definir `pie_documento` en una herramienta si requiere un formato diferente.
 
 ---
 

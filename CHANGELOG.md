@@ -9,19 +9,86 @@
 
 | Componente | Versión Actual | Última Actualización |
 |------------|----------------|----------------------|
-| **Sistema SAC (COCHAS)** | 7.0 | 2026-02-13 |
-| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.0 | 2026-02-13 |
+| **Sistema SAC (COCHAS)** | 7.1.0 | 2026-02-16 |
+| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.1.0 | 2026-02-16 |
 | **Configuración Usuario** (`config/CONFIG_USER.template.yaml`) | 4.0 | 2026-01-05 |
-| **Agentes** (`agentes/*.agent.md`) | 7.0 | 2026-02-13 |
-| **Herramientas** (`herramientas/*.tool.md`) | 7.0 | 2026-02-13 |
-| **Plantillas** (`plantillas/`) | 7.0 | 2026-02-13 |
+| **Agentes** (`agentes/*.agent.md`) | 7.1.0 | 2026-02-16 |
+| **Herramientas** (`herramientas/*.tool.md`) | 7.1.0 | 2026-02-16 |
+| **Plantillas** (`plantillas/`) | 7.1.0 | 2026-02-16 |
 | **Guía de Comandos** (`guias/guia_comandos.md`) | 3.0 | 2026-01-05 |
 | **Guía de Roles** (`guias/guia_roles_activos.md`) | 3.0 | 2026-01-05 |
-| **Guía Ciclo de Vida** (`guias/guia_ciclo_vida_tareas.md`) | 3.1 | 2026-01-05 |
+| **Guía Ciclo de Vida** (`guias/guia_ciclo_vida_tareas.md`) | 3.1 | 2026-02-16 |
 
 ---
 
 ## 🚀 Historial de Versiones
+
+### [7.1.0] - 2026-02-16
+
+#### 🎯 Cambio Mayor: Soporte Completo Multi-Proyecto
+
+**Objetivo:** Unificar el manejo de workspaces mono y multi-proyecto, adaptar backlog y herramientas para soportar HUs compartidas entre proyectos, e implementar análisis automático de impacto.
+
+#### ✅ Nuevas Funcionalidades
+
+| Funcionalidad | Descripción |
+|---------------|-------------|
+| **Workspace Unificado** | `workspace.md` como índice único para mono y multi-proyecto |
+| **Campo Proyecto en HUs** | Cada HU indica a qué proyecto pertenece o si es `compartida` |
+| **Análisis de Impacto `[AP]`** | Opción en `>refinar_hu` para que el agente analice qué proyectos afecta una HU |
+| **Resumen por Proyecto** | Nueva sección en backlog con contadores de HUs por proyecto |
+| **Proyectos afectados** | Sección en HUs compartidas listando proyectos involucrados |
+
+#### ✅ Cambios en Plantillas
+
+| Plantilla | Cambio |
+|-----------|--------|
+| `workspace_plantilla.md` | Simplificada a índice mínimo (tipo, tabla de proyectos, historial) |
+| `contexto_proyecto_plantilla.md` | Nueva sección "6. Dependencias de Proyecto" |
+| `backlog_desarrollo_plantilla.md` | Campo Workspace/Tipo, Resumen por Proyecto, campo Proyecto en HUs, columna Proyecto en tablas |
+
+#### ✅ Cambios en Herramientas
+
+| Herramienta | Cambios |
+|-------------|---------|
+| `refinar_hu.tool.md` | Parámetro `--proyecto`, detección de workspace, opción `[AP]` análisis de impacto, soporte respuestas combinadas (`1,2,3 AP`) |
+| `validar_hu.tool.md` | Parámetro `--proyecto`, carga contextos de proyectos afectados, validación cross-proyecto |
+| `planificar_hu.tool.md` | Parámetro `--proyecto`, carga contextos según campo Proyecto de HU |
+| `ejecutar_plan.tool.md` | Parámetro `--proyecto`, CWD por proyecto, actualización Resumen por Proyecto |
+| `tomar_contexto.tool.md` | Genera `workspace.md` en ambos modos (mono/multi) |
+
+#### ✅ Cambios en Agentes
+
+| Agente | Cambio |
+|--------|--------|
+| `_base.agent.md` | Carga unificada desde `{{archivos.workspace}}`, contextos on-demand |
+
+#### ✅ Cambios en Configuración
+
+| Archivo | Cambio |
+|---------|--------|
+| `CONFIG_SYSTEM.yaml` | Unificado a `archivos.workspace` (eliminados `contexto_proyecto` y `workspace_index`) |
+
+#### 📋 Flujo Multi-Proyecto
+
+```
+>refinar_hu "nueva funcionalidad"
+   ↓
+¿A qué proyecto(s) pertenece?
+  [1] backend_users
+  [2] backend_orders
+  [AP] Analizar impacto
+   ↓
+Usuario: "1,2 AP" → Analiza impacto solo en proyectos 1 y 2
+   ↓
+📊 Análisis de Impacto:
+  - backend_users: ✅ AFECTADO
+  - backend_orders: ❌ NO afectado
+   ↓
+HU creada como Proyecto: backend_users (o compartida si múltiples)
+```
+
+---
 
 ### [7.0] - 2026-02-13
 

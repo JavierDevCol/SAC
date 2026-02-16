@@ -1,6 +1,7 @@
 # 📋 Backlog de Desarrollo
 
-> **Proyecto:** [Nombre del Proyecto]  
+> **Workspace:** [Nombre del Workspace]  
+> **Tipo:** [Mono-Proyecto | Multi-Proyecto]  
 > **Última Actualización:** [timestamp]  
 > **Total HUs:** [número]
 
@@ -14,9 +15,20 @@
 | `[R]` Refinada | 0 | Lista para validación arquitectónica |
 | `[A]` Aprobada | 0 | Lista para planificación |
 | `[P]` Planificada | 0 | Lista para ejecución |
-| `[E]` En Ejecución | 0 | En progreso por ArchDev |
+| `[E]` En Ejecución | 0 | En progreso |
 | `[X]` Completada | 0 | Finalizada |
 | `[B]` Bloqueada | 0 | Con dependencias no resueltas |
+
+---
+
+## 📊 Resumen por Proyecto
+
+> **Nota:** Solo en Multi-Proyecto. Omitir sección completa en Mono-Proyecto.
+
+| Proyecto | [ ] | [R] | [A] | [P] | [E] | [X] | [B] | Total |
+|----------|-----|-----|-----|-----|-----|-----|-----|-------|
+| [proyecto_1] | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| **Compartidas** | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 
 ---
 
@@ -24,13 +36,13 @@
 
 ```
 [ ] Pendiente
-  ↓ refinar_hu (REFINADOR)
+  ↓ >refinar_hu (REFINADOR)
 [R] Refinada
-  ↓ validar_hu (ONAD)
+  ↓ >validar_hu (ONAD)
 [A] Aprobada
-  ↓ planificar-hu (ONAD)
+  ↓ >planificar_hu (ONAD)
 [P] Planificada
-  ↓ ejecutar-plan (ARCHDEV)
+  ↓ >ejecutar_plan (ARCHDEV)
 [E] En Ejecución
   ↓ (finaliza)
 [X] Completada
@@ -42,9 +54,26 @@
 
 ## 🎯 Historias de Usuario
 
+<!-- 
+================================================================================
+ESTRUCTURA SEGÚN TIPO DE WORKSPACE
+================================================================================
+
+MONO-PROYECTO: Las HUs van directamente aquí, sin secciones de proyecto.
+
+MULTI-PROYECTO: Crear una sección por proyecto:
+  ### 📁 [nombre_proyecto]
+  (HUs del proyecto)
+  
+  ### 📁 Compartidas
+  (HUs cross-proyecto)
+================================================================================
+-->
+
 ---
 
 ### [ID-HU]: [Título de la HU]
+- **Proyecto:** [nombre_proyecto | compartida]
 - **Estado:** [ ] Pendiente
 - **Origen:** [ID de la tarea/decisión que la originó]
 - **Prioridad:** [Alta | Media | Baja]
@@ -65,12 +94,17 @@ PLANTILLAS POR ESTADO - Copiar según corresponda
 ─────────────────────────────────────
 
 ### [ID-HU]: [Título]
+- **Proyecto:** [nombre_proyecto | compartida]
 - **Estado:** [ ] Pendiente
 - **Origen:** [ID origen]
 - **Prioridad:** [Alta | Media | Baja]
 
 **Descripción:**
 Como [rol], quiero [funcionalidad] para [beneficio].
+
+**Proyectos afectados:** (solo si Proyecto = compartida)
+- [proyecto_1]
+- [proyecto_2]
 
 -->
 
@@ -79,6 +113,7 @@ Como [rol], quiero [funcionalidad] para [beneficio].
 ─────────────────────────────────────
 
 ### [ID-HU]: [Título]
+- **Proyecto:** [nombre_proyecto | compartida]
 - **Estado:** [R] Refinada
 - **Origen:** [ID origen]
 - **Prioridad:** [Alta | Media | Baja]
@@ -93,11 +128,12 @@ Como [rol], quiero [funcionalidad] para [beneficio].
 **Criterios de Aceptación:**
 - [ ] CA1: [descripción]
 - [ ] CA2: [descripción]
-- [ ] CA3: [descripción]
 
 **Dependencias Técnicas:**
 - [Dependencia 1]
-- [Dependencia 2]
+
+**Proyectos afectados:** (solo si Proyecto = compartida)
+- [proyecto_1]
 
 -->
 
@@ -106,6 +142,7 @@ Como [rol], quiero [funcionalidad] para [beneficio].
 ─────────────────────────────────────
 
 ### [ID-HU]: [Título]
+- **Proyecto:** [nombre_proyecto | compartida]
 - **Estado:** [A] Aprobada
 - **Origen:** [ID origen]
 - **Prioridad:** [Alta | Media | Baja]
@@ -118,7 +155,6 @@ Como [rol], quiero [funcionalidad] para [beneficio].
 
 **Notas de Aprobación:**
 - ✅ [Nota de validación 1]
-- ✅ [Nota de validación 2]
 - ⚠️ [Advertencia o recomendación]
 
 **Descripción:**
@@ -126,8 +162,9 @@ Como [rol], quiero [funcionalidad] para [beneficio].
 
 **Criterios de Aceptación:**
 - [ ] CA1: [descripción]
-- [ ] CA2: [descripción]
-- [ ] CA3: [descripción]
+
+**Proyectos afectados:** (solo si Proyecto = compartida)
+- [proyecto_1]
 
 -->
 
@@ -136,6 +173,7 @@ Como [rol], quiero [funcionalidad] para [beneficio].
 ─────────────────────────────────────
 
 ### [ID-HU]: [Título]
+- **Proyecto:** [nombre_proyecto | compartida]
 - **Estado:** [P] Planificada
 - **Origen:** [ID origen]
 - **Prioridad:** [Alta | Media | Baja]
@@ -155,8 +193,9 @@ Como [rol], quiero [funcionalidad] para [beneficio].
 
 **Criterios de Aceptación:**
 - [ ] CA1: [descripción]
-- [ ] CA2: [descripción]
-- [ ] CA3: [descripción]
+
+**Proyectos afectados:** (solo si Proyecto = compartida)
+- [proyecto_1]
 
 -->
 
@@ -165,28 +204,28 @@ Como [rol], quiero [funcionalidad] para [beneficio].
 ─────────────────────────────────────
 
 ### [ID-HU]: [Título]
+- **Proyecto:** [nombre_proyecto | compartida]
 - **Estado:** [E] En Ejecución
 - **Origen:** [ID origen]
 - **Prioridad:** [Alta | Media | Baja]
 - **ADR_Ref:** [ADR-XXX]({{artifacts.adr_folder}}/ADR-XXX.md) | ninguno
 - **Refinamiento:** `{{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md`
-- **Fecha refinamiento:** [timestamp]
-- **Estimación:** [X] SP / [Y] horas
 - **Plan:** `{{artifacts.planes_folder}}/[ID-HU]_plan_implementacion.md`
-- **Fecha planificación:** [timestamp]
 - **Inicio ejecución:** [timestamp]
 - **Progreso:** [X]% ([Y]/[Z] pasos)
 - **Sección actual:** [N]/[M] - [Nombre sección]
-- **Tracking:** `{{ejecuciones_location}}/ejecucion_[ID-HU]_[timestamp]_EN_PROGRESO.json`
+- **Tracking:** `{{artifacts.ejecuciones_folder}}/ejecucion_[ID-HU]_[timestamp]_EN_PROGRESO.json`
 
 **Descripción:**
 Como [rol], quiero [funcionalidad] para [beneficio].
 
 **Criterios de Aceptación:**
 - ✅ CA1: [descripción] (completado)
-- ✅ CA2: [descripción] (completado)
-- ⏳ CA3: [descripción] (en progreso)
-- [ ] CA4: [descripción] (pendiente)
+- ⏳ CA2: [descripción] (en progreso)
+- [ ] CA3: [descripción] (pendiente)
+
+**Proyectos afectados:** (solo si Proyecto = compartida)
+- [proyecto_1]
 
 -->
 
@@ -195,13 +234,12 @@ Como [rol], quiero [funcionalidad] para [beneficio].
 ─────────────────────────────────────
 
 ### [ID-HU]: [Título]
-- **Estado:** [C] Completada
+- **Proyecto:** [nombre_proyecto | compartida]
+- **Estado:** [X] Completada
 - **Origen:** [ID origen]
 - **Prioridad:** [Alta | Media | Baja]
 - **ADR_Ref:** [ADR-XXX]({{artifacts.adr_folder}}/ADR-XXX.md) | ninguno
 - **Refinamiento:** `{{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md`
-- **Fecha refinamiento:** [timestamp]
-- **Estimación:** [X] SP / [Y] horas
 - **Plan:** `{{artifacts.planes_folder}}/[ID-HU]_plan_implementacion.md`
 - **Completado:** [timestamp]
 - **Duración:** [X]h [Y]min
@@ -213,13 +251,13 @@ Como [rol], quiero [funcionalidad] para [beneficio].
 **Criterios de Aceptación:**
 - ✅ CA1: [descripción]
 - ✅ CA2: [descripción]
-- ✅ CA3: [descripción]
 
 **Implementación:**
-- ✅ [Logro 1]
-- ✅ [Logro 2]
 - ✅ Tests: [X] unitarios + [Y] integración
 - ✅ Cobertura: [Z]%
+
+**Proyectos afectados:** (solo si Proyecto = compartida)
+- [proyecto_1]
 
 -->
 
@@ -228,14 +266,13 @@ Como [rol], quiero [funcionalidad] para [beneficio].
 ─────────────────────────────────────
 
 ### [ID-HU]: [Título]
+- **Proyecto:** [nombre_proyecto | compartida]
 - **Estado:** [B] Bloqueada
 - **Estado previo:** [estado anterior al bloqueo]
 - **Origen:** [ID origen]
 - **Prioridad:** [Alta | Media | Baja]
 - **ADR_Ref:** [ADR-XXX]({{artifacts.adr_folder}}/ADR-XXX.md) | ninguno
 - **Refinamiento:** `{{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md`
-- **Fecha refinamiento:** [timestamp]
-- **Estimación:** [X] SP / [Y] horas
 - **Motivo bloqueo:** [descripción del bloqueo]
 - **Tipo bloqueo:** [DEPENDENCIA_HU | DEPENDENCIA_EXTERNA | DECISION_PENDIENTE | RECURSO_NO_DISPONIBLE]
 - **Fecha bloqueo:** [timestamp]
@@ -244,34 +281,25 @@ Como [rol], quiero [funcionalidad] para [beneficio].
 **Descripción:**
 Como [rol], quiero [funcionalidad] para [beneficio].
 
-**Criterios de Aceptación:**
-- [ ] CA1: [descripción]
-- [ ] CA2: [descripción]
-
 **Dependencias:**
 - [ID-HU-dependencia] - [estado] [descripción]
-- [Recurso externo] - [estado]
+
+**Proyectos afectados:** (solo si Proyecto = compartida)
+- [proyecto_1]
 
 -->
 
 ---
 
-## � Deuda Técnica
+## 🔧 Deuda Técnica
 
-| ID | Descripción | Origen | Prioridad | Estado |
-|----|-------------|--------|-----------|--------|
-| DT-001 | [Descripción del tech debt] | [HU-XXX \| Análisis \| Code Review] | [Alta \| Media \| Baja] | [Pendiente \| En progreso \| Resuelta] |
-
-<!-- 
-Agregar items de deuda técnica detectados por:
-- analizar_code_smells
-- validar_hu (recomendaciones de arquitectura)
-- ejecutar_plan (hallazgos durante implementación)
--->
+| ID | Proyecto | Descripción | Origen | Prioridad | Estado |
+|----|----------|-------------|--------|-----------|--------|
+| DT-001 | [proyecto] | [Descripción] | [HU-XXX \| Análisis] | [Alta \| Media \| Baja] | [Pendiente \| Resuelta] |
 
 ---
 
-## �📈 Métricas del Backlog
+## 📈 Métricas del Backlog
 
 | Métrica | Valor |
 |---------|-------|
@@ -287,10 +315,10 @@ Agregar items de deuda técnica detectados por:
 
 ## 📝 Historial de Cambios
 
-| Fecha | HU | Cambio | Responsable |
-|-------|-----|--------|-------------|
-| [timestamp] | [ID-HU] | [descripción del cambio] | [rol] |
+| Fecha | Proyecto | HU | Cambio | Responsable |
+|-------|----------|-----|--------|-------------|
+| [timestamp] | [proyecto] | [ID-HU] | [descripción] | [rol] |
 
 ---
 
-*Última actualización automática por el sistema Cochas*
+> **Archivo generado automáticamente por el sistema SAC**

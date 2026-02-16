@@ -85,9 +85,6 @@ salida:
   archivos_generados:
     unitario: "src/test/java/[paquete]/[Clase]Test.java"
     integracion: "src/test/java/[paquete]/[Clase]IntegrationTest.java"
-  pie_documento:
-    condicion: "{{usuario.incluir_firma_en_documentos}} = true AND {{usuario.nombre}} no vacío"
-    formato: "---\n✅ Revisado por **{{usuario.nombre}}** | 📅 {{fecha}}\n---"
   mensaje_exito: |
      Tests Generados: [Clase]Test.java
      Métodos: [N] | Cobertura estimada: [X]%

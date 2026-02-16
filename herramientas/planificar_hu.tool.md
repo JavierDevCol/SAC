@@ -36,6 +36,10 @@ parametros:
       tipo: string
       descripcion: "Identificador de la HU a planificar"
   opcionales:
+    - nombre: proyecto
+      tipo: string
+      descripcion: "Proyecto específico (auto-detectado desde campo Proyecto de la HU)"
+      defecto: null
     - nombre: incluir_migraciones
       tipo: boolean
       defecto: true
@@ -89,13 +93,19 @@ proceso:
     acciones: 
       - "Buscar HU en backlog"
       - "Verificar estado [A] Aprobada"
+      - "Extraer campo '- **Proyecto:**' de la HU"
+      - "SI Proyecto = 'compartida':"
+      - "  1. Leer sección '**Proyectos afectados:**' de la HU (lista de proyectos)"
+      - "  2. Para cada proyecto listado → Cargar contexto desde {{artifacts.contextos_folder}}/[proyecto]_contexto.md"
+      - "  3. Planificar tareas agrupadas por proyecto cuando corresponda"
+      - "SI Proyecto = [nombre] → Cargar contexto desde {{artifacts.contextos_folder}}/[proyecto]_contexto.md"
       - "Cargar refinamiento de la HU (contiene decisiones técnicas del ADR si aplica)"
       - "Identificar HUs relacionadas en backlog (misma épica, feature o dominio)"
-      - "Detectar componentes reutilizables de HUs ya implementadas [C]"
+      - "Detectar componentes reutilizables de HUs ya implementadas [X]"
       - "Registrar dependencias o conflictos potenciales con HUs en progreso [E]"
-
     si_error:
       no_aprobada: " HU debe estar aprobada. Ejecutar >validar_hu primero"
+      contexto_no_encontrado: " Contexto del proyecto '[proyecto]' no encontrado"
 
   - paso: "Detección de Ambigüedades"
     obligatorio: true
@@ -184,9 +194,6 @@ salida:
     plantilla: "{{plantillas.plan_implementacion}}"
   archivos_actualizados: ["{{archivos.backlog}}"]
   estado_hu_final: "[P] Planificada"
-  pie_documento:
-    condicion: "{{usuario.incluir_firma_en_documentos}} = true AND {{usuario.nombre}} no vacío"
-    formato: "---\n✅ Revisado por **{{usuario.nombre}}** | 📅 {{fecha}}\n---"
   mensaje_exito: |
      PLAN GENERADO: [ID-HU]
      Artefacto: {{artifacts.planes_folder}}/[ID-HU]_plan_implementacion.md

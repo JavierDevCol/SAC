@@ -73,9 +73,6 @@ proceso:
 salida:
   archivos_generados:
     ruta: "{{artifacts.code_smells_folder}}/code_smells_[timestamp].md"
-  pie_documento:
-    condicion: "{{usuario.incluir_firma_en_documentos}} = true AND {{usuario.nombre}} no vacío"
-    formato: "---\n✅ Revisado por **{{usuario.nombre}}** | 📅 {{fecha}}\n---"
   mensaje_exito: |
      ANÁLISIS COMPLETADO
       Alta: [N] |  Media: [N] |  Baja: [N]
