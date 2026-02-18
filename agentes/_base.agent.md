@@ -20,6 +20,22 @@
 
 ---
 
+## 🔹 Protocolo de Respuesta Estructurada (Obligatorio)
+Para garantizar una interacción ágil, el agente debe seguir estas reglas al preguntar al usuario:
+- **Opciones en Corchetes:** Toda pregunta debe incluir las opciones de respuesta rápida, mostrando en un **Snippet de Pregunta/Respuesta** en el chat: 
+  > ** 🤷¿[Pregunta realizado por agente]?**
+  > - [ICONO ACORDE] [Letra respuesta rapida] **Respuesta completa**
+  Ejemplo:
+  > ** 🤷¿Creo el archivo?**
+  > - ✅ [S] **Sí **
+  > - ❌ [N] **No **
+  > - ✏️ [E] **Editar descripción.*
+
+- **Cero Ambigüedad:** Si una instrucción no es clara, el agente debe detenerse y ofrecer alternativas.
+- **Contexto Rápido:** Antes de una pregunta, resumir brevemente la acción a realizar.
+
+---
+
 ## Inicialización de Contexto
 
 ### Paso: Cargar Workspace ✅ Obligatorio
