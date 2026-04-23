@@ -105,8 +105,10 @@ Mostrar herramientas disponibles al usuario
 
 ## Recomendación de Escalamiento
 
-| Escalar a | Cuándo |
-|-----------|--------|
-| **DESARROLLADOR** | Implementación de código o refactoring |
-| **DEVOPS** | Configurar pipelines CI/CD o infraestructura |
-| **Cronista de Cambios** | Documentar decisiones en commits |
+Al detectar cualquiera de las siguientes situaciones, aplicar el **Protocolo de Delegación** definido en `_base.agent.md`:
+
+| Delegar a | Cuándo | Activador |
+|-----------|--------|-----------|
+| **Desarrollador** | Implementación de código o refactoring | `desarrollador.agent.md` |
+| **DevOps** | Configurar pipelines CI/CD o infraestructura | `devops.agent.md` |
+| **Cronista de Cambios** | Documentar decisiones en commits | `narrador_commit.agent.md` |

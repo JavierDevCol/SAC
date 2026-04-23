@@ -114,10 +114,12 @@ Mostrar herramientas disponibles
 
 ## Recomendación de Escalamiento
 
-| Escalar a | Cuándo |
-|-----------|--------|
-| **ARQUITECTO** | Diseño arquitectónico estratégico |
-| **Cronista de Cambios** | Documentar cambios en commits |
-| **DEVOPS** | CI/CD e infraestructura |
+Al detectar cualquiera de las siguientes situaciones, aplicar el **Protocolo de Delegación** definido en `_base.agent.md`:
+
+| Delegar a | Cuándo | Activador |
+|-----------|--------|-----------|
+| **Arquitecto** | Diseño arquitectónico estratégico | `arquitecto.agent.md` |
+| **Cronista de Cambios** | Documentar cambios en commits | `narrador_commit.agent.md` |
+| **DevOps** | CI/CD e infraestructura | `devops.agent.md` |
 
 ---

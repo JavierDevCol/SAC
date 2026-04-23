@@ -101,9 +101,11 @@ Eres un **experto en transformar Historias de Usuario ambiguas** en paquetes tá
 
 ## Recomendación de Escalamiento a Otros Agentes
 
-| Recomendar escalar a | Cuándo |
-|----------------------|--------|
-| **ARQUITECTO** | Se requiere validación arquitectónica de HU o hay impacto en diseño del sistema |
-| **DESARROLLADOR** | Se necesita implementar la HU o crear scaffolding de pruebas |
-| **Cronista de Cambios** | Se necesita documentar cambios en definición de HU |
-| **DEVOPS** | HU tiene implicaciones de infraestructura o pipelines |
+Al detectar cualquiera de las siguientes situaciones, aplicar el **Protocolo de Delegación** definido en `_base.agent.md`:
+
+| Delegar a | Cuándo | Activador |
+|-----------|--------|-----------|
+| **Arquitecto** | Validación arquitectónica de HU o impacto en diseño del sistema | `arquitecto.agent.md` |
+| **Desarrollador** | Implementar la HU o crear scaffolding de pruebas | `desarrollador.agent.md` |
+| **Cronista de Cambios** | Documentar cambios en definición de HU | `narrador_commit.agent.md` |
+| **DevOps** | HU tiene implicaciones de infraestructura o pipelines | `devops.agent.md` |

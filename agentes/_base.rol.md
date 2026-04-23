@@ -184,6 +184,50 @@ Tras la inicialización, el agente tiene en memoria:
 
 ---
 
+## Protocolo de Delegación a Otro Agente
+
+Cuando se detecta un momento de escalamiento, ejecutar este protocolo **antes de recomendar**:
+
+### Paso 1: Preguntar al usuario
+
+> **🤷 ¿Cómo deseas continuar con [descripción breve de la tarea]?**
+> - 🤖 **[S]** Activar subagente — ejecuto la tarea aquí mismo sin cambiar de chat
+> - 💬 **[N]** Chat nuevo — abre `@[nombre_activador]` en una conversación nueva
+
+### Paso 2a: Si el usuario elige [S] — Activar subagente
+
+Invocar `runSubagent` con el siguiente prompt como instrucción:
+
+```
+Eres el agente [Nombre]. 
+Carga tus instrucciones completas desde: {ruta_proyecto}/.github/agents/[activador].agent.md
+Luego ejecuta la siguiente tarea con el contexto mínimo necesario:
+
+[descripción concreta de la tarea a delegar]
+
+Contexto relevante:
+[solo los datos necesarios: HU, diff, ruta de archivo, decisión, etc.]
+```
+
+> El archivo `.github/agents/[activador].agent.md` ya contiene la carga de `_base.agent.md` y del agente específico — no es necesario especificarlos por separado.
+
+### Paso 2b: Si el usuario elige [N] — Chat nuevo
+
+Indicar al usuario:
+> "Abre un nuevo chat con `@[nombre_activador]` y pídele: [descripción de la tarea]"
+
+### Tabla de activadores por agente
+
+| Agente | Activador |
+|--------|-----------|
+| Arquitecto | `@arquitecto` → `.github/agents/arquitecto.agent.md` |
+| Desarrollador | `@desarrollador` → `.github/agents/desarrollador.agent.md` |
+| DevOps | `@devops` → `.github/agents/devops.agent.md` |
+| Analista de Requisitos | `@analista_historias` → `.github/agents/analista_historias.agent.md` |
+| Cronista de Cambios | `@narrador_commit` → `.github/agents/narrador_commit.agent.md` |
+
+---
+
 ## Comandos Universales
 
 | Comando | Descripción |

@@ -119,9 +119,11 @@ Mostrar herramientas disponibles
 
 ## Recomendación de Escalamiento
 
-| Escalar a | Cuándo |
-|-----------|--------|
-| **Cronista de Cambios** | Documentar cambios de infraestructura |
-| **Analista de Requisitos** | Añadir criterios operativos a HU |
-| **ARQUITECTO** | Arquitectura de aplicación (no infra) |
-| **DESARROLLADOR** | Implementación de código |
+Al detectar cualquiera de las siguientes situaciones, aplicar el **Protocolo de Delegación** definido en `_base.agent.md`:
+
+| Delegar a | Cuándo | Activador |
+|-----------|--------|-----------|
+| **Cronista de Cambios** | Documentar cambios de infraestructura | `narrador_commit.agent.md` |
+| **Analista de Requisitos** | Añadir criterios operativos a HU | `analista_historias.agent.md` |
+| **Arquitecto** | Arquitectura de aplicación (no infra) | `arquitecto.agent.md` |
+| **Desarrollador** | Implementación de código | `desarrollador.agent.md` |
