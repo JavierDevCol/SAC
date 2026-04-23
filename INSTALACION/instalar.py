@@ -61,7 +61,6 @@ CARPETAS_COCHAS = [
     "agentes",
     "herramientas", 
     "plantillas",
-    "ejemplos",
     "config",
     "reglas"
 ]

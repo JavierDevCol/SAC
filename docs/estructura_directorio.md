@@ -8,13 +8,35 @@
 ```
 ia_prompts/
 ├── 📄 CHANGELOG.md                    # Historial de cambios del sistema
-├── 📄 estructura_directorio.md        # Este archivo
-├── 📄 HERRAMIENTAS.md                 # Índice de herramientas disponibles
-├── 📄 INSTALACION.md                  # Guía rápida de instalación
 ├── 📄 LICENSE
-├── 📄 README.md                       # Documentación principal
-├── 📄 README_PLANTILLA.md             # Plantilla para README de proyectos
-├── 📄 ROLES.md                        # Índice de roles/agentes disponibles
+├── 📄 README.md                       # Vestíbulo: qué es, instalación rápida, links
+│
+├── 📁 docs/                           # Documentación de autor/usuario (NO se instala)
+│   ├── estructura_directorio.md       # Este archivo
+│   ├── HERRAMIENTAS.md                # Índice de herramientas disponibles
+│   ├── INSTALACION.md                 # Guía rápida de instalación
+│   ├── ROLES.md                       # Índice de roles/agentes disponibles
+│   ├── README_PLANTILLA.md            # Plantilla para README de proyectos
+│   ├── 📁 guias/                      # Guías para usuarios
+│   │   ├── guia_ciclo_vida_tareas.md  # Ciclo de vida de tareas/HU
+│   │   ├── guia_comandos.md           # Referencia de comandos
+│   │   ├── guia_creacion_agentes_vscode.md
+│   │   ├── guia_creacion_roles.md     # Cómo crear nuevos roles SAC
+│   │   ├── guia_roles_activos.md      # Roles disponibles
+│   │   └── guia_subagents_vscode.md   # Subagentes en VS Code Copilot
+│   └── 📁 ejemplos/                   # Ejemplos de uso de herramientas
+│       ├── README.md
+│       └── 📁 herramientas/
+│           ├── analizar_code_smells_ejemplo.md
+│           ├── crear_pruebas_ejemplo.md
+│           ├── diagnosticar_devops_ejemplo.md
+│           ├── ecommerce_mvp_completo.md
+│           ├── generar_commit_ejemplo.md
+│           ├── refinar_hu_ejemplo.md
+│           ├── solucionar_smells_ejemplo.md
+│           ├── tomar_contexto_ejemplo.md
+│           ├── verifica_pruebas_ejemplo.md
+│           └── 📁 adr/
 │
 ├── 📁 agentes/                        # Roles SAC — instrucciones de personalidad para IA
 │   ├── _base.rol.md                   # Comportamiento base compartido (MANDATORY)
@@ -27,28 +49,6 @@ ia_prompts/
 ├── 📁 config/                         # Configuración del sistema
 │   ├── CONFIG_SYSTEM.yaml             # Rutas y estructura del sistema (NO modificar)
 │   └── CONFIG_USER.template.yaml      # Plantilla de configuración de usuario
-│
-├── 📁 ejemplos/                       # Ejemplos de uso de herramientas
-│   ├── README.md
-│   └── 📁 herramientas/
-│       ├── analizar_code_smells_ejemplo.md
-│       ├── crear_pruebas_ejemplo.md
-│       ├── diagnosticar_devops_ejemplo.md
-│       ├── ecommerce_mvp_completo.md
-│       ├── generar_commit_ejemplo.md
-│       ├── refinar_hu_ejemplo.md
-│       ├── solucionar_smells_ejemplo.md
-│       ├── tomar_contexto_ejemplo.md
-│       ├── verifica_pruebas_ejemplo.md
-│       └── 📁 adr/
-│
-├── 📁 guias/                          # Documentación para usuarios
-│   ├── guia_ciclo_vida_tareas.md      # Ciclo de vida de tareas/HU
-│   ├── guia_comandos.md               # Referencia de comandos
-│   ├── guia_creacion_agentes_vscode.md # Cómo crear agentes VS Code Copilot
-│   ├── guia_creacion_roles.md         # Cómo crear nuevos roles SAC
-│   ├── guia_roles_activos.md          # Roles disponibles
-│   └── guia_subagents_vscode.md       # Subagentes en VS Code Copilot
 │
 ├── 📁 herramientas/                   # Instrucciones de herramientas para IA
 │   ├── _base.tool.md                  # [DEPRECADO] — ver agentes/_base.rol.md
@@ -115,17 +115,15 @@ ia_prompts/
 
 ## Descripción de Carpetas
 
-| Carpeta | Propósito |
-|---------|-----------|
-| `agentes/` | Roles SAC — archivos `.rol.md` con personalidad e instrucciones para IA |
-| `config/` | Configuración del sistema SAC (`CONFIG_SYSTEM.yaml`, `CONFIG_USER`) |
-| `ejemplos/` | Ejemplos prácticos de uso de herramientas |
-| `guias/` | Documentación para usuarios humanos |
-| `herramientas/` | Archivos `.tool.md` con instrucciones de herramientas para IA |
-| `INSTALACION/` | Script de instalación, bootstrap global y activadores VS Code |
-| `legacy/` | Archivos de versiones anteriores (referencia histórica) |
-| `plantillas/` | Plantillas para generar artefactos del proyecto |
-| `reglas/` | Reglas especializadas por tecnología (Mermaid, etc.) |
+| Carpeta | Propósito | ¿Se instala? |
+|---------|-----------|:------------:|
+| `docs/` | Documentación de autor y usuario (guías, índices, ejemplos) | ❌ |
+| `agentes/` | Roles SAC — archivos `.rol.md` con personalidad e instrucciones para IA | ✅ |
+| `config/` | Configuración del sistema SAC (`CONFIG_SYSTEM.yaml`, `CONFIG_USER`) | ✅ |
+| `herramientas/` | Archivos `.tool.md` con instrucciones de herramientas para IA | ✅ |
+| `plantillas/` | Plantillas para generar artefactos del proyecto | ✅ |
+| `reglas/` | Reglas especializadas por tecnología (Mermaid, etc.) | ✅ |
+| `INSTALACION/` | Script de instalación, bootstrap global y activadores VS Code | ❌ |
 
 ---
 
