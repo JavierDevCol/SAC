@@ -71,7 +71,6 @@ INSTALACION/
         ├── analista_historias.agent.md
         └── narrador_commit.agent.md
 ```
-```
 
 **Nota:** Las carpetas del sistema (`agentes/`, `herramientas/`, etc.) se copian directamente desde la raíz de `ia_prompts/`, evitando duplicación.
 
@@ -94,7 +93,6 @@ tu-proyecto/
 ├── .github/
 │   └── agents/           ← Activadores Copilot
 └── ... (tu código)
-```
 ```
 
 ---
