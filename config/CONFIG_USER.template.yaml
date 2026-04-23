@@ -1,0 +1,21 @@
+# ============================================
+# CONFIGURACIÓN DEL USUARIO/PROYECTO
+# ============================================
+# ✅ Editable por el usuario
+# Se solicita durante >inicializar_proyecto
+# ============================================
+
+# === INFORMACIÓN DEL USUARIO ===
+usuario:
+  nombre: ""                          # Tu nombre para personalización
+  incluir_firma_en_documentos: true   # Agregar pie "✅ Revisado por [nombre]" en archivos generados
+
+# === PREFERENCIAS DE IDIOMA ===
+idiomas:
+  documentacion: "es"                 # Idioma para documentos generados (es|en|pt)
+  comunicacion: "es"                  # Idioma para interacción con el sistema
+
+# === INFORMACIÓN DEL PROYECTO ===
+proyecto:
+  nombre: ""                          # Nombre del proyecto
+

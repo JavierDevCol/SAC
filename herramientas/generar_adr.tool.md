@@ -1,0 +1,143 @@
+﻿---
+nombre: "Generar Architecture Decision Record (ADR)"
+comando: ">generar_adr"
+alias: [">crear_adr", ">nuevo_adr", ">adr"]
+version: "2.3"
+---
+
+```yaml
+objetivo: |
+  Generar documentación formal de decisiones arquitectónicas siguiendo estándares ADR,
+  soportando múltiples formatos, para mantener trazabilidad de decisiones técnicas críticas.
+
+mandatory:
+  - instruccion: "Validar formato ADR: nygard | madr | y-statement | custom"
+  - instruccion: "Título único - no duplicados en carpeta ADRs"
+  - instruccion: "ADRs INMUTABLES - nunca modificar existentes, crear nuevos que superseden"
+  - instruccion: "Numeración secuencial sin saltos (001, 002, 003...)"
+  - instruccion: "Un ADR por decisión - no mezclar múltiples decisiones"
+  - instruccion: "SIEMPRE seguir {{reglas.mermaid}} para diagramas, EXCEPTO si incluir_diagrama=false explícitamente"
+  - instruccion: "Slug máximo 50 caracteres, kebab-case"
+  - instruccion: "Solo archivos Markdown (.md), sin HTML en Mermaid"
+
+condiciones_entrada:
+  - condicion: "Decisión arquitectónica a documentar"
+    si_no_cumple: "Proporcionar título, contexto, decisión y consecuencias"
+
+parametros:
+  requeridos:
+    - nombre: titulo
+      tipo: string
+      descripcion: "Título de la decisión (máx 100 chars)"
+    - nombre: contexto
+      tipo: string
+      descripcion: "Problema o necesidad (mín 50 chars)"
+    - nombre: decision
+      tipo: string
+      descripcion: "Opción seleccionada con justificación (mín 30 chars)"
+    - nombre: consecuencias
+      tipo: string
+      descripcion: "Trade-offs, beneficios y riesgos (mín 30 chars)"
+  opcionales:
+    - nombre: formato
+      tipo: string
+      valores: [nygard, madr, y-statement, custom]
+      defecto: nygard
+    - nombre: estado
+      tipo: string
+      valores: [propuesto, aceptado, rechazado, deprecado, supersedido]
+      defecto: aceptado
+    - nombre: opciones_consideradas
+      tipo: string
+      descripcion: "Alternativas evaluadas y razones de descarte"
+    - nombre: incluir_diagrama
+      tipo: boolean
+      defecto: true
+    - nombre: referencias
+      tipo: string
+      descripcion: "Links a docs relacionados"
+    - nombre: adr_relacionados
+      tipo: string
+      descripcion: "ADRs que supersede o complementa"
+
+plantillas:
+  nygard: {desc: "Clásico - Simple y directo", ruta: "{{plantillas_location}}/adr_nygard.plantilla.md"}
+  madr: {desc: "Estructurado - Más detallado", ruta: "{{plantillas_location}}/adr_madr.plantilla.md"}
+  y-statement: {desc: "Ultra-conciso - Una frase", ruta: "{{plantillas_location}}/adr_y_statement.plantilla.md"}
+  custom: {desc: "Personalizado por usuario", ruta: "Definida en runtime"}
+
+proceso:
+  - paso: "Inicialización de Parámetros"
+    obligatorio: true
+    acciones: ["Establecer valores por defecto para parámetros opcionales no especificados: formato='nygard', estado='aceptado', incluir_diagrama=true"]
+    nota: "Este paso garantiza que las condiciones en mandatory se evalúen correctamente"
+
+  - paso: "Carga de Configuración"
+    obligatorio: true
+    acciones: ["Cargar {{project_root}}/.SAC/CONFIG_INIT.yaml", "Extraer variables (idioma, rutas)"]
+    si_error:
+      archivo_no_encontrado: "❌ Ejecutar >tomar_contexto primero"
+
+  - paso: "Validación de Entradas"
+    obligatorio: true
+    acciones: ["Verificar parámetros requeridos", "Validar formato soportado", "Verificar título único en {{adr_location}}"]
+    validaciones:
+      - {campo: titulo, regla: "no vacío, máx 100 chars, único"}
+      - {campo: contexto, regla: "mín 50 chars"}
+      - {campo: decision, regla: "mín 30 chars"}
+      - {campo: consecuencias, regla: "mín 30 chars"}
+    si_error:
+      parametros_faltantes: "Solicitar datos faltantes antes de continuar"
+      titulo_duplicado: "⚠️ Sugerir título alternativo"
+
+  - paso: "Determinación de Número ADR"
+    obligatorio: true
+    acciones: ["Escanear {{adr_location}} para ADRs existentes", "Determinar siguiente número (formato: 001, 002...)", "Si carpeta no existe, crear {{adr_location}} y comenzar con 001"]
+
+  - paso: "Selección y Carga de Plantilla"
+    obligatorio: true
+    acciones: ["Seleccionar plantilla desde {{plantillas_location}}", "Cargar estructura base según formato"]
+    si_error:
+      plantilla_no_encontrada: "Usar nygard por defecto"
+
+  - paso: "Generación del Contenido"
+    obligatorio: true
+    acciones: ["Rellenar plantilla con datos proporcionados", "Agregar metadatos (fecha, autores, estado)", "Generar slug del título (kebab-case, máx 50 chars)"]
+    formato_archivo: "[NNN]-[titulo-slug].md"
+
+  - paso: "Diagrama Mermaid"
+    obligatorio: false
+    condicion: "incluir_diagrama=true"
+    acciones: ["Cargar reglas desde {{reglas.mermaid}}", "Determinar tipo de diagrama según decisión", "Generar e insertar diagrama en ADR"]
+    si_error:
+      diagrama_invalido: "⚠️ Omitir diagrama, notificar"
+
+  - paso: "Creación del Archivo"
+    obligatorio: true
+    acciones: ["Crear carpeta {{adr_location}} si no existe", "Guardar archivo en {{adr_location}}/[NNN]-[slug].md", "Actualizar {{adr_location}}/README.md si existe"]
+
+  - paso: "Confirmación"
+    obligatorio: true
+    acciones: ["Mostrar resumen del ADR generado", "Vista previa primeras líneas"]
+
+salida:
+  archivos_generados:
+    ruta: "{{adr_location}}/[NNN]-[titulo-slug].md"
+    template: |
+      # [NNN]. [Título]
+      - Estado: [estado]
+      - Fecha: [fecha]
+      ## Contexto / Decisión / Consecuencias
+  archivos_actualizados: ["{{adr_location}}/README.md"]
+  mensaje_exito: |
+     ADR GENERADO: [NNN]-[slug].md
+     Formato: [formato] | Estado: [estado] | Diagrama: [sí/no]
+
+errores:
+  parametros_faltantes: {msg: " Faltan parámetros requeridos", accion: "Solicitar: titulo, contexto, decision, consecuencias"}
+  formato_invalido: {msg: " Formato no válido", accion: "Usar: nygard, madr, y-statement, custom"}
+  titulo_duplicado: {msg: " ADR con título similar existe", accion: "Sugerir alternativo"}
+  error_escritura: {msg: " Error al guardar", accion: "Verificar permisos"}
+
+siguiente: "Artefacto final independiente - sin flujo siguiente obligatorio"
+```

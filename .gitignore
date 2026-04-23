@@ -1,0 +1,18 @@
+# ==============================================================================
+# COCHAS - Sistema de Asistencia IA
+# ==============================================================================
+# Carpeta del sistema de orquestación de agentes IA
+# Contiene estado de sesión y documentación local
+.cochas/
+
+# NOTA: Si deseas versionar la documentación generada (contexto_proyecto.md,
+# backlog_desarrollo.md, ADRs), puedes ajustar esta regla manualmente a:
+# .cochas/session/
+# .cochas/session/exports/
+
+# Activadores de VS Code Copilot (se generan por el instalador, no se versionan aquí)
+.github/agents/
+.vscode/
+
+__pycache__/
+*.pyc

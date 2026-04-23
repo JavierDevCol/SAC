@@ -1,22 +1,89 @@
-# Sistema de Personalidades y Herramientas para IA
+# SAC — Sistema Agéntico COCHAS
 
-Este repositorio organiza los prompts de IA de forma modular. Para iniciar una sesión, debes combinar una **personalidad** con una o más **herramientas**.
+> Sistema de agentes IA especializados para GitHub Copilot  
+> **Versión:** 7.2.0
 
-## Cómo Usarlo
+SAC instala en tu proyecto un conjunto de **agentes Copilot** con roles especializados (Arquitecto, Desarrollador, DevOps, Analista de Requisitos, Cronista de Cambios) y **12 herramientas** ejecutables para el ciclo completo de desarrollo.
 
-1.  **Elige una Personalidad:** Selecciona un archivo del directorio `/personas/`. Este definirá el rol, tono y conocimiento base de la IA.
-2.  **Elige las Herramientas:** Selecciona uno o más archivos del directorio `/herramientas/`. Estas son las funcionalidades específicas que la personalidad podrá ejecutar.
-3.  **Construye el Prompt Inicial:** Copia y pega el contenido de la personalidad seleccionada y, a continuación, el contenido de todas las herramientas elegidas en un único prompt para iniciar la sesión con la IA.
+---
 
-**Ejemplo de Prompt Inicial:**
-> (Contenido de `personas/archdev_pro.md`)
->
-> ---
->
-> **HERRAMIENTAS DISPONIBLES:**
->
-> (Contenido de `herramientas/verifica_pruebas.md`)
->
-> (Contenido de `herramientas/define_arquitectura.md`)
+## Instalación rápida
 
-Una vez cargado este prompt, puedes empezar a usar los comandos definidos en las herramientas.
+**Windows (PowerShell):**
+```powershell
+irm https://raw.githubusercontent.com/JavierDevCol/SAC/main/INSTALACION/bootstrap/install.ps1 | iex
+```
+
+**Linux/Mac:**
+```bash
+curl -fsSL https://raw.githubusercontent.com/JavierDevCol/SAC/main/INSTALACION/bootstrap/install.sh | bash
+```
+
+Después de reiniciar la terminal:
+```bash
+sac "C:/mi-proyecto"
+```
+
+Guía completa: [INSTALACION/README.md](INSTALACION/README.md)
+
+---
+
+## Uso
+
+Invoca un agente desde Copilot Chat y ejecuta herramientas:
+
+```
+@arquitecto
+>tomar_contexto
+
+@analista_historias
+>refinar_hu HU-001
+
+@arquitecto
+>validar_hu HU-001
+>planificar_hu HU-001
+
+@desarrollador
+>ejecutar_plan HU-001
+
+@narrador_commit
+>generar_commit
+```
+
+---
+
+## Documentación
+
+| Recurso | Descripción |
+|---------|-------------|
+| [docs/INSTALACION.md](docs/INSTALACION.md) | Guía de instalación detallada |
+| [docs/ROLES.md](docs/ROLES.md) | Agentes disponibles |
+| [docs/HERRAMIENTAS.md](docs/HERRAMIENTAS.md) | Herramientas disponibles |
+| [docs/guias/guia_comandos.md](docs/guias/guia_comandos.md) | Referencia de comandos |
+| [docs/guias/guia_ciclo_vida_tareas.md](docs/guias/guia_ciclo_vida_tareas.md) | Ciclo de vida de HUs |
+| [docs/guias/guia_creacion_roles.md](docs/guias/guia_creacion_roles.md) | Crear roles personalizados |
+| [docs/guias/guia_subagents_vscode.md](docs/guias/guia_subagents_vscode.md) | Subagentes en VS Code Copilot |
+| [CHANGELOG.md](CHANGELOG.md) | Historial de versiones |
+
+---
+
+## Estructura del proyecto instalado
+
+```
+tu-proyecto/
+├── .SAC/
+│   ├── agentes/        ← 6 roles SAC (*.rol.md)
+│   ├── herramientas/   ← 12 herramientas (*.tool.md)
+│   ├── plantillas/
+│   ├── config/
+│   └── reglas/
+├── artifacts/          ← HUs, ADRs, planes generados
+└── .github/
+    └── agents/         ← Activadores para Copilot Chat
+        ├── arquitecto.agent.md
+        ├── desarrollador.agent.md
+        ├── devops.agent.md
+        ├── analista_historias.agent.md
+        └── narrador_commit.agent.md
+```
+
