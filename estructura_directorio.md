@@ -1,7 +1,7 @@
 # Estructura del Directorio `ia_prompts`
 
-> **Versión:** 4.0  
-> **Última actualización:** 6 de enero de 2026
+> **Versión:** 7.2.0  
+> **Última actualización:** 23 de abril de 2026
 
 ## Árbol de Directorios
 
@@ -9,75 +9,80 @@
 ia_prompts/
 ├── 📄 CHANGELOG.md                    # Historial de cambios del sistema
 ├── 📄 estructura_directorio.md        # Este archivo
-├── 📄 PLAN_REESTRUCTURACION_V4.md     # Plan de reestructuración v4.0
+├── 📄 HERRAMIENTAS.md                 # Índice de herramientas disponibles
+├── 📄 INSTALACION.md                  # Guía rápida de instalación
+├── 📄 LICENSE
 ├── 📄 README.md                       # Documentación principal
 ├── 📄 README_PLANTILLA.md             # Plantilla para README de proyectos
+├── 📄 ROLES.md                        # Índice de roles/agentes disponibles
+│
+├── 📁 agentes/                        # Roles SAC — instrucciones de personalidad para IA
+│   ├── _base.rol.md                   # Comportamiento base compartido (MANDATORY)
+│   ├── archdev_pro.rol.md             # Rol: Desarrollador
+│   ├── arquitecto_devops.rol.md       # Rol: DevOps
+│   ├── arquitecto_onad.rol.md         # Rol: Arquitecto
+│   ├── artesano_de_commits.rol.md     # Rol: Cronista de Cambios
+│   └── refinador_hu.rol.md            # Rol: Analista de Requisitos
 │
 ├── 📁 config/                         # Configuración del sistema
 │   ├── CONFIG_SYSTEM.yaml             # Rutas y estructura del sistema (NO modificar)
 │   └── CONFIG_USER.template.yaml      # Plantilla de configuración de usuario
 │
-├── 📁 definiciones/                   # Definiciones YAML (fuente de verdad)
-│   ├── 📁 herramientas/               # Definiciones de herramientas
-│   │   ├── analizar_code_smells.yaml
-│   │   ├── asignar_responsable.yaml
-│   │   ├── crear_pruebas.yaml
-│   │   ├── define_arquitectura.yaml
-│   │   ├── diagnosticar_devops.yaml
-│   │   ├── ejecutar_plan.yaml
-│   │   ├── generar_adr.yaml
-│   │   ├── generar_commit.yaml
-│   │   ├── planificar_hu.yaml
-│   │   ├── refactorizar.yaml
-│   │   ├── refinar_hu.yaml
-│   │   ├── solucionar_smells.yaml
-│   │   ├── tomar_contexto.yaml
-│   │   ├── validar_hu.yaml
-│   │   └── verifica_pruebas.yaml
-│   │
-│   └── 📁 personas/                   # Definiciones de roles/personas
-│       ├── archdev_pro.yaml
-│       ├── arquitecto_devops.yaml
-│       ├── arquitecto_onad.yaml
-│       ├── artesano_de_commits.yaml
-│       └── refinador_hu.yaml
-│
-├── 📁 ejemplos/                       # Ejemplos de uso
+├── 📁 ejemplos/                       # Ejemplos de uso de herramientas
 │   ├── README.md
-│   ├── 📁 herramientas/               # Ejemplos por herramienta
-│   │   ├── analizar_code_smells_ejemplo.md
-│   │   ├── crear_pruebas_ejemplo.md
-│   │   ├── diagnosticar_devops_ejemplo.md
-│   │   ├── ecommerce_mvp_completo.md
-│   │   ├── generar_commit_ejemplo.md
-│   │   ├── refinar_hu_ejemplo.md
-│   │   ├── solucionar_smells_ejemplo.md
-│   │   ├── tomar_contexto_ejemplo.md
-│   │   ├── verifica_pruebas_ejemplo.md
-│   │   └── 📁 adr/                    # Ejemplos de ADR
-│   │       └── ...
-│   └── ...
+│   └── 📁 herramientas/
+│       ├── analizar_code_smells_ejemplo.md
+│       ├── crear_pruebas_ejemplo.md
+│       ├── diagnosticar_devops_ejemplo.md
+│       ├── ecommerce_mvp_completo.md
+│       ├── generar_commit_ejemplo.md
+│       ├── refinar_hu_ejemplo.md
+│       ├── solucionar_smells_ejemplo.md
+│       ├── tomar_contexto_ejemplo.md
+│       ├── verifica_pruebas_ejemplo.md
+│       └── 📁 adr/
 │
-├── 📁 guias/                          # Guías de uso del sistema
+├── 📁 guias/                          # Documentación para usuarios
 │   ├── guia_ciclo_vida_tareas.md      # Ciclo de vida de tareas/HU
 │   ├── guia_comandos.md               # Referencia de comandos
-│   ├── guia_creacion_roles.md         # Cómo crear nuevos roles
-│   └── guia_roles_activos.md          # Roles disponibles
+│   ├── guia_creacion_agentes_vscode.md # Cómo crear agentes VS Code Copilot
+│   ├── guia_creacion_roles.md         # Cómo crear nuevos roles SAC
+│   ├── guia_roles_activos.md          # Roles disponibles
+│   └── guia_subagents_vscode.md       # Subagentes en VS Code Copilot
 │
 ├── 📁 herramientas/                   # Instrucciones de herramientas para IA
-│   ├── analizar_code_smells.tool.md
-│   ├── crear_pruebas.tool.md
-│   ├── diagnosticar_devops.tool.md
-│   ├── ejecutar_plan.tool.md
-│   ├── generar_commit.tool.md
-│   ├── herramientas-activas.md        # Índice de herramientas activas
-│   ├── planificar_hu.tool.md
-│   ├── refinar_hu.tool.md
-│   ├── tomar_contexto.tool.md
-│   └── validar_hu.tool.md
+│   ├── _base.tool.md                  # [DEPRECADO] — ver agentes/_base.rol.md
+│   ├── analizar_code_smells.tool.md   # >analizar_code_smells
+│   ├── analizar_stack.tool.md         # >analizar_stack
+│   ├── crear_pruebas.tool.md          # >crear_pruebas
+│   ├── diagnosticar_devops.tool.md    # >diagnosticar_devops
+│   ├── ejecutar_plan.tool.md          # >ejecutar_plan
+│   ├── generar_adr.tool.md            # >generar_adr
+│   ├── generar_commit.tool.md         # >generar_commit
+│   ├── init_reglas_arquitectonicas.tool.md # >init_reglas_arquitectonicas
+│   ├── planificar_hu.tool.md          # >planificar_hu
+│   ├── refinar_hu.tool.md             # >refinar_hu
+│   ├── tomar_contexto.tool.md         # >tomar_contexto
+│   └── validar_hu.tool.md             # >validar_hu
 │
-├── 📁 legacy/                         # Archivos de versiones anteriores
-│   ├── cochas.agent.md                # Orquestador original (referencia)
+├── 📁 INSTALACION/                    # Instalador del sistema
+│   ├── instalar.py                    # Script principal de instalación
+│   ├── README.md                      # Instrucciones detalladas
+│   ├── bootstrap/                     # Scripts de instalación global (sac)
+│   │   ├── install.ps1
+│   │   ├── install.sh
+│   │   ├── sac.bat
+│   │   └── sac.sh
+│   └── .github/
+│       └── agents/                    # Agentes VS Code Copilot (activadores)
+│           ├── analista_historias.agent.md
+│           ├── arquitecto.agent.md
+│           ├── desarrollador.agent.md
+│           ├── devops.agent.md
+│           └── narrador_commit.agent.md
+│
+├── 📁 legacy/                         # Archivos de versiones anteriores (referencia)
+│   ├── cochas.agent.md
 │   ├── CONFIG_INIT.yaml               # Configuración unificada antigua
 │   ├── 📁 herramientas_antiguas/      # Herramientas formato .md antiguo
 │   │   └── ...
@@ -93,9 +98,17 @@ ia_prompts/
 │   └── roles-activos.md               # Índice de roles activos
 │
 └── 📁 plantillas/                     # Plantillas para generar artefactos
+    ├── adr_madr.plantilla.md
+    ├── adr_nygard.plantilla.md
+    ├── adr_y_statement.plantilla.md
+    ├── agente_plantilla.agent.md
     ├── backlog_desarrollo_plantilla.md
     ├── contexto_proyecto_plantilla.md
-    └── estructura_session_state.md
+    ├── herramienta_plantilla.tool.md
+    ├── plan_implementacion_plantilla.md
+    ├── refinamiento_hu_plantilla.md
+    ├── reglas_arquitectonicas_plantilla.md
+    └── workspace_plantilla.md
 ```
 
 ---
@@ -104,14 +117,15 @@ ia_prompts/
 
 | Carpeta | Propósito |
 |---------|-----------|
-| `config/` | Archivos de configuración del sistema COCHAS |
-| `definiciones/` | Fuente de verdad en formato YAML para roles y herramientas |
+| `agentes/` | Roles SAC — archivos `.rol.md` con personalidad e instrucciones para IA |
+| `config/` | Configuración del sistema SAC (`CONFIG_SYSTEM.yaml`, `CONFIG_USER`) |
 | `ejemplos/` | Ejemplos prácticos de uso de herramientas |
 | `guias/` | Documentación para usuarios humanos |
-| `herramientas/` | Archivos `.tool.md` con instrucciones para IA |
+| `herramientas/` | Archivos `.tool.md` con instrucciones de herramientas para IA |
+| `INSTALACION/` | Script de instalación, bootstrap global y activadores VS Code |
 | `legacy/` | Archivos de versiones anteriores (referencia histórica) |
-| `personas/` | Archivos `.agent.md` con instrucciones de roles para IA |
 | `plantillas/` | Plantillas para generar artefactos del proyecto |
+| `reglas/` | Reglas especializadas por tecnología (Mermaid, etc.) |
 
 ---
 
@@ -119,35 +133,39 @@ ia_prompts/
 
 | Tipo de Archivo | Extensión | Audiencia | Ejemplo |
 |-----------------|-----------|-----------|---------|
-| Rol/Agente | `.agent.md` | IA | `arquitecto_onad.agent.md` |
+| Rol SAC | `.rol.md` | IA | `arquitecto_onad.rol.md` |
+| Agente VS Code | `.agent.md` | VS Code + IA | `arquitecto.agent.md` |
 | Herramienta | `.tool.md` | IA | `refinar_hu.tool.md` |
-| Definición | `.yaml` | Sistema | `arquitecto_onad.yaml` |
+| Configuración | `.yaml` | Sistema | `CONFIG_SYSTEM.yaml` |
 | Documentación | `.md` | Humanos | `guia_comandos.md` |
 
 ---
 
-## Roles Disponibles
+## Agentes Disponibles
 
-| Rol | Comando | Archivo |
-|-----|---------|---------|
-| Arquitecto Onad | `+ONAD` | `personas/arquitecto_onad.agent.md` |
-| ArchDev Pro | `+ARCHDEV` | `personas/archdev_pro.agent.md` |
-| Refinador HU | `+REFINADOR` | `personas/refinador_hu.agent.md` |
-| Artesano de Commits | `+ARTESANO` | `personas/artesano_de_commits.agent.md` |
-| Arquitecto DevOps | `+DEVOPS` | `personas/arquitecto_devops.agent.md` |
+| Nombre en Copilot | Rol SAC | Archivo de rol |
+|-------------------|---------|----------------|
+| `@arquitecto` | Arquitecto (Onad) | `agentes/arquitecto_onad.rol.md` |
+| `@desarrollador` | Desarrollador (ArchDev Pro) | `agentes/archdev_pro.rol.md` |
+| `@devops` | DevOps | `agentes/arquitecto_devops.rol.md` |
+| `@analista_historias` | Analista de Requisitos | `agentes/refinador_hu.rol.md` |
+| `@narrador_commit` | Cronista de Cambios | `agentes/artesano_de_commits.rol.md` |
 
 ---
 
 ## Herramientas Disponibles
 
-| Herramienta | Comando | Roles Autorizados |
-|-------------|---------|-------------------|
+| Herramienta | Comando | Agente principal |
+|-------------|---------|-----------------|
 | Tomar Contexto | `>tomar_contexto` | Todos |
-| Refinar HU | `>refinar_hu` | REFINADOR |
-| Validar HU | `>validar_hu` | ONAD |
-| Planificar HU | `>planificar_hu` | ONAD |
-| Ejecutar Plan | `>ejecutar_plan` | ARCHDEV |
-| Crear Pruebas | `>crear_pruebas` | ARCHDEV |
-| Generar Commit | `>generar_commit` | ARTESANO, ARCHDEV |
-| Analizar Code Smells | `>analizar_code_smells` | ARCHDEV |
-| Diagnosticar DevOps | `>diagnosticar_devops` | DEVOPS |
+| Analizar Stack | `>analizar_stack` | Arquitecto, Desarrollador |
+| Init Reglas Arquitectónicas | `>init_reglas_arquitectonicas` | Arquitecto |
+| Refinar HU | `>refinar_hu` | Analista de Requisitos |
+| Validar HU | `>validar_hu` | Arquitecto |
+| Planificar HU | `>planificar_hu` | Arquitecto |
+| Ejecutar Plan | `>ejecutar_plan` | Desarrollador |
+| Crear Pruebas | `>crear_pruebas` | Desarrollador |
+| Analizar Code Smells | `>analizar_code_smells` | Desarrollador |
+| Generar ADR | `>generar_adr` | Arquitecto, Desarrollador, DevOps |
+| Diagnosticar DevOps | `>diagnosticar_devops` | DevOps |
+| Generar Commit | `>generar_commit` | Cronista de Cambios |

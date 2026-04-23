@@ -1,12 +1,12 @@
-# 📦 Guía de Instalación - Sistema COCHAS v7.0
+# 📦 Guía de Instalación - SAC v7.2.0
 
-> **Sistema de Orquestación de Agentes IA para GitHub Copilot**
+> **Sistema Agéntico COCHAS para GitHub Copilot**
 
 ---
 
-## 🎯 ¿Qué es COCHAS?
+## 🎯 ¿Qué es SAC?
 
-COCHAS es un sistema de agentes de IA especializados que se integra con **GitHub Copilot** para proporcionar asistentes expertos en diferentes áreas del desarrollo de software.
+SAC (Sistema Agéntico COCHAS) es un sistema de agentes de IA especializados que se integra con **GitHub Copilot** para proporcionar asistentes expertos en diferentes áreas del desarrollo de software.
 
 ---
 
@@ -28,7 +28,7 @@ cd INSTALACION
 python instalar.py
 ```
 
-El script te pedirá la ruta del proyecto donde instalar COCHAS.
+El script te pedirá la ruta del proyecto donde instalar SAC.
 
 También puedes pasar la ruta directamente:
 
@@ -46,7 +46,9 @@ python instalar.py "C:\mi\proyecto"
    - `config/`
    - `reglas/`
 
-2. **Copia `.github/agents/`** desde `INSTALACION/` a `[tu-proyecto]/.github/agents/`
+2. **Crea la carpeta** `[tu-proyecto]/artifacts/` (artefactos generados)
+
+3. **Copia `.github/agents/`** desde `INSTALACION/` a `[tu-proyecto]/.github/agents/`
 
 ---
 
@@ -63,11 +65,11 @@ INSTALACION/
 │   └── sac.sh
 └── .github/
     └── agents/            ← Activadores para Copilot (5 archivos)
-        ├── arquitecto_onad.agent.md
-        ├── archdev_pro.agent.md
-        ├── arquitecto_devops.agent.md
-        ├── refinador_hu.agent.md
-        └── artesano_de_commits.agent.md
+        ├── arquitecto.agent.md
+        ├── desarrollador.agent.md
+        ├── devops.agent.md
+        ├── analista_historias.agent.md
+        └── narrador_commit.agent.md
 ```
 ```
 
@@ -80,15 +82,15 @@ INSTALACION/
 ```
 tu-proyecto/
 ├── .SAC/
-│   ├── agentes/          ← 5 agentes especializados
+│   ├── agentes/          ← 6 roles SAC (archivos .rol.md)
 │   ├── herramientas/     ← 12 herramientas ejecutables
 │   ├── plantillas/       ← Plantillas para personalización
 │   ├── ejemplos/         ← Ejemplos de uso
 │   ├── config/           ← Configuración
 │   ├── reglas/           ← Reglas por tecnología
-│   ├── session/          ← Estado de sesión
-│   └── artifacts/        ← Artefactos generados
-│       └── HU/
+│   └── session/          ← Estado de sesión
+├── artifacts/            ← Artefactos generados (HUs, ADRs, planes)
+│   └── HU/
 ├── .github/
 │   └── agents/           ← Activadores Copilot
 └── ... (tu código)
@@ -101,11 +103,11 @@ tu-proyecto/
 
 | Invocación en Copilot | Agente | Especialidad |
 |-----------------------|--------|--------------|
-| `@arquitecto_onad` | Arquitecto Onad | Arquitectura, DDD, decisiones técnicas, ADRs |
-| `@archdev_pro` | ArchDev Pro | Implementación, TDD, refactoring |
-| `@arquitecto_devops` | Arquitecto DevOps | CI/CD, infraestructura, DevSecOps |
-| `@refinador_hu` | Refinador de HU | Refinamiento de HUs |
-| `@artesano_de_commits` | Artesano de Commits | Conventional Commits |
+| `@arquitecto` | Arquitecto (Onad) | Arquitectura, DDD, decisiones técnicas, ADRs |
+| `@desarrollador` | Desarrollador (ArchDev Pro) | Implementación, TDD, refactoring |
+| `@devops` | DevOps | CI/CD, infraestructura, DevSecOps |
+| `@analista_historias` | Analista de Requisitos | Refinamiento de HUs |
+| `@narrador_commit` | Cronista de Cambios | Conventional Commits |
 
 ---
 
@@ -130,7 +132,6 @@ tu-proyecto/
 2. **Gitignore**: Agrega a `.gitignore`:
    ```
    .SAC/session/
-   .SAC/artifacts/
    ```
 
 ---

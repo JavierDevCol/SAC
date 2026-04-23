@@ -1,8 +1,8 @@
-# 🛠️ Guía de Creación de Roles Personalizados
+# 🛠️ Guía de Creación de Roles SAC
 
-> **Sistema:** Cochas - Orquestación de Agentes IA  
-> **Versión:** 2.0  
-> **Última Actualización:** 16 de octubre de 2025
+> **Sistema:** SAC - Sistema Agéntico COCHAS  
+> **Versión:** 3.0  
+> **Última Actualización:** 23 de abril de 2026
 
 ---
 
@@ -19,9 +19,9 @@
 
 ## Introducción
 
-El sistema Cochas está diseñado para ser **extensible**. Puedes crear tus propios roles especializados para cubrir necesidades específicas de tu proyecto o flujo de trabajo.
+El sistema SAC está diseñado para ser **extensible**. Puedes crear tus propios roles especializados para cubrir necesidades específicas de tu proyecto o flujo de trabajo.
 
-Esta guía te muestra el proceso simplificado. Para detalles técnicos completos, consulta **[README_PLANTILLA.md](README_PLANTILLA.md)**.
+Esta guía te muestra el proceso simplificado. Para detalles técnicos completos, consulta **[README_PLANTILLA.md](../README_PLANTILLA.md)**.
 
 ---
 
@@ -41,7 +41,7 @@ Esta guía te muestra el proceso simplificado. Para detalles técnicos completos
 ### ❌ NO Crees un Nuevo Rol Si:
 
 - **Un rol existente puede hacer el trabajo**
-  - Usa `/cochas assign` para validar
+  - Revisa `guia_roles_activos.md` para ver los roles disponibles
   
 - **Es una herramienta, no un rol**
   - Las herramientas se pueden agregar a roles existentes
@@ -76,7 +76,9 @@ Responde estas preguntas:
 
 ### Paso 2: Crear el Archivo del Rol
 
-**Ubicación:** `personas/nombre_del_rol.md`
+**Ubicación:** `.SAC/agentes/nombre_del_rol.rol.md`
+
+> 💡 En el repositorio SAC (`ia_prompts`) los roles viven en `agentes/`.
 
 **Plantilla Básica:**
 
@@ -210,16 +212,18 @@ Responde estas preguntas:
 
 ### Paso 3: Registrar en el Sistema
 
-Edita el archivo `personas/roles-activos.md` y agrega una fila:
+Agrega una fila en `guias/guia_roles_activos.md`:
 
 ```markdown
-| Nombre del Rol | COMANDO | personas/nombre_del_rol.md |
+| Nombre del Rol | Activador Copilot | Archivo |
 ```
 
 **Ejemplo:**
 ```markdown
-| Especialista en Seguridad | SECURITY | personas/especialista_seguridad.md |
+| Especialista en Seguridad | `@seguridad` | `agentes/especialista_seguridad.rol.md` |
 ```
+
+Luego crea el activador VS Code en `.github/agents/seguridad.agent.md` (copia y adapta uno existente desde `INSTALACION/.github/agents/`).
 
 ---
 
@@ -230,11 +234,9 @@ Si tu rol necesita herramientas nuevas:
 1. **Copia la plantilla** de `plantillas/herramienta_plantilla.tool.md`
 2. **Crea el archivo** en `herramientas/[nombre_herramienta].tool.md`
 3. **Personaliza** el contenido según la necesidad
-4. **Regístrala** en `herramientas/herramientas-activas.md`
+4. **Regístrala** en `HERRAMIENTAS.md`
 
-> ⚠️ **IMPORTANTE:** Toda herramienta DEBE incluir el paso obligatorio de **"Actualizar Estado de Sesión"** al final del proceso. Sin este paso, el sistema pierde trazabilidad.
-
-**Estructura obligatoria de una herramienta:**
+**Estructura mínima de una herramienta:**
 
 ```yaml
 # ============================================
@@ -244,44 +246,22 @@ mandatory:
   - instruccion: "Seguir el proceso paso a paso en orden secuencial"
   - instruccion: "Validar prerequisitos antes de ejecutar"
   - instruccion: "Los pasos marcados como obligatorio:true NO se pueden omitir"
-  - instruccion: "Actualizar session_state.json al finalizar"  # ⚠️ CRÍTICO
 
 # ============================================
-# PROCESO - Incluir siempre el paso final
+# PROCESO
 # ============================================
 proceso:
   paso_1:
     nombre: "[Tu primer paso]"
     # ... pasos de la herramienta ...
 
-  # ⚠️ OBLIGATORIO - Este paso SIEMPRE debe existir
-  paso_final:
-    nombre: "Actualizar Estado de Sesión"
-    obligatorio: true
-    acciones:
-      - "Abrir/crear {{session_state_location}}"
-      - "Registrar herramienta ejecutada"
-      - "Actualizar timestamp de ultima_actividad"
-      - "Registrar artefactos generados"
-      - "Si hay HU activa, actualizar su estado"
-      - "Guardar cambios en session_state.json"
-
 # ============================================
-# SALIDA - session_state siempre en actualizados
+# SALIDA
 # ============================================
 salida:
-  archivos_actualizados:
-    - "{{session_state_location}}"  # ⚠️ SIEMPRE incluir
+  archivos_generados:
+    - "[ruta/archivo_generado.md]"
 ```
-
-**¿Por qué es obligatorio el paso de actualizar sesión?**
-
-| Sin el paso | Con el paso |
-|-------------|-------------|
-| ❌ No hay trazabilidad | ✅ Historial completo de ejecución |
-| ❌ Se pierde contexto entre sesiones | ✅ Contexto persistente |
-| ❌ No se puede auditar | ✅ Auditoría completa |
-| ❌ HUs no actualizan estado | ✅ Estados de HU sincronizados |
 
 **📄 Plantilla completa:** Ver `plantillas/herramienta_plantilla.tool.md`
 
@@ -290,15 +270,11 @@ salida:
 ### Paso 5: Probar el Rol
 
 ```bash
-# Activar el nuevo rol
-/cochas +[COMANDO]
+# Activar el nuevo agente en Copilot Chat
+@[nombre_activador]
 
-# Verificar que se carga correctamente
 # Probar sus herramientas
 > [nombre_herramienta]
-
-# Ver estado
-/cochas status
 ```
 
 ---
@@ -433,32 +409,32 @@ Define qué hace el rol **automáticamente al activarse**.
 
 ## Registro en el Sistema
 
-### Archivo: `personas/roles-activos.md`
+### Archivo: `guias/guia_roles_activos.md`
 
 **Formato:**
 ```markdown
-| Nombre del Rol | COMANDO | Ruta del Archivo |
-|----------------|---------|------------------|
-| [Nombre] | [COMANDO] | personas/[archivo].md |
+| Nombre del Rol | Activador Copilot | Archivo de rol |
+|----------------|-------------------|----------------|
+| [Nombre] | `@[activador]` | `agentes/[archivo].rol.md` |
 ```
 
 **Ejemplo real:**
 ```markdown
-| Especialista en Seguridad | SECURITY | personas/especialista_seguridad.md |
+| Especialista en Seguridad | `@seguridad` | `agentes/especialista_seguridad.rol.md` |
 ```
 
-### Archivo: `herramientas/herramientas-activas.md` (si tiene herramientas)
+### Archivo: `HERRAMIENTAS.md` (si tiene herramientas nuevas)
 
 **Formato:**
 ```markdown
-| Nombre de la Herramienta | Comando | Roles que Pueden Activarla | Ruta del Archivo |
-|---------------------------|---------|----------------------------|------------------|
-| [Nombre] | [comando] | [ROL1, ROL2] | herramientas/[archivo].md |
+| Nombre de la Herramienta | Comando | Agente principal | Ruta del Archivo |
+|--------------------------|---------|-----------------|------------------|
+| [Nombre] | `>[comando]` | [Agente] | `herramientas/[archivo].tool.md` |
 ```
 
 **Ejemplo real:**
 ```markdown
-| Analizar Seguridad | analizar_seguridad | SECURITY | herramientas/analizar_seguridad.md |
+| Analizar Seguridad | `>analizar_seguridad` | Seguridad | `herramientas/analizar_seguridad.tool.md` |
 ```
 
 ---
@@ -469,7 +445,7 @@ Define qué hace el rol **automáticamente al activarse**.
 
 **Necesidad:** Optimizar performance de aplicaciones
 
-**Archivo:** `personas/especialista_performance.md`
+**Archivo:** `agentes/especialista_performance.rol.md`
 
 ```markdown
 # 👤 Perfil de Personalidad: Especialista en Performance
