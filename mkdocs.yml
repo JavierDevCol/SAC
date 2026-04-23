@@ -1,0 +1,73 @@
+site_name: SAC — Sistema Agéntico COCHAS
+site_description: Sistema de agentes IA especializados para GitHub Copilot
+site_author: JavierDevCol
+site_url: https://javierdevcol.github.io/SAC/
+repo_url: https://github.com/JavierDevCol/SAC
+repo_name: JavierDevCol/SAC
+edit_uri: edit/feature/instalacion/docs/
+
+docs_dir: docs
+theme:
+  name: material
+  language: es
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Cambiar a modo oscuro
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Cambiar a modo claro
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+
+nav:
+  - Inicio: index.md
+  - Instalación: INSTALACION.md
+  - Agentes: ROLES.md
+  - Herramientas: HERRAMIENTAS.md
+  - Estructura: estructura_directorio.md
+  - Guías:
+    - Comandos: guias/guia_comandos.md
+    - Ciclo de Vida de HUs: guias/guia_ciclo_vida_tareas.md
+    - Roles Activos: guias/guia_roles_activos.md
+    - Crear Roles SAC: guias/guia_creacion_roles.md
+    - Crear Agentes VS Code: guias/guia_creacion_agentes_vscode.md
+    - Subagentes VS Code: guias/guia_subagents_vscode.md
+  - Ejemplos:
+    - Índice: ejemplos/README.md
+    - Tomar Contexto: ejemplos/herramientas/tomar_contexto_ejemplo.md
+    - Refinar HU: ejemplos/herramientas/refinar_hu_ejemplo.md
+    - Generar Commit: ejemplos/herramientas/generar_commit_ejemplo.md
+    - Crear Pruebas: ejemplos/herramientas/crear_pruebas_ejemplo.md
+    - Analizar Code Smells: ejemplos/herramientas/analizar_code_smells_ejemplo.md
+    - Diagnosticar DevOps: ejemplos/herramientas/diagnosticar_devops_ejemplo.md
+    - eCommerce MVP: ejemplos/herramientas/ecommerce_mvp_completo.md
+    - Solucionar Smells: ejemplos/herramientas/solucionar_smells_ejemplo.md
+    - Verificar Pruebas: ejemplos/herramientas/verifica_pruebas_ejemplo.md
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.tabbed:
+      alternate_style: true
+  - tables
+  - toc:
+      permalink: true
