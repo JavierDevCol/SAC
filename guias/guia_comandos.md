@@ -1,16 +1,15 @@
 # 📋 Guía Completa de Comandos del Sistema
 
-> **Sistema:** COCHAS - Orquestación de Agentes IA  
-> **Versión:** 7.0  
-> **Última Actualización:** 13 de febrero de 2026
+> **Sistema:** SAC - Sistema Agéntico COCHAS  
+> **Versión:** 7.2.0  
+> **Última Actualización:** 23 de abril de 2026
 
 ---
 
 ## 📖 Índice
 
 - [Sistema de Prefijos](#sistema-de-prefijos)
-- [Comandos del Orquestador (*)](#comandos-del-orquestador-)
-- [Activación de Roles (+)](#activación-de-roles-)
+- [Invocar Agentes (@)](#invocar-agentes-)
 - [Ejecución de Herramientas (>)](#ejecución-de-herramientas-)
 - [Casos de Uso Comunes](#casos-de-uso-comunes)
 - [Gestión de Errores](#gestión-de-errores)
@@ -19,223 +18,37 @@
 
 ## Sistema de Prefijos
 
-El sistema COCHAS usa **3 prefijos** para diferentes tipos de acciones:
+El sistema SAC usa **1 prefijo** principal para ejecutar herramientas:
 
-| Prefijo | Propósito | Requiere Rol Activo | Ejemplos |
-|---------|-----------|---------------------|----------|
-| `*` | **Comandos del Orquestador** | ❌ No | `*roles`, `*status`, `*HU`, `*help` |
-| `+` | **Activar un Rol** | ❌ No | `+ONAD`, `+ARCHDEV`, `+REFINADOR` |
+| Prefijo | Propósito | Requiere Agente Activo | Ejemplos |
+|---------|-----------|----------------------|----------|
+| `@` | **Invocar un Agente** | ❌ No | `@arquitecto`, `@desarrollador` |
 | `>` | **Ejecutar una Herramienta** | ✅ Sí | `>refinar_hu`, `>generar_commit` |
 
 ### Regla Principal
 
 ```
-* = Consultar/Utilidades del sistema
-+ = Activar rol
-> = Ejecutar herramienta (requiere rol activo)
+@ = Invocar agente en Copilot Chat
+> = Ejecutar herramienta (con agente activo)
 ```
 
 ---
 
-## Comandos del Orquestador (`*`)
+## Invocar Agentes (`@`)
 
-Los comandos con `*` son utilidades del orquestador que no requieren rol activo.
-
----
-
-### `*roles`
-
-**Descripción:** Lista todos los roles disponibles en el sistema.
-
-**Formato:**
-```
-*roles
-```
-
-**Salida Esperada:**
-```
-📋 Roles Disponibles en COCHAS:
-
-| # | Rol               | Comando     | Estado      |
-|---|-------------------|-------------|-------------|
-| 1 | Arquitecto ONAD   | +ONAD       | ⚪ Inactivo |
-| 2 | ArchDev Pro       | +ARCHDEV    | 🟢 Activo   |
-| 3 | Artesano Commits  | +ARTESANO   | ⚪ Inactivo |
-| 4 | Arquitecto DevOps | +DEVOPS     | ⚪ Inactivo |
-| 5 | Refinador HU      | +REFINADOR  | ⚪ Inactivo |
-
-💡 Usa +COMANDO para activar un rol.
-```
-
-**Cuándo Usarlo:**
-- Al iniciar una nueva sesión
-- Cuando no recuerdas qué roles están disponibles
-- Para verificar el comando exacto de activación
+En Copilot Chat escribe `@nombre_agente` para activar un agente SAC.
 
 ---
 
-### `*status`
+### Tabla de Agentes
 
-**Descripción:** Muestra el estado actual de la sesión.
-
-**Formato:**
-```
-*status
-```
-
-**Salida Esperada:**
-```
-📊 Estado de Sesión COCHAS
-
-🎭 Rol Activo: ArchDev Pro (+ARCHDEV)
-📂 Archivo: personas/archdev_pro.md
-🛠️ Herramientas disponibles: >refactorizar, >crear_pruebas, >analizar_code_smells
-📅 Última actividad: 2026-01-05 10:30
-
-📁 Proyecto:
-- Contexto: INICIALIZADO
-- HUs activas: 3
-- Tareas pendientes: 5
-```
-
-**Cuándo Usarlo:**
-- Para verificar qué rol está activo
-- Para revisar el progreso de la sesión
-- Al retomar una sesión anterior
-
----
-
-### `*HU`
-
-**Descripción:** Lista las historias de usuario del proyecto.
-
-**Formato:**
-```
-*HU
-```
-
-**Salida Esperada:**
-```
-📋 Historias de Usuario
-
-| ID | Título | Estado | Prioridad |
-|----|--------|--------|-----------|
-| HU-001 | Login con OAuth | 🟡 En Refinamiento | Alta |
-| HU-002 | Dashboard usuario | 🟢 Refinada | Media |
-| HU-003 | Notificaciones push | ⚪ Pendiente | Baja |
-
-📂 Ubicación: .SAC/artifacts/HU/
-💡 Usa +REFINADOR y >refinar_hu HU-XXX para trabajar una HU.
-```
-
-**Cuándo Usarlo:**
-- Para ver el estado del backlog
-- Para elegir qué HU trabajar
-- Para revisar el progreso general
-
----
-
-### `*help`
-
-**Descripción:** Muestra ayuda rápida con todos los comandos disponibles.
-
-**Formato:**
-```
-*help
-```
-
-**Salida Esperada:**
-```
-🤖 Sistema de Comandos COCHAS
-
-┌─────────────────────────────────────────────────────┐
-│ PREFIJO │ PROPÓSITO              │ EJEMPLO         │
-├─────────────────────────────────────────────────────┤
-│    *    │ Comandos orquestador   │ *roles, *status │
-│    +    │ Activar rol            │ +ONAD, +ARCHDEV │
-│    >    │ Ejecutar herramienta   │ >refinar_hu     │
-└─────────────────────────────────────────────────────┘
-
-📋 Comandos del Orquestador (*):
-  *roles   - Listar roles disponibles
-  *status  - Ver estado de sesión
-  *HU      - Listar historias de usuario
-  *help    - Mostrar esta ayuda
-
-🎭 Activar Roles (+):
-  +ONAD      - Arquitecto ONAD
-  +ARCHDEV   - ArchDev Pro
-  +REFINADOR - Refinador HU
-  +ARTESANO  - Artesano de Commits
-  +DEVOPS    - Arquitecto DevOps
-
-🛠️ Herramientas (>) - Requiere rol activo:
-  >nombre_herramienta [parámetros]
-
-📚 Documentación: guia_comandos.md
-```
-
----
-
-## Activación de Roles (`+`)
-
-Los comandos con `+` activan un rol específico.
-
----
-
-### `+<ROL>`
-
-**Descripción:** Activa un rol específico en la sesión.
-
-**Formato:**
-```
-+ONAD
-+ARCHDEV
-+REFINADOR
-+ARTESANO
-+DEVOPS
-```
-
-**Proceso Interno:**
-1. Busca el rol en `personas/roles-activos.md`
-2. Carga el archivo del rol desde `personas/`
-3. Actualiza `session_state.json`
-4. Presenta el saludo del rol activado
-
-**Salida Esperada:**
-```
-🔄 Cambio de Rol
-
-Rol anterior: Ninguno
-Rol nuevo: Arquitecto ONAD (+ONAD)
-
----
-
-👋 ¡Hola! Soy el **Arquitecto ONAD**, especialista en arquitectura de software...
-
-🛠️ Herramientas Disponibles:
-  >tomar_contexto
-  >define_arquitectura
-  >generar_adr
-
-💡 Usa >tomar_contexto para analizar el proyecto.
-```
-
-**Cuándo Usarlo:**
-- Al comenzar una tarea que requiere expertise específica
-- Para cambiar de contexto de trabajo
-
----
-
-### Tabla de Roles y Herramientas
-
-| Comando | Rol | Herramientas Disponibles |
-|---------|-----|--------------------------|
-| `+ONAD` | Arquitecto ONAD | `>tomar_contexto`, `>init_reglas_arquitectonicas`, `>generar_adr`, `>validar_hu`, `>planificar_hu` |
-| `+ARCHDEV` | ArchDev Pro | `>tomar_contexto`, `>ejecutar_plan`, `>crear_pruebas`, `>analizar_code_smells`, `>generar_commit` |
-| `+REFINADOR` | Refinador HU | `>tomar_contexto`, `>refinar_hu`, `>generar_commit` |
-| `+ARTESANO` | Artesano de Commits | `>generar_commit` |
-| `+DEVOPS` | Arquitecto DevOps | `>tomar_contexto`, `>diagnosticar_devops`, `>generar_commit` |
+| Invocación | Agente | Herramientas Disponibles |
+|------------|--------|--------------------------|
+| `@arquitecto` | Arquitecto | `>tomar_contexto`, `>analizar_stack`, `>init_reglas_arquitectonicas`, `>generar_adr`, `>validar_hu`, `>planificar_hu` |
+| `@desarrollador` | Desarrollador | `>tomar_contexto`, `>analizar_stack`, `>generar_adr`, `>ejecutar_plan`, `>crear_pruebas`, `>analizar_code_smells`, `>generar_commit` |
+| `@devops` | DevOps | `>tomar_contexto`, `>generar_adr`, `>diagnosticar_devops`, `>generar_commit` |
+| `@analista_historias` | Analista de Requisitos | `>tomar_contexto`, `>refinar_hu`, `>generar_commit` |
+| `@narrador_commit` | Cronista de Cambios | `>generar_commit` |
 
 ---
 
@@ -262,33 +75,32 @@ Los comandos con `>` ejecutan herramientas del rol activo.
 
 **Ejemplos por Rol:**
 
-**Con +ONAD activo:**
+**Con @arquitecto activo:**
 ```
 >tomar_contexto
->define_arquitectura
+>analizar_stack
 >generar_adr ADR-001
 ```
 
-**Con +ARCHDEV activo:**
+**Con @desarrollador activo:**
 ```
->refactorizar src/auth/login.java
 >crear_pruebas src/services/UserService.java
 >analizar_code_smells
 ```
 
-**Con +REFINADOR activo:**
+**Con @analista_historias activo:**
 ```
 >refinar_hu HU-001
 >validar_hu HU-001
 >planificar_hu HU-001
 ```
 
-**Con +ARTESANO activo:**
+**Con @narrador_commit activo:**
 ```
 >generar_commit
 ```
 
-**Con +DEVOPS activo:**
+**Con @devops activo:**
 ```
 >diagnosticar_devops
 ```
@@ -300,20 +112,12 @@ Los comandos con `>` ejecutan herramientas del rol activo.
 ### Caso 1: Primera Vez en el Sistema
 
 ```bash
-# Paso 1: Ver ayuda
-*help
-
-# Paso 2: Ver roles disponibles
-*roles
-
-# Paso 3: Activar primer rol
-+ONAD
-
-# Paso 4: Analizar proyecto
+# Paso 1: Analizar el proyecto con el Arquitecto
+@arquitecto
 >tomar_contexto
 
-# Paso 5: Ver estado
-*status
+# Paso 2: Analizar el stack tecnológico
+>analizar_stack
 ```
 
 ---
@@ -321,16 +125,14 @@ Los comandos con `>` ejecutan herramientas del rol activo.
 ### Caso 2: Refinar una Historia de Usuario
 
 ```bash
-# Ver HUs disponibles
-*HU
-
-# Activar rol de refinamiento
-+REFINADOR
+# Activar agente de refinamiento
+@analista_historias
 
 # Refinar la HU específica
 >refinar_hu HU-001
 
-# Validar el refinamiento
+# Validar el refinamiento con Arquitecto
+@arquitecto
 >validar_hu HU-001
 ```
 
@@ -339,8 +141,8 @@ Los comandos con `>` ejecutan herramientas del rol activo.
 ### Caso 3: Implementar Código
 
 ```bash
-# Activar rol de desarrollo
-+ARCHDEV
+# Activar agente de desarrollo
+@desarrollador
 
 # Ejecutar plan de desarrollo
 >ejecutar_plan HU-001
@@ -357,8 +159,8 @@ Los comandos con `>` ejecutan herramientas del rol activo.
 ### Caso 4: Generar Commit
 
 ```bash
-# Activar rol de commits
-+ARTESANO
+# Activar agente de commits
+@narrador_commit
 
 # Generar mensaje de commit
 >generar_commit
@@ -366,17 +168,14 @@ Los comandos con `>` ejecutan herramientas del rol activo.
 
 ---
 
-### Caso 5: Cambiar Entre Roles
+### Caso 5: Cambiar Entre Agentes
 
 ```bash
-# Verificar rol actual
-*status
+# Abrir nuevo chat con otro agente
+@desarrollador
 
-# Cambiar a otro rol
-+ARCHDEV
-
-# Continuar trabajando con nuevo rol
->refactorizar src/main/App.java
+# Continuar trabajando
+>ejecutar_plan HU-001
 ```
 
 ---

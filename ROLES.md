@@ -1,27 +1,27 @@
-# 👥 Roles del Sistema COCHAS
+# 👥 Roles del Sistema SAC
 
-> **Versión:** 7.0  
-> **Última actualización:** 13 de febrero de 2026
+> **Versión:** 7.2.0  
+> **Última actualización:** 23 de abril de 2026
 
 ---
 
 ## 📋 Descripción
 
-Índice oficial de roles/agentes disponibles en el sistema COCHAS v4.0. Cada agente tiene un archivo `.agent.md` con su definición completa.
+Índice oficial de roles/agentes disponibles en el sistema SAC v7.2.0. Cada rol tiene un archivo `.rol.md` con su definición completa.
 
-**Modelo de uso:** Cada agente se carga en un **chat independiente**.
+**Modelo de uso:** Cada agente se invoca con `@nombre` en GitHub Copilot Chat.
 
 ---
 
 ## 🎭 Roles Disponibles
 
-| Rol | Identificador | Tipo | Archivo |
-|-----|---------------|------|---------|
-| **Arquitecto Onad** | `+ONAD` | Arquitecto estratégico | `agentes/arquitecto_onad.agent.md` |
-| **ArchDev Pro** | `+ARCHDEV` | Ingeniero constructor | `agentes/archdev_pro.agent.md` |
-| **Arquitecto DevOps** | `+DEVOPS` | Mentor DevOps | `agentes/arquitecto_devops.agent.md` |
-| **Analista de Historias** | `+REFINADOR` | Analista técnico | `agentes/refinador_hu.agent.md` |
-| **Narrador de Cambios** | `+ARTESANO` | Comunicador técnico | `agentes/artesano_de_commits.agent.md` |
+| Rol | Invocación Copilot | Tipo | Archivo de rol |
+|-----|--------------------|------|----------------|
+| **Arquitecto** | `@arquitecto` | Arquitecto estratégico | `agentes/arquitecto_onad.rol.md` |
+| **Desarrollador** | `@desarrollador` | Ingeniero constructor | `agentes/archdev_pro.rol.md` |
+| **DevOps** | `@devops` | Mentor DevOps | `agentes/arquitecto_devops.rol.md` |
+| **Analista de Requisitos** | `@analista_historias` | Analista técnico | `agentes/refinador_hu.rol.md` |
+| **Cronista de Cambios** | `@narrador_commit` | Comunicador técnico | `agentes/artesano_de_commits.rol.md` |
 
 **Total:** 5 roles activos
 
@@ -29,34 +29,34 @@
 
 ## 📊 Detalle por Rol
 
-### +ONAD (Arquitecto Onad)
+### @arquitecto (Arquitecto)
 
 | Campo | Valor |
 |-------|-------|
 | **Principio** | "No Comer Entero" |
 | **Especialidad** | Arquitectura estratégica, DDD, decisiones técnicas |
-| **Herramientas** | `>tomar_contexto`, `>validar_hu`, `>planificar_hu`, `>generar_adr`, `>init_reglas_arquitectonicas` |
+| **Herramientas** | `>tomar_contexto`, `>analizar_stack`, `>validar_hu`, `>planificar_hu`, `>generar_adr`, `>init_reglas_arquitectonicas` |
 | **Cuándo usar** | Decisiones arquitectónicas, validación de HUs, planificación, ADRs |
 
-### +ARCHDEV (ArchDev Pro)
+### @desarrollador (Desarrollador)
 
 | Campo | Valor |
 |-------|-------|
 | **Principio** | "Código con Propósito" |
 | **Especialidad** | Java/Spring Boot, TDD, refactoring, implementación |
-| **Herramientas** | `>tomar_contexto`, `>ejecutar_plan`, `>crear_pruebas`, `>analizar_code_smells`, `>generar_commit` |
+| **Herramientas** | `>tomar_contexto`, `>analizar_stack`, `>generar_adr`, `>ejecutar_plan`, `>crear_pruebas`, `>analizar_code_smells`, `>generar_commit` |
 | **Cuándo usar** | Implementación de código, testing, refactoring |
 
-### +DEVOPS (Arquitecto DevOps)
+### @devops (DevOps)
 
 | Campo | Valor |
 |-------|-------|
 | **Principio** | "Seguridad es No Negociable" |
 | **Especialidad** | CI/CD, infraestructura, observabilidad, DevSecOps |
-| **Herramientas** | `>tomar_contexto`, `>diagnosticar_devops`, `>generar_commit` |
+| **Herramientas** | `>tomar_contexto`, `>generar_adr`, `>diagnosticar_devops`, `>generar_commit` |
 | **Cuándo usar** | Pipelines, infraestructura, observabilidad |
 
-### +REFINADOR (Analista de Historias)
+### @analista_historias (Analista de Requisitos)
 
 | Campo | Valor |
 |-------|-------|
@@ -65,7 +65,7 @@
 | **Herramientas** | `>tomar_contexto`, `>refinar_hu`, `>generar_commit` |
 | **Cuándo usar** | Refinar historias de usuario, desglose técnico |
 
-### +ARTESANO (Narrador de Cambios)
+### @narrador_commit (Cronista de Cambios)
 
 | Campo | Valor |
 |-------|-------|

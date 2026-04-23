@@ -1,6 +1,6 @@
-# 📝 CHANGELOG - Sistema COCHAS
+# 📝 CHANGELOG - SAC
 
-> **Sistema:** COCHAS - Orquestación de Agentes IA  
+> **Sistema:** SAC - Sistema Agéntico COCHAS  
 > **Archivo:** Índice centralizado de versiones de todos los componentes
 
 ---
@@ -9,19 +9,58 @@
 
 | Componente | Versión Actual | Última Actualización |
 |------------|----------------|----------------------|
-| **Sistema SAC (COCHAS)** | 7.1.0 | 2026-02-16 |
-| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.1.0 | 2026-02-16 |
+| **Sistema SAC** | 7.2.0 | 2026-04-23 |
+| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.2.0 | 2026-04-23 |
 | **Configuración Usuario** (`config/CONFIG_USER.template.yaml`) | 4.0 | 2026-01-05 |
-| **Agentes** (`agentes/*.agent.md`) | 7.1.0 | 2026-02-16 |
+| **Roles SAC** (`agentes/*.rol.md`) | 7.2.0 | 2026-04-23 |
 | **Herramientas** (`herramientas/*.tool.md`) | 7.1.0 | 2026-02-16 |
 | **Plantillas** (`plantillas/`) | 7.1.0 | 2026-02-16 |
-| **Guía de Comandos** (`guias/guia_comandos.md`) | 3.0 | 2026-01-05 |
+| **Guía de Comandos** (`guias/guia_comandos.md`) | 7.2.0 | 2026-04-23 |
 | **Guía de Roles** (`guias/guia_roles_activos.md`) | 3.0 | 2026-01-05 |
-| **Guía Ciclo de Vida** (`guias/guia_ciclo_vida_tareas.md`) | 3.1 | 2026-02-16 |
+| **Guía Ciclo de Vida** (`guias/guia_ciclo_vida_tareas.md`) | 7.2.0 | 2026-04-23 |
 
 ---
 
 ## 🚀 Historial de Versiones
+
+### [7.2.0] - 2026-04-23
+
+#### 🎯 Cambio Mayor: Subagentes, Extensiones y Limpieza Arquitectónica
+
+#### ✅ Nuevas Funcionalidades
+
+| Funcionalidad | Descripción |
+|---------------|-------------|
+| **Protocolo de Delegación** | `_base.rol.md` incluye protocolo activo de escalamiento con `runSubagent` |
+| **Soporte Subagentes VS Code** | Activadores con propiedad `agents:` para orchestrar subagentes natively |
+| **Guía de Subagentes** | Nueva `guias/guia_subagents_vscode.md` con patrones y recomendaciones |
+
+#### ✅ Cambios en Nombres y Rutas
+
+| Elemento | Antes | Ahora |
+|----------|-------|-------|
+| Extensión roles SAC | `.agent.md` | `.rol.md` |
+| Carpeta roles | `personas/` | `agentes/` |
+| `artifacts/` | dentro de `.SAC/` | en raíz del proyecto |
+| Activadores Copilot | `arquitecto_onad.agent.md` | `arquitecto.agent.md` |
+| Invocaciones | `@arquitecto_onad` | `@arquitecto` |
+
+#### ✅ Correcciones en Configuración
+
+| Elemento | Cambio |
+|----------|--------|
+| `CONFIG_SYSTEM.yaml` | Eliminadas variables anidadas `{artifacts_folder}/...` |
+| `instalar.py` | `artifacts_dir` apunta a raíz del proyecto; nueva función `migrate_artifacts_to_root()` |
+
+#### ✅ Documentación P1 Corregida
+
+| Archivo | Cambio |
+|---------|--------|
+| `estructura_directorio.md` | Reescrito completo para reflejar estructura real v7.2.0 |
+| `INSTALACION.md` | Corregidos nombres de agentes, rutas de artifacts, invocaciones |
+| `guias/guia_creacion_roles.md` | Actualizado a v3.0: rutas, extensiones, eliminados pasos legacy |
+
+---
 
 ### [7.1.0] - 2026-02-16
 

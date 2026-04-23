@@ -1,8 +1,8 @@
 # 🔄 Guía del Ciclo de Vida de Tareas
 
-> **Sistema:** COCHAS - Orquestación de Agentes IA  
-> **Versión:** 3.1  
-> **Última Actualización:** 5 de enero de 2026
+> **Sistema:** SAC - Sistema Agéntico COCHAS  
+> **Versión:** 7.2.0  
+> **Última Actualización:** 23 de abril de 2026
 
 ---
 
@@ -19,7 +19,7 @@
 
 ## Introducción
 
-El sistema Cochas implementa un **flujo de validación secuencial** para las tareas de desarrollo, garantizando que cada tarea pase por las etapas necesarias de refinamiento, aprobación, planificación e implementación antes de ser marcada como completada.
+El sistema SAC implementa un **flujo de validación secuencial** para las tareas de desarrollo, garantizando que cada tarea pase por las etapas necesarias de refinamiento, aprobación, planificación e implementación antes de ser marcada como completada.
 
 ### Principios del Sistema
 
@@ -39,10 +39,10 @@ El sistema define **7 estados** para el ciclo de vida de una HU/Tarea:
 |--------|---------|-------------|-------------|-----------|
 | Pendiente | `[ ]` | HU creada, sin analizar | - | `refinar_hu` |
 | Refinada | `[R]` | Analizada con criterios y estimación | `refinar_hu` | `validar_hu` |
-| Aprobada | `[A]` | Validada arquitectónicamente | `validar_hu` | `planificar-hu` |
-| Planificada | `[P]` | Tiene plan de implementación | `planificar-hu` | `ejecutar-plan` |
-| En Ejecución | `[E]` | ArchDev está ejecutando el plan | `ejecutar-plan` | Continuar |
-| Completada | `[X]` | Implementación terminada | `ejecutar-plan` | - |
+| Aprobada | `[A]` | Validada arquitectónicamente | `validar_hu` | `planificar_hu` |
+| Planificada | `[P]` | Tiene plan de implementación | `planificar_hu` | `ejecutar_plan` |
+| En Ejecución | `[E]` | Agente está ejecutando el plan | `ejecutar_plan` | Continuar |
+| Completada | `[X]` | Implementación terminada | `ejecutar_plan` | - |
 | Bloqueada | `[B]` | Dependencias no resueltas | Cualquiera | Resolver bloqueo |
 
 ---

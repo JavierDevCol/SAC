@@ -1,13 +1,13 @@
-# 🛠️ Herramientas del Sistema COCHAS
+# 🛠️ Herramientas del Sistema SAC
 
-> **Versión:** 7.0  
-> **Última actualización:** 13 de febrero de 2026
+> **Versión:** 7.2.0  
+> **Última actualización:** 23 de abril de 2026
 
 ---
 
 ## 📋 Descripción
 
-Índice oficial de herramientas disponibles en el sistema COCHAS v4.0. Cada herramienta tiene un archivo `.tool.md` con su definición completa.
+Índice oficial de herramientas disponibles en el sistema SAC v7.2.0. Cada herramienta tiene un archivo `.tool.md` con su definición completa.
 
 ---
 
@@ -30,35 +30,41 @@
 
 ---
 
-## 📊 Herramientas por Rol
+## 📊 Herramientas por Agente
 
-### +ONAD (Arquitecto Onad)
+### @arquitecto (Arquitecto)
 
 | Herramienta | Comando |
 |-------------|---------|
 | Tomar Contexto | `>tomar_contexto` |
-| Init Reglas Arquitectónicas | `>init_reglas_arquitectonicas` || Generar ADR | `>generar_adr` || Validar HU | `>validar_hu` |
+| Analizar Stack | `>analizar_stack` |
+| Init Reglas Arquitectónicas | `>init_reglas_arquitectonicas` |
+| Generar ADR | `>generar_adr` |
+| Validar HU | `>validar_hu` |
 | Planificar HU | `>planificar_hu` |
 
-### +ARCHDEV (ArchDev Pro)
+### @desarrollador (Desarrollador)
 
 | Herramienta | Comando |
 |-------------|---------|
 | Tomar Contexto | `>tomar_contexto` |
+| Analizar Stack | `>analizar_stack` |
+| Generar ADR | `>generar_adr` |
 | Ejecutar Plan | `>ejecutar_plan` |
 | Crear Pruebas | `>crear_pruebas` |
 | Analizar Code Smells | `>analizar_code_smells` |
 | Generar Commit | `>generar_commit` |
 
-### +DEVOPS (Arquitecto DevOps)
+### @devops (DevOps)
 
 | Herramienta | Comando |
 |-------------|---------|
 | Tomar Contexto | `>tomar_contexto` |
+| Generar ADR | `>generar_adr` |
 | Diagnosticar DevOps | `>diagnosticar_devops` |
 | Generar Commit | `>generar_commit` |
 
-### +REFINADOR (Analista de Historias)
+### @analista_historias (Analista de Requisitos)
 
 | Herramienta | Comando |
 |-------------|---------|
@@ -66,7 +72,7 @@
 | Refinar HU | `>refinar_hu` |
 | Generar Commit | `>generar_commit` |
 
-### +ARTESANO (Narrador de Cambios)
+### @narrador_commit (Cronista de Cambios)
 
 | Herramienta | Comando |
 |-------------|---------|
@@ -111,5 +117,6 @@
 
 | Versión | Fecha | Cambios |
 |---------|-------|---------|
+| 7.2.0 | 23 abr 2026 | Añadidas `>analizar_stack` y `>generar_adr`; tablas por agente con nombres nuevos |
 | 4.0 | 6 ene 2026 | Reescritura completa v4.0, movido a raíz, eliminadas herramientas inexistentes |
 | 3.1 | 5 ene 2026 | Versión anterior en `herramientas/herramientas-activas.md` |
