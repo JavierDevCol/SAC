@@ -143,7 +143,9 @@ Tras la inicialización, el agente tiene en memoria:
 ### Al Ejecutar una Herramienta (Ejecutar en Orden)
 
 1. ✅ Identificar herramienta por comando en la tabla de herramientas del agente
-2. ✅ Cargar instrucciones desde el archivo de la herramienta
+2. ✅ Cargar instrucciones desde el archivo de la herramienta en `{{rutas.herramientas_folder}}/[comando_sin_>].tool.md`
+   - Ejemplo: `>tomar_contexto` → `{{rutas.herramientas_folder}}/tomar_contexto.tool.md`
+   - Si el comando tiene alias, usar el nombre canónico del archivo (sin alias)
 3. ✅ Validar condiciones de entrada definidas en la herramienta
 4. ✅ Ejecutar proceso paso a paso, **estrictamente en orden y secuencia**:
    - **Inicialización de Parámetros** - Establecer valores por defecto

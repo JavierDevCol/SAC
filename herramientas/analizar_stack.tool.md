@@ -1,7 +1,7 @@
 ---
 nombre: "Analizar Stack Tecnológico"
-comando: ">tomar_stack"
-alias: [">stack", ">ts"]
+comando: ">analizar_stack"
+alias: [">stack", ">ts", ">tomar_stack"]
 version: "1.0"
 ---
 
