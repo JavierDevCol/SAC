@@ -5,14 +5,14 @@
 # SAC - Sistema Agéntico COCHAS
 # ============================================
 
-version: "7.1.1"
+version: "7.2.0"
 
 # ============================================
 # CARPETAS PRINCIPALES
 # ============================================
 rutas:
   output_folder: "{project-root}/.SAC"
-  artifacts_folder: "{project-root}/.SAC/artifacts"
+  artifacts_folder: "{project-root}/artifacts"
   config_folder: "{project-root}/.SAC/config"
   herramientas_folder: "{project-root}/.SAC/herramientas"
   agentes_folder: "{project-root}/.SAC/agentes"
@@ -23,28 +23,28 @@ rutas:
 # ============================================
 archivos:
   config_user: "{project-root}/.SAC/config/CONFIG_USER.yaml" 
-  backlog: "{project-root}/.SAC/artifacts/backlog_desarrollo.md"
-  reglas_arquitectonicas: "{project-root}/.SAC/artifacts/reglas_arquitectonicas.md"
+  backlog: "{artifacts_folder}/backlog_desarrollo.md"
+  reglas_arquitectonicas: "{artifacts_folder}/reglas_arquitectonicas.md"
   # Workspace unificado (mono y multi proyecto)
-  workspace: "{project-root}/.SAC/artifacts/workspace.md"
+  workspace: "{artifacts_folder}/workspace.md"
 
 # ============================================
 # SUBCARPETAS DE ARTIFACTS
 # ============================================
 artifacts:
   # Historias de Usuario
-  hu_folder: "{project-root}/.SAC/artifacts/HU"
-  hu_refinamientos: "{project-root}/.SAC/artifacts/HU/refinamientos"
-  hu_compartidas: "{project-root}/.SAC/artifacts/HU/compartidas"
+  hu_folder: "{artifacts_folder}/HU"
+  hu_refinamientos: "{artifacts_folder}/HU/refinamientos"
+  hu_compartidas: "{artifacts_folder}/HU/compartidas"
   # Arquitectura
-  adr_folder: "{project-root}/.SAC/artifacts/ADR"
+  adr_folder: "{artifacts_folder}/ADR"
   # Planes y ejecución
-  planes_folder: "{project-root}/.SAC/artifacts/planes_de_desarrollo"
-  ejecuciones_folder: "{project-root}/.SAC/artifacts/ejecuciones"
+  planes_folder: "{artifacts_folder}/planes_de_desarrollo"
+  ejecuciones_folder: "{artifacts_folder}/ejecuciones"
   # Code quality
-  code_smells_folder: "{project-root}/.SAC/artifacts/code_smells"
+  code_smells_folder: "{artifacts_folder}/code_smells"
   # Multi-proyecto
-  contextos_folder: "{project-root}/.SAC/artifacts/contextos"
+  contextos_folder: "{artifacts_folder}/contextos"
 
 # ============================================
 # CONFIGURACIÓN MULTI-PROYECTO
