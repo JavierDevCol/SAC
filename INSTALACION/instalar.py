@@ -834,17 +834,17 @@ def install_sac(dest_path, root_dir):
     print("\n📂 Creando estructura de artefactos:\n")
     
     session_dir = sac_dest / "session"
-    artifacts_dir = sac_dest / "artifacts"
+    artifacts_dir = dest / "artifacts"
     hu_dir = artifacts_dir / "HU"
     
     session_dir.mkdir(exist_ok=True)
     print_success(".SAC/session/")
     
     artifacts_dir.mkdir(exist_ok=True)
-    print_success(".SAC/artifacts/")
+    print_success("artifacts/")
     
     hu_dir.mkdir(exist_ok=True)
-    print_success(".SAC/artifacts/HU/")
+    print_success("artifacts/HU/")
     
     # 6. Registrar instalación en caché
     system_version = get_installed_version(dest) or "unknown"
@@ -872,9 +872,9 @@ def print_final_summary(dest_path):
     │   ├── ejemplos/         (ejemplos de uso)
     │   ├── config/           (configuración)
     │   ├── reglas/           (reglas por tecnología)
-    │   ├── session/          (estado de sesión)
-    │   └── artifacts/        (artefactos generados)
-    │       └── HU/           (historias de usuario)
+    │   └── session/          (estado de sesión)
+    ├── artifacts/            (artefactos generados)
+    │   └── HU/               (historias de usuario)
     └── .github/
         └── agents/           (5 activadores Copilot)
     """)
