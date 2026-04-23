@@ -750,8 +750,8 @@ Valida que el rol realmente resuelve una necesidad concreta.
 
 ## 📚 Documentación Relacionada
 
-- **[README_PLANTILLA.md](README_PLANTILLA.md)** - Sistema completo de plantillas (detallado)
-- **[README Principal](README.md)** - Visión general del sistema
+- **[README_PLANTILLA.md](../README_PLANTILLA.md)** - Sistema completo de plantillas (detallado)
+- **[README Principal](../index.md)** - Visión general del sistema
 - **[Guía de Roles](guia_roles_activos.md)** - Roles existentes
 
 ---
@@ -781,4 +781,4 @@ Antes de considerar tu rol completo:
 4. Regístralo en el sistema
 5. ¡Pruébalo!
 
-Si tienes dudas, consulta la documentación completa en **[README_PLANTILLA.md](README_PLANTILLA.md)**.
+Si tienes dudas, consulta la documentación completa en **[README_PLANTILLA.md](../README_PLANTILLA.md)**.

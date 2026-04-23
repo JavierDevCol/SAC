@@ -599,7 +599,7 @@ Es común necesitar múltiples roles en una sesión. El sistema mantiene el cont
 
 ## 📚 Documentación Relacionada
 
-- **[README Principal](README.md)** - Visión general del sistema
+- **[README Principal](../index.md)** - Visión general del sistema
 - **[Guía de Comandos](guia_comandos.md)** - Comandos detallados
 - **[Guía de Ciclo de Vida](guia_ciclo_vida_tareas.md)** - Flujo de tareas
 - **[Crear Roles Personalizados](guia_creacion_roles.md)** - Extender el sistema

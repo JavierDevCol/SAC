@@ -33,7 +33,7 @@ plantillas/
 
 > **Ubicación destino:** `agentes/[nombre].agent.md`  
 > **Audiencia:** IA  
-> **📄 Plantilla completa:** [`plantillas/agente_plantilla.agent.md`](plantillas/agente_plantilla.agent.md)
+> **📄 Plantilla completa:** `plantillas/agente_plantilla.agent.md`
 
 La plantilla de agentes incluye:
 
@@ -51,7 +51,7 @@ La plantilla de agentes incluye:
 
 > **Ubicación destino:** `herramientas/[nombre].tool.md`  
 > **Audiencia:** IA  
-> **📄 Plantilla completa:** [`plantillas/herramienta_plantilla.tool.md`](plantillas/herramienta_plantilla.tool.md)
+> **📄 Plantilla completa:** `plantillas/herramienta_plantilla.tool.md`
 
 La plantilla de herramientas incluye:
 

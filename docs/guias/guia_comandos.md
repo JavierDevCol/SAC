@@ -297,9 +297,8 @@ Los comandos con `>` ejecutan herramientas del rol activo.
 
 ## 📚 Documentación Relacionada
 
-- **[Orquestador](core-cochas.md)** - Documentación técnica del orquestador
-- **[Roles Activos](personas/roles-activos.md)** - Lista completa de roles
-- **[Herramientas](herramientas/herramientas-activas.md)** - Lista de herramientas
+- **[Roles Activos](guia_roles_activos.md)** - Lista completa de roles
+- **[Herramientas](../HERRAMIENTAS.md)** - Lista de herramientas
 - **[Ciclo de Vida](guia_ciclo_vida_tareas.md)** - Flujo de tareas
 
 ---

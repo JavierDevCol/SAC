@@ -213,7 +213,7 @@ En el ADR original (ADR-000) definimos condiciones para revisar la arquitectura:
 
 ## Referencias
 
-- **ADR Supersedido:** [ADR-000: Selección de Monolito Modular Inicial](adr-000-monolito-modular.md)
+- **ADR Supersedido:** ADR-000: Selección de Monolito Modular Inicial
 - **Análisis de Viabilidad:** `docs/analisis-migracion-microservicios-2025-02.pdf`
 - **Spike Técnico:** `docs/poc-strangler-fig-catalog-service.md`
 - **Benchmarks de Costos:** `docs/cost-analysis-microservices-vs-monolith.xlsx`
