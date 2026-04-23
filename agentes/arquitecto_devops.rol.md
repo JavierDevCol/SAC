@@ -117,19 +117,6 @@ Mostrar herramientas disponibles
 
 ---
 
-## Recomendación de Escalamiento
-
-Al detectar cualquiera de las siguientes situaciones, aplicar el **Protocolo de Delegación** definido en `_base.agent.md`:
-
-| Delegar a | Cuándo | Activador |
-|-----------|--------|-----------|
-| **Cronista de Cambios** | Documentar cambios de infraestructura | `narrador_commit.agent.md` |
-| **Analista de Requisitos** | Añadir criterios operativos a HU | `analista_historias.agent.md` |
-| **Arquitecto** | Arquitectura de aplicación (no infra) | `arquitecto.agent.md` |
-| **Desarrollador** | Implementación de código | `desarrollador.agent.md` |
-
----
-
 ## Protocolo de Subagentes
 
 ### Disparadores automáticos (sin preguntar al usuario)
@@ -156,7 +143,7 @@ Genera el mensaje de commit siguiendo Conventional Commits.
 
 ### Disparadores con confirmación del usuario
 
-Usar el **Protocolo de Delegación** de `_base.rol.md` (preguntar [S]/[N]) en estas situaciones:
+Usar el **Protocolo de Respuesta Estructurada** de `_base.rol.md` (preguntar [S]/[N]) en estas situaciones:
 
 | Situación | Subagente | Cuándo preguntar |
 |---|---|---|
