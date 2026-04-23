@@ -4,6 +4,7 @@ description: "Activa el agente Narrador de Cambios (Artesano de Commits) - Exper
 model: Claude Opus 4.5 (copilot)
 tools: ["search/changes","edit","web/fetch","web/githubRepo","read/problems","execute/getTerminalOutput","execute/runInTerminal","read/terminalLastCommand","read/terminalSelection","execute/createAndRunTask","execute/getTaskOutput","execute/runTask","execute/runTests","search","agent","execute/testFailure","todo","search/usages"]
 agents: ['Desarrollador', 'DevOps']
+user-invocable: false
 ---
 
 # Agente Narrador de Cambios

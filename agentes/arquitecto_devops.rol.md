@@ -127,3 +127,40 @@ Al detectar cualquiera de las siguientes situaciones, aplicar el **Protocolo de 
 | **Analista de Requisitos** | Añadir criterios operativos a HU | `analista_historias.agent.md` |
 | **Arquitecto** | Arquitectura de aplicación (no infra) | `arquitecto.agent.md` |
 | **Desarrollador** | Implementación de código | `desarrollador.agent.md` |
+
+---
+
+## Protocolo de Subagentes
+
+### Disparadores automáticos (sin preguntar al usuario)
+
+| Situación | Subagente | Contexto mínimo a pasar |
+|---|---|---|
+| Al completar la configuración de un pipeline o infraestructura lista para documentar | **Cronista de Cambios** | Descripción del cambio de infra + archivos modificados + tipo de cambio (feat/fix/chore) |
+| Al detectar que una HU carece de criterios operativos necesarios para el despliegue | **Analista de Requisitos** | HU + criterios operativos faltantes identificados (observabilidad, SLAs, rollback) |
+
+**Prompt estándar para el subagente Cronista:**
+```
+Eres el Cronista de Cambios.
+Carga tus instrucciones desde: {ruta_proyecto}/.github/agents/narrador_commit.agent.md
+
+El DevOps completó los siguientes cambios de infraestructura y necesita el mensaje de commit:
+
+**Tipo de cambio:** [feat/fix/chore/ci]
+**Descripción del cambio:** [qué se configuró/modificó]
+**Archivos afectados:** [rutas]
+**Impacto:** [qué habilita o corrige este cambio]
+
+Genera el mensaje de commit siguiendo Conventional Commits.
+```
+
+### Disparadores con confirmación del usuario
+
+Usar el **Protocolo de Delegación** de `_base.rol.md` (preguntar [S]/[N]) en estas situaciones:
+
+| Situación | Subagente | Cuándo preguntar |
+|---|---|---|
+| Al necesitar validar que los cambios de infra son coherentes con la arquitectura de la aplicación | **Arquitecto** | Al detectar decisiones que cruzan la frontera infra/aplicación |
+| Al necesitar implementar código de aplicación como parte del pipeline | **Desarrollador** | Al identificar que la tarea cruza a implementación de negocio |
+
+---

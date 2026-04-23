@@ -112,3 +112,39 @@ Al detectar cualquiera de las siguientes situaciones, aplicar el **Protocolo de 
 | **Desarrollador** | Implementación de código o refactoring | `desarrollador.agent.md` |
 | **DevOps** | Configurar pipelines CI/CD o infraestructura | `devops.agent.md` |
 | **Cronista de Cambios** | Documentar decisiones en commits | `narrador_commit.agent.md` |
+
+---
+
+## Protocolo de Subagentes
+
+### Disparadores automáticos (sin preguntar al usuario)
+
+| Situación | Subagente | Contexto mínimo a pasar |
+|---|---|---|
+| Al detectar que una HU tiene ambigüedades funcionales que bloquean o condicionan una decisión técnica | **Analista de Requisitos** | Descripción de la ambigüedad + HU afectada + impacto en el diseño propuesto |
+| Al validar un ADR y necesitar verificar que no contradice los CA acordados | **Analista de Requisitos** | ADR borrador + lista de CA relevantes de la HU |
+
+**Prompt estándar para el subagente Analista:**
+```
+Eres el Analista de Requisitos.
+Carga tus instrucciones desde: {ruta_proyecto}/.github/agents/analista_historias.agent.md
+
+El Arquitecto necesita que valides/corrijas lo siguiente antes de tomar una decisión técnica:
+
+**Situación:** [descripción de la ambigüedad o conflicto]
+**HU afectada:** [referencia a la HU]
+**Pregunta concreta:** [qué necesita saber el Arquitecto]
+
+Devuelve únicamente: tu análisis funcional + corrección o confirmación del refinamiento.
+```
+
+### Disparadores con confirmación del usuario
+
+Usar el **Protocolo de Delegación** de `_base.rol.md` (preguntar [S]/[N]) en estas situaciones:
+
+| Situación | Subagente | Cuándo preguntar |
+|---|---|---|
+| Al finalizar un diseño arquitectónico listo para implementar | **Desarrollador** | Antes de cerrar la sesión de diseño |
+| Al detectar impacto en infraestructura o pipelines en la solución propuesta | **DevOps** | Al identificar el impacto |
+
+---

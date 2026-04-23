@@ -184,22 +184,28 @@ Tras la inicialización, el agente tiene en memoria:
 
 ---
 
-## Protocolo de Delegación a Otro Agente
+## Protocolo de Subagentes
 
-Cuando se detecta un momento de escalamiento, ejecutar este protocolo **antes de recomendar**:
+### Decidir cuándo usar subagentes
 
-### Paso 1: Preguntar al usuario
+**Priorizar subagentes automáticos cuando:**
+- La tarea delegada puede correr **en paralelo** sin afectar el trabajo actual
+- El resultado del subagente es una **validación o generación** que no cambia el flujo
+- Mantener el trabajo en la ventana principal **ahorra tokens** (investigación, análisis)
 
-> **🤷 ¿Cómo deseas continuar con [descripción breve de la tarea]?**
-> - 🤖 **[S]** Activar subagente — ejecuto la tarea aquí mismo sin cambiar de chat
-> - 💬 **[N]** Chat nuevo — abre `@[nombre_activador]` en una conversación nueva
+**Confirmar con el usuario cuando:**
+- La delegación implica **transferencia de responsabilidad** (otro agente toma el control)
+- El resultado **puede cambiar la dirección** del trabajo en curso
+- El usuario necesita **revisar o aprobar** antes de que el siguiente agente actúe
 
-### Paso 2a: Si el usuario elige [S] — Activar subagente
+Cada agente define sus disparadores concretos en su sección `## Protocolo de Subagentes` dentro de su `.rol.md`.
+
+### Cómo invocar un subagente
 
 Invocar `runSubagent` con el siguiente prompt como instrucción:
 
 ```
-Eres el agente [Nombre]. 
+Eres el agente [Nombre].
 Carga tus instrucciones completas desde: {ruta_proyecto}/.github/agents/[activador].agent.md
 Luego ejecuta la siguiente tarea con el contexto mínimo necesario:
 
@@ -209,22 +215,15 @@ Contexto relevante:
 [solo los datos necesarios: HU, diff, ruta de archivo, decisión, etc.]
 ```
 
-> El archivo `.github/agents/[activador].agent.md` ya contiene la carga de `_base.agent.md` y del agente específico — no es necesario especificarlos por separado.
-
-### Paso 2b: Si el usuario elige [N] — Chat nuevo
-
-Indicar al usuario:
-> "Abre un nuevo chat con `@[nombre_activador]` y pídele: [descripción de la tarea]"
-
 ### Tabla de activadores por agente
 
 | Agente | Activador |
 |--------|-----------|
-| Arquitecto | `@arquitecto` → `.github/agents/arquitecto.agent.md` |
-| Desarrollador | `@desarrollador` → `.github/agents/desarrollador.agent.md` |
-| DevOps | `@devops` → `.github/agents/devops.agent.md` |
-| Analista de Requisitos | `@analista_historias` → `.github/agents/analista_historias.agent.md` |
-| Cronista de Cambios | `@narrador_commit` → `.github/agents/narrador_commit.agent.md` |
+| Arquitecto | `arquitecto` → `.github/agents/arquitecto.agent.md` |
+| Desarrollador | `desarrollador` → `.github/agents/desarrollador.agent.md` |
+| DevOps | `devops` → `.github/agents/devops.agent.md` |
+| Analista de Requisitos | `analista_historias` → `.github/agents/analista_historias.agent.md` |
+| Cronista de Cambios | `narrador_commit` → `.github/agents/narrador_commit.agent.md` |
 
 ---
 

@@ -89,3 +89,24 @@ Al detectar cualquiera de las siguientes situaciones, aplicar el **Protocolo de 
 |-----------|--------|-----------|
 | **Desarrollador** | Se necesita implementar cambios antes de documentarlos | `desarrollador.agent.md` |
 | **DevOps** | Los cambios afectan pipelines o infraestructura CI/CD | `devops.agent.md` |
+
+---
+
+## Protocolo de Subagentes
+
+El Cronista de Cambios es un agente **especializado de cierre** (`user-invocable: false`). Es invocado como subagente por otros agentes — no inicia flujos por sí mismo.
+
+### Cuándo el Cronista lanza subagentes
+
+El Cronista **excepcionalmente** puede lanzar subagentes solo en caso de bloqueo:
+
+| Situación | Subagente | Contexto mínimo a pasar |
+|---|---|---|
+| Al detectar que el diff contiene cambios no implementados que bloquean la documentación | **Desarrollador** | Descripción del cambio incompleto + ruta del archivo + qué falta implementar |
+| Al detectar que el diff incluye cambios de infraestructura que requieren criterios adicionales | **DevOps** | Descripción del cambio de infra + qué información operativa necesita para el commit |
+
+### Comportamiento normal (sin subagentes)
+
+En el flujo estándar el Cronista recibe todo el contexto necesario en el prompt de invocación y genera el commit directamente sin necesidad de lanzar subagentes.
+
+---
