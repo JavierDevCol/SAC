@@ -23,28 +23,28 @@ rutas:
 # ============================================
 archivos:
   config_user: "{project-root}/.SAC/config/CONFIG_USER.yaml" 
-  backlog: "{artifacts_folder}/backlog_desarrollo.md"
-  reglas_arquitectonicas: "{artifacts_folder}/reglas_arquitectonicas.md"
+  backlog: "{project-root}/artifacts/backlog_desarrollo.md"
+  reglas_arquitectonicas: "{project-root}/artifacts/reglas_arquitectonicas.md"
   # Workspace unificado (mono y multi proyecto)
-  workspace: "{artifacts_folder}/workspace.md"
+  workspace: "{project-root}/artifacts/workspace.md"
 
 # ============================================
 # SUBCARPETAS DE ARTIFACTS
 # ============================================
 artifacts:
   # Historias de Usuario
-  hu_folder: "{artifacts_folder}/HU"
-  hu_refinamientos: "{artifacts_folder}/HU/refinamientos"
-  hu_compartidas: "{artifacts_folder}/HU/compartidas"
+  hu_folder: "{project-root}/artifacts/HU"
+  hu_refinamientos: "{project-root}/artifacts/HU/refinamientos"
+  hu_compartidas: "{project-root}/artifacts/HU/compartidas"
   # Arquitectura
-  adr_folder: "{artifacts_folder}/ADR"
+  adr_folder: "{project-root}/artifacts/ADR"
   # Planes y ejecución
-  planes_folder: "{artifacts_folder}/planes_de_desarrollo"
-  ejecuciones_folder: "{artifacts_folder}/ejecuciones"
+  planes_folder: "{project-root}/artifacts/planes_de_desarrollo"
+  ejecuciones_folder: "{project-root}/artifacts/ejecuciones"
   # Code quality
-  code_smells_folder: "{artifacts_folder}/code_smells"
+  code_smells_folder: "{project-root}/artifacts/code_smells"
   # Multi-proyecto
-  contextos_folder: "{artifacts_folder}/contextos"
+  contextos_folder: "{project-root}/artifacts/contextos"
 
 # ============================================
 # CONFIGURACIÓN MULTI-PROYECTO

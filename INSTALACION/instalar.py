@@ -777,6 +777,36 @@ def migrate_cochas_to_sac(dest_path):
         return False
 
 
+def migrate_artifacts_to_root(dest_path):
+    """
+    Migra artifacts de .SAC/artifacts/ a artifacts/ en la raíz del proyecto.
+    Necesario al actualizar desde versiones anteriores a 7.2.0 donde
+    artifacts_folder apuntaba a {project-root}/.SAC/artifacts.
+    Retorna True si se realizó migración, False si no había nada que migrar.
+    """
+    dest = Path(dest_path)
+    old_artifacts = dest / ".SAC" / "artifacts"
+    new_artifacts = dest / "artifacts"
+
+    if not old_artifacts.exists():
+        return False
+
+    if new_artifacts.exists():
+        print_warning("Ya existe artifacts/ en la raíz, no se puede migrar automáticamente")
+        print_info("Mueve manualmente el contenido de .SAC/artifacts/ a artifacts/")
+        return False
+
+    print_info("Detectados artifacts en .SAC/artifacts/, migrando a artifacts/ (raíz)...")
+
+    try:
+        shutil.move(str(old_artifacts), str(new_artifacts))
+        print_success("artifacts/ movido a la raíz del proyecto")
+        return True
+    except Exception as e:
+        print_error(f"Error durante la migración de artifacts: {e}")
+        return False
+
+
 def install_sac(dest_path, root_dir):
     """Ejecuta la instalación de SAC."""
     dest = Path(dest_path)
@@ -787,7 +817,10 @@ def install_sac(dest_path, root_dir):
     cochas_legacy = dest / ".cochas"
     if cochas_legacy.exists():
         migrate_cochas_to_sac(dest_path)
-    
+
+    # 0.1 Migrar artifacts de .SAC/artifacts/ a artifacts/ (raíz) si viene de <7.2.0
+    migrate_artifacts_to_root(dest_path)
+
     # 1. Crear carpeta .SAC
     sac_dest = dest / ".SAC"
     sac_dest.mkdir(exist_ok=True)
