@@ -5,10 +5,10 @@
 # ============================================
 #
 # Uso:
-#   curl -fsSL https://raw.githubusercontent.com/JavierDevCol/SAC/feature/instalacion/INSTALACION/bootstrap/install.sh | bash
+#   curl -fsSL https://raw.githubusercontent.com/JavierDevCol/SAC/main/INSTALACION/bootstrap/install.sh | bash
 #
 # O descargando primero:
-#   curl -o install.sh https://raw.githubusercontent.com/JavierDevCol/SAC/feature/instalacion/INSTALACION/bootstrap/install.sh
+#   curl -o install.sh https://raw.githubusercontent.com/JavierDevCol/SAC/main/INSTALACION/bootstrap/install.sh
 #   chmod +x install.sh
 #   ./install.sh
 #
@@ -21,7 +21,7 @@ set -e
 SAC_HOME="$HOME/.local/share/SAC"
 BIN_PATH="$HOME/.local/bin"
 REPO_URL="https://github.com/JavierDevCol/SAC.git"
-REPO_BRANCH="feature/instalacion"
+REPO_BRANCH="main"
 
 # ============================================
 # COLORES

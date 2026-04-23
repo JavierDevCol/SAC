@@ -54,7 +54,7 @@ if platform.system() == "Windows":
 # URL del repositorio de COCHAS
 REPO_URL = "https://github.com/JavierDevCol/SAC.git"
 REPO_NAME = "SAC"
-REPO_BRANCH = "feature/instalacion"  # Rama principal para instalación
+REPO_BRANCH = "main"  # Rama principal para instalación
 
 # Carpetas a copiar desde la raíz de ia_prompts
 CARPETAS_COCHAS = [

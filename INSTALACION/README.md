@@ -11,12 +11,12 @@
 
 **Windows (PowerShell):**
 ```powershell
-irm https://raw.githubusercontent.com/JavierDevCol/SAC/feature/instalacion/INSTALACION/bootstrap/install.ps1 | iex
+irm https://raw.githubusercontent.com/JavierDevCol/SAC/main/INSTALACION/bootstrap/install.ps1 | iex
 ```
 
 **Linux/Mac (Bash):**
 ```bash
-curl -fsSL https://raw.githubusercontent.com/JavierDevCol/SAC/feature/instalacion/INSTALACION/bootstrap/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/JavierDevCol/SAC/main/INSTALACION/bootstrap/install.sh | bash
 ```
 
 Esto:

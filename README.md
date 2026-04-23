@@ -1,7 +1,7 @@
 # SAC — Sistema Agéntico COCHAS
 
 > Sistema de agentes IA especializados para GitHub Copilot  
-> **Versión:** 7.2.0 | **Branch:** `feature/instalacion`
+> **Versión:** 7.2.0
 
 SAC instala en tu proyecto un conjunto de **agentes Copilot** con roles especializados (Arquitecto, Desarrollador, DevOps, Analista de Requisitos, Cronista de Cambios) y **12 herramientas** ejecutables para el ciclo completo de desarrollo.
 
@@ -11,12 +11,12 @@ SAC instala en tu proyecto un conjunto de **agentes Copilot** con roles especial
 
 **Windows (PowerShell):**
 ```powershell
-irm https://raw.githubusercontent.com/JavierDevCol/SAC/feature/instalacion/INSTALACION/bootstrap/install.ps1 | iex
+irm https://raw.githubusercontent.com/JavierDevCol/SAC/main/INSTALACION/bootstrap/install.ps1 | iex
 ```
 
 **Linux/Mac:**
 ```bash
-curl -fsSL https://raw.githubusercontent.com/JavierDevCol/SAC/feature/instalacion/INSTALACION/bootstrap/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/JavierDevCol/SAC/main/INSTALACION/bootstrap/install.sh | bash
 ```
 
 Después de reiniciar la terminal:

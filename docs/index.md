@@ -24,14 +24,14 @@ SAC instala en tu proyecto un conjunto de **agentes Copilot** con roles especial
 
 === "Windows"
     ```powershell
-    irm https://raw.githubusercontent.com/JavierDevCol/SAC/feature/instalacion/INSTALACION/bootstrap/install.ps1 | iex
+    irm https://raw.githubusercontent.com/JavierDevCol/SAC/main/INSTALACION/bootstrap/install.ps1 | iex
     # Reiniciar terminal, luego:
     sac "C:/mi-proyecto"
     ```
 
 === "Linux/Mac"
     ```bash
-    curl -fsSL https://raw.githubusercontent.com/JavierDevCol/SAC/feature/instalacion/INSTALACION/bootstrap/install.sh | bash
+    curl -fsSL https://raw.githubusercontent.com/JavierDevCol/SAC/main/INSTALACION/bootstrap/install.sh | bash
     # Reiniciar terminal, luego:
     sac /ruta/mi-proyecto
     ```

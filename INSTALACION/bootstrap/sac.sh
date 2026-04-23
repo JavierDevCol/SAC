@@ -19,6 +19,6 @@ else
     echo "   Ruta esperada: $INSTALLER_PATH"
     echo ""
     echo "   Para reinstalar SAC, ejecuta:"
-    echo "   curl -fsSL https://raw.githubusercontent.com/JavierDevCol/SAC/feature/instalacion/INSTALACION/bootstrap/install.sh | bash"
+    echo "   curl -fsSL https://raw.githubusercontent.com/JavierDevCol/SAC/main/INSTALACION/bootstrap/install.sh | bash"
     exit 1
 fi

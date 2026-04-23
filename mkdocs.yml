@@ -4,7 +4,7 @@ site_author: JavierDevCol
 site_url: https://javierdevcol.github.io/SAC/
 repo_url: https://github.com/JavierDevCol/SAC
 repo_name: JavierDevCol/SAC
-edit_uri: edit/feature/instalacion/docs/
+edit_uri: edit/main/docs/
 
 docs_dir: docs
 theme:

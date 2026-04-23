@@ -8,7 +8,7 @@
     global 'sac' para que esté disponible desde cualquier terminal.
 
 .EXAMPLE
-    irm https://raw.githubusercontent.com/JavierDevCol/SAC/feature/instalacion/INSTALACION/bootstrap/install.ps1 | iex
+    irm https://raw.githubusercontent.com/JavierDevCol/SAC/main/INSTALACION/bootstrap/install.ps1 | iex
 
 .NOTES
     Autor: SAC Team
@@ -23,7 +23,7 @@ $ErrorActionPreference = "Stop"
 # ============================================
 $SAC_HOME = "$env:LOCALAPPDATA\SAC"
 $REPO_URL = "https://github.com/JavierDevCol/SAC.git"
-$REPO_BRANCH = "feature/instalacion"
+$REPO_BRANCH = "main"
 
 # ============================================
 # FUNCIONES DE UTILIDAD
