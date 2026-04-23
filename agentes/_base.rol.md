@@ -186,19 +186,31 @@ Tras la inicialización, el agente tiene en memoria:
 
 ## Protocolo de Subagentes
 
-### Decidir cuándo usar subagentes
+### Directiva de detección proactiva
 
-**Priorizar subagentes automáticos cuando:**
-- La tarea delegada puede correr **en paralelo** sin afectar el trabajo actual
-- El resultado del subagente es una **validación o generación** que no cambia el flujo
-- Mantener el trabajo en la ventana principal **ahorra tokens** (investigación, análisis)
+Durante la ejecución de cualquier tarea, el agente **DEBE** evaluar activamente si alguna subtarea se beneficiaría de ser delegada a un subagente. No esperar a que el usuario lo solicite — la delegación inteligente es responsabilidad del agente. Cada agente define sus disparadores concretos en su sección `## Protocolo de Subagentes` dentro de su `.rol.md`.
 
-**Confirmar con el usuario cuando:**
-- La delegación implica **transferencia de responsabilidad** (otro agente toma el control)
-- El resultado **puede cambiar la dirección** del trabajo en curso
-- El usuario necesita **revisar o aprobar** antes de que el siguiente agente actúe
+### Disparadores automáticos (sin preguntar al usuario)
 
-Cada agente define sus disparadores concretos en su sección `## Protocolo de Subagentes` dentro de su `.rol.md`.
+Lanzar el subagente directamente con `runSubagent` cuando se detecten estas situaciones genéricas:
+
+| Situación | Subagente | Contexto mínimo a pasar |
+|-----------|-----------|--------------------------|
+| Se necesita **investigar o analizar código** antes de implementar | Agente especializado según dominio (ver tabla de activadores) | Descripción de qué investigar + rutas relevantes |
+| Una tarea completada requiere **validación funcional** (CA, reglas, estándares) | **Analista de Requisitos** | Tarea completada + lista de CA a verificar + rutas de archivos modificados |
+| Se deben **analizar múltiples módulos/archivos** de forma independiente | Lanzar subagentes en paralelo, uno por módulo/perspectiva | Módulo/archivo específico + criterio de análisis |
+| Se necesita **generar documentación o commits** como producto secundario | **Cronista de Cambios** | Descripción del cambio + archivos afectados + tipo (feat/fix/chore) |
+| La tarea implica **exploración extensa** del codebase (buscar patrones, alternativas, decisiones previas) | Agente `Explore` o agente especializado | Descripción de qué explorar + alcance (rutas, módulos) |
+
+### Disparadores con confirmación del usuario
+
+Usar el **Protocolo de Respuesta Estructurada** (preguntar [S]/[N]) antes de delegar en estas situaciones:
+
+| Situación | Subagente | Cuándo preguntar |
+|-----------|-----------|-------------------|
+| La delegación implica **transferencia de responsabilidad** (otro agente toma el control) | Agente destino según contexto | Antes de transferir el control |
+| El resultado **puede cambiar la dirección** del trabajo en curso | Agente destino según contexto | Al detectar que el resultado podría reorientar la tarea actual |
+| El usuario necesita **revisar o aprobar** antes de que el siguiente agente actúe | Agente destino según contexto | Antes de lanzar el subagente |
 
 ### Cómo invocar un subagente
 
