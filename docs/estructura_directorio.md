@@ -1,6 +1,6 @@
 # Estructura del Directorio `ia_prompts`
 
-> **Versión:** 7.2.0  
+> **Versión:** 7.3.0  
 > **Última actualización:** 23 de abril de 2026
 
 ## Árbol de Directorios

@@ -1,13 +1,13 @@
 # 👥 Roles del Sistema SAC
 
-> **Versión:** 7.2.0  
+> **Versión:** 7.3.0  
 > **Última actualización:** 23 de abril de 2026
 
 ---
 
 ## 📋 Descripción
 
-Índice oficial de roles/agentes disponibles en el sistema SAC v7.2.0. Cada rol tiene un archivo `.rol.md` con su definición completa.
+Índice oficial de roles/agentes disponibles en el sistema SAC v7.3.0. Cada rol tiene un archivo `.rol.md` con su definición completa.
 
 **Modelo de uso:** Cada agente se invoca con `@nombre` en GitHub Copilot Chat.
 

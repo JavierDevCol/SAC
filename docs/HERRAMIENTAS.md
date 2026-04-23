@@ -1,13 +1,13 @@
 # 🛠️ Herramientas del Sistema SAC
 
-> **Versión:** 7.2.0  
+> **Versión:** 7.3.0  
 > **Última actualización:** 23 de abril de 2026
 
 ---
 
 ## 📋 Descripción
 
-Índice oficial de herramientas disponibles en el sistema SAC v7.2.0. Cada herramienta tiene un archivo `.tool.md` con su definición completa.
+Índice oficial de herramientas disponibles en el sistema SAC v7.3.0. Cada herramienta tiene un archivo `.tool.md` con su definición completa.
 
 ---
 

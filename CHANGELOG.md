@@ -9,19 +9,33 @@
 
 | Componente | Versión Actual | Última Actualización |
 |------------|----------------|----------------------|
-| **Sistema SAC** | 7.2.0 | 2026-04-23 |
-| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.2.0 | 2026-04-23 |
+| **Sistema SAC** | 7.3.0 | 2026-04-23 |
+| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.3.0 | 2026-04-23 |
 | **Configuración Usuario** (`config/CONFIG_USER.template.yaml`) | 4.0 | 2026-01-05 |
-| **Roles SAC** (`agentes/*.rol.md`) | 7.2.0 | 2026-04-23 |
+| **Roles SAC** (`agentes/*.rol.md`) | 7.3.0 | 2026-04-23 |
 | **Herramientas** (`herramientas/*.tool.md`) | 7.1.0 | 2026-02-16 |
 | **Plantillas** (`plantillas/`) | 7.1.0 | 2026-02-16 |
-| **Guía de Comandos** (`guias/guia_comandos.md`) | 7.2.0 | 2026-04-23 |
+| **Guía de Comandos** (`guias/guia_comandos.md`) | 7.3.0 | 2026-04-23 |
 | **Guía de Roles** (`guias/guia_roles_activos.md`) | 3.0 | 2026-01-05 |
-| **Guía Ciclo de Vida** (`guias/guia_ciclo_vida_tareas.md`) | 7.2.0 | 2026-04-23 |
+| **Guía Ciclo de Vida** (`guias/guia_ciclo_vida_tareas.md`) | 7.3.0 | 2026-04-23 |
 
 ---
 
 ## 🚀 Historial de Versiones
+
+### [7.3.0] - 2026-04-23
+
+#### 🎯 Cambio Mayor: Mejora de Sistema de Agentes, Roles y Guía de Subagentes
+
+#### ✅ Mejoras
+
+| Funcionalidad | Descripción |
+|---------------|-------------|
+| **Sistema de Agentes** | Mejoras en la configuración y comportamiento de agentes |
+| **Roles** | Actualización de definiciones de roles del sistema |
+| **Guía de Subagentes** | Mejoras en la guía de subagentes de VS Code |
+
+---
 
 ### [7.2.0] - 2026-04-23
 

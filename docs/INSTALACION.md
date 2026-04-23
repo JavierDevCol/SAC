@@ -1,4 +1,4 @@
-# 📦 Guía de Instalación - SAC v7.2.0
+# 📦 Guía de Instalación - SAC v7.3.0
 
 > **Sistema Agéntico COCHAS para GitHub Copilot**
 

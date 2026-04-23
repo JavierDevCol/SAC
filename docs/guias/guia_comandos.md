@@ -1,7 +1,7 @@
 # 📋 Guía Completa de Comandos del Sistema
 
 > **Sistema:** SAC - Sistema Agéntico COCHAS  
-> **Versión:** 7.2.0  
+> **Versión:** 7.3.0  
 > **Última Actualización:** 23 de abril de 2026
 
 ---

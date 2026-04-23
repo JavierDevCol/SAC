@@ -1,7 +1,7 @@
 # SAC — Sistema Agéntico COCHAS
 
 > Sistema de agentes IA especializados para GitHub Copilot  
-> **Versión:** 7.2.0
+> **Versión:** 7.3.0
 
 SAC instala en tu proyecto un conjunto de **agentes Copilot** con roles especializados (Arquitecto, Desarrollador, DevOps, Analista de Requisitos, Cronista de Cambios) y **12 herramientas** ejecutables para el ciclo completo de desarrollo.
 
