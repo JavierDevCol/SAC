@@ -9,7 +9,7 @@
 
 | Componente | Versión Actual | Última Actualización |
 |------------|----------------|----------------------|
-| **Sistema SAC** | 7.11.0 | 2026-04-24 |
+| **Sistema SAC** | 7.11.1 | 2026-04-24 |
 | **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.11.0 | 2026-04-24 |
 | **Configuración Usuario** (`config/CONFIG_USER.template.yaml`) | 7.9.0 | 2026-04-24 |
 | **Roles SAC** (`agentes/*.rol.md`) | 7.11.0 | 2026-04-24 |
@@ -22,6 +22,18 @@
 ---
 
 ## 🚀 Historial de Versiones
+
+### [7.11.1] - 2026-04-24
+
+#### 🐛 Fix: Instalador - Rutas absolutas en artifacts
+
+| Tipo | Cambio |
+|------|--------|
+| **Fix** | Validar rutas absolutas en input de `artifacts_rel` del instalador |
+| **Fix** | Detectar automáticamente cuando el usuario pega una ruta absoluta que contiene el `project_root` y extraer la parte relativa |
+| **Fix** | Defensa adicional en `replace_artifacts_path()` para sanitizar `artifacts_rel` antes de concatenar |
+
+---
 
 ### [7.11.0] - 2026-04-24
 
