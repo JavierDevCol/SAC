@@ -9,12 +9,12 @@
 
 | Componente | Versión Actual | Última Actualización |
 |------------|----------------|----------------------|
-| **Sistema SAC** | 7.9.0 | 2026-04-24 |
-| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.9.0 | 2026-04-24 |
+| **Sistema SAC** | 7.10.0 | 2026-04-24 |
+| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.10.0 | 2026-04-24 |
 | **Configuración Usuario** (`config/CONFIG_USER.template.yaml`) | 7.9.0 | 2026-04-24 |
-| **Roles SAC** (`agentes/*.rol.md`) | 7.8.0 | 2026-04-24 |
-| **Herramientas** (`herramientas/*.tool.md`) | 7.8.0 | 2026-04-24 |
-| **Plantillas** (`plantillas/`) | 7.8.0 | 2026-04-24 |
+| **Roles SAC** (`agentes/*.rol.md`) | 7.10.0 | 2026-04-24 |
+| **Herramientas** (`herramientas/*.tool.md`) | 7.10.0 | 2026-04-24 |
+| **Plantillas** (`plantillas/`) | 7.10.0 | 2026-04-24 |
 | **Guía de Comandos** (`guias/guia_comandos.md`) | 7.3.0 | 2026-04-23 |
 | **Guía de Roles** (`guias/guia_roles_activos.md`) | 3.0 | 2026-01-05 |
 | **Guía Ciclo de Vida** (`guias/guia_ciclo_vida_tareas.md`) | 7.3.0 | 2026-04-23 |
@@ -22,6 +22,34 @@
 ---
 
 ## 🚀 Historial de Versiones
+
+### [7.10.0] - 2026-04-24
+
+#### 🎯 Optimización de Carga del Backlog (Ahorro de Tokens)
+
+**Objetivo:** Reducir el consumo de tokens al cargar el backlog, pasando de lectura completa (~5000 tokens para 50+ HUs) a carga parcial (~200 tokens) con búsqueda dirigida bajo demanda.
+
+#### ✅ Cambios en Plantillas
+
+| Plantilla | Cambio |
+|-----------|--------|
+| `backlog_desarrollo_plantilla.md` | Nueva sección `## 📇 Índice Rápido` — tabla compacta (1 fila por HU: ID, Título, Estado, Prioridad, Tipo) |
+
+#### ✅ Cambios en Roles
+
+| Archivo | Cambio |
+|---------|--------|
+| `_base.rol.md` | Carga obligatoria cambiada: leer solo hasta `## 🎯 Historias de Usuario` (índice + metadatos) |
+| `_base.rol.md` | Nueva instrucción de búsqueda dirigida: grep heading `### [ID-HU]` + read_file por rango |
+| `_base.rol.md` | Instrucción explícita: NUNCA leer backlog completo para consultar una sola HU |
+
+#### ✅ Cambios en Herramientas
+
+| Herramienta | Cambio |
+|-------------|--------|
+| `sincronizar_backlog.tool.md` | Nuevo paso obligatorio `Regenerar Índice Rápido` — reconstruye tabla compacta tras sincronización |
+
+---
 
 ### [7.9.0] - 2026-04-24
 
