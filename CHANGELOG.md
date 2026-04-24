@@ -9,9 +9,9 @@
 
 | Componente | Versión Actual | Última Actualización |
 |------------|----------------|----------------------|
-| **Sistema SAC** | 7.8.0 | 2026-04-24 |
-| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.8.0 | 2026-04-24 |
-| **Configuración Usuario** (`config/CONFIG_USER.template.yaml`) | 4.0 | 2026-01-05 |
+| **Sistema SAC** | 7.9.0 | 2026-04-24 |
+| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.9.0 | 2026-04-24 |
+| **Configuración Usuario** (`config/CONFIG_USER.template.yaml`) | 7.9.0 | 2026-04-24 |
 | **Roles SAC** (`agentes/*.rol.md`) | 7.8.0 | 2026-04-24 |
 | **Herramientas** (`herramientas/*.tool.md`) | 7.8.0 | 2026-04-24 |
 | **Plantillas** (`plantillas/`) | 7.8.0 | 2026-04-24 |
@@ -22,6 +22,31 @@
 ---
 
 ## 🚀 Historial de Versiones
+
+### [7.9.0] - 2026-04-24
+
+#### 🎯 Ruta de Artifacts Personalizable en Instalación
+
+**Objetivo:** Permitir al usuario elegir la ruta relativa donde se generan los artifacts durante la instalación de SAC, en lugar de usar siempre `artifacts/`.
+
+#### ✅ Cambios en Instalador
+
+| Componente | Cambio |
+|------------|--------|
+| `instalar.py` | Nueva pregunta en configuración: ruta de artifacts (default: `artifacts/`) |
+| `instalar.py` | Reordenamiento del flujo: configuración se pregunta ANTES de instalar |
+| `instalar.py` | Nueva función `replace_artifacts_path()` para inyectar ruta custom en CONFIG_SYSTEM |
+| `instalar.py` | Nueva función `collect_user_settings()` (recolección) separada de `write_user_config()` (escritura) |
+| `instalar.py` | `upgrade_installation()` lee `artifacts_rel` del CONFIG_USER existente para preservar ruta custom |
+
+#### ✅ Cambios en Configuración
+
+| Archivo | Cambio |
+|---------|--------|
+| `CONFIG_USER.template.yaml` | Nueva sección `rutas_override.artifacts_folder` (opcional, comentada por defecto) |
+| `CONFIG_SYSTEM.yaml` | Bump versión a 7.9.0 (sin cambios estructurales) |
+
+---
 
 ### [7.8.0] - 2026-04-24
 

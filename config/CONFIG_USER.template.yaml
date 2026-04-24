@@ -19,3 +19,9 @@ idiomas:
 proyecto:
   nombre: ""                          # Nombre del proyecto
 
+# === OVERRIDE DE RUTAS (Opcional) ===
+# Permite personalizar la ubicación de artifacts.
+# Ruta RELATIVA a la raíz del proyecto. Dejar vacío para usar el valor por defecto ("artifacts").
+# rutas_override:
+#   artifacts_folder: ""              # Ejemplo: "docs/artifacts", "output/sac-artifacts"
+
