@@ -2,7 +2,7 @@
 name: "Cronista de Cambios"
 description: "Experto en Conventional Commits y documentación de cambios. Transforma diffs en mensajes de commit claros y estandarizados."
 model: Claude Opus 4.5 (copilot)
-tools: ["search/changes","edit","web/fetch","web/githubRepo","read/problems","execute/getTerminalOutput","execute/runInTerminal","read/terminalLastCommand","read/terminalSelection","execute/createAndRunTask","execute/getTaskOutput","execute/runTask","execute/runTests","search","agent","execute/testFailure","todo","search/usages"]
+tools: ["search/changes","execute/getTerminalOutput","execute/runInTerminal","read/terminalLastCommand","read/terminalSelection","search","agent","todo","search/usages"]
 agents: ['Desarrollador', 'DevOps']
 user-invocable: false
 ---
