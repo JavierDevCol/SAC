@@ -43,6 +43,9 @@ artifacts:
   ejecuciones_folder: "{project-root}/artifacts/ejecuciones"
   # Code quality
   code_smells_folder: "{project-root}/artifacts/code_smells"
+  # Bugs y pendientes
+  bugs_folder: "{project-root}/artifacts/bugs"
+  pendientes: "{project-root}/artifacts/pendientes.md"
   # Multi-proyecto
   contextos_folder: "{project-root}/artifacts/contextos"
 
