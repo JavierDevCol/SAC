@@ -105,8 +105,9 @@ proceso:
       - "SI encuentra HU(s) candidata(s):"
       - "  Mostrar al usuario las HUs encontradas con su estado actual"
       - "  Preguntar:"
-      - "  > 🤷 ¿Este bug se resuelve con una HU existente?"
-      - "  > - 🔗 [V] Vincular a HU-XXX (el bug se resolverá cuando se complete esa HU)"
+      - "  > 🤷 ¿Cómo proceder con este bug?"
+      - "  > - 🔗 [V] Vincular a HU-XXX (se resolverá cuando se complete esa HU)"
+      - "  > - 📝 [A] Agregar ajuste a HU-XXX (instrucciones de corrección en la HU existente)"
       - "  > - 🆕 [N] Crear nueva HU tipo Bug (es un problema independiente)"
       - "SI NO encuentra HUs relacionadas:"
       - "  Informar: 'No se encontraron HUs que cubran este módulo. Se creará nueva HU tipo Bug.'"
@@ -119,6 +120,17 @@ proceso:
       - "  1. Registrar en el archivo bug la referencia: 'Detectado en HU-XXX'"
       - "  2. Estado del bug: '🔗 Vinculado a HU'"
       - "  3. NO crear nueva HU en backlog"
+      - "SI [A] Agregar ajuste a HU existente:"
+      - "  1. Leer refinamiento de la HU desde {{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento*.md"
+      - "  2. SI el refinamiento NO tiene sección '## 🐛 Ajustes por Bug' → Crearla al final antes de la firma"
+      - "  3. Agregar bloque de ajuste en esa sección:"
+      - "     ### BUG-NNN: [Título del bug]"
+      - "     - **Severidad:** [severidad]"
+      - "     - **Causa raíz:** [resumen de causa raíz del paso anterior]"
+      - "     - **Archivos a modificar:** [lista de archivos afectados]"
+      - "     - **Corrección sugerida:** [instrucciones concretas de qué cambiar]"
+      - "  4. Registrar en el archivo bug: 'Ajuste agregado a HU-XXX'"
+      - "  5. Estado del bug: '📝 Ajuste en HU'"
       - "SI [N] Crear nueva HU tipo Bug:"
       - "  1. Agregar nueva entrada en {{archivos.backlog}} con formato:"
       - "     ### HU-[siguiente_ID]: 🐛 [Título del bug]"
@@ -155,12 +167,13 @@ salida:
     ruta: "{{artifacts.bugs_folder}}/BUG-[ID]_[descripcion].md"
   archivos_actualizados:
     - "{{archivos.backlog}} (si se creó nueva HU tipo Bug)"
+    - "{{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento*.md (si se agregó ajuste a HU existente)"
   mensaje_exito: |
     🐛 BUG REGISTRADO
     
     📋 ID: BUG-[ID]
     🔴 Severidad: [severidad]
-    📌 Estado: [🆕 Nuevo / 🔗 Vinculado a HU-XXX / ✅ Corregido]
+    📌 Estado: [🆕 Nuevo / 🔗 Vinculado a HU-XXX / 📝 Ajuste en HU-XXX / ✅ Corregido]
     
     📄 Archivo: {{artifacts.bugs_folder}}/BUG-[ID]_[descripcion].md
   siguiente:

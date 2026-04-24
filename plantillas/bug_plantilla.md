@@ -8,7 +8,7 @@
 | **Detectado en** | [HU-XXX (contexto) / Pruebas funcionales / Producción] |
 | **Proyecto** | [nombre-proyecto] |
 | **Severidad** | [🔴 Crítica / 🟠 Alta / 🟡 Media] |
-| **Estado** | [🆕 Nuevo / 🔍 En Triage / 🔗 Vinculado a HU / ✅ Corregido] |
+| **Estado** | [🆕 Nuevo / 🔍 En Triage / 🔗 Vinculado a HU / 📝 Ajuste en HU / ✅ Corregido] |
 | **Fecha detección** | [YYYY-MM-DD] |
 | **Fecha corrección** | [YYYY-MM-DD / — si no corregido] |
 | **Commit fix** | [`tipo: mensaje del commit`] / — si no corregido] |
