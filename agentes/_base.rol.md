@@ -95,7 +95,8 @@ Para garantizar una interacción ágil, el agente debe seguir estas reglas al pr
 | Plan | `{{artifacts.planes_folder}}` | Se ejecute o consulte implementación |
 | Ejecución | `{{artifacts.ejecuciones_folder}}` | Se retome o verifique ejecución previa |
 | Bugs | `{{artifacts.bugs_folder}}` | Se registre, consulte o resuelva un bug |
-| Pendientes | `{{artifacts.pendientes}}` | Se consulte deuda técnica o hallazgos de pruebas |
+| Pendientes (índice) | `{{artifacts.pendientes}}` | Se consulte deuda técnica o hallazgos de pruebas |
+| Pendientes (detalle) | `{{artifacts.pendientes_folder}}` | Se necesite contexto extendido, logs o evidencia de un pendiente |
 
 **Flujo recomendado:**
 1. Consultar Backlog para identificar HU objetivo

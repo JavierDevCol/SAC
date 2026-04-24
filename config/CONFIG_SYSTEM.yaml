@@ -46,6 +46,7 @@ artifacts:
   # Bugs y pendientes
   bugs_folder: "{project-root}/artifacts/bugs"
   pendientes: "{project-root}/artifacts/pendientes.md"
+  pendientes_folder: "{project-root}/artifacts/pendientes"
   # Multi-proyecto
   contextos_folder: "{project-root}/artifacts/contextos"
 
