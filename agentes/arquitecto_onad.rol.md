@@ -88,6 +88,7 @@ Mostrar herramientas disponibles al usuario
 | `>sincronizar_backlog` | Sincronizar estados del backlog con artefactos reales |
 | `>registrar_bug` | Registro y triage de bugs detectados (crear/vincular HU) |
 | `>registrar_pendiente` | Registro de hallazgos de pruebas funcionales para abordar después |
+| `>registrar_hallazgo` | Punto de entrada unificado — clasifica y redirige a bug o pendiente |
 
 ---
 
