@@ -9,10 +9,10 @@
 
 | Componente | Versión Actual | Última Actualización |
 |------------|----------------|----------------------|
-| **Sistema SAC** | 7.10.1 | 2026-04-24 |
-| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.10.1 | 2026-04-24 |
+| **Sistema SAC** | 7.11.0 | 2026-04-24 |
+| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.11.0 | 2026-04-24 |
 | **Configuración Usuario** (`config/CONFIG_USER.template.yaml`) | 7.9.0 | 2026-04-24 |
-| **Roles SAC** (`agentes/*.rol.md`) | 7.10.1 | 2026-04-24 |
+| **Roles SAC** (`agentes/*.rol.md`) | 7.11.0 | 2026-04-24 |
 | **Herramientas** (`herramientas/*.tool.md`) | 7.10.0 | 2026-04-24 |
 | **Plantillas** (`plantillas/`) | 7.10.0 | 2026-04-24 |
 | **Guía de Comandos** (`guias/guia_comandos.md`) | 7.3.0 | 2026-04-23 |
@@ -22,6 +22,33 @@
 ---
 
 ## 🚀 Historial de Versiones
+
+### [7.11.0] - 2026-04-24
+
+#### 🎯 Simplificación del Protocolo de Subagentes
+
+**Objetivo:** Reemplazar el protocolo de subagentes (238 líneas, prompts no funcionales, paralelismo ficticio) por un modelo liviano de recomendación de delegación donde el usuario decide si cambia de agente.
+
+#### ✅ Cambios en Roles
+
+| Archivo | Cambio |
+|---------|--------|
+| `_base.rol.md` | Sección "Protocolo de Subagentes" (~55 líneas) → "Delegación entre Agentes" (~20 líneas) |
+| `archdev_pro.rol.md` | Sección de subagentes (~50 líneas) → tabla "Recomendaciones de Delegación" (~10 líneas) |
+| `arquitecto_devops.rol.md` | Sección de subagentes (~50 líneas) → tabla "Recomendaciones de Delegación" (~10 líneas) |
+| `arquitecto_onad.rol.md` | Sección de subagentes (~40 líneas) → tabla "Recomendaciones de Delegación" (~10 líneas) |
+| `refinador_hu.rol.md` | Sección de subagentes (~43 líneas) → tabla "Recomendaciones de Delegación" (~10 líneas) |
+
+#### 📊 Impacto
+
+| Métrica | Antes | Después |
+|---------|-------|--------|
+| Líneas de instrucciones de subagentes | 238 | 60 |
+| Tokens por sesión (subagentes) | ~700 | ~200 |
+| Prompts de invocación no funcionales | 4 | 0 |
+| Delegaciones automáticas opacas | Sí | No (usuario decide) |
+
+---
 
 ### [7.10.1] - 2026-04-24
 
