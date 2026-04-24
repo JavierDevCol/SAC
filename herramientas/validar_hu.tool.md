@@ -14,6 +14,8 @@ mandatory:
 condiciones_entrada:
   - condicion: "HU en estado [R] Refinada"
     si_no_cumple: "Ejecutar >refinar_hu primero"
+  - condicion_alternativa: "HU con Tipo=Bug y severidad Crítica"
+    si_cumple: "Permitir aprobación acelerada: validación básica + aprobación directa para bugs críticos"
 
 parametros:
   requeridos:
@@ -47,6 +49,10 @@ proceso:
     acciones: 
       - "Buscar HU en backlog"
       - "Verificar estado [R] Refinada"
+      - "Extraer campo '- **Tipo:**' de la HU (SI no existe → asumir Funcional)"
+      - "SI Tipo = Bug y severidad Crítica:"
+      - "  Aplicar nivel_validacion='basico' automáticamente (validación acelerada)"
+      - "  Informar: '⚡ Bug crítico detectado — validación acelerada activa'"
       - "Extraer campo '- **Proyecto:**' de la HU"
       - "SI Proyecto = 'compartida':"
       - "  1. Leer sección '**Proyectos afectados:**' de la HU (lista de proyectos)"
