@@ -67,14 +67,14 @@ proceso:
 
   - paso: "Captura Automática del Git Diff"
     obligatorio: true
-    acciones: ["Crear {{rutas.artifacts_folder}} si no existe", "Ejecutar git diff > {{rutas.artifacts_folder}}/diff.txt", "Validar que el archivo no esté vacío"]
+    acciones: ["Ejecutar git diff --staged (o git diff si no hay staged)", "Procesar el resultado en memoria", "Validar que el diff no esté vacío"]
     si_error:
       sin_repositorio: " No es un repositorio git válido"
       sin_cambios: "ℹ No hay cambios para documentar"
 
   - paso: "Análisis del Contexto"
     obligatorio: true
-    acciones: ["Parsear {{rutas.artifacts_folder}}/diff.txt", "Identificar archivos modificados", "Extraer información del branch name"]
+    acciones: ["Parsear el diff en memoria", "Identificar archivos modificados", "Extraer información del branch name"]
 
   - paso: "Clasificación del Tipo de Commit"
     obligatorio: true
@@ -98,9 +98,6 @@ proceso:
     acciones: ["Validar formato Conventional Commits", "Presentar mensaje listo para usar"]
 
 salida:
-  archivos_generados:
-    ruta: "{{rutas.artifacts_folder}}/diff.txt"
-    temporal: true
   mensaje_exito: |
      Mensaje de Commit Generado
     ```
