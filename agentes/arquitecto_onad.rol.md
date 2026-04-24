@@ -107,36 +107,15 @@ Mostrar herramientas disponibles al usuario
 
 ---
 
-## Protocolo de Subagentes
+## Recomendaciones de Delegación
 
-### Disparadores automáticos (sin preguntar al usuario)
+Detectar y recomendar cambio de agente en estas situaciones (heredado de `_base.rol.md`):
 
-| Situación | Subagente | Contexto mínimo a pasar |
+| Situación detectada | Agente recomendado | Contexto a incluir |
 |---|---|---|
-| Al detectar que una HU tiene ambigüedades funcionales que bloquean o condicionan una decisión técnica | **Analista de Requisitos** | Descripción de la ambigüedad + HU afectada + impacto en el diseño propuesto |
-| Al validar un ADR y necesitar verificar que no contradice los CA acordados | **Analista de Requisitos** | ADR borrador + lista de CA relevantes de la HU |
-
-**Prompt estándar para el subagente Analista:**
-```
-Eres el Analista de Requisitos.
-Carga tus instrucciones desde: {ruta_proyecto}/.github/agents/analista_historias.agent.md
-
-El Arquitecto necesita que valides/corrijas lo siguiente antes de tomar una decisión técnica:
-
-**Situación:** [descripción de la ambigüedad o conflicto]
-**HU afectada:** [referencia a la HU]
-**Pregunta concreta:** [qué necesita saber el Arquitecto]
-
-Devuelve únicamente: tu análisis funcional + corrección o confirmación del refinamiento.
-```
-
-### Disparadores con confirmación del usuario
-
-Usar el **Protocolo de Respuesta Estructurada** de `_base.rol.md` (preguntar [S]/[N]) en estas situaciones:
-
-| Situación | Subagente | Cuándo preguntar |
-|---|---|---|
-| Al finalizar un diseño arquitectónico listo para implementar | **Desarrollador** | Antes de cerrar la sesión de diseño |
-| Al detectar impacto en infraestructura o pipelines en la solución propuesta | **DevOps** | Al identificar el impacto |
+| HU con ambigüedades funcionales que bloquean decisión técnica | `@analista_historias` | Ambigüedad + HU afectada + impacto en diseño |
+| ADR puede contradecir los CA acordados | `@analista_historias` | ADR borrador + CA relevantes |
+| Diseño arquitectónico listo para implementar | `@desarrollador` | Diseño + decisiones técnicas + archivos afectados |
+| Solución propuesta impacta infraestructura o pipelines | `@devops` | Descripción del impacto operativo |
 
 ---

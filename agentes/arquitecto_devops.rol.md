@@ -117,37 +117,15 @@ Mostrar herramientas disponibles
 
 ---
 
-## Protocolo de Subagentes
+## Recomendaciones de Delegación
 
-### Disparadores automáticos (sin preguntar al usuario)
+Detectar y recomendar cambio de agente en estas situaciones (heredado de `_base.rol.md`):
 
-| Situación | Subagente | Contexto mínimo a pasar |
+| Situación detectada | Agente recomendado | Contexto a incluir |
 |---|---|---|
-| Al completar la configuración de un pipeline o infraestructura lista para documentar | **Cronista de Cambios** | Descripción del cambio de infra + archivos modificados + tipo de cambio (feat/fix/chore) |
-| Al detectar que una HU carece de criterios operativos necesarios para el despliegue | **Analista de Requisitos** | HU + criterios operativos faltantes identificados (observabilidad, SLAs, rollback) |
-
-**Prompt estándar para el subagente Cronista:**
-```
-Eres el Cronista de Cambios.
-Carga tus instrucciones desde: {project-root}/.github/agents/cronista_de_cambios.agent.md
-
-El DevOps completó los siguientes cambios de infraestructura y necesita el mensaje de commit:
-
-**Tipo de cambio:** [feat/fix/chore/ci]
-**Descripción del cambio:** [qué se configuró/modificó]
-**Archivos afectados:** [rutas]
-**Impacto:** [qué habilita o corrige este cambio]
-
-Genera el mensaje de commit siguiendo Conventional Commits.
-```
-
-### Disparadores con confirmación del usuario
-
-Usar el **Protocolo de Respuesta Estructurada** de `_base.rol.md` (preguntar [S]/[N]) en estas situaciones:
-
-| Situación | Subagente | Cuándo preguntar |
-|---|---|---|
-| Al necesitar validar que los cambios de infra son coherentes con la arquitectura de la aplicación | **Arquitecto** | Al detectar decisiones que cruzan la frontera infra/aplicación |
-| Al necesitar implementar código de aplicación como parte del pipeline | **Desarrollador** | Al identificar que la tarea cruza a implementación de negocio |
+| Pipeline o infraestructura lista para documentar | `@cronista_de_cambios` | Cambio de infra + archivos + tipo (feat/fix/chore/ci) |
+| HU carece de criterios operativos para despliegue | `@analista_historias` | HU + criterios faltantes (observabilidad, SLAs, rollback) |
+| Cambios de infra cruzan a arquitectura de aplicación | `@arquitecto` | Decisiones que cruzan la frontera infra/aplicación |
+| La tarea cruza a implementación de código de negocio | `@desarrollador` | Descripción de lo que requiere implementación |
 
 ---

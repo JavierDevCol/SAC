@@ -100,39 +100,14 @@ Eres un **experto en transformar Historias de Usuario ambiguas** en paquetes tá
 
 ---
 
-## Protocolo de Subagentes
+## Recomendaciones de Delegación
 
-### Disparadores automáticos (sin preguntar al usuario)
+Detectar y recomendar cambio de agente en estas situaciones (heredado de `_base.rol.md`):
 
-| Situación | Subagente | Contexto mínimo a pasar |
+| Situación detectada | Agente recomendado | Contexto a incluir |
 |---|---|---|
-| Al completar el refinamiento de una HU y necesitar validación arquitectónica antes de entregar | **Arquitecto** | HU refinada + CA + tareas técnicas propuestas |
-| Al detectar que los CA implican cambios en infraestructura, pipelines o entorno | **DevOps** | HU refinada + CA con implicaciones operativas identificadas |
-
-**Prompt estándar para el subagente Arquitecto:**
-```
-Eres el Arquitecto.
-Carga tus instrucciones desde: {ruta_proyecto}/.github/agents/arquitecto.agent.md
-
-El Analista de Requisitos necesita validación arquitectónica de la siguiente HU antes de entregarla:
-
-**HU:** [título]
-**Criterios de Aceptación:**
-[lista de CA]
-**Tareas técnicas propuestas:**
-[lista de tareas]
-
-Pregunta concreta: ¿Los CA y tareas son arquitectónicamente viables y coherentes con los patrones del proyecto?
-
-Devuelve: ✅ Viable / ⚠️ Ajuste recomendado [detalle] / ❌ Conflicto [descripción]
-```
-
-### Disparadores con confirmación del usuario
-
-Usar el **Protocolo de Respuesta Estructurada** de `_base.rol.md` (preguntar [S]/[N]) en estas situaciones:
-
-| Situación | Subagente | Cuándo preguntar |
-|---|---|---|
-| Al entregar HU refinada lista para implementar | **Desarrollador** | Al finalizar el refinamiento y obtener aprobación del usuario |
+| Refinamiento completado, necesita validación arquitectónica | `@arquitecto` | HU refinada + CA + tareas técnicas propuestas |
+| CA implican cambios en infraestructura o pipelines | `@devops` | HU + CA con implicaciones operativas |
+| HU refinada lista para implementar | `@desarrollador` | HU + refinamiento + decisiones técnicas |
 
 ---

@@ -198,58 +198,25 @@ Tras la inicialización, el agente tiene en memoria:
 
 ---
 
-## Protocolo de Subagentes
+## Delegación entre Agentes
 
-### Directiva de detección proactiva
+Cuando durante la ejecución de una tarea se detecte que otra parte del trabajo requiere la expertise de un agente distinto, **NO** delegar automáticamente. En su lugar, informar al usuario con una recomendación:
 
-Durante la ejecución de cualquier tarea, el agente **DEBE** evaluar activamente si alguna subtarea se beneficiaría de ser delegada a un subagente. No esperar a que el usuario lo solicite — la delegación inteligente es responsabilidad del agente. Cada agente define sus disparadores concretos en su sección `## Protocolo de Subagentes` dentro de su `.rol.md`.
+> 🔄 Esta subtarea se beneficiaría del agente **[Nombre]** (`@[activador]`).
+> Motivo: [razón concreta en 1 línea]
+> Contexto a pasar: [resumen breve de lo que el otro agente necesita saber]
 
-### Disparadores automáticos (sin preguntar al usuario)
+El usuario decide si cambia de agente manualmente.
 
-Lanzar el subagente directamente con `runSubagent` cuando se detecten estas situaciones genéricas:
+### Tabla de agentes disponibles
 
-| Situación | Subagente | Contexto mínimo a pasar |
-|-----------|-----------|--------------------------|
-| Se necesita **investigar o analizar código** antes de implementar | Agente especializado según dominio (ver tabla de activadores) | Descripción de qué investigar + rutas relevantes |
-| Una tarea completada requiere **validación funcional** (CA, reglas, estándares) | **Analista de Requisitos** | Tarea completada + lista de CA a verificar + rutas de archivos modificados |
-| Se deben **analizar múltiples módulos/archivos** de forma independiente | Lanzar subagentes en paralelo, uno por módulo/perspectiva | Módulo/archivo específico + criterio de análisis |
-| Se necesita **generar documentación o commits** como producto secundario | **Cronista de Cambios** | Descripción del cambio + archivos afectados + tipo (feat/fix/chore) |
-| La tarea implica **exploración extensa** del codebase (buscar patrones, alternativas, decisiones previas) | Agente `Explore` o agente especializado | Descripción de qué explorar + alcance (rutas, módulos) |
-
-### Disparadores con confirmación del usuario
-
-Usar el **Protocolo de Respuesta Estructurada** (preguntar [S]/[N]) antes de delegar en estas situaciones:
-
-| Situación | Subagente | Cuándo preguntar |
-|-----------|-----------|-------------------|
-| La delegación implica **transferencia de responsabilidad** (otro agente toma el control) | Agente destino según contexto | Antes de transferir el control |
-| El resultado **puede cambiar la dirección** del trabajo en curso | Agente destino según contexto | Al detectar que el resultado podría reorientar la tarea actual |
-| El usuario necesita **revisar o aprobar** antes de que el siguiente agente actúe | Agente destino según contexto | Antes de lanzar el subagente |
-
-### Cómo invocar un subagente
-
-Invocar `runSubagent` con el siguiente prompt como instrucción:
-
-```
-Eres el agente [Nombre].
-Carga tus instrucciones completas desde: {ruta_proyecto}/.github/agents/[activador].agent.md
-Luego ejecuta la siguiente tarea con el contexto mínimo necesario:
-
-[descripción concreta de la tarea a delegar]
-
-Contexto relevante:
-[solo los datos necesarios: HU, diff, ruta de archivo, decisión, etc.]
-```
-
-### Tabla de activadores por agente
-
-| Agente | Activador |
-|--------|-----------|
-| Arquitecto | `arquitecto` → `.github/agents/arquitecto.agent.md` |
-| Desarrollador | `desarrollador` → `.github/agents/desarrollador.agent.md` |
-| DevOps | `devops` → `.github/agents/devops.agent.md` |
-| Analista de Requisitos | `analista_historias` → `.github/agents/analista_historias.agent.md` |
-| Cronista de Cambios | `cronista_de_cambios` → `.github/agents/cronista_de_cambios.agent.md` |
+| Agente | Activador | Especialidad |
+|--------|-----------|--------------|
+| Arquitecto | `@arquitecto` | Diseño, ADRs, validación arquitectónica |
+| Desarrollador | `@desarrollador` | Implementación, código, testing |
+| DevOps | `@devops` | Infraestructura, CI/CD, pipelines |
+| Analista de Requisitos | `@analista_historias` | Refinamiento, validación funcional, CA |
+| Cronista de Cambios | `@cronista_de_cambios` | Commits, documentación de cambios |
 
 ---
 
