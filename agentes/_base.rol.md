@@ -79,9 +79,19 @@ Para garantizar una interacción ágil, el agente debe seguir estas reglas al pr
 
 #### Carga Obligatoria (siempre)
 
-| Artifact | Ruta | Propósito |
-|----------|------|-----------|
-| Backlog | `{{archivos.backlog}}` | Índice maestro con estados, prioridades y **referencias a todos los artifacts** |
+| Artifact | Ruta | Propósito | Estrategia |
+|----------|------|-----------|------------|
+| Backlog (índice) | `{{archivos.backlog}}` | Resumen compacto de todas las HUs | Leer SOLO desde el inicio del archivo hasta la sección `## 🎯 Historias de Usuario` (incluye metadatos, resumen de estados e **Índice Rápido**) |
+
+> **⚠️ IMPORTANTE — Optimización de tokens:** NO leer el backlog completo en la carga inicial. La sección `## 📇 Índice Rápido` contiene una tabla compacta con ID, Título, Estado, Prioridad y Tipo de cada HU. Usar esa tabla como referencia.
+
+#### Consulta de HU Específica (búsqueda dirigida)
+
+Cuando se necesite el detalle completo de una HU:
+
+1. Buscar el heading `### [ID-HU]` en `{{archivos.backlog}}` (con grep/search)
+2. Leer desde esa línea hasta el siguiente heading `### ` o fin de archivo
+3. **NUNCA leer el backlog completo para consultar una sola HU**
 
 > El Backlog contiene enlaces a ADRs (`ADR_Ref`), Refinamientos y Planes de cada HU. Usar estas referencias para acceder a artifacts específicos.
 
@@ -99,9 +109,9 @@ Para garantizar una interacción ágil, el agente debe seguir estas reglas al pr
 | Pendientes (detalle) | `{{artifacts.pendientes_folder}}` | Se necesite contexto extendido, logs o evidencia de un pendiente |
 
 **Flujo recomendado:**
-1. Consultar Backlog para identificar HU objetivo
-2. Extraer referencias (`ADR_Ref`, `Plan`, `Refinamiento`) de la HU en el Backlog
-3. Cargar **solo** los artifacts referenciados que la tarea requiera
+1. Consultar **Índice Rápido** del Backlog para identificar HU objetivo (ID, estado, prioridad)
+2. Buscar el heading `### [ID-HU]` en el backlog y leer **solo ese bloque** para obtener referencias
+3. Cargar **solo** los artifacts referenciados (`ADR_Ref`, `Plan`, `Refinamiento`) que la tarea requiera
 
 ### Paso: Cargar Reglas de Dominio ✅ Obligatorio
 
