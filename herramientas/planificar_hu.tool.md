@@ -12,6 +12,8 @@ mandatory:
   - instruccion: "Especificar orden de ejecución y dependencias"
   - instruccion: "Usar plantilla {{plantillas.plan_implementacion}}"
   - instruccion: "Incluir TODOS los criterios de aceptación de la HU en Fase Final"
+  - instruccion: "SI campo Tipo no existe en la HU → asumir Tipo=Funcional"
+  - instruccion: "SI Tipo=Bug → Cargar archivo de bug referenciado y usar estructura_fases.bugfix"
 
 reglas_arquitectonicas_requeridas:
   descripcion: "Si hay reglas arquitectónicas cargadas, aplicar:"
@@ -29,6 +31,8 @@ reglas_arquitectonicas_requeridas:
 condiciones_entrada:
   - condicion: "HU en estado [A] Aprobada"
     si_no_cumple: "Ejecutar >validar_hu primero"
+  - condicion_alternativa: "HU con Tipo=Bug y severidad Crítica en estado [R] Refinada"
+    si_cumple: "Permitir planificación directa (bypass de validación para bugs críticos)"
 
 parametros:
   requeridos:
@@ -81,6 +85,10 @@ estructura_fases:
     fase_1: "Preparación (setup, configuración)"
     fase_2: "Implementación (lógica principal)"
     fase_3: "Testing (validación)"
+  bugfix:
+    fase_1: "Reproducción y Diagnóstico (validar bug, confirmar causa raíz desde BUG-NNN)"
+    fase_2: "Corrección (implementar fix en archivos identificados)"
+    fase_3: "Testing de Regresión (test del caso específico + regresión en módulo afectado)"
 
 proceso:
   - paso: "Inicialización de Parámetros"
@@ -96,7 +104,17 @@ proceso:
     obligatorio: true
     acciones: 
       - "Buscar HU en backlog"
-      - "Verificar estado [A] Aprobada"
+      - "Extraer campo '- **Tipo:**' de la HU (SI no existe → asumir Funcional)"
+      - "SI Tipo = Bug:"
+      - "  1. Verificar estado mínimo [R] Refinada O [A] Aprobada"
+      - "  2. SI severidad es 🔴 Crítica y estado [R] → Permitir planificación directa (bypass validación)"
+      - "  3. Extraer campo 'Ref_Bug' → Cargar archivo de bug desde {{artifacts.bugs_folder}}/[BUG-NNN]*.md"
+      - "  4. Extraer del archivo bug: Causa Raíz, Archivos Afectados, Corrección (si existe)"
+      - "  5. SI existe sección '🐛 Ajustes por Bug' en refinamiento → Incorporar instrucciones"
+      - "  6. Guardar tipo_hu='Bug' para usar estructura_fases.bugfix"
+      - "SI Tipo != Bug:"
+      - "  Verificar estado [A] Aprobada (flujo estándar)"
+      - "  Guardar tipo_hu='Funcional'"
       - "Extraer campo '- **Proyecto:**' de la HU"
       - "SI Proyecto = 'compartida':"
       - "  1. Leer sección '**Proyectos afectados:**' de la HU (lista de proyectos)"
@@ -130,11 +148,13 @@ proceso:
   - paso: "Detectar Arquitectura y Validar Estructura"
     obligatorio: true
     acciones:
-      - "Leer sección '## 4. Arquitectura' en contexto_proyecto"
-      - "Extraer campo 'Estilo' para determinar tipo de fases"
-      - "Validar que '### Estructura del Proyecto' esté documentada y sea coherente"
-      - "SI estructura es ambigua o incompleta → PREGUNTAR al usuario"
-      - "Mapear estilo a estructura_fases:"
+      - "SI tipo_hu = 'Bug' → Usar estructura_fases.bugfix directamente (no depende de arquitectura)"
+      - "SI tipo_hu != 'Bug':"
+      - "  Leer sección '## 4. Arquitectura' en contexto_proyecto"
+      - "  Extraer campo 'Estilo' para determinar tipo de fases"
+      - "  Validar que '### Estructura del Proyecto' esté documentada y sea coherente"
+      - "  SI estructura es ambigua o incompleta → PREGUNTAR al usuario"
+      - "  Mapear estilo a estructura_fases:"
       - "  SI estilo CONTIENE 'Hexagonal' → usar estructura_fases.hexagonal"
       - "  SI estilo CONTIENE 'MVC' → usar estructura_fases.mvc"
       - "  SI estilo CONTIENE 'Capas' → usar estructura_fases.capas"
