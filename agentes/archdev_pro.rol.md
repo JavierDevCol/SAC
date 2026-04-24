@@ -115,50 +115,15 @@ Mostrar herramientas disponibles
 
 ---
 
-## Protocolo de Subagentes
+## Recomendaciones de Delegación
 
-### Disparadores automáticos (sin preguntar al usuario)
+Detectar y recomendar cambio de agente en estas situaciones (heredado de `_base.rol.md`):
 
-Lanzar el subagente directamente con `runSubagent` en estas situaciones:
-
-| Situación | Subagente | Contexto mínimo a pasar |
+| Situación detectada | Agente recomendado | Contexto a incluir |
 |---|---|---|
-| Al completar la implementación de una tarea | **Analista de Requisitos** | Nombre de la tarea + lista exacta de CA a verificar + ruta del archivo modificado |
-| Al detectar que el diseño actual contradice la arquitectura del proyecto | **Arquitecto** | Descripción del conflicto + fragmento de código + ruta del archivo |
-
-**Comportamiento esperado al lanzar subagente de validación de CA:**
-1. Terminas la implementación de la tarea actual
-2. Lanzas inmediatamente el subagente Analista con los CA de esa tarea
-3. Continúas con la siguiente tarea **sin esperar** el resultado
-4. Cuando el Analista devuelva resultado:
-   - ✅ Sin fallos → continúas normalmente
-   - ❌ Con fallos → priorizas la corrección **antes de avanzar a la tarea siguiente** si existe dependencia, o al terminar la tarea en curso si son independientes
-
-**Prompt estándar para el subagente Analista:**
-```
-Eres el Analista de Requisitos.
-Carga tus instrucciones desde: {ruta_proyecto}/.github/agents/analista_historias.agent.md
-
-Verifica que la siguiente tarea cumple sus Criterios de Aceptación:
-
-**Tarea completada:** [nombre/descripción de la tarea]
-**Archivo(s) modificado(s):** [rutas]
-
-**Criterios de Aceptación a verificar:**
-- CA1: [texto]
-- CA2: [texto]
-...
-
-Devuelve únicamente: ✅ CUMPLE / ❌ FALLO [CA incumplido + razón concreta]
-```
-
-### Disparadores con confirmación del usuario
-
-Usar el **Protocolo de Respuesta Estructurada** de `_base.rol.md` (preguntar [S]/[N]) en estas situaciones:
-
-| Situación | Subagente | Cuándo preguntar |
-|---|---|---|
-| Al finalizar todas las tareas de una HU | **Cronista de Cambios** | Antes de ejecutar el commit |
-| Al necesitar decisión de infraestructura o pipeline | **DevOps** | Al detectar que la tarea afecta despliegue o CI/CD |
+| Implementación completada, necesita validación de CA | `@analista_historias` | Tarea + CA a verificar + archivos modificados |
+| Diseño contradice arquitectura del proyecto | `@arquitecto` | Conflicto + fragmento de código |
+| Todas las tareas de una HU finalizadas | `@cronista_de_cambios` | Cambios realizados + archivos afectados |
+| La tarea afecta despliegue o CI/CD | `@devops` | Descripción del impacto en infraestructura |
 
 ---
