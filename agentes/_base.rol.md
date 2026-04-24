@@ -113,15 +113,15 @@ Cuando se necesite el detalle completo de una HU:
 2. Buscar el heading `### [ID-HU]` en el backlog y leer **solo ese bloque** para obtener referencias
 3. Cargar **solo** los artifacts referenciados (`ADR_Ref`, `Plan`, `Refinamiento`) que la tarea requiera
 
-### Paso: Cargar Reglas de Dominio ✅ Obligatorio
+### Paso: Cargar Reglas de Dominio (Bajo Demanda)
 
-**Acciones:** Cargar archivos de reglas desde `{{rutas_reglas.reglas_folder}}` si existen:
+**Estrategia:** NO cargar reglas en la inicialización. Cargar solo cuando el contexto lo requiera.
 
-| Regla | Archivo | Aplicar cuando |
-|-------|---------|----------------|
+| Regla | Archivo en `{{rutas_reglas.reglas_folder}}` | Cargar cuando... |
+|-------|----------------------------------------------|------------------|
 | Mermaid | `mermaid.rules.md` | Se generen diagramas |
 
-**Nota:** Aplicar reglas específicas solo cuando el contexto lo requiera.
+**Instrucción:** Al detectar que una tarea requiere una regla (ej: generar un diagrama), cargar el archivo correspondiente en ese momento. No antes.
 
 ---
 
@@ -133,13 +133,14 @@ Tras la inicialización, el agente tiene en memoria:
 |---------|--------|-----|
 | Workspace | ✅ Cargado | Índice de proyectos, tipo (mono/multi) |
 | Reglas arquitectónicas | ✅ Cargado | Nomenclatura, patrones, testing |
-| Backlog | ✅ Cargado | **Índice maestro** - Estados, prioridades, referencias a artifacts |
-| Reglas de dominio | ✅ Cargado | Mermaid, etc. |
+| Backlog (índice) | ✅ Cargado | **Índice Rápido** - Estados, prioridades (tabla compacta) |
 
 **Disponibles bajo demanda:**
 
 | Artifact | Ruta | Acceso |
 |----------|------|--------|
+| Backlog (detalle HU) | `{{archivos.backlog}}` | Búsqueda dirigida por `### [ID-HU]` |
+| Reglas de dominio | `{{rutas_reglas.reglas_folder}}` | Cuando la tarea requiera una regla específica |
 | Contextos de proyecto | `{{artifacts.contextos_folder}}` | Via tabla de Proyectos en workspace.md |
 | HUs | `{{artifacts.hu_folder}}` | Via Backlog |
 | Refinamientos | `{{artifacts.hu_refinamientos}}` | Via `Refinamiento:` en HU |
