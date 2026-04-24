@@ -77,7 +77,18 @@ proceso:
 
   - paso: "Detectar Modo de Operación"
     obligatorio: true
-    acciones: ["Buscar refinamiento existente en {{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md", "Si existe con feedback pendiente  MODO_AJUSTE", "Si no existe  MODO_NUEVO"]
+    acciones:
+      - "Buscar refinamiento existente en {{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md"
+      - "Si existe con feedback pendiente → MODO_AJUSTE"
+      - "Si no existe → MODO_NUEVO"
+      - "Extraer campo '- **Tipo:**' de la HU (SI no existe → asumir Funcional)"
+      - "SI Tipo = Bug:"
+      - "  1. Extraer campo 'Ref_Bug' de la HU → Cargar archivo de bug desde {{artifacts.bugs_folder}}/[BUG-NNN]*.md"
+      - "  2. Pre-poblar desglose técnico con archivos afectados del bug"
+      - "  3. Pre-poblar CA con: 'El bug BUG-NNN no se reproduce tras la corrección'"
+      - "  4. SI el bug tiene sección 'Causa Raíz' → Incorporar como contexto técnico"
+      - "  5. SI el bug tiene sección 'Corrección' → Incorporar como guía de implementación"
+      - "  6. Reducir preguntas de clarificación (causa raíz ya documentada en el bug)"
     modo_ajuste: "Re-refinamiento enfocado en resolver observaciones de validación previa"
     modo_nuevo: "Refinamiento inicial de HU nueva"
 
