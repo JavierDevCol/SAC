@@ -110,7 +110,7 @@ proceso:
     acciones:
       - "Leer {{archivos.backlog}}"
       - "Extraer todas las HUs registradas (buscar patrón: ### [ID-HU]: [Título])"
-      - "Para cada HU extraer: ID, Título, Estado actual, Proyecto"
+      - "Para cada HU extraer: ID, Título, Tipo (SI no existe → asumir Funcional), Estado actual, Proyecto, Ref_Bug (si Tipo=Bug)"
       - "SI parámetro id_hu → Filtrar solo esa HU"
       - "SI parámetro proyecto → Filtrar HUs de ese proyecto"
     si_error:

@@ -90,6 +90,8 @@ Mostrar herramientas disponibles
 | `>analizar_code_smells` | Detección de problemas de diseño |
 | `>generar_adr` | Generación de Architecture Decision Records |
 | `>sincronizar_backlog` | Sincronizar estados del backlog con artefactos reales |
+| `>registrar_bug` | Registro de bugs detectados durante desarrollo o pruebas |
+| `>registrar_hallazgo` | Punto de entrada unificado — clasifica y redirige a bug o pendiente |
 
 ---
 

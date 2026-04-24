@@ -73,10 +73,12 @@ MULTI-PROYECTO: Crear una sección por proyecto:
 ---
 
 ### [ID-HU]: [Título de la HU]
+- **Tipo:** [Funcional | Bug | Técnica]
 - **Proyecto:** [nombre_proyecto | compartida]
 - **Estado:** [ ] Pendiente
 - **Origen:** [ID de la tarea/decisión que la originó]
 - **Prioridad:** [Alta | Media | Baja]
+- **Ref_Bug:** [BUG-NNN / —] (solo si Tipo=Bug)
 
 **Descripción:**
 Como [rol], quiero [funcionalidad] para [beneficio].
@@ -94,10 +96,12 @@ PLANTILLAS POR ESTADO - Copiar según corresponda
 ─────────────────────────────────────
 
 ### [ID-HU]: [Título]
+- **Tipo:** [Funcional | Bug | Técnica]
 - **Proyecto:** [nombre_proyecto | compartida]
 - **Estado:** [ ] Pendiente
 - **Origen:** [ID origen]
 - **Prioridad:** [Alta | Media | Baja]
+- **Ref_Bug:** [BUG-NNN / —] (solo si Tipo=Bug)
 
 **Descripción:**
 Como [rol], quiero [funcionalidad] para [beneficio].
@@ -113,10 +117,12 @@ Como [rol], quiero [funcionalidad] para [beneficio].
 ─────────────────────────────────────
 
 ### [ID-HU]: [Título]
+- **Tipo:** [Funcional | Bug | Técnica]
 - **Proyecto:** [nombre_proyecto | compartida]
 - **Estado:** [R] Refinada
 - **Origen:** [ID origen]
 - **Prioridad:** [Alta | Media | Baja]
+- **Ref_Bug:** [BUG-NNN / —] (solo si Tipo=Bug)
 - **ADR_Ref:** [ADR-XXX]({{artifacts.adr_folder}}/ADR-XXX.md) | ninguno
 - **Refinamiento:** `{{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md`
 - **Fecha refinamiento:** [timestamp]
@@ -142,10 +148,12 @@ Como [rol], quiero [funcionalidad] para [beneficio].
 ─────────────────────────────────────
 
 ### [ID-HU]: [Título]
+- **Tipo:** [Funcional | Bug | Técnica]
 - **Proyecto:** [nombre_proyecto | compartida]
 - **Estado:** [A] Aprobada
 - **Origen:** [ID origen]
 - **Prioridad:** [Alta | Media | Baja]
+- **Ref_Bug:** [BUG-NNN / —] (solo si Tipo=Bug)
 - **ADR_Ref:** [ADR-XXX]({{artifacts.adr_folder}}/ADR-XXX.md) | ninguno
 - **Refinamiento:** `{{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md`
 - **Fecha refinamiento:** [timestamp]
@@ -173,10 +181,12 @@ Como [rol], quiero [funcionalidad] para [beneficio].
 ─────────────────────────────────────
 
 ### [ID-HU]: [Título]
+- **Tipo:** [Funcional | Bug | Técnica]
 - **Proyecto:** [nombre_proyecto | compartida]
 - **Estado:** [P] Planificada
 - **Origen:** [ID origen]
 - **Prioridad:** [Alta | Media | Baja]
+- **Ref_Bug:** [BUG-NNN / —] (solo si Tipo=Bug)
 - **ADR_Ref:** [ADR-XXX]({{artifacts.adr_folder}}/ADR-XXX.md) | ninguno
 - **Refinamiento:** `{{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md`
 - **Fecha refinamiento:** [timestamp]
@@ -204,10 +214,12 @@ Como [rol], quiero [funcionalidad] para [beneficio].
 ─────────────────────────────────────
 
 ### [ID-HU]: [Título]
+- **Tipo:** [Funcional | Bug | Técnica]
 - **Proyecto:** [nombre_proyecto | compartida]
 - **Estado:** [E] En Ejecución
 - **Origen:** [ID origen]
 - **Prioridad:** [Alta | Media | Baja]
+- **Ref_Bug:** [BUG-NNN / —] (solo si Tipo=Bug)
 - **ADR_Ref:** [ADR-XXX]({{artifacts.adr_folder}}/ADR-XXX.md) | ninguno
 - **Refinamiento:** `{{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md`
 - **Plan:** `{{artifacts.planes_folder}}/[ID-HU]_plan_implementacion.md`

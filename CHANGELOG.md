@@ -9,12 +9,12 @@
 
 | Componente | Versión Actual | Última Actualización |
 |------------|----------------|----------------------|
-| **Sistema SAC** | 7.3.0 | 2026-04-23 |
-| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.3.0 | 2026-04-23 |
+| **Sistema SAC** | 7.8.0 | 2026-04-24 |
+| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.8.0 | 2026-04-24 |
 | **Configuración Usuario** (`config/CONFIG_USER.template.yaml`) | 4.0 | 2026-01-05 |
-| **Roles SAC** (`agentes/*.rol.md`) | 7.3.0 | 2026-04-23 |
-| **Herramientas** (`herramientas/*.tool.md`) | 7.1.0 | 2026-02-16 |
-| **Plantillas** (`plantillas/`) | 7.1.0 | 2026-02-16 |
+| **Roles SAC** (`agentes/*.rol.md`) | 7.8.0 | 2026-04-24 |
+| **Herramientas** (`herramientas/*.tool.md`) | 7.8.0 | 2026-04-24 |
+| **Plantillas** (`plantillas/`) | 7.8.0 | 2026-04-24 |
 | **Guía de Comandos** (`guias/guia_comandos.md`) | 7.3.0 | 2026-04-23 |
 | **Guía de Roles** (`guias/guia_roles_activos.md`) | 3.0 | 2026-01-05 |
 | **Guía Ciclo de Vida** (`guias/guia_ciclo_vida_tareas.md`) | 7.3.0 | 2026-04-23 |
@@ -22,6 +22,62 @@
 ---
 
 ## 🚀 Historial de Versiones
+
+### [7.8.0] - 2026-04-24
+
+#### 🎯 Cambio Mayor: Sistema de Gestión de Bugs y Pendientes con Dispatcher Unificado
+
+**Objetivo:** Implementar un sistema completo para registrar, clasificar y gestionar bugs y pendientes dentro del SAC, con soporte a lo largo de todo el ciclo de vida de HUs.
+
+#### ✅ Nuevas Herramientas
+
+| Herramienta | Descripción |
+|-------------|-------------|
+| **`>registrar_bug`** | Registro estructurado de bugs con triage: vincular a HU, agregar ajuste, o crear HU tipo Bug |
+| **`>registrar_pendiente`** v2 | Registro dual (rápido en tabla / detallado con archivo individual), 6 categorías |
+| **`>registrar_hallazgo`** | Dispatcher unificado que clasifica automáticamente y redirige a bug o pendiente |
+
+#### ✅ Nuevas Plantillas
+
+| Plantilla | Descripción |
+|-----------|-------------|
+| `bug_plantilla.md` | Formato post-mortem: Síntoma, Causa Raíz, Corrección, Lección Aprendida |
+| `pendientes_plantilla.md` | Índice con 6 categorías y 4 estados de ciclo de vida |
+| `pendiente_detalle_plantilla.md` | Archivo individual para pendientes con logs y evidencia |
+
+#### ✅ Herramientas Adaptadas para HU tipo Bug
+
+| Herramienta | Cambios |
+|-------------|--------|
+| `planificar_hu.tool.md` | Fases bugfix (Reproducción → Corrección → Testing Regresión), bypass para bugs críticos |
+| `refinar_hu.tool.md` | Pre-población automática desde archivo BUG-NNN, auto-generación de CA |
+| `validar_hu.tool.md` | Validación acelerada para Bug+Crítica |
+| `sincronizar_backlog.tool.md` | Lectura de campos Tipo y Ref_Bug por HU |
+
+#### ✅ Cambios en Configuración y Roles
+
+| Archivo | Cambio |
+|---------|--------|
+| `CONFIG_SYSTEM.yaml` | Nuevas rutas: `bugs_folder`, `pendientes`, `pendientes_folder` |
+| `backlog_desarrollo_plantilla.md` | Campos Tipo y Ref_Bug en todos los estados de HU |
+| `_base.rol.md` | Carga bajo demanda de bugs y pendientes |
+| `arquitecto_onad.rol.md` | +3 herramientas: `>registrar_bug`, `>registrar_pendiente`, `>registrar_hallazgo` |
+| `archdev_pro.rol.md` | +2 herramientas: `>registrar_bug`, `>registrar_hallazgo` |
+
+#### 📋 Flujo de Uso
+
+```
+Usuario reporta hallazgo
+    └─ >registrar_hallazgo (dispatcher)
+        ├─ [B] → >registrar_bug → Triage → HU tipo Bug
+        └─ [P] → >registrar_pendiente → Tabla + archivo detalle
+```
+
+#### ⚙️ Retrocompatibilidad
+
+Todos los cambios son retrocompatibles: si el campo `Tipo` no existe en una HU, se asume `Funcional`.
+
+---
 
 ### [7.3.0] - 2026-04-23
 

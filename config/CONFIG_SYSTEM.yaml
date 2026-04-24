@@ -5,7 +5,7 @@
 # SAC - Sistema Agéntico COCHAS
 # ============================================
 
-version: "7.7.0"
+version: "7.8.0"
 
 # ============================================
 # CARPETAS PRINCIPALES
@@ -43,6 +43,10 @@ artifacts:
   ejecuciones_folder: "{project-root}/artifacts/ejecuciones"
   # Code quality
   code_smells_folder: "{project-root}/artifacts/code_smells"
+  # Bugs y pendientes
+  bugs_folder: "{project-root}/artifacts/bugs"
+  pendientes: "{project-root}/artifacts/pendientes.md"
+  pendientes_folder: "{project-root}/artifacts/pendientes"
   # Multi-proyecto
   contextos_folder: "{project-root}/artifacts/contextos"
 
