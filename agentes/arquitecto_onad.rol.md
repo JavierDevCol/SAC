@@ -85,6 +85,7 @@ Mostrar herramientas disponibles al usuario
 | `>generar_adr` | Generación de Architecture Decision Records |
 | `>validar_hu` | Validación arquitectónica de HU |
 | `>planificar_hu` | Planificación de implementación de HU |
+| `>sincronizar_backlog` | Sincronizar estados del backlog con artefactos reales |
 
 ---
 
