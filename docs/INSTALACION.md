@@ -69,7 +69,7 @@ INSTALACION/
         ├── desarrollador.agent.md
         ├── devops.agent.md
         ├── analista_historias.agent.md
-        └── narrador_commit.agent.md
+        └── cronista_de_cambios.agent.md
 ```
 
 **Nota:** Las carpetas del sistema (`agentes/`, `herramientas/`, etc.) se copian directamente desde la raíz de `ia_prompts/`, evitando duplicación.
@@ -105,7 +105,7 @@ tu-proyecto/
 | `@desarrollador` | Desarrollador (ArchDev Pro) | Implementación, TDD, refactoring |
 | `@devops` | DevOps | CI/CD, infraestructura, DevSecOps |
 | `@analista_historias` | Analista de Requisitos | Refinamiento de HUs |
-| `@narrador_commit` | Cronista de Cambios | Conventional Commits |
+| `@cronista_de_cambios` | Cronista de Cambios | Conventional Commits |
 
 ---
 

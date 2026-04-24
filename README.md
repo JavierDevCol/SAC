@@ -46,7 +46,7 @@ Invoca un agente desde Copilot Chat y ejecuta herramientas:
 @desarrollador
 >ejecutar_plan HU-001
 
-@narrador_commit
+@cronista_de_cambios
 >generar_commit
 ```
 
@@ -84,6 +84,6 @@ tu-proyecto/
         ├── desarrollador.agent.md
         ├── devops.agent.md
         ├── analista_historias.agent.md
-        └── narrador_commit.agent.md
+        └── cronista_de_cambios.agent.md
 ```
 

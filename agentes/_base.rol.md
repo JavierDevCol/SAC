@@ -235,7 +235,7 @@ Contexto relevante:
 | Desarrollador | `desarrollador` → `.github/agents/desarrollador.agent.md` |
 | DevOps | `devops` → `.github/agents/devops.agent.md` |
 | Analista de Requisitos | `analista_historias` → `.github/agents/analista_historias.agent.md` |
-| Cronista de Cambios | `narrador_commit` → `.github/agents/narrador_commit.agent.md` |
+| Cronista de Cambios | `cronista_de_cambios` → `.github/agents/cronista_de_cambios.agent.md` |
 
 ---
 

@@ -919,7 +919,7 @@ def print_final_summary(dest_path):
     print("       • @desarrollador") 
     print("       • @devops")
     print("       • @analista_historias")
-    print("       • @narrador_commit")
+    print("       • @cronista_de_cambios")
     print()
 
 

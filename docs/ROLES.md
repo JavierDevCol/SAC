@@ -21,7 +21,7 @@
 | **Desarrollador** | `@desarrollador` | Ingeniero constructor | `agentes/archdev_pro.rol.md` |
 | **DevOps** | `@devops` | Mentor DevOps | `agentes/arquitecto_devops.rol.md` |
 | **Analista de Requisitos** | `@analista_historias` | Analista técnico | `agentes/refinador_hu.rol.md` |
-| **Cronista de Cambios** | `@narrador_commit` | Comunicador técnico | `agentes/artesano_de_commits.rol.md` |
+| **Cronista de Cambios** | `@cronista_de_cambios` | Comunicador técnico | `agentes/cronista_de_cambios.rol.md` |
 
 **Total:** 5 roles activos
 
@@ -65,7 +65,7 @@
 | **Herramientas** | `>tomar_contexto`, `>refinar_hu`, `>generar_commit` |
 | **Cuándo usar** | Refinar historias de usuario, desglose técnico |
 
-### @narrador_commit (Cronista de Cambios)
+### @cronista_de_cambios (Cronista de Cambios)
 
 | Campo | Valor |
 |-------|-------|

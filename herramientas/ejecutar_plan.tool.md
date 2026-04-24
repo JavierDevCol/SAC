@@ -153,5 +153,5 @@ errores:
   archivo_existente: {msg: " Archivo ya existe", opciones: [Sobrescribir, Fusionar, Omitir]}
 
 siguiente:
-  - {comando: ">generar_commit", desc: "Documentar cambios realizados", chat_agente: "Artesano de Commits"}
+  - {comando: ">generar_commit", desc: "Documentar cambios realizados", chat_agente: "Cronista de Cambios"}
 ```

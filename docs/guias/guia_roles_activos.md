@@ -295,9 +295,9 @@ Para encontrar rápidamente lo que necesito
 
 ---
 
-### 🎨 Artesano de Commits (ARTESANO)
+### 🎨 Cronista de Cambios
 
-**Comando de activación:** `+ARTESANO`
+**Invocación Copilot:** `@cronista_de_cambios`
 
 **Especialidad:** Creación de mensajes de commit profesionales
 

@@ -48,7 +48,7 @@ En Copilot Chat escribe `@nombre_agente` para activar un agente SAC.
 | `@desarrollador` | Desarrollador | `>tomar_contexto`, `>analizar_stack`, `>generar_adr`, `>ejecutar_plan`, `>crear_pruebas`, `>analizar_code_smells`, `>generar_commit` |
 | `@devops` | DevOps | `>tomar_contexto`, `>generar_adr`, `>diagnosticar_devops`, `>generar_commit` |
 | `@analista_historias` | Analista de Requisitos | `>tomar_contexto`, `>refinar_hu`, `>generar_commit` |
-| `@narrador_commit` | Cronista de Cambios | `>generar_commit` |
+| `@cronista_de_cambios` | Cronista de Cambios | `>generar_commit` |
 
 ---
 
@@ -95,7 +95,7 @@ Los comandos con `>` ejecutan herramientas del rol activo.
 >planificar_hu HU-001
 ```
 
-**Con @narrador_commit activo:**
+**Con @cronista_de_cambios activo:**
 ```
 >generar_commit
 ```
@@ -160,7 +160,7 @@ Los comandos con `>` ejecutan herramientas del rol activo.
 
 ```bash
 # Activar agente de commits
-@narrador_commit
+@cronista_de_cambios
 
 # Generar mensaje de commit
 >generar_commit
@@ -223,7 +223,7 @@ Los comandos con `>` ejecutan herramientas del rol activo.
 
 **Salida:**
 ```
-❌ La herramienta 'refinar_hu' no está disponible en el rol 'Artesano de Commits'.
+❌ La herramienta 'refinar_hu' no está disponible en el rol 'Cronista de Cambios'.
 
 🛠️ Herramientas disponibles para este rol:
   >generar_commit

@@ -43,7 +43,7 @@ ia_prompts/
 │   ├── archdev_pro.rol.md             # Rol: Desarrollador
 │   ├── arquitecto_devops.rol.md       # Rol: DevOps
 │   ├── arquitecto_onad.rol.md         # Rol: Arquitecto
-│   ├── artesano_de_commits.rol.md     # Rol: Cronista de Cambios
+│   ├── cronista_de_cambios.rol.md     # Rol: Cronista de Cambios
 │   └── refinador_hu.rol.md            # Rol: Analista de Requisitos
 │
 ├── 📁 config/                         # Configuración del sistema
@@ -79,7 +79,7 @@ ia_prompts/
 │           ├── arquitecto.agent.md
 │           ├── desarrollador.agent.md
 │           ├── devops.agent.md
-│           └── narrador_commit.agent.md
+│           └── cronista_de_cambios.agent.md
 │
 ├── 📁 legacy/                         # Archivos de versiones anteriores (referencia)
 │   ├── cochas.agent.md
@@ -93,7 +93,7 @@ ia_prompts/
 │   ├── archdev_pro.agent.md
 │   ├── arquitecto_devops.agent.md
 │   ├── arquitecto_onad.agent.md
-│   ├── artesano_de_commits.agent.md
+│   ├── cronista_de_cambios.agent.md
 │   ├── refinador_hu.agent.md
 │   └── roles-activos.md               # Índice de roles activos
 │
@@ -147,7 +147,7 @@ ia_prompts/
 | `@desarrollador` | Desarrollador (ArchDev Pro) | `agentes/archdev_pro.rol.md` |
 | `@devops` | DevOps | `agentes/arquitecto_devops.rol.md` |
 | `@analista_historias` | Analista de Requisitos | `agentes/refinador_hu.rol.md` |
-| `@narrador_commit` | Cronista de Cambios | `agentes/artesano_de_commits.rol.md` |
+| `@cronista_de_cambios` | Cronista de Cambios | `agentes/cronista_de_cambios.rol.md` |
 
 ---
 

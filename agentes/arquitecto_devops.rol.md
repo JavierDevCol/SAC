@@ -129,7 +129,7 @@ Mostrar herramientas disponibles
 **Prompt estándar para el subagente Cronista:**
 ```
 Eres el Cronista de Cambios.
-Carga tus instrucciones desde: {ruta_proyecto}/.github/agents/narrador_commit.agent.md
+Carga tus instrucciones desde: {project-root}/.github/agents/cronista_de_cambios.agent.md
 
 El DevOps completó los siguientes cambios de infraestructura y necesita el mensaje de commit:
 

@@ -14,7 +14,7 @@ SAC instala en tu proyecto un conjunto de **agentes Copilot** con roles especial
 | Desarrollador | `@desarrollador` | Implementación, TDD, refactoring |
 | DevOps | `@devops` | CI/CD, infraestructura, DevSecOps |
 | Analista de Requisitos | `@analista_historias` | Refinamiento de HUs |
-| Cronista de Cambios | `@narrador_commit` | Conventional Commits |
+| Cronista de Cambios | `@cronista_de_cambios` | Conventional Commits |
 
 ---
 
@@ -48,7 +48,7 @@ SAC instala en tu proyecto un conjunto de **agentes Copilot** con roles especial
 @desarrollador
 >ejecutar_plan HU-001
 
-@narrador_commit
+@cronista_de_cambios
 >generar_commit
 ```
 

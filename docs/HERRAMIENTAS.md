@@ -72,7 +72,7 @@
 | Refinar HU | `>refinar_hu` |
 | Generar Commit | `>generar_commit` |
 
-### @narrador_commit (Cronista de Cambios)
+### @cronista_de_cambios (Cronista de Cambios)
 
 | Herramienta | Comando |
 |-------------|---------|

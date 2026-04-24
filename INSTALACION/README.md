@@ -154,7 +154,7 @@ INSTALACION/
         ├── archdev_pro.agent.md
         ├── arquitecto_devops.agent.md
         ├── refinador_hu.agent.md
-        └── artesano_de_commits.agent.md
+        └── cronista_de_cambios.agent.md
 ```
 
 ---
@@ -181,7 +181,7 @@ tu-proyecto/
 │       ├── archdev_pro.agent.md
 │       ├── arquitecto_devops.agent.md
 │       ├── refinador_hu.agent.md
-│       └── artesano_de_commits.agent.md
+│       └── cronista_de_cambios.agent.md
 └── ... (tu código)
 ```
 
@@ -204,7 +204,7 @@ tu-proyecto/
 | `@archdev_pro` | ArchDev Pro | Implementar código, tests, refactoring |
 | `@arquitecto_devops` | Arquitecto DevOps | CI/CD, infraestructura, pipelines |
 | `@refinador_hu` | Refinador de HU | Refinar historias de usuario |
-| `@artesano_de_commits` | Artesano de Commits | Crear mensajes de commit semánticos |
+| `@cronista_de_cambios` | Cronista de Cambios | Crear mensajes de commit semánticos |
 
 ---
 
@@ -225,7 +225,7 @@ Una vez activado un agente, puedes usar sus herramientas con el prefijo `>`:
 | Generar ADR | `>generar_adr` | Arquitecto |
 | Init Reglas Arquitectónicas | `>init_reglas_arquitectonicas` | Arquitecto |
 | Diagnosticar DevOps | `>diagnosticar_devops` | DevOps |
-| Generar Commit | `>generar_commit` | Artesano de Commits |
+| Generar Commit | `>generar_commit` | Cronista de Cambios |
 
 ---
 
