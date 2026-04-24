@@ -724,6 +724,11 @@ def replace_artifacts_path(config_path, project_root, artifacts_rel):
 
         content = config_path.read_text(encoding="utf-8")
         normalized_root = Path(project_root).resolve().as_posix()
+        # Defensa: si artifacts_rel contiene la raíz del proyecto, extraer solo la parte relativa
+        if artifacts_rel.startswith(normalized_root):
+            artifacts_rel = artifacts_rel[len(normalized_root):].strip("/")
+        elif artifacts_rel.startswith(normalized_root.lstrip("/")):
+            artifacts_rel = artifacts_rel[len(normalized_root.lstrip("/")):].strip("/")
         default_artifacts = f"{normalized_root}/artifacts"
         custom_artifacts = f"{normalized_root}/{artifacts_rel}"
         updated = content.replace(default_artifacts, custom_artifacts)
@@ -1017,6 +1022,22 @@ def collect_user_settings(dest_path):
     else:
         # Normalizar: quitar slashes al inicio/final, reemplazar backslashes
         artifacts_rel = artifacts_rel.replace("\\", "/").strip("/")
+        # Detectar si el usuario pegó una ruta absoluta que contiene la raíz del proyecto
+        dest_posix = Path(dest_path).resolve().as_posix()
+        if artifacts_rel.startswith(dest_posix.lstrip("/")):
+            # Extraer solo la parte relativa después del project root
+            artifacts_rel = artifacts_rel[len(dest_posix.lstrip("/")):].strip("/")
+            print_warning(f"Se detectó una ruta absoluta. Se extrajo la parte relativa: {artifacts_rel}/")
+        elif "/" in artifacts_rel and len(artifacts_rel.split("/")) > 4:
+            # Heurística: rutas con muchos segmentos probablemente son absolutas mal formateadas
+            print_warning(f"La ruta '{artifacts_rel}' parece ser absoluta. Debe ser relativa a la raíz del proyecto.")
+            print_info(f"Ejemplo: 'docs/artifacts' o 'doccumentacion-proyectos/artifacts'")
+            retry = input(f"   ¿Usar '{artifacts_rel}' de todos modos? [s/N]: ").strip().lower()
+            if retry != "s":
+                artifacts_rel = input("   Ruta relativa para artifacts [artifacts]: ").strip()
+                if not artifacts_rel:
+                    artifacts_rel = "artifacts"
+                artifacts_rel = artifacts_rel.replace("\\", "/").strip("/")
     print_success(f"Artifacts: {artifacts_rel}/")
     
     print()
