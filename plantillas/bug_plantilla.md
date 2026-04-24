@@ -1,45 +1,59 @@
-# 🐛 BUG_[ID]: [Título descriptivo]
+# BUG-[NNN]: [Título descriptivo del bug]
 
 ## Metadata
 
 | Campo | Valor |
 |-------|-------|
-| **ID** | BUG_[NNN] |
-| **Reportado por** | [Arquitecto / Desarrollador] |
-| **Fecha reporte** | [YYYY-MM-DD] |
+| **ID** | BUG-[NNN] |
+| **Detectado en** | [HU-XXX (contexto) / Pruebas funcionales / Producción] |
+| **Proyecto** | [nombre-proyecto] |
 | **Severidad** | [🔴 Crítica / 🟠 Alta / 🟡 Media] |
-| **Estado** | [🆕 Nuevo / 🔍 En Triage / 🔗 Vinculado a HU / ✅ Resuelto] |
-| **Módulo afectado** | [Nombre del módulo/componente] |
-| **Archivo(s)** | [Ruta(s) del archivo afectado] |
+| **Estado** | [🆕 Nuevo / 🔍 En Triage / 🔗 Vinculado a HU / ✅ Corregido] |
+| **Fecha detección** | [YYYY-MM-DD] |
+| **Fecha corrección** | [YYYY-MM-DD / — si no corregido] |
+| **Commit fix** | [`tipo: mensaje del commit`] / — si no corregido] |
 
-## Descripción del Bug
+---
 
-[Descripción clara del comportamiento incorrecto observado]
+## Descripción
 
-## Pasos para Reproducir
+[Descripción clara del problema: qué componentes están involucrados, cuál es la inconsistencia o fallo, y por qué ocurre]
 
-1. [Paso 1]
-2. [Paso 2]
-3. [Paso 3]
+---
 
-## Comportamiento Esperado
+## Síntoma
 
-[Qué debería suceder]
+[Comportamiento observable por el usuario o el sistema. Describir el flujo que falla paso a paso]
 
-## Comportamiento Actual
+---
 
-[Qué sucede realmente]
+## Causa Raíz
 
-## Triage
+[Análisis técnico de por qué ocurre el bug. Incluir tablas comparativas si hay inconsistencias entre capas/componentes]
 
-| Campo | Valor |
-|-------|-------|
-| **¿HU existente relacionada?** | [HU-XXX / No encontrada] |
-| **Acción de triage** | [Vincular a HU existente / Crear nueva HU tipo Bug] |
-| **HU asignada** | [HU-XXX (existente) / HU-XXX (nueva)] |
-| **Fecha triage** | [YYYY-MM-DD] |
-| **Triageado por** | Arquitecto |
+---
 
-## Contexto Adicional
+## Archivos Afectados
 
-[Logs de error, capturas, condiciones específicas del entorno, etc.]
+| Archivo | Problema |
+|---------|----------|
+| `[ruta/archivo]` | [Descripción breve del problema en este archivo] |
+
+---
+
+## Corrección
+
+[Descripción de la solución aplicada. Incluir fragmentos de código Antes/Después cuando sea relevante]
+
+```[lenguaje]
+// Antes
+- [código original]
+// Después
++ [código corregido]
+```
+
+---
+
+## Lección Aprendida
+
+[Qué se puede hacer para prevenir este tipo de bug en el futuro. Recomendaciones concretas y accionables]

@@ -29,7 +29,8 @@ mandatory:
   - instruccion: "Todo bug DEBE tener triage antes de considerarse procesado"
   - instruccion: "SIEMPRE buscar HUs existentes en el backlog antes de crear una nueva"
   - instruccion: "Los bugs afectan funcionalidad del sistema — priorizar resolución"
-  - instruccion: "El ID del bug sigue el patrón BUG_NNN (autoincremental basado en archivos existentes en {{artifacts.bugs_folder}})"
+  - instruccion: "El ID del bug sigue el patrón BUG-NNN (autoincremental basado en archivos existentes en {{artifacts.bugs_folder}})"
+  - instruccion: "Al registrar un bug ya corregido, completar TODAS las secciones incluyendo Corrección y Lección Aprendida"
 
 # ============================================
 # PREREQUISITOS
@@ -47,19 +48,22 @@ parametros:
       tipo: string
       descripcion: "Descripción del bug detectado"
   opcionales:
-    - nombre: modulo
+    - nombre: proyecto
       tipo: string
-      descripcion: "Módulo o componente afectado"
+      descripcion: "Nombre del proyecto afectado"
       defecto: null
-    - nombre: archivo
+    - nombre: detectado_en
       tipo: string
-      descripcion: "Ruta del archivo donde se detectó el bug"
+      descripcion: "Contexto de detección (ej: HU-010, pruebas funcionales, producción)"
       defecto: null
     - nombre: severidad
       tipo: string
       valores: [critica, alta, media]
       defecto: null
       descripcion: "Severidad del bug. Si se omite, se evalúa durante el proceso."
+    - nombre: ya_corregido
+      tipo: flag
+      descripcion: "Indica que el bug ya fue corregido y se registra post-mortem"
 
 # ============================================
 # PROCESO
@@ -68,9 +72,10 @@ proceso:
   - paso: "Recepción del Bug"
     obligatorio: true
     acciones:
-      - "Recopilar información del bug: descripción, módulo afectado, archivo(s), pasos para reproducir"
-      - "SI faltan datos críticos (descripción o cómo reproducir) → Solicitar al usuario"
-      - "Asignar ID autoincremental: escanear {{artifacts.bugs_folder}} para obtener último BUG_NNN y sumar 1"
+      - "Recopilar información del bug: descripción, proyecto, contexto de detección"
+      - "SI faltan datos críticos (descripción o síntoma) → Solicitar al usuario"
+      - "Asignar ID autoincremental: escanear {{artifacts.bugs_folder}} para obtener último BUG-NNN y sumar 1"
+      - "SI flag --ya_corregido → Recopilar también: commit fix, archivos afectados, código antes/después, lección aprendida"
 
   - paso: "Clasificación de Severidad"
     obligatorio: true
@@ -82,8 +87,17 @@ proceso:
       - "  🟡 Media: Funcionalidad menor afectada, workaround disponible"
       - "Mostrar clasificación propuesta y confirmar con usuario"
 
+  - paso: "Análisis de Causa Raíz"
+    obligatorio: true
+    acciones:
+      - "Documentar el síntoma observable (qué ve el usuario o el sistema)"
+      - "Identificar la causa raíz técnica (por qué ocurre)"
+      - "SI hay inconsistencia entre capas/componentes → Documentar con tabla comparativa"
+      - "Listar archivos afectados con descripción del problema en cada uno"
+
   - paso: "Triage — Búsqueda de HU Existente"
     obligatorio: true
+    condicion: "SI NO es --ya_corregido (bugs ya corregidos no necesitan triage)"
     acciones:
       - "Leer {{archivos.backlog}}"
       - "Buscar HUs cuyo alcance funcional cubra el módulo/componente afectado por el bug"
@@ -99,37 +113,56 @@ proceso:
 
   - paso: "Acción según Triage"
     obligatorio: true
+    condicion: "SI NO es --ya_corregido"
     acciones:
       - "SI [V] Vincular a HU existente:"
-      - "  1. Registrar en el archivo bug la referencia: 'Vinculado a HU-XXX'"
+      - "  1. Registrar en el archivo bug la referencia: 'Detectado en HU-XXX'"
       - "  2. Estado del bug: '🔗 Vinculado a HU'"
       - "  3. NO crear nueva HU en backlog"
       - "SI [N] Crear nueva HU tipo Bug:"
       - "  1. Agregar nueva entrada en {{archivos.backlog}} con formato:"
       - "     ### HU-[siguiente_ID]: 🐛 [Título del bug]"
-      - "     Con campos: Tipo=Bug, Prioridad según severidad, Ref_Bug=BUG_NNN"
+      - "     Con campos: Tipo=Bug, Prioridad según severidad, Ref_Bug=BUG-NNN"
       - "  2. Estado del bug: '🔗 Vinculado a HU' con la nueva HU creada"
+
+  - paso: "Documentar Corrección"
+    obligatorio: false
+    condicion: "SI el bug ya fue corregido (--ya_corregido o el usuario indica que ya lo arregló)"
+    acciones:
+      - "Registrar el commit fix con su mensaje"
+      - "Documentar la corrección con fragmentos de código Antes/Después"
+      - "Estado del bug: '✅ Corregido'"
+      - "Incluir fecha de corrección"
+
+  - paso: "Lección Aprendida"
+    obligatorio: false
+    condicion: "SI el bug ya fue corregido"
+    acciones:
+      - "Documentar qué se puede hacer para prevenir este tipo de bug en el futuro"
+      - "Las recomendaciones deben ser concretas y accionables"
 
   - paso: "Generación de Archivo Bug"
     obligatorio: true
     acciones:
       - "Cargar plantilla desde {{plantillas_folder}}/bug_plantilla.md"
-      - "Completar todos los campos con la información recopilada"
-      - "Guardar en {{artifacts.bugs_folder}}/BUG_[ID]_[descripcion_snake_case].md"
+      - "Completar TODAS las secciones aplicables con la información recopilada"
+      - "Secciones obligatorias: Metadata, Descripción, Síntoma, Causa Raíz, Archivos Afectados"
+      - "Secciones condicionales (si corregido): Corrección, Lección Aprendida"
+      - "Guardar en {{artifacts.bugs_folder}}/BUG-[ID]_[descripcion_kebab_case].md"
 
 salida:
   archivos_generados:
-    ruta: "{{artifacts.bugs_folder}}/BUG_[ID]_[descripcion].md"
+    ruta: "{{artifacts.bugs_folder}}/BUG-[ID]_[descripcion].md"
   archivos_actualizados:
     - "{{archivos.backlog}} (si se creó nueva HU tipo Bug)"
   mensaje_exito: |
     🐛 BUG REGISTRADO
     
-    📋 ID: BUG_[ID]
+    📋 ID: BUG-[ID]
     🔴 Severidad: [severidad]
-    🔗 Acción: [Vinculado a HU-XXX / Nueva HU-XXX creada]
+    📌 Estado: [🆕 Nuevo / 🔗 Vinculado a HU-XXX / ✅ Corregido]
     
-    📄 Archivo: {{artifacts.bugs_folder}}/BUG_[ID]_[descripcion].md
+    📄 Archivo: {{artifacts.bugs_folder}}/BUG-[ID]_[descripcion].md
   siguiente:
     - { comando: ">planificar_hu", desc: "Planificar resolución del bug (si se creó HU nueva)", chat_agente: "Arquitecto" }
     - { comando: ">ejecutar_plan", desc: "Ejecutar corrección directamente (si ya hay plan)", chat_agente: "Desarrollador" }
