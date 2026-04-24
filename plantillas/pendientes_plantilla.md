@@ -1,8 +1,8 @@
 # 📋 Registro de Pendientes y Hallazgos
 
-> Hallazgos detectados durante pruebas funcionales que no son bugs pero deben abordarse.  
+> Registro de tareas pendientes: hallazgos de pruebas, verificaciones futuras, investigaciones y mejoras.  
 > **Ownership:** Solo el Arquitecto registra y gestiona entradas.  
-> Cuando un pendiente se prioriza, se promueve a HU formal en el backlog.
+> Un pendiente puede evolucionar a HU funcional, reclasificarse como bug, o descartarse.
 
 ---
 
@@ -10,7 +10,9 @@
 
 | ID | Categoría | Descripción | Prioridad | HU Relacionada | Detectado en | Fecha | Estado |
 |----|-----------|-------------|-----------|----------------|--------------|-------|--------|
-| PND-001 | [Deuda Técnica / Mejora UX / Optimización / Otro] | [Descripción breve] | [🟡 Baja / 🟠 Media] | [HU-XXX / —] | [Contexto de prueba] | [YYYY-MM-DD] | [📝 Registrado / 🚀 Promovido a HU-XXX / ❌ Descartado] |
+| PND-001 | [🔧 Deuda Técnica / 🎨 Mejora UX / ⚡ Optimización / 🔍 Verificación / 🧪 Investigación / 📎 Con Evidencia] | [Descripción breve] | [🟡 Baja / 🟠 Media] | [HU-XXX / —] | [Contexto] | [YYYY-MM-DD] | [📝 Registrado / 🚀 Promovido a HU-XXX / 🐛 Reclasificado a BUG-XXX / ❌ Descartado] |
+
+> **Detalle:** Pendientes con categoría 📎 **Con Evidencia** o que requieran contexto extenso tienen archivo individual en `{{artifacts.pendientes_folder}}/PND-NNN_descripcion.md`
 
 ---
 
@@ -18,3 +20,4 @@
 
 - Las entradas con prioridad Alta deben reclasificarse como bug vía `>registrar_bug`
 - Al promover un pendiente a HU, actualizar la columna **Estado** con el ID de la HU creada
+- Al reclasificar como bug, actualizar Estado y ejecutar `>registrar_bug` con la referencia
