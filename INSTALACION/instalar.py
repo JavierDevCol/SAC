@@ -709,6 +709,32 @@ def replace_project_root_placeholder(config_path, project_root):
         print_warning(f"No se pudo actualizar CONFIG_SYSTEM.yaml: {e}")
 
 
+def replace_artifacts_path(config_path, project_root, artifacts_rel):
+    """
+    Reemplaza la ruta por defecto de artifacts en CONFIG_SYSTEM.yaml
+    por la ruta personalizada elegida por el usuario.
+    Solo actúa si artifacts_rel es distinto de 'artifacts'.
+    """
+    if artifacts_rel == "artifacts":
+        return
+
+    try:
+        if not config_path.exists():
+            return
+
+        content = config_path.read_text(encoding="utf-8")
+        normalized_root = Path(project_root).resolve().as_posix()
+        default_artifacts = f"{normalized_root}/artifacts"
+        custom_artifacts = f"{normalized_root}/{artifacts_rel}"
+        updated = content.replace(default_artifacts, custom_artifacts)
+
+        if updated != content:
+            config_path.write_text(updated, encoding="utf-8")
+            print_success(f"Rutas de artifacts actualizadas a: {artifacts_rel}/")
+    except Exception as e:
+        print_warning(f"No se pudo actualizar rutas de artifacts: {e}")
+
+
 def replace_ruta_proyecto_in_agents(agents_folder, project_root):
     """Reemplaza {ruta_proyecto} en los archivos .agent.md por la ruta real."""
     try:
@@ -806,7 +832,7 @@ def migrate_artifacts_to_root(dest_path):
         return False
 
 
-def install_sac(dest_path, root_dir):
+def install_sac(dest_path, root_dir, artifacts_rel="artifacts"):
     """Ejecuta la instalación de SAC."""
     dest = Path(dest_path)
     
@@ -838,6 +864,9 @@ def install_sac(dest_path, root_dir):
     # 2.1 Reemplazar {project-root} en la configuración instalada
     config_system_path = sac_dest / "config" / "CONFIG_SYSTEM.yaml"
     replace_project_root_placeholder(config_system_path, dest)
+
+    # 2.2 Reemplazar ruta de artifacts si el usuario eligió una ruta personalizada
+    replace_artifacts_path(config_system_path, dest, artifacts_rel)
     
     # 3. Crear carpeta .github/agents
     github_dest = dest / ".github" / "agents"
@@ -866,17 +895,17 @@ def install_sac(dest_path, root_dir):
     print("\n📂 Creando estructura de artefactos:\n")
     
     session_dir = sac_dest / "session"
-    artifacts_dir = dest / "artifacts"
+    artifacts_dir = dest / artifacts_rel
     hu_dir = artifacts_dir / "HU"
     
     session_dir.mkdir(exist_ok=True)
     print_success(".SAC/session/")
     
-    artifacts_dir.mkdir(exist_ok=True)
-    print_success("artifacts/")
+    artifacts_dir.mkdir(parents=True, exist_ok=True)
+    print_success(f"{artifacts_rel}/")
     
     hu_dir.mkdir(exist_ok=True)
-    print_success("artifacts/HU/")
+    print_success(f"{artifacts_rel}/HU/")
     
     # 6. Registrar instalación en caché
     system_version = get_installed_version(dest) or "unknown"
@@ -885,7 +914,7 @@ def install_sac(dest_path, root_dir):
     return True
 
 
-def print_final_summary(dest_path):
+def print_final_summary(dest_path, artifacts_rel="artifacts"):
     """Muestra el resumen final de la instalación."""
     print("""
 ╔═══════════════════════════════════════════════════════════════╗
@@ -905,7 +934,7 @@ def print_final_summary(dest_path):
     │   ├── config/           (configuración)
     │   ├── reglas/           (reglas por tecnología)
     │   └── session/          (estado de sesión)
-    ├── artifacts/            (artefactos generados)
+    ├── {artifacts_rel}/            (artefactos generados)
     │   └── HU/               (historias de usuario)
     └── .github/
         └── agents/           (5 activadores Copilot)
@@ -923,10 +952,10 @@ def print_final_summary(dest_path):
     print()
 
 
-def configure_user_settings(dest_path):
+def collect_user_settings(dest_path):
     """
-    Solicita configuración personalizada al usuario y genera CONFIG_USER.yaml.
-    Retorna True si se completó correctamente, False si se omitió.
+    Solicita configuración personalizada al usuario.
+    Retorna un diccionario con los valores recolectados, o None si se omite.
     """
     print("""
 ╔═══════════════════════════════════════════════════════════════╗
@@ -977,7 +1006,44 @@ def configure_user_settings(dest_path):
     
     print()
     
-    # === GENERAR ARCHIVO CONFIG_USER.yaml ===
+    # === RUTA DE ARTIFACTS ===
+    print("📂 RUTA DE ARTIFACTS\n")
+    print("   Los artifacts (HU, ADR, planes, bugs) se guardan en una carpeta del proyecto.")
+    print("   Ruta relativa a la raíz del proyecto.\n")
+    
+    artifacts_rel = input("   Ruta para artifacts [artifacts]: ").strip()
+    if not artifacts_rel:
+        artifacts_rel = "artifacts"
+    else:
+        # Normalizar: quitar slashes al inicio/final, reemplazar backslashes
+        artifacts_rel = artifacts_rel.replace("\\", "/").strip("/")
+    print_success(f"Artifacts: {artifacts_rel}/")
+    
+    print()
+    
+    return {
+        "nombre_usuario": nombre_usuario,
+        "idioma_doc": idioma_doc,
+        "idioma_com": idioma_com,
+        "nombre_proyecto": nombre_proyecto,
+        "artifacts_rel": artifacts_rel,
+    }
+
+
+def write_user_config(dest_path, settings):
+    """
+    Escribe CONFIG_USER.yaml con los valores recolectados.
+    Retorna True si se guardó correctamente.
+    """
+    artifacts_section = ""
+    if settings["artifacts_rel"] != "artifacts":
+        artifacts_section = f"""
+# === OVERRIDE DE RUTAS (Opcional) ===
+# Ruta personalizada de artifacts (relativa a la raíz del proyecto)
+rutas_override:
+  artifacts_folder: "{settings['artifacts_rel']}"
+"""
+
     config_content = f"""# ============================================
 # CONFIGURACIÓN DEL USUARIO/PROYECTO
 # ============================================
@@ -988,17 +1054,17 @@ def configure_user_settings(dest_path):
 
 # === INFORMACIÓN DEL USUARIO ===
 usuario:
-  nombre: "{nombre_usuario}"                  # Tu nombre para personalización
+  nombre: "{settings['nombre_usuario']}"                  # Tu nombre para personalización
 
 # === PREFERENCIAS DE IDIOMA ===
 idiomas:
-  documentacion: "{idioma_doc}"                 # Idioma para documentos generados (es|en|pt)
-  comunicacion: "{idioma_com}"                  # Idioma para interacción con el sistema
+  documentacion: "{settings['idioma_doc']}"                 # Idioma para documentos generados (es|en|pt)
+  comunicacion: "{settings['idioma_com']}"                  # Idioma para interacción con el sistema
 
 # === INFORMACIÓN DEL PROYECTO ===
 proyecto:
-  nombre: "{nombre_proyecto}"                          # Nombre del proyecto
-"""
+  nombre: "{settings['nombre_proyecto']}"                          # Nombre del proyecto
+{artifacts_section}"""
     
     # Guardar archivo
     config_path = Path(dest_path) / ".SAC" / "config" / "CONFIG_USER.yaml"
@@ -1016,7 +1082,7 @@ proyecto:
 def ask_for_configuration(dest_path):
     """
     Pregunta al usuario si desea configurar SAC ahora.
-    Retorna True si se configuró o se omitió correctamente.
+    Retorna dict con settings (incluye artifacts_rel) o None si omitió.
     """
     print("\n" + "─" * 55)
     print("\n   ¿Deseas configurar SAC para tu proyecto ahora?")
@@ -1026,9 +1092,9 @@ def ask_for_configuration(dest_path):
     
     if response == 'n':
         print_info("Configuración omitida. Puedes editar CONFIG_USER.yaml más tarde.")
-        return True
+        return None
     
-    return configure_user_settings(dest_path)
+    return collect_user_settings(dest_path)
 
 
 def print_help():
@@ -1072,6 +1138,33 @@ def print_help():
 """.format(repo_url=REPO_URL))
 
 
+def get_artifacts_rel_from_config_user(config_user_content):
+    """
+    Extrae el valor de rutas_override.artifacts_folder del contenido de CONFIG_USER.yaml.
+    Retorna 'artifacts' si no se encuentra o está vacío.
+    """
+    if not config_user_content:
+        return "artifacts"
+    
+    # Buscar artifacts_folder en rutas_override
+    in_override_section = False
+    for line in config_user_content.split("\n"):
+        stripped = line.strip()
+        if stripped.startswith("rutas_override:"):
+            in_override_section = True
+            continue
+        if in_override_section and stripped.startswith("artifacts_folder:"):
+            value = stripped.split(":", 1)[1].strip().strip('"').strip("'")
+            if value:
+                return value
+            break
+        # Si encontramos otra sección de nivel superior, dejamos de buscar
+        if in_override_section and not stripped.startswith("#") and stripped and not stripped.startswith("-") and ":" in stripped and not stripped.startswith(" ") and not stripped.startswith("\t"):
+            break
+    
+    return "artifacts"
+
+
 def upgrade_installation(dest_path, root_dir, preserve_user_config=True):
     """
     Actualiza una instalación existente preservando CONFIG_USER.yaml.
@@ -1089,15 +1182,18 @@ def upgrade_installation(dest_path, root_dir, preserve_user_config=True):
     # Guardar CONFIG_USER.yaml si existe
     config_user_path = sac_dest / "config" / "CONFIG_USER.yaml"
     config_user_backup = None
+    artifacts_rel = "artifacts"
     
     if preserve_user_config and config_user_path.exists():
         try:
             config_user_backup = config_user_path.read_text(encoding="utf-8")
+            # Leer la ruta de artifacts personalizada si existe
+            artifacts_rel = get_artifacts_rel_from_config_user(config_user_backup)
         except Exception:
             pass
     
-    # Ejecutar instalación normal
-    success = install_sac(dest_path, root_dir)
+    # Ejecutar instalación normal con la ruta de artifacts preservada
+    success = install_sac(dest_path, root_dir, artifacts_rel)
     
     # Restaurar CONFIG_USER.yaml
     if success and config_user_backup and preserve_user_config:
@@ -1334,12 +1430,18 @@ def do_new_installation(root_dir):
             print_info("Instalación cancelada")
             return True
     
+    # Ejecutar configuración ANTES de instalar (para obtener ruta de artifacts)
+    settings = ask_for_configuration(dest_path)
+    artifacts_rel = settings["artifacts_rel"] if settings else "artifacts"
+
     # Ejecutar instalación
-    install_success = install_sac(dest_path, root_dir)
+    install_success = install_sac(dest_path, root_dir, artifacts_rel)
     
     if install_success:
-        print_final_summary(dest_path)
-        ask_for_configuration(dest_path)
+        print_final_summary(dest_path, artifacts_rel)
+        # Escribir CONFIG_USER.yaml si el usuario configuró
+        if settings:
+            write_user_config(dest_path, settings)
     else:
         print_error("La instalación falló")
         return False
@@ -1407,11 +1509,17 @@ def do_update_legacy():
                 print_info("Instalación cancelada")
                 return True  # El update fue exitoso
         
+        # Ejecutar configuración ANTES de instalar
+        settings = ask_for_configuration(dest_path)
+        artifacts_rel = settings["artifacts_rel"] if settings else "artifacts"
+
         # Ejecutar instalación
-        install_success = install_sac(dest_path, temp_repo_path)
+        install_success = install_sac(dest_path, temp_repo_path, artifacts_rel)
         
         if install_success:
-            print_final_summary(dest_path)
+            print_final_summary(dest_path, artifacts_rel)
+            if settings:
+                write_user_config(dest_path, settings)
         else:
             print_error("La instalación falló")
             return False
@@ -1493,12 +1601,18 @@ def main():
             print_info("Instalación cancelada")
             sys.exit(0)
     
+    # Ejecutar configuración ANTES de instalar (para obtener ruta de artifacts)
+    settings = ask_for_configuration(dest_path)
+    artifacts_rel = settings["artifacts_rel"] if settings else "artifacts"
+
     # Ejecutar instalación
-    success = install_sac(dest_path, root_dir)
+    success = install_sac(dest_path, root_dir, artifacts_rel)
     
     if success:
-        print_final_summary(dest_path)
-        ask_for_configuration(dest_path)
+        print_final_summary(dest_path, artifacts_rel)
+        # Escribir CONFIG_USER.yaml si el usuario configuró
+        if settings:
+            write_user_config(dest_path, settings)
     else:
         print_error("La instalación falló")
         sys.exit(1)
