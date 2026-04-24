@@ -1020,20 +1020,24 @@ def collect_user_settings(dest_path):
     if not artifacts_rel:
         artifacts_rel = "artifacts"
     else:
-        # Normalizar: quitar slashes al inicio/final, reemplazar backslashes
-        artifacts_rel = artifacts_rel.replace("\\", "/").strip("/")
-        # Detectar si el usuario pegó una ruta absoluta que contiene la raíz del proyecto
-        dest_posix = Path(dest_path).resolve().as_posix()
-        if artifacts_rel.startswith(dest_posix.lstrip("/")):
-            # Extraer solo la parte relativa después del project root
-            artifacts_rel = artifacts_rel[len(dest_posix.lstrip("/")):].strip("/")
-            print_warning(f"Se detectó una ruta absoluta. Se extrajo la parte relativa: {artifacts_rel}/")
-        elif "/" in artifacts_rel and len(artifacts_rel.split("/")) > 4:
-            # Heurística: rutas con muchos segmentos probablemente son absolutas mal formateadas
-            print_warning(f"La ruta '{artifacts_rel}' parece ser absoluta. Debe ser relativa a la raíz del proyecto.")
-            print_info(f"Ejemplo: 'docs/artifacts' o 'doccumentacion-proyectos/artifacts'")
-            retry = input(f"   ¿Usar '{artifacts_rel}' de todos modos? [s/N]: ").strip().lower()
-            if retry != "s":
+        raw_input = artifacts_rel
+        # Normalizar: reemplazar backslashes
+        artifacts_rel = artifacts_rel.replace("\\", "/")
+        # Detectar ruta absoluta: empieza con / (Unix) o X: (Windows)
+        is_absolute = artifacts_rel.startswith("/") or (len(artifacts_rel) >= 2 and artifacts_rel[1] == ":")
+        artifacts_rel = artifacts_rel.strip("/")
+        if is_absolute:
+            dest_posix = Path(dest_path).resolve().as_posix()
+            dest_stripped = dest_posix.lstrip("/")
+            if artifacts_rel.startswith(dest_stripped):
+                # Extraer solo la parte relativa después del project root
+                artifacts_rel = artifacts_rel[len(dest_stripped):].strip("/")
+                print_warning(f"Se detectó una ruta absoluta. Se extrajo la parte relativa: {artifacts_rel}/")
+            else:
+                # Ruta absoluta que no pertenece al proyecto destino
+                print_warning(f"'{raw_input}' es una ruta absoluta que no pertenece al proyecto destino.")
+                print_info(f"Debe ser relativa a: {dest_path}")
+                print_info(f"Ejemplo: 'docs/artifacts' o 'documentacion/artifacts'")
                 artifacts_rel = input("   Ruta relativa para artifacts [artifacts]: ").strip()
                 if not artifacts_rel:
                     artifacts_rel = "artifacts"
