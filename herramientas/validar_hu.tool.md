@@ -110,13 +110,29 @@ proceso:
     obligatorio: true
     acciones: ["Determinar resultado: APROBADA | AJUSTES | RECHAZADA", "Documentar razones detalladas", "Actualizar estado según veredictos"]
 
+  - paso: "Persistir Aprobación en Refinamiento"
+    obligatorio: true
+    condicion: "resultado == APROBADA"
+    acciones:
+      - "Abrir archivo {{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento*.md"
+      - "Agregar sección '## Aprobación' al final del archivo (antes de Feedback si existe)"
+      - "Rellenar con:"
+      - "  | Campo | Valor |"
+      - "  |-------|-------|"
+      - "  | **Estado** | ✅ Aprobada |"
+      - "  | **Aprobado por** | Arquitecto Onad |"
+      - "  | **Fecha aprobación** | [FECHA_ISO_8601] |"
+      - "  | **Nivel validación** | [nivel_validacion usado] |"
+      - "  | **Notas** | [Resumen de validación o 'Sin observaciones'] |"
+    nota: "Este marcador permite a >sincronizar_backlog deducir el estado [A] Aprobada desde artefactos"
+
   - paso: "Persistir Feedback"
     obligatorio: true
     condicion: "resultado == AJUSTES"
     acciones: ["Agregar sección '## Feedback de Validación' en refinamiento", "Incluir fecha, iteración, observaciones pendientes", "Marcar como [ ] pendientes de resolver"]
 
 salida:
-  archivos_actualizados: ["{{archivos.backlog}}", "{{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md (si AJUSTES)"]
+  archivos_actualizados: ["{{archivos.backlog}}", "{{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md"]
   mensaje_aprobada: |
      HU APROBADA: [ID-HU]
      Validaciones:  CA |  Arquitectura |  Viabilidad

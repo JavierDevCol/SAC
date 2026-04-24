@@ -111,6 +111,18 @@ Cada CA debe cumplir SMART:
 
 ---
 
+## Aprobación <!-- Generado automáticamente por >validar_hu al aprobar -->
+
+| Campo | Valor |
+|-------|-------|
+| **Estado** | ✅ Aprobada |
+| **Aprobado por** | [Nombre del rol aprobador] |
+| **Fecha aprobación** | [FECHA_ISO_8601] |
+| **Nivel validación** | [basico \| completo \| exhaustivo] |
+| **Notas** | [Resumen de validación o 'Sin observaciones'] |
+
+---
+
 ## Historial
 
 | Fecha | Acción | Detalle |
