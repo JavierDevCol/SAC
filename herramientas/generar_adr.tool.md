@@ -69,8 +69,12 @@ plantillas:
 proceso:
   - paso: "Inicialización de Parámetros"
     obligatorio: true
-    acciones: ["Establecer valores por defecto para parámetros opcionales no especificados: formato='nygard', estado='aceptado', incluir_diagrama=true"]
-    nota: "Este paso garantiza que las condiciones en mandatory se evalúen correctamente"
+    acciones:
+      - "Establecer valores por defecto para parámetros opcionales no especificados: formato='nygard', estado='aceptado', incluir_diagrama=true"
+      - "Mostrar resumen compacto de configuración activa:"
+      - "  ⚙️ Configuración: formato=[valor] | estado=[valor] | diagrama=[sí/no]"
+      - "  Personaliza con: >generar_adr --formato madr --incluir_diagrama false"
+    nota: "Garantiza evaluación correcta de condiciones y visibilidad de la configuración activa"
 
   - paso: "Carga de Configuración"
     obligatorio: true

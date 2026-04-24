@@ -36,8 +36,12 @@ deteccion_tipo:
 proceso:
   - paso: "Inicialización de Parámetros"
     obligatorio: true
-    acciones: ["Establecer valores por defecto para parámetros opcionales no especificados: profundidad_analisis='exhaustivo'"]
-    nota: "Garantiza evaluación correcta de condiciones en pasos posteriores"
+    acciones:
+      - "Establecer valores por defecto para parámetros opcionales no especificados: profundidad_analisis='exhaustivo'"
+      - "Mostrar resumen compacto de configuración activa:"
+      - "  ⚙️ Configuración: profundidad_analisis=[valor]"
+      - "  Personaliza con: >tomar_contexto --profundidad_analisis basico"
+    nota: "Garantiza evaluación correcta de condiciones y visibilidad de la configuración activa"
 
   - paso: "Detectar Tipo de Workspace"
     obligatorio: true

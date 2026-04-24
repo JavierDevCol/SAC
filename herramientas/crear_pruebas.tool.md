@@ -45,8 +45,12 @@ tipos_prueba:
 proceso:
   - paso: "Inicialización de Parámetros"
     obligatorio: true
-    acciones: ["Establecer valores por defecto para parámetros opcionales no especificados: tipo_test='UNITARIO', framework_test='junit5', nivel_cobertura='COMPLETO', cobertura_objetivo=80"]
-    nota: "Garantiza evaluación correcta de condiciones en pasos posteriores"
+    acciones:
+      - "Establecer valores por defecto para parámetros opcionales no especificados: tipo_test='UNITARIO', framework_test='junit5', nivel_cobertura='COMPLETO', cobertura_objetivo=80"
+      - "Mostrar resumen compacto de configuración activa:"
+      - "  ⚙️ Configuración: tipo=[valor] | framework=[valor] | cobertura=[valor] | objetivo=[valor]%"
+      - "  Personaliza con: >crear_pruebas --tipo_test INTEGRACION --framework_test pytest --cobertura_objetivo 90"
+    nota: "Garantiza evaluación correcta de condiciones y visibilidad de la configuración activa"
 
   - paso: "Análisis Automático del Código"
     obligatorio: true

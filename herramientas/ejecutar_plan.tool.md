@@ -58,8 +58,12 @@ parametros:
 proceso:
   - paso: "Inicialización de Parámetros"
     obligatorio: true
-    acciones: ["Establecer valores por defecto para parámetros opcionales no especificados: modo_ejecucion='fase_por_fase', auto_commit=false"]
-    nota: "Garantiza evaluación correcta de condiciones en pasos posteriores"
+    acciones:
+      - "Establecer valores por defecto para parámetros opcionales no especificados: modo_ejecucion='fase_por_fase', auto_commit=false"
+      - "Mostrar resumen compacto de configuración activa:"
+      - "  ⚙️ Configuración: modo_ejecucion=[valor] | auto_commit=[valor]"
+      - "  Personaliza con: >ejecutar_plan [ID-HU] --modo_ejecucion completo --auto_commit true"
+    nota: "Garantiza evaluación correcta de condiciones y visibilidad de la configuración activa"
 
   - paso: "Cargar Plan de Implementación"
     obligatorio: true

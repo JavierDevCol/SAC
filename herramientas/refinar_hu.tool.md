@@ -54,8 +54,12 @@ criterios_smart:
 proceso:
   - paso: "Inicialización de Parámetros"
     obligatorio: true
-    acciones: ["Establecer valores por defecto para parámetros opcionales no especificados: formato_estimacion='ambos', nivel_detalle='medio', incluir_riesgos=true, generar_tareas=true, incluir_testing=true"]
-    nota: "Garantiza evaluación correcta de condiciones en pasos posteriores"
+    acciones:
+      - "Establecer valores por defecto para parámetros opcionales no especificados: formato_estimacion='ambos', nivel_detalle='medio', incluir_riesgos=true, generar_tareas=true, incluir_testing=true"
+      - "Mostrar resumen compacto de configuración activa:"
+      - "  ⚙️ Configuración: nivel_detalle=[valor] | estimación=[valor] | riesgos=[sí/no] | tareas=[sí/no] | testing=[sí/no]"
+      - "  Personaliza con: >refinar_hu --nivel_detalle alto --incluir_riesgos false"
+    nota: "Garantiza evaluación correcta de condiciones y visibilidad de la configuración activa"
 
   - paso: "Detectar Tipo de Workspace"
     obligatorio: true

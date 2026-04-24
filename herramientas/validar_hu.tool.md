@@ -35,8 +35,12 @@ veredictos:
 proceso:
   - paso: "Inicialización de Parámetros"
     obligatorio: true
-    acciones: ["Establecer valores por defecto para parámetros opcionales no especificados: nivel_validacion='completo'"]
-    nota: "Garantiza evaluación correcta de condiciones en pasos posteriores"
+    acciones:
+      - "Establecer valores por defecto para parámetros opcionales no especificados: nivel_validacion='completo'"
+      - "Mostrar resumen compacto de configuración activa:"
+      - "  ⚙️ Configuración: nivel_validacion=[valor]"
+      - "  Personaliza con: >validar_hu [ID-HU] --nivel_validacion exhaustivo"
+    nota: "Garantiza evaluación correcta de condiciones y visibilidad de la configuración activa"
 
   - paso: "Cargar HU y Contexto"
     obligatorio: true

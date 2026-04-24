@@ -57,6 +57,9 @@ proceso:
       - "Verificar que ruta_proyecto fue proporcionado"
       - "SI ruta_proyecto vacío → PREGUNTAR al usuario la ruta"
       - "Establecer valores por defecto: profundidad='exhaustivo', incluir_dependencias=true"
+      - "Mostrar resumen compacto de configuración activa:"
+      - "  ⚙️ Configuración: profundidad=[valor] | dependencias=[sí/no]"
+      - "  Personaliza con: >analizar_stack --profundidad basico --incluir_dependencias false"
     si_error:
       ruta_no_proporcionada: "Solicitar ruta del proyecto al usuario antes de continuar"
 

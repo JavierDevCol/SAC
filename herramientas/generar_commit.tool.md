@@ -58,8 +58,12 @@ reglas_deteccion:
 proceso:
   - paso: "Inicialización de Parámetros"
     obligatorio: true
-    acciones: ["Establecer valores por defecto para parámetros opcionales no especificados: tipo_commit='auto', incluir_body=true, formato_alcance='auto', breaking_change=false"]
-    nota: "Garantiza evaluación correcta de condiciones en pasos posteriores"
+    acciones:
+      - "Establecer valores por defecto para parámetros opcionales no especificados: tipo_commit='auto', incluir_body=true, formato_alcance='auto', breaking_change=false"
+      - "Mostrar resumen compacto de configuración activa:"
+      - "  ⚙️ Configuración: tipo_commit=[valor] | body=[sí/no] | alcance=[valor] | breaking=[sí/no]"
+      - "  Personaliza con: >generar_commit --tipo_commit feat --breaking_change true"
+    nota: "Garantiza evaluación correcta de condiciones y visibilidad de la configuración activa"
 
   - paso: "Captura Automática del Git Diff"
     obligatorio: true

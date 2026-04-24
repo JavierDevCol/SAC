@@ -64,8 +64,12 @@ areas_evaluacion:
 proceso:
   - paso: "Inicialización de Parámetros"
     obligatorio: true
-    acciones: ["Establecer valores por defecto para parámetros opcionales no especificados: areas=[cicd, iac, observabilidad, seguridad, cultura], nivel_detalle='completo'"]
-    nota: "Garantiza evaluación correcta de condiciones en pasos posteriores"
+    acciones:
+      - "Establecer valores por defecto para parámetros opcionales no especificados: areas=[cicd, iac, observabilidad, seguridad, cultura], nivel_detalle='completo'"
+      - "Mostrar resumen compacto de configuración activa:"
+      - "  ⚙️ Configuración: areas=[valor] | nivel_detalle=[valor]"
+      - "  Personaliza con: >diagnosticar_devops --areas cicd,seguridad --nivel_detalle basico"
+    nota: "Garantiza evaluación correcta de condiciones y visibilidad de la configuración activa"
 
   - paso: "Recolección de Contexto"
     obligatorio: true

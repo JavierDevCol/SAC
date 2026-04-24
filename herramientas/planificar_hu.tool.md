@@ -85,8 +85,12 @@ estructura_fases:
 proceso:
   - paso: "Inicialización de Parámetros"
     obligatorio: true
-    acciones: ["Establecer valores por defecto para parámetros opcionales no especificados: incluir_migraciones=true, incluir_rollback=true"]
-    nota: "Garantiza evaluación correcta de condiciones en pasos posteriores"
+    acciones:
+      - "Establecer valores por defecto para parámetros opcionales no especificados: incluir_migraciones=true, incluir_rollback=true"
+      - "Mostrar resumen compacto de configuración activa:"
+      - "  ⚙️ Configuración: migraciones=[sí/no] | rollback=[sí/no]"
+      - "  Personaliza con: >planificar_hu [ID-HU] --incluir_migraciones false"
+    nota: "Garantiza evaluación correcta de condiciones y visibilidad de la configuración activa"
 
   - paso: "Cargar HU y Contexto"
     obligatorio: true

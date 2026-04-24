@@ -93,8 +93,12 @@ proceso:
   # Ejemplo:
   # - paso: "Inicialización de Parámetros"
   #   obligatorio: true
-  #   acciones: ["Establecer valores por defecto para parámetros no especificados: [param_opcional]='[valor_defecto]'"]
-  #   nota: "Garantiza evaluación correcta de condiciones"
+  #   acciones:
+  #     - "Establecer valores por defecto para parámetros no especificados: [param_opcional]='[valor_defecto]'"
+  #     - "Mostrar resumen compacto de configuración activa:"
+  #     - "  ⚙️ Configuración: [param1]=[valor] | [param2]=[valor] | ..."
+  #     - "  Personaliza con: >[comando] --[param] [valor]"
+  #   nota: "Garantiza evaluación correcta de condiciones y visibilidad de la configuración activa"
   # ========================================================
 
   - paso: "[Nombre del Paso 1]"

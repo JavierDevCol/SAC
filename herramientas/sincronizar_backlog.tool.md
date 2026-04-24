@@ -100,7 +100,10 @@ proceso:
     obligatorio: true
     acciones:
       - "Establecer valores por defecto: id_hu=null, proyecto=null, auto=false, dry_run=false"
-    nota: "Garantiza evaluación correcta de condiciones en pasos posteriores"
+      - "Mostrar resumen compacto de configuración activa:"
+      - "  ⚙️ Configuración: hu=[todas] | proyecto=[todos] | auto=[no] | dry_run=[no]"
+      - "  Personaliza con: >sincronizar_backlog --id_hu HU-001 --dry_run"
+    nota: "Garantiza evaluación correcta de condiciones y visibilidad de la configuración activa"
 
   - paso: "Cargar Backlog"
     obligatorio: true
