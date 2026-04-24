@@ -52,6 +52,21 @@
 
 ---
 
+## 📇 Índice Rápido
+
+<!-- 
+  Tabla compacta para carga inicial optimizada (bajo consumo de tokens).
+  El agente carga SOLO esta tabla al iniciar sesión.
+  Para detalle de una HU, buscar su heading ### [ID-HU] más abajo.
+  Esta tabla se regenera automáticamente con >sincronizar_backlog.
+-->
+
+| ID | Título | Estado | Prioridad | Tipo |
+|----|--------|--------|-----------|------|
+| [ID-HU] | [Título] | [ ] | [Alta\|Media\|Baja] | [Funcional\|Bug\|Técnica] |
+
+---
+
 ## 🎯 Historias de Usuario
 
 <!-- 

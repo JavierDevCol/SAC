@@ -179,6 +179,17 @@ proceso:
       - "  4. SI Multi-Proyecto → Recalcular contadores en 'Resumen por Proyecto'"
       - "  5. Recalcular contadores en 'Resumen de Estados'"
 
+  - paso: "Regenerar Índice Rápido"
+    obligatorio: true
+    acciones:
+      - "Localizar la sección '## 📇 Índice Rápido' en el backlog"
+      - "Regenerar la tabla completa recorriendo TODAS las HUs del backlog:"
+      - "  Para cada HU extraer: ID, Título, Estado (ya corregido), Prioridad, Tipo"
+      - "  Generar fila: | [ID] | [Título] | [Estado] | [Prioridad] | [Tipo] |"
+      - "Reemplazar la tabla existente en '## 📇 Índice Rápido' con la tabla regenerada"
+      - "Mantener el header de la tabla: | ID | Título | Estado | Prioridad | Tipo |"
+    nota: "El Índice Rápido es la tabla compacta que el agente carga al iniciar sesión. Debe reflejar siempre el estado real del backlog."
+
   - paso: "Reporte Final"
     obligatorio: true
     acciones:
