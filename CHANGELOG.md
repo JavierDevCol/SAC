@@ -9,10 +9,10 @@
 
 | Componente | Versión Actual | Última Actualización |
 |------------|----------------|----------------------|
-| **Sistema SAC** | 7.10.0 | 2026-04-24 |
-| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.10.0 | 2026-04-24 |
+| **Sistema SAC** | 7.10.1 | 2026-04-24 |
+| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.10.1 | 2026-04-24 |
 | **Configuración Usuario** (`config/CONFIG_USER.template.yaml`) | 7.9.0 | 2026-04-24 |
-| **Roles SAC** (`agentes/*.rol.md`) | 7.10.0 | 2026-04-24 |
+| **Roles SAC** (`agentes/*.rol.md`) | 7.10.1 | 2026-04-24 |
 | **Herramientas** (`herramientas/*.tool.md`) | 7.10.0 | 2026-04-24 |
 | **Plantillas** (`plantillas/`) | 7.10.0 | 2026-04-24 |
 | **Guía de Comandos** (`guias/guia_comandos.md`) | 7.3.0 | 2026-04-23 |
@@ -22,6 +22,21 @@
 ---
 
 ## 🚀 Historial de Versiones
+
+### [7.10.1] - 2026-04-24
+
+#### 🎯 Carga de Reglas de Dominio Bajo Demanda
+
+**Objetivo:** Reducir ~1000 tokens/sesión al no cargar reglas (mermaid, etc.) en la inicialización, sino solo cuando la tarea lo requiera.
+
+#### ✅ Cambios en Roles
+
+| Archivo | Cambio |
+|---------|--------|
+| `_base.rol.md` | Paso "Cargar Reglas de Dominio" cambiado de obligatorio a bajo demanda |
+| `_base.rol.md` | Tabla "Resumen de Contexto" actualizada: reglas ya no aparecen como cargadas |
+
+---
 
 ### [7.10.0] - 2026-04-24
 
