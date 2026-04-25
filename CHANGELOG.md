@@ -9,11 +9,11 @@
 
 | Componente | Versión Actual | Última Actualización |
 |------------|----------------|----------------------|
-| **Sistema SAC** | 7.11.1 | 2026-04-24 |
-| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.11.0 | 2026-04-24 |
+| **Sistema SAC** | 7.11.2 | 2026-04-25 |
+| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.11.2 | 2026-04-25 |
 | **Configuración Usuario** (`config/CONFIG_USER.template.yaml`) | 7.9.0 | 2026-04-24 |
 | **Roles SAC** (`agentes/*.rol.md`) | 7.11.0 | 2026-04-24 |
-| **Herramientas** (`herramientas/*.tool.md`) | 7.10.0 | 2026-04-24 |
+| **Herramientas** (`herramientas/*.tool.md`) | 7.11.2 | 2026-04-25 |
 | **Plantillas** (`plantillas/`) | 7.10.0 | 2026-04-24 |
 | **Guía de Comandos** (`guias/guia_comandos.md`) | 7.3.0 | 2026-04-23 |
 | **Guía de Roles** (`guias/guia_roles_activos.md`) | 3.0 | 2026-01-05 |
@@ -22,6 +22,33 @@
 ---
 
 ## 🚀 Historial de Versiones
+
+### [7.11.2] - 2026-04-25
+
+#### 🛡️ Mejora: Robustez de ejecutar_plan.tool.md
+
+**Objetivo:** Corregir tres riesgos críticos detectados: ausencia de validación de entorno, imposibilidad de reanudación segura tras interrupciones, y combinación peligrosa de modo completo con auto-commit.
+
+#### ✅ Cambios en Herramientas
+
+| Herramienta | Cambio |
+|-------------|--------|
+| `ejecutar_plan.tool.md` | Nuevo paso obligatorio "Validar Entorno de Ejecución" (rama Git, directorio, framework tests, punto de restauración) |
+| `ejecutar_plan.tool.md` | Cláusula `reanudacion` en "Ejecutar Fases": salta tareas [EJECUTADA], verifica archivos, informa progreso |
+| `ejecutar_plan.tool.md` | Límite `max_reintentos_por_tarea: 2` para evitar bucles infinitos de error-corrección |
+| `ejecutar_plan.tool.md` | Validación: `modo_ejecucion=completo + auto_commit=true` prohibida (⛔) |
+| `ejecutar_plan.tool.md` | Versión 4.1 → 4.2 |
+
+#### 📊 Impacto
+
+| Métrica | Antes | Después |
+|---------|-------|---------|
+| Validación de entorno pre-ejecución | No | Sí (rama, deps, framework tests) |
+| Reanudación tras interrupción | Implícita (frágil) | Explícita con verificación de archivos |
+| Protección contra ejecución sin supervisión | Parcial | Completa (completo+auto_commit bloqueado) |
+| Límite de reintentos por tarea | Infinito | 2 |
+
+---
 
 ### [7.11.1] - 2026-04-24
 
