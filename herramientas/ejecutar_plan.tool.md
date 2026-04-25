@@ -2,7 +2,7 @@
 nombre: "Ejecutar Plan de Implementación"
 comando: ">ejecutar_plan"
 alias: [">ejecutar", ">implementar"]
-version: "4.1"
+version: "4.2"
 ---
 
 ```yaml
@@ -64,6 +64,10 @@ proceso:
       - "  ⚙️ Configuración: modo_ejecucion=[valor] | auto_commit=[valor]"
       - "  Personaliza con: >ejecutar_plan [ID-HU] --modo_ejecucion completo --auto_commit true"
     nota: "Garantiza evaluación correcta de condiciones y visibilidad de la configuración activa"
+    validaciones_combinacion:
+      - si: "modo_ejecucion=completo AND auto_commit=true"
+        accion: "⛔ Combinación prohibida. Usar fase_por_fase con auto_commit, o completo sin auto_commit"
+        razon: "Ejecutar todo sin pausas Y con commit automático elimina toda supervisión humana"
 
   - paso: "Cargar Plan de Implementación"
     obligatorio: true
@@ -82,9 +86,31 @@ proceso:
       no_encontrado: " Plan no encontrado. Ejecutar >planificar_hu primero"
       estado_invalido: " HU debe estar en estado [P] Planificada"
 
+  - paso: "Validar Entorno de Ejecución"
+    obligatorio: true
+    acciones:
+      - "Verificar rama Git activa coincide con rama esperada para la HU"
+      - "Verificar directorio del proyecto existe y es accesible"
+      - "Detectar framework de tests disponible (mvn/npm/pytest/vitest/jest/dotnet test/etc.)"
+      - "Verificar dependencias instaladas (node_modules, venv, .m2, etc.)"
+      - "Crear punto de restauración: git stash push -m 'backup/[ID-HU]_pre_ejecucion' (si hay cambios sin commit)"
+    si_error:
+      entorno_invalido: "⛔ Entorno no preparado. Detallar requisitos faltantes antes de continuar"
+      sin_framework_tests: "⚠️ No se detectó framework de tests. Confirmar con usuario antes de continuar"
+
   - paso: "Ejecutar Fases Secuencialmente"
     obligatorio: true
     acciones: ["Para cada fase del plan: 1. Anunciar inicio de fase", "2. Para cada tarea: [PENDIENTE]  [EN_PROGRESO]", "3. Ejecutar pasos, marcar [ ]  [X] al completar", "4. Al completar tarea: [EN_PROGRESO]  [EJECUTADA]", "5. Agregar entrada en Historial de Ejecución"]
+    reanudacion:
+      descripcion: "Si el plan tiene tareas [EJECUTADA], saltar a la primera tarea [PENDIENTE]"
+      acciones:
+        - "Verificar que los archivos generados por tareas [EJECUTADA] existen en el filesystem"
+        - "Si algún archivo falta, marcar la tarea como [PENDIENTE] y re-ejecutarla"
+        - "Informar al usuario: 'Reanudando desde tarea T[N] — [X] tareas ya completadas'"
+    max_reintentos_por_tarea: 2
+    si_max_reintentos:
+      accion: "DETENER. La tarea T[N] falló [max_reintentos] veces consecutivas"
+      sugerencia: "Revisar manualmente y ejecutar >ejecutar_plan [ID-HU] --modo_ejecucion tarea_por_tarea"
     si_error:
       cualquier_error:
         accion: "DETENER inmediatamente"
