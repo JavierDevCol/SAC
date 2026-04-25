@@ -2,7 +2,7 @@
 nombre: "Ejecutar Plan de Implementación"
 comando: ">ejecutar_plan"
 alias: [">ejecutar", ">implementar"]
-version: "4.2"
+version: "4.3"
 ---
 
 ```yaml
@@ -100,7 +100,17 @@ proceso:
 
   - paso: "Ejecutar Fases Secuencialmente"
     obligatorio: true
-    acciones: ["Para cada fase del plan: 1. Anunciar inicio de fase", "2. Para cada tarea: [PENDIENTE]  [EN_PROGRESO]", "3. Ejecutar pasos, marcar [ ]  [X] al completar", "4. Al completar tarea: [EN_PROGRESO]  [EJECUTADA]", "5. Agregar entrada en Historial de Ejecución"]
+    acciones:
+      - "Para cada fase del plan:"
+      - "  1. Anunciar inicio de fase"
+      - "  2. Para cada tarea de la fase:"
+      - "     a. EDITAR ARCHIVO del plan: cambiar [PENDIENTE] → [EN_PROGRESO] en la línea de la tarea"
+      - "     b. Ejecutar los pasos de la tarea (crear/modificar código)"
+      - "     c. Por cada paso completado: EDITAR ARCHIVO del plan cambiando '- [ ]' → '- [X]' en ese paso específico"
+      - "     d. Al completar TODOS los pasos de la tarea: EDITAR ARCHIVO del plan cambiando [EN_PROGRESO] → [EJECUTADA]"
+      - "     e. EDITAR ARCHIVO del plan: agregar fila en tabla 'Historial de Ejecución' con fecha, tarea y resultado"
+      - "     f. Actualizar fila de la fase en tabla 'Progreso General': incrementar progreso [X/Y]"
+    critico: "Los pasos c, d, e y f son BLOQUEANTES — NO avanzar a la siguiente tarea sin haber EDITADO el archivo del plan. Si el archivo no refleja el estado actual, la ejecución es inválida."
     reanudacion:
       descripcion: "Si el plan tiene tareas [EJECUTADA], saltar a la primera tarea [PENDIENTE]"
       acciones:
@@ -114,7 +124,7 @@ proceso:
     si_error:
       cualquier_error:
         accion: "DETENER inmediatamente"
-        actualizar: "Marcar tarea como [ERROR], agregar detalle en Historial"
+        actualizar: "EDITAR ARCHIVO del plan: cambiar estado de la tarea a [ERROR], agregar detalle en Historial"
 
   - paso: "Crear/Modificar Archivos"
     obligatorio: true
@@ -143,18 +153,23 @@ proceso:
   - paso: "Finalización"
     obligatorio: true
     acciones:
-      - "Actualizar Metadata del plan: Estado  COMPLETADO"
+      - "VERIFICAR: Leer archivo del plan y confirmar que TODAS las tareas están en [EJECUTADA] y TODOS los pasos en [X]"
+      - "SI hay discrepancias: EDITAR ARCHIVO del plan para corregir estados pendientes ANTES de continuar"
+      - "EDITAR ARCHIVO del plan: cambiar campo Estado en tabla Metadata → 'COMPLETADO'"
       - "Cambiar estado HU a [X] Completada en {{archivos.backlog}}"
       - "SI Multi-Proyecto → Actualizar contadores en sección 'Resumen por Proyecto'"
       - "Agregar entrada final en Historial de Ejecución (incluir columna Proyecto)"
 
 actualizacion_tiempo_real:
-  descripcion: "Plan se actualiza conforme se ejecuta para permitir retomar si se interrumpe"
-  al_iniciar_tarea: "[PENDIENTE]  [EN_PROGRESO]"
-  al_completar_paso: "[ ]  [X]"
-  al_completar_tarea: "[EN_PROGRESO]  [EJECUTADA] + entrada en Historial"
-  al_error: " [ERROR] + detalle en Historial"
-  al_finalizar: "Metadata Estado  COMPLETADO"
+  descripcion: "El archivo .md del plan DEBE ser editado (escritura en disco) en cada transición. NO es una anotación mental — es una operación de edición de archivo."
+  instrucciones_imperativas:
+    - "EDITAR ARCHIVO del plan al iniciar tarea: reemplazar texto '[PENDIENTE]' → '[EN_PROGRESO]' en la línea #### T[N]"
+    - "EDITAR ARCHIVO del plan al completar paso: reemplazar texto '- [ ]' → '- [X]' en la línea del paso"
+    - "EDITAR ARCHIVO del plan al completar tarea: reemplazar texto '[EN_PROGRESO]' → '[EJECUTADA]' en la línea #### T[N]"
+    - "EDITAR ARCHIVO del plan al error: reemplazar estado actual → '[ERROR]' en la línea #### T[N]"
+    - "EDITAR ARCHIVO del plan al finalizar: cambiar campo Estado en tabla Metadata a 'COMPLETADO'"
+  frecuencia: "Después de CADA tarea, NO al final de todas las fases"
+  verificacion: "Si al leer el plan las marcas no coinciden con lo ejecutado, DETENER y corregir antes de continuar"
 
 salida:
   archivos_actualizados:
