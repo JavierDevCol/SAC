@@ -9,11 +9,11 @@
 
 | Componente | Versión Actual | Última Actualización |
 |------------|----------------|----------------------|
-| **Sistema SAC** | 7.11.2 | 2026-04-25 |
-| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.11.2 | 2026-04-25 |
+| **Sistema SAC** | 7.11.3 | 2026-04-25 |
+| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.11.3 | 2026-04-25 |
 | **Configuración Usuario** (`config/CONFIG_USER.template.yaml`) | 7.9.0 | 2026-04-24 |
 | **Roles SAC** (`agentes/*.rol.md`) | 7.11.0 | 2026-04-24 |
-| **Herramientas** (`herramientas/*.tool.md`) | 7.11.2 | 2026-04-25 |
+| **Herramientas** (`herramientas/*.tool.md`) | 7.11.3 | 2026-04-25 |
 | **Plantillas** (`plantillas/`) | 7.10.0 | 2026-04-24 |
 | **Guía de Comandos** (`guias/guia_comandos.md`) | 7.3.0 | 2026-04-23 |
 | **Guía de Roles** (`guias/guia_roles_activos.md`) | 3.0 | 2026-01-05 |
@@ -22,6 +22,24 @@
 ---
 
 ## 🚀 Historial de Versiones
+
+### [7.11.3] - 2026-04-25
+
+#### 🐛 Fix: ejecutar_plan no actualizaba estados en archivo del plan
+
+**Causa raíz:** Las instrucciones de actualización usaban formato declarativo (diccionario YAML pasivo) que el LLM interpretaba como metadata, no como acción de edición de archivo. El verbo "marcar" era ambiguo — no implicaba escritura en disco.
+
+#### ✅ Cambios en Herramientas
+
+| Herramienta | Cambio |
+|-------------|--------|
+| `ejecutar_plan.tool.md` | Paso "Ejecutar Fases": acciones expandidas de array compacto a sub-pasos explícitos con verbo "EDITAR ARCHIVO" |
+| `ejecutar_plan.tool.md` | Campo `critico` añadido: pasos de edición del plan son BLOQUEANTES (no avanzar sin escribir) |
+| `ejecutar_plan.tool.md` | Sección `actualizacion_tiempo_real`: convertida de diccionario pasivo a `instrucciones_imperativas` con verbos explícitos |
+| `ejecutar_plan.tool.md` | Paso "Finalización": nueva verificación de coherencia — leer plan y confirmar que TODOS los estados coinciden antes de cerrar |
+| `ejecutar_plan.tool.md` | Versión 4.2 → 4.3 |
+
+---
 
 ### [7.11.2] - 2026-04-25
 
