@@ -9,12 +9,12 @@
 
 | Componente | Versión Actual | Última Actualización |
 |------------|----------------|----------------------|
-| **Sistema SAC** | 7.11.3 | 2026-04-25 |
-| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.11.3 | 2026-04-25 |
+| **Sistema SAC** | 7.12.0 | 2026-04-25 |
+| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.12.0 | 2026-04-25 |
 | **Configuración Usuario** (`config/CONFIG_USER.template.yaml`) | 7.9.0 | 2026-04-24 |
-| **Roles SAC** (`agentes/*.rol.md`) | 7.11.0 | 2026-04-24 |
-| **Herramientas** (`herramientas/*.tool.yaml`) | 7.11.3 | 2026-04-25 |
-| **Plantillas** (`plantillas/`) | 7.10.0 | 2026-04-24 |
+| **Roles SAC** (`agentes/*.rol.md`) | 7.12.0 | 2026-04-25 |
+| **Herramientas** (`herramientas/*.tool.yaml`) | 7.12.0 | 2026-04-25 |
+| **Plantillas** (`plantillas/`) | 7.12.0 | 2026-04-25 |
 | **Guía de Comandos** (`guias/guia_comandos.md`) | 7.3.0 | 2026-04-23 |
 | **Guía de Roles** (`guias/guia_roles_activos.md`) | 3.0 | 2026-01-05 |
 | **Guía Ciclo de Vida** (`guias/guia_ciclo_vida_tareas.md`) | 7.3.0 | 2026-04-23 |
@@ -22,6 +22,48 @@
 ---
 
 ## 🚀 Historial de Versiones
+
+### [7.12.0] - 2026-04-25
+
+#### 🔄 Refactor: Migrar herramientas de `.tool.md` a `.tool.yaml`
+
+**Objetivo:** Eliminar las 3 capas redundantes (frontmatter YAML + code block markdown + YAML body) en cada herramienta, pasando a YAML puro. El LLM consume el contenido idénticamente; la extensión ahora refleja el formato real del archivo.
+
+#### ✅ Cambios en Herramientas
+
+| Cambio | Detalle |
+|--------|--------|
+| 16 archivos `.tool.md` → `.tool.yaml` | Eliminados frontmatter (`---`) y code blocks (` ```yaml `) — YAML puro con campos `nombre`, `comando`, `alias`, `version` al nivel raíz |
+| `_base.tool.md` eliminado | Archivo deprecado desde v5.0, ya no necesario |
+| Plantilla `herramienta_plantilla.tool.md` → `.tool.yaml` | Instrucciones actualizadas para nuevo formato |
+
+#### ✅ Cambios en Roles
+
+| Archivo | Cambio |
+|---------|--------|
+| `_base.rol.md` | Línea de resolución: `.tool.md` → `.tool.yaml` |
+
+#### ✅ Cambios en Documentación
+
+| Archivo | Cambio |
+|---------|--------|
+| `docs/HERRAMIENTAS.md` | Todas las rutas de archivo actualizadas |
+| `docs/README_PLANTILLA.md` | Referencias a plantilla y extensión actualizadas |
+| `docs/estructura_directorio.md` | Árbol de directorio actualizado, `_base.tool` eliminado |
+| `docs/guias/guia_creacion_roles.md` | Instrucciones de creación actualizadas |
+| `INSTALACION/README.md` | Referencia a plantilla actualizada |
+| `README.md` | Contador de herramientas corregido (12→16) y extensión actualizada |
+
+#### 📊 Impacto
+
+| Métrica | Antes | Después |
+|---------|-------|---------|
+| Líneas redundantes por herramienta | ~8 (frontmatter + code blocks) | 0 |
+| Capas de estructura | 3 (frontmatter + md + yaml) | 1 (yaml puro) |
+| Archivos en `herramientas/` | 17 (.md) | 16 (.yaml) |
+| Mecanismo de carga (tokens) | Sin cambio | Sin cambio |
+
+---
 
 ### [7.11.3] - 2026-04-25
 
