@@ -1,4 +1,4 @@
-# 🛠️ Guía de Creación de Roles SAC
+﻿# 🛠️ Guía de Creación de Roles SAC
 
 > **Sistema:** SAC - Sistema Agéntico COCHAS  
 > **Versión:** 3.0  
@@ -231,8 +231,8 @@ Luego crea el activador VS Code en `.github/agents/seguridad.agent.md` (copia y 
 
 Si tu rol necesita herramientas nuevas:
 
-1. **Copia la plantilla** de `plantillas/herramienta_plantilla.tool.md`
-2. **Crea el archivo** en `herramientas/[nombre_herramienta].tool.md`
+1. **Copia la plantilla** de `plantillas/herramienta_plantilla.tool.yaml`
+2. **Crea el archivo** en `herramientas/[nombre_herramienta].tool.yaml`
 3. **Personaliza** el contenido según la necesidad
 4. **Regístrala** en `HERRAMIENTAS.md`
 
@@ -263,7 +263,7 @@ salida:
     - "[ruta/archivo_generado.md]"
 ```
 
-**📄 Plantilla completa:** Ver `plantillas/herramienta_plantilla.tool.md`
+**📄 Plantilla completa:** Ver `plantillas/herramienta_plantilla.tool.yaml`
 
 ---
 
@@ -429,12 +429,12 @@ Define qué hace el rol **automáticamente al activarse**.
 ```markdown
 | Nombre de la Herramienta | Comando | Agente principal | Ruta del Archivo |
 |--------------------------|---------|-----------------|------------------|
-| [Nombre] | `>[comando]` | [Agente] | `herramientas/[archivo].tool.md` |
+| [Nombre] | `>[comando]` | [Agente] | `herramientas/[archivo].tool.yaml` |
 ```
 
 **Ejemplo real:**
 ```markdown
-| Analizar Seguridad | `>analizar_seguridad` | Seguridad | `herramientas/analizar_seguridad.tool.md` |
+| Analizar Seguridad | `>analizar_seguridad` | Seguridad | `herramientas/analizar_seguridad.tool.yaml` |
 ```
 
 ---

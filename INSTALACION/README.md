@@ -1,4 +1,4 @@
-# 📦 Instalación de SAC v5.0
+﻿# 📦 Instalación de SAC v5.0
 
 > **SAC - Sistema Agéntico COCHAS**
 > Sistema de Orquestación de Agentes IA para GitHub Copilot
@@ -281,7 +281,7 @@ Asegúrate de que la carpeta destino exista antes de ejecutar el instalador.
 
 - Documentación completa: `ia_prompts/README.md`
 - Crear nuevos agentes: `.SAC/plantillas/agente_plantilla.agent.md`
-- Crear nuevas herramientas: `.SAC/plantillas/herramienta_plantilla.tool.md`
+- Crear nuevas herramientas: `.SAC/plantillas/herramienta_plantilla.tool.yaml`
 - Repositorio: https://github.com/JavierDevCol/SAC
 
 ---

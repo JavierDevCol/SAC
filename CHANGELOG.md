@@ -13,7 +13,7 @@
 | **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.11.3 | 2026-04-25 |
 | **Configuración Usuario** (`config/CONFIG_USER.template.yaml`) | 7.9.0 | 2026-04-24 |
 | **Roles SAC** (`agentes/*.rol.md`) | 7.11.0 | 2026-04-24 |
-| **Herramientas** (`herramientas/*.tool.md`) | 7.11.3 | 2026-04-25 |
+| **Herramientas** (`herramientas/*.tool.yaml`) | 7.11.3 | 2026-04-25 |
 | **Plantillas** (`plantillas/`) | 7.10.0 | 2026-04-24 |
 | **Guía de Comandos** (`guias/guia_comandos.md`) | 7.3.0 | 2026-04-23 |
 | **Guía de Roles** (`guias/guia_roles_activos.md`) | 3.0 | 2026-01-05 |

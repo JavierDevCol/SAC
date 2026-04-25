@@ -1,4 +1,4 @@
-# 🛠️ Herramientas del Sistema SAC
+﻿# 🛠️ Herramientas del Sistema SAC
 
 > **Versión:** 7.3.0  
 > **Última actualización:** 23 de abril de 2026
@@ -7,7 +7,7 @@
 
 ## 📋 Descripción
 
-Índice oficial de herramientas disponibles en el sistema SAC v7.3.0. Cada herramienta tiene un archivo `.tool.md` con su definición completa.
+Índice oficial de herramientas disponibles en el sistema SAC v7.3.0. Cada herramienta tiene un archivo `.tool.yaml` con su definición completa.
 
 ---
 
@@ -15,16 +15,16 @@
 
 | Herramienta | Comando | Roles Autorizados | Archivo |
 |-------------|---------|-------------------|---------|
-| Tomar Contexto | `>tomar_contexto` | ONAD, ARCHDEV, DEVOPS, REFINADOR | `herramientas/tomar_contexto.tool.md` |
-| Init Reglas Arquitectónicas | `>init_reglas_arquitectonicas` | ONAD | `herramientas/init_reglas_arquitectonicas.tool.md` |
-| Refinar HU | `>refinar_hu` | REFINADOR | `herramientas/refinar_hu.tool.md` |
-| Validar HU | `>validar_hu` | ONAD | `herramientas/validar_hu.tool.md` |
-| Planificar HU | `>planificar_hu` | ONAD | `herramientas/planificar_hu.tool.md` |
-| Ejecutar Plan | `>ejecutar_plan` | ARCHDEV | `herramientas/ejecutar_plan.tool.md` |
-| Crear Pruebas | `>crear_pruebas` | ARCHDEV | `herramientas/crear_pruebas.tool.md` |
-| Analizar Code Smells | `>analizar_code_smells` | ARCHDEV | `herramientas/analizar_code_smells.tool.md` |
-| Diagnosticar DevOps | `>diagnosticar_devops` | DEVOPS | `herramientas/diagnosticar_devops.tool.md` |
-| Generar Commit | `>generar_commit` | ARTESANO, ARCHDEV, DEVOPS, REFINADOR | `herramientas/generar_commit.tool.md` |
+| Tomar Contexto | `>tomar_contexto` | ONAD, ARCHDEV, DEVOPS, REFINADOR | `herramientas/tomar_contexto.tool.yaml` |
+| Init Reglas Arquitectónicas | `>init_reglas_arquitectonicas` | ONAD | `herramientas/init_reglas_arquitectonicas.tool.yaml` |
+| Refinar HU | `>refinar_hu` | REFINADOR | `herramientas/refinar_hu.tool.yaml` |
+| Validar HU | `>validar_hu` | ONAD | `herramientas/validar_hu.tool.yaml` |
+| Planificar HU | `>planificar_hu` | ONAD | `herramientas/planificar_hu.tool.yaml` |
+| Ejecutar Plan | `>ejecutar_plan` | ARCHDEV | `herramientas/ejecutar_plan.tool.yaml` |
+| Crear Pruebas | `>crear_pruebas` | ARCHDEV | `herramientas/crear_pruebas.tool.yaml` |
+| Analizar Code Smells | `>analizar_code_smells` | ARCHDEV | `herramientas/analizar_code_smells.tool.yaml` |
+| Diagnosticar DevOps | `>diagnosticar_devops` | DEVOPS | `herramientas/diagnosticar_devops.tool.yaml` |
+| Generar Commit | `>generar_commit` | ARTESANO, ARCHDEV, DEVOPS, REFINADOR | `herramientas/generar_commit.tool.yaml` |
 
 **Total:** 10 herramientas activas
 
@@ -96,8 +96,8 @@
 
 ## 🆕 Agregar Nueva Herramienta
 
-1. Copiar `plantillas/herramienta_plantilla.tool.md`
-2. Guardar en `herramientas/[nombre].tool.md`
+1. Copiar `plantillas/herramienta_plantilla.tool.yaml`
+2. Guardar en `herramientas/[nombre].tool.yaml`
 3. Actualizar esta tabla
 4. Verificar roles autorizados en los agentes correspondientes
 
@@ -107,7 +107,7 @@
 
 | Recurso | Ubicación |
 |---------|-----------|
-| Plantilla de herramienta | `plantillas/herramienta_plantilla.tool.md` |
+| Plantilla de herramienta | `plantillas/herramienta_plantilla.tool.yaml` |
 | Roles del sistema | `ROLES.md` |
 | Guía de comandos | `guias/guia_comandos.md` |
 

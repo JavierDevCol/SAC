@@ -73,7 +73,7 @@ Invoca un agente desde Copilot Chat y ejecuta herramientas:
 tu-proyecto/
 ├── .SAC/
 │   ├── agentes/        ← 6 roles SAC (*.rol.md)
-│   ├── herramientas/   ← 12 herramientas (*.tool.md)
+│   ├── herramientas/   ← 16 herramientas (*.tool.yaml)
 │   ├── plantillas/
 │   ├── config/
 │   └── reglas/

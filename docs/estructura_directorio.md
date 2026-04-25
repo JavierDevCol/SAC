@@ -1,4 +1,4 @@
-# Estructura del Directorio `ia_prompts`
+﻿# Estructura del Directorio `ia_prompts`
 
 > **Versión:** 7.3.0  
 > **Última actualización:** 23 de abril de 2026
@@ -51,19 +51,18 @@ ia_prompts/
 │   └── CONFIG_USER.template.yaml      # Plantilla de configuración de usuario
 │
 ├── 📁 herramientas/                   # Instrucciones de herramientas para IA
-│   ├── _base.tool.md                  # [DEPRECADO] — ver agentes/_base.rol.md
-│   ├── analizar_code_smells.tool.md   # >analizar_code_smells
-│   ├── analizar_stack.tool.md         # >analizar_stack
-│   ├── crear_pruebas.tool.md          # >crear_pruebas
-│   ├── diagnosticar_devops.tool.md    # >diagnosticar_devops
-│   ├── ejecutar_plan.tool.md          # >ejecutar_plan
-│   ├── generar_adr.tool.md            # >generar_adr
-│   ├── generar_commit.tool.md         # >generar_commit
-│   ├── init_reglas_arquitectonicas.tool.md # >init_reglas_arquitectonicas
-│   ├── planificar_hu.tool.md          # >planificar_hu
-│   ├── refinar_hu.tool.md             # >refinar_hu
-│   ├── tomar_contexto.tool.md         # >tomar_contexto
-│   └── validar_hu.tool.md             # >validar_hu
+│   ├── analizar_code_smells.tool.yaml   # >analizar_code_smells
+│   ├── analizar_stack.tool.yaml         # >analizar_stack
+│   ├── crear_pruebas.tool.yaml          # >crear_pruebas
+│   ├── diagnosticar_devops.tool.yaml    # >diagnosticar_devops
+│   ├── ejecutar_plan.tool.yaml          # >ejecutar_plan
+│   ├── generar_adr.tool.yaml            # >generar_adr
+│   ├── generar_commit.tool.yaml         # >generar_commit
+│   ├── init_reglas_arquitectonicas.tool.yaml # >init_reglas_arquitectonicas
+│   ├── planificar_hu.tool.yaml          # >planificar_hu
+│   ├── refinar_hu.tool.yaml             # >refinar_hu
+│   ├── tomar_contexto.tool.yaml         # >tomar_contexto
+│   └── validar_hu.tool.yaml             # >validar_hu
 │
 ├── 📁 INSTALACION/                    # Instalador del sistema
 │   ├── instalar.py                    # Script principal de instalación
@@ -104,7 +103,7 @@ ia_prompts/
     ├── agente_plantilla.agent.md
     ├── backlog_desarrollo_plantilla.md
     ├── contexto_proyecto_plantilla.md
-    ├── herramienta_plantilla.tool.md
+    ├── herramienta_plantilla.tool.yaml
     ├── plan_implementacion_plantilla.md
     ├── refinamiento_hu_plantilla.md
     ├── reglas_arquitectonicas_plantilla.md
@@ -120,7 +119,7 @@ ia_prompts/
 | `docs/` | Documentación de autor y usuario (guías, índices, ejemplos) | ❌ |
 | `agentes/` | Roles SAC — archivos `.rol.md` con personalidad e instrucciones para IA | ✅ |
 | `config/` | Configuración del sistema SAC (`CONFIG_SYSTEM.yaml`, `CONFIG_USER`) | ✅ |
-| `herramientas/` | Archivos `.tool.md` con instrucciones de herramientas para IA | ✅ |
+| `herramientas/` | Archivos `.tool.yaml` con instrucciones de herramientas para IA | ✅ |
 | `plantillas/` | Plantillas para generar artefactos del proyecto | ✅ |
 | `reglas/` | Reglas especializadas por tecnología (Mermaid, etc.) | ✅ |
 | `INSTALACION/` | Script de instalación, bootstrap global y activadores VS Code | ❌ |
@@ -133,7 +132,7 @@ ia_prompts/
 |-----------------|-----------|-----------|---------|
 | Rol SAC | `.rol.md` | IA | `arquitecto_onad.rol.md` |
 | Agente VS Code | `.agent.md` | VS Code + IA | `arquitecto.agent.md` |
-| Herramienta | `.tool.md` | IA | `refinar_hu.tool.md` |
+| Herramienta | `.tool.yaml` | IA | `refinar_hu.tool.yaml` |
 | Configuración | `.yaml` | Sistema | `CONFIG_SYSTEM.yaml` |
 | Documentación | `.md` | Humanos | `guia_comandos.md` |
 

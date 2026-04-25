@@ -1,4 +1,4 @@
-# 📘 Plantillas del Sistema COCHAS
+﻿# 📘 Plantillas del Sistema COCHAS
 
 > **Versión:** 7.0  
 > **Última actualización:** 13 de febrero de 2026
@@ -7,7 +7,7 @@
 
 ## 🎯 Propósito
 
-Este documento es el **índice central** de plantillas para crear nuevos roles (`.agent.md`) y herramientas (`.tool.md`) en el sistema COCHAS v4.0.
+Este documento es el **índice central** de plantillas para crear nuevos roles (`.agent.md`) y herramientas (`.tool.yaml`) en el sistema COCHAS v4.0.
 
 ---
 
@@ -16,7 +16,7 @@ Este documento es el **índice central** de plantillas para crear nuevos roles (
 ```
 plantillas/
 ├── agente_plantilla.agent.md          # Plantilla para roles/agentes
-├── herramienta_plantilla.tool.md      # Plantilla para herramientas
+├── herramienta_plantilla.tool.yaml      # Plantilla para herramientas
 ├── backlog_desarrollo_plantilla.md    # Plantilla para backlog de HU
 ├── contexto_proyecto_plantilla.md     # Plantilla para contexto de proyecto
 ├── refinamiento_hu_plantilla.md       # Plantilla para refinamientos de HU
@@ -47,11 +47,11 @@ La plantilla de agentes incluye:
 
 ---
 
-## 🔧 Plantilla: Herramienta (`.tool.md`)
+## 🔧 Plantilla: Herramienta (`.tool.yaml`)
 
-> **Ubicación destino:** `herramientas/[nombre].tool.md`  
+> **Ubicación destino:** `herramientas/[nombre].tool.yaml`  
 > **Audiencia:** IA  
-> **📄 Plantilla completa:** `plantillas/herramienta_plantilla.tool.md`
+> **📄 Plantilla completa:** `plantillas/herramienta_plantilla.tool.yaml`
 
 La plantilla de herramientas incluye:
 
@@ -78,8 +78,8 @@ La plantilla de herramientas incluye:
 
 ### Crear una Nueva Herramienta
 
-1. **Copiar plantilla** desde `plantillas/herramienta_plantilla.tool.md`
-2. **Guardar** en `herramientas/[nombre].tool.md`
+1. **Copiar plantilla** desde `plantillas/herramienta_plantilla.tool.yaml`
+2. **Guardar** en `herramientas/[nombre].tool.yaml`
 3. **Rellenar** todas las secciones marcadas con `[placeholder]`
 4. **Definir** proceso paso a paso con `obligatorio: true|false`
 5. **⚠️ MANTENER** el `paso_final` de actualización de sesión
@@ -106,7 +106,7 @@ La plantilla de herramientas incluye:
 | `escalamiento` | ⚠️ Opcional | Delegación a otros roles |
 | `actualizacion_estado` | ✅ | Registro de eventos en sesión |
 
-### Para Herramientas (.tool.md)
+### Para Herramientas (.tool.yaml)
 
 | Sección | Obligatoria | Notas |
 |---------|-------------|-------|
@@ -126,9 +126,9 @@ La plantilla de herramientas incluye:
 | Recurso | Ubicación |
 |---------|-----------|
 | **Plantilla de agente** | `plantillas/agente_plantilla.agent.md` |
-| **Plantilla de herramienta** | `plantillas/herramienta_plantilla.tool.md` |
+| **Plantilla de herramienta** | `plantillas/herramienta_plantilla.tool.yaml` |
 | Roles existentes | `agentes/*.agent.md` |
-| Herramientas existentes | `herramientas/*.tool.md` |
+| Herramientas existentes | `herramientas/*.tool.yaml` |
 | Índice de roles | `ROLES.md` |
 | Índice de herramientas | `HERRAMIENTAS.md` |
 | Guía de creación de roles | `guias/guia_creacion_roles.md` |
@@ -142,6 +142,6 @@ La plantilla de herramientas incluye:
 |---------|-------|---------|
 | 4.3 | 6 ene 2026 | Esqueleto de agente movido a `plantillas/agente_plantilla.agent.md`, README convertido en índice |
 | 4.2 | 6 ene 2026 | Añadida sección `niveles` (opcional), documentado `escalamiento` como opcional |
-| 4.1 | 6 ene 2026 | Esqueleto de herramienta movido a `plantillas/herramienta_plantilla.tool.md` |
+| 4.1 | 6 ene 2026 | Esqueleto de herramienta movido a `plantillas/herramienta_plantilla.tool.yaml` |
 | 4.0 | 6 ene 2026 | Rediseño completo para formato YAML v4.0 |
 | 2.0 | 13 oct 2025 | Versión anterior con plantillas MD |
