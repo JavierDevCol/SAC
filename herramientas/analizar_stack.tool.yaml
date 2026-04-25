@@ -1,17 +1,15 @@
----
-nombre: "Analizar Stack Tecnológico"
+﻿# Herramienta: Analizar Stack TecnolÃ³gico
+nombre: "Analizar Stack TecnolÃ³gico"
 comando: ">analizar_stack"
 alias: [">stack", ">ts", ">tomar_stack"]
 version: "1.0"
----
 
-```yaml
 mandatory:
   - instruccion: "SIEMPRE solicitar ruta_proyecto si no se proporciona"
   - instruccion: "Ejecutar algoritmo completo de {{reglas.deteccion_stack}}"
-  - instruccion: "Calcular confidence score para cada detección"
-  - instruccion: "SI confidence < 0.6: agregar warning y solicitar confirmación al usuario"
-  - instruccion: "Actualizar sección '## 2. Stack Tecnológico' en el contexto del proyecto activo (ver {{archivos.workspace}})"
+  - instruccion: "Calcular confidence score para cada detecciÃ³n"
+  - instruccion: "SI confidence < 0.6: agregar warning y solicitar confirmaciÃ³n al usuario"
+  - instruccion: "Actualizar secciÃ³n '## 2. Stack TecnolÃ³gico' en el contexto del proyecto activo (ver {{archivos.workspace}})"
 
 # ============================================
 # CONDICIONES DE ENTRADA
@@ -20,7 +18,7 @@ condiciones_entrada:
   - condicion: "Ruta del proyecto a analizar"
 
 # ============================================
-# PARÁMETROS
+# PARÃMETROS
 # ============================================
 parametros:
   requeridos:
@@ -32,14 +30,14 @@ parametros:
       tipo: string
       valores: [basico, completo, exhaustivo]
       defecto: exhaustivo
-      descripcion: "Nivel de profundidad del análisis"
+      descripcion: "Nivel de profundidad del anÃ¡lisis"
     - nombre: "force"
       tipo: flag
       descripcion: "Regenerar archivo de stack aunque ya exista"
     - nombre: "incluir_dependencias"
       tipo: boolean
       defecto: true
-      descripcion: "Incluir análisis detallado de dependencias"
+      descripcion: "Incluir anÃ¡lisis detallado de dependencias"
 reglas_delegadas:
   deteccion: "{{reglas.deteccion_stack}}"
   secciones_usadas:
@@ -51,14 +49,14 @@ reglas_delegadas:
     - "fallback"              
     - "output"               
 proceso:
-  - paso: "Inicialización de Parámetros"
+  - paso: "InicializaciÃ³n de ParÃ¡metros"
     obligatorio: true
     acciones:
       - "Verificar que ruta_proyecto fue proporcionado"
-      - "SI ruta_proyecto vacío → PREGUNTAR al usuario la ruta"
+      - "SI ruta_proyecto vacÃ­o â†’ PREGUNTAR al usuario la ruta"
       - "Establecer valores por defecto: profundidad='exhaustivo', incluir_dependencias=true"
-      - "Mostrar resumen compacto de configuración activa:"
-      - "  ⚙️ Configuración: profundidad=[valor] | dependencias=[sí/no]"
+      - "Mostrar resumen compacto de configuraciÃ³n activa:"
+      - "  âš™ï¸ ConfiguraciÃ³n: profundidad=[valor] | dependencias=[sÃ­/no]"
       - "  Personaliza con: >analizar_stack --profundidad basico --incluir_dependencias false"
     si_error:
       ruta_no_proporcionada: "Solicitar ruta del proyecto al usuario antes de continuar"
@@ -73,11 +71,11 @@ proceso:
     validaciones:
       - condicion: "NO existe {{archivos.workspace}}"
         si_cumple: "Informar: 'No existe workspace. Ejecutar >tomar_contexto primero'"
-        si_no_cumple: "Continuar con análisis"
+        si_no_cumple: "Continuar con anÃ¡lisis"
     si_error:
-      ruta_invalida: "❌ La ruta especificada no existe o no es accesible"
+      ruta_invalida: "âŒ La ruta especificada no existe o no es accesible"
 
-  - paso: "Ejecutar Algoritmo de Detección de Stack"
+  - paso: "Ejecutar Algoritmo de DetecciÃ³n de Stack"
     obligatorio: true
     delegar_a: "{{reglas.deteccion_stack}}.proceso"
     descripcion: "Ejecutar el algoritmo completo definido en las rules"
@@ -102,8 +100,8 @@ proceso:
     obligatorio: false
     condicion: "incluir_dependencias=true AND profundidad IN [completo, exhaustivo]"
     acciones:
-      - "Leer archivo de dependencias según ecosistema detectado"
-      - "Categorizar: producción vs desarrollo"
+      - "Leer archivo de dependencias segÃºn ecosistema detectado"
+      - "Categorizar: producciÃ³n vs desarrollo"
       - "Detectar dependencias de seguridad (auth, crypto)"
       - "Identificar dependencias de testing"
       - "SI profundidad='exhaustivo': detectar dependencias obsoletas"
@@ -113,30 +111,30 @@ proceso:
         desarrollo: ["dep@version"]
         seguridad: ["dep@version"]
         testing: ["dep@version"]
-      warnings: ["Lista de dependencias potencialmente problemáticas"]
+      warnings: ["Lista de dependencias potencialmente problemÃ¡ticas"]
 
   - paso: "Validar Confidence y Confirmar"
     obligatorio: true
     acciones:
       - "Obtener confidence de stack_detectado.metadata.confidence"
       - "SI confidence < 0.6: Mostrar WARNING con top 3 ecosistemas"
-      - "SI confidence < 0.6: Solicitar confirmación al usuario"
+      - "SI confidence < 0.6: Solicitar confirmaciÃ³n al usuario"
       - "SI usuario rechaza: permitir especificar ecosistema manualmente"
     usar_de_rules:
       threshold: "{{reglas.deteccion_stack}}.proceso.paso_8.accion"
 
-  - paso: "Actualizar Sección Stack en Contexto"
+  - paso: "Actualizar SecciÃ³n Stack en Contexto"
     obligatorio: true
-    descripcion: "Actualiza la sección '## 2. Stack Tecnológico' en el contexto del proyecto"
+    descripcion: "Actualiza la secciÃ³n '## 2. Stack TecnolÃ³gico' en el contexto del proyecto"
     acciones:
       - "Obtener ruta del contexto activo desde {{archivos.workspace}}:"
       - "  - Mono-proyecto: {{artifacts.contextos_folder}}/contexto_proyecto.md"
       - "  - Multi-proyecto: {{artifacts.contextos_folder}}/contexto_proyecto_[nombre].md"
       - "SI existe el contexto:"
-      - "  Buscar sección '## 2. Stack Tecnológico'"
-      - "  Reemplazar contenido completo de la sección (hasta siguiente ##) con:"
+      - "  Buscar secciÃ³n '## 2. Stack TecnolÃ³gico'"
+      - "  Reemplazar contenido completo de la secciÃ³n (hasta siguiente ##) con:"
       - "    ### Resumen"
-      - "    | Categoría | Tecnología | Versión |"
+      - "    | CategorÃ­a | TecnologÃ­a | VersiÃ³n |"
       - "    | Lenguaje | {{stack.ecosistema}} | {{stack.version}} |"
       - "    | Framework | {{stack.framework}} | {{stack.framework_version}} |"
       - "    | Base de Datos | {{stack.database}} | {{stack.db_version}} |"
@@ -155,50 +153,49 @@ proceso:
 # SALIDA
 # ============================================
 salida:
-  descripcion: "Actualiza sección Stack en el contexto del proyecto activo"
+  descripcion: "Actualiza secciÃ³n Stack en el contexto del proyecto activo"
   
   archivos_actualizados:
     - archivo: "{{artifacts.contextos_folder}}/contexto_proyecto[_nombre].md"
-      seccion: "## 2. Stack Tecnológico"
-      accion: "Reemplazar contenido de la sección"
+      seccion: "## 2. Stack TecnolÃ³gico"
+      accion: "Reemplazar contenido de la secciÃ³n"
   
   mensaje_exito: |
-    ✅ ANÁLISIS DE STACK COMPLETADO
+    âœ… ANÃLISIS DE STACK COMPLETADO
     
-    📊 Resumen:
+    ðŸ“Š Resumen:
     - Ecosistema: {{stack.ecosistema}} {{stack.version}}
     - Framework: {{stack.framework}} {{stack.framework_version}}
     - Tipo: {{stack.tipo_proyecto}}
     - Confidence: {{stack.confidence}}%
     
-    📄 Actualizado:
-    - Contexto del proyecto → Sección "## 2. Stack Tecnológico"
+    ðŸ“„ Actualizado:
+    - Contexto del proyecto â†’ SecciÃ³n "## 2. Stack TecnolÃ³gico"
     
-    ⚠️ Warnings: {{stack.metadata.warnings | default: "Ninguno"}}
+    âš ï¸ Warnings: {{stack.metadata.warnings | default: "Ninguno"}}
     
-    💡 Siguiente paso sugerido:
+    ðŸ’¡ Siguiente paso sugerido:
     - >planificar_hu (si hay HUs pendientes)
-    - >analizar_code_smells (análisis de calidad)
+    - >analizar_code_smells (anÃ¡lisis de calidad)
 
 # ============================================
 # ERRORES
 # ============================================
 errores:
-  ruta_no_proporcionada: {msg: "❌ Parámetro ruta_proyecto es obligatorio", accion: "Proporcionar ruta del proyecto a analizar"}
-  ruta_invalida: {msg: "❌ La ruta especificada no existe", accion: "Verificar que la ruta es correcta y accesible"}
-  sin_contexto: {msg: "⚠️ No existe workspace", accion: "Ejecutar >tomar_contexto primero para crear el workspace"}
+  ruta_no_proporcionada: {msg: "âŒ ParÃ¡metro ruta_proyecto es obligatorio", accion: "Proporcionar ruta del proyecto a analizar"}
+  ruta_invalida: {msg: "âŒ La ruta especificada no existe", accion: "Verificar que la ruta es correcta y accesible"}
+  sin_contexto: {msg: "âš ï¸ No existe workspace", accion: "Ejecutar >tomar_contexto primero para crear el workspace"}
   sin_marcadores: 
-    msg: "❌ No se detectaron archivos de configuración de proyecto"
+    msg: "âŒ No se detectaron archivos de configuraciÃ³n de proyecto"
     accion: "Aplicar {{reglas.deteccion_stack}}.fallback.sin_marcadores"
   error_lectura:
-    msg: "⚠️ No se pudo leer archivo marcador"
+    msg: "âš ï¸ No se pudo leer archivo marcador"
     accion: "Aplicar {{reglas.deteccion_stack}}.fallback.error_lectura"
   confidence_baja: 
-    msg: "⚠️ Confidence score bajo (<0.6)"
-    accion: "Mostrar top 3 ecosistemas y solicitar confirmación manual"
+    msg: "âš ï¸ Confidence score bajo (<0.6)"
+    accion: "Mostrar top 3 ecosistemas y solicitar confirmaciÃ³n manual"
 
 siguiente:
   - { comando: ">tomar_contexto", desc: "Generar contexto completo del proyecto", chat_agente: "archdev_pro" }
   - { comando: ">planificar_hu", desc: "Planificar historias de usuario", chat_agente: "refinador_hu" }
-  - { comando: ">analizar_code_smells", desc: "Detectar problemas de código", chat_agente: "archdev_pro" }
-```
+  - { comando: ">analizar_code_smells", desc: "Detectar problemas de cÃ³digo", chat_agente: "archdev_pro" }

@@ -1,11 +1,9 @@
-﻿---
+﻿# Herramienta: Planificar Historia de Usuario
 nombre: "Planificar Historia de Usuario"
 comando: ">planificar_hu"
 alias: [">planificar", ">plan_hu"]
 version: "4.1"
----
 
-```yaml
 mandatory:
   - instruccion: "Generar plan alineado con arquitectura del proyecto"
   - instruccion: "Incluir tareas de testing en el plan"
@@ -230,4 +228,3 @@ errores:
 
 siguiente:
   - {comando: ">ejecutar_plan [ID-HU]", desc: "Ejecutar el plan generado", chat_agente: "ArchDev Pro"}
-```

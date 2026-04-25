@@ -1,11 +1,9 @@
-﻿---
+﻿# Herramienta: Creación de Pruebas
 nombre: "Creación de Pruebas"
 comando: ">crear_pruebas"
 alias: [">crear-pruebas", ">tests"]
 version: "4.1"
----
 
-```yaml
 mandatory:
   - instruccion: "Generar tests ejecutables con patrón AAA (Arrange-Act-Assert)"
   - instruccion: "Incluir casos felices, de borde y de error"
@@ -101,4 +99,3 @@ errores:
 
 siguiente:
   - {comando: ">verifica_pruebas", desc: "Validar que los tests pasen correctamente", chat_agente: "ArchDev Pro"}
-```

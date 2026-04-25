@@ -1,0 +1,159 @@
+﻿# Herramienta: Registrar Pendiente
+nombre: "Registrar Pendiente"
+comando: ">registrar_pendiente"
+alias: [">pendiente", ">hallazgo"]
+version: "2.0"
+
+# ============================================
+# REGISTRAR PENDIENTE - Herramienta de IA
+# ============================================
+# Archivo: registrar_pendiente.tool.md
+# VersiÃ³n: 2.0
+# Disponible para: Arquitecto (exclusivo)
+# ============================================
+
+# ============================================
+# MANDATORY - INSTRUCCIONES INVIOLABLES
+# ============================================
+mandatory:
+  # === BASE ESTÃNDAR (NO MODIFICAR) ===
+  - instruccion: "Seguir el proceso paso a paso en orden secuencial"
+  - instruccion: "Validar prerequisitos antes de ejecutar"
+  - instruccion: "Los pasos marcados como obligatorio:true NO se pueden omitir"
+  - instruccion: "Nunca saltar proceso.paso_final"
+  # === CONFIGURACIÃ“N DE IDIOMA ===
+  - instruccion: "Generar TODOS los artefactos/documentos en el idioma definido en 'idiomas.documentacion'"
+  # === ESPECÃFICAS DE LA HERRAMIENTA ===
+  - instruccion: "Solo el Arquitecto puede ejecutar esta herramienta"
+  - instruccion: "Hallazgos de prioridad Alta deben reclasificarse como bug vÃ­a >registrar_bug"
+  - instruccion: "El ID del pendiente sigue el patrÃ³n PND-NNN (autoincremental)"
+  - instruccion: "Si el usuario adjunta logs o evidencia extensa, SIEMPRE crear archivo individual de detalle"
+  - instruccion: "Un pendiente puede evolucionar a HU funcional O a bug â€” no asumir que solo evoluciona a bug"
+
+# ============================================
+# PREREQUISITOS
+# ============================================
+condiciones_entrada:
+  - condicion: "El agente activo es Arquitecto"
+    si_no_cumple: "Esta herramienta es exclusiva del Arquitecto. El Desarrollador puede reportar bugs con >registrar_bug."
+
+# ============================================
+# PARÃMETROS
+# ============================================
+parametros:
+  requeridos:
+    - nombre: descripcion
+      tipo: string
+      descripcion: "QuÃ© se debe revisar, verificar, analizar o mejorar"
+  opcionales:
+    - nombre: categoria
+      tipo: string
+      valores: [deuda_tecnica, mejora_ux, optimizacion, verificacion, investigacion, con_evidencia]
+      defecto: null
+      descripcion: "CategorÃ­a del pendiente. Si se omite, se determina durante el proceso."
+    - nombre: hu_relacionada
+      tipo: string
+      descripcion: "ID de HU relacionada (ej: HU-003)"
+      defecto: null
+    - nombre: contexto
+      tipo: string
+      descripcion: "Contexto donde se originÃ³ el pendiente (prueba, revisiÃ³n, HU especÃ­fica)"
+      defecto: null
+    - nombre: logs
+      tipo: string
+      descripcion: "Logs, stack traces o evidencia para anÃ¡lisis posterior. Activa creaciÃ³n de archivo individual."
+      defecto: null
+
+# ============================================
+# PROCESO
+# ============================================
+proceso:
+  - paso: "RecepciÃ³n del Pendiente"
+    obligatorio: true
+    acciones:
+      - "Recopilar informaciÃ³n: descripciÃ³n de lo que se debe hacer/revisar/analizar"
+      - "SI falta la descripciÃ³n â†’ Solicitar al usuario"
+      - "Asignar ID autoincremental: leer {{artifacts.pendientes}} para obtener Ãºltimo PND-NNN y sumar 1"
+      - "Determinar nivel de detalle:"
+      - "  SI el usuario adjunta logs/evidencia â†’ Nivel DETALLADO (archivo individual)"
+      - "  SI el usuario proporciona descripciÃ³n extensa (>3 lÃ­neas) â†’ Nivel DETALLADO"
+      - "  SI NO â†’ Nivel RÃPIDO (solo fila en tabla)"
+
+  - paso: "EvaluaciÃ³n de Severidad"
+    obligatorio: true
+    acciones:
+      - "Evaluar si el pendiente deberÃ­a ser un bug:"
+      - "  SI afecta funcionalidad del sistema ACTUALMENTE â†’ Informar al usuario:"
+      - "  > âš ï¸ Esto parece afectar funcionalidad activa del sistema."
+      - "  > ðŸ¤· Â¿Reclasificar como bug?"
+      - "  > - ðŸ› [B] SÃ­, registrar como bug vÃ­a >registrar_bug"
+      - "  > - ðŸ“‹ [P] No, mantener como pendiente (para revisar despuÃ©s)"
+      - "SI se confirma como pendiente â†’ Continuar"
+      - "SI se reclasifica â†’ Detener y redirigir a >registrar_bug"
+
+  - paso: "CategorizaciÃ³n"
+    obligatorio: true
+    acciones:
+      - "SI el usuario proporcionÃ³ categorÃ­a â†’ Usar la indicada"
+      - "SI NO â†’ Determinar segÃºn la naturaleza del pendiente:"
+      - "  ðŸ”§ Deuda TÃ©cnica: CÃ³digo funcional pero mejorable (refactoring, patrones)"
+      - "  ðŸŽ¨ Mejora UX: Experiencia de usuario mejorable pero funcional"
+      - "  âš¡ OptimizaciÃ³n: Rendimiento mejorable pero aceptable"
+      - "  ðŸ” VerificaciÃ³n: Revisar correcto funcionamiento de algo (testing pendiente)"
+      - "  ðŸ§ª InvestigaciÃ³n: Analizar flujo, comportamiento o viabilidad de algo"
+      - "  ðŸ“Ž Con Evidencia: Incluye logs/datos que requieren anÃ¡lisis posterior"
+      - "NOTA: ðŸ“Ž Con Evidencia puede combinarse con otra categorÃ­a. En ese caso, usar la categorÃ­a funcional y marcar que tiene evidencia adjunta."
+      - "Asignar prioridad:"
+      - "  ðŸŸ¡ Baja: Puede esperar varias iteraciones"
+      - "  ðŸŸ  Media: DeberÃ­a abordarse en prÃ³ximas iteraciones"
+      - "  NOTA: Si la prioridad es Alta â†’ Reclasificar como bug"
+
+  - paso: "VinculaciÃ³n Opcional"
+    obligatorio: false
+    acciones:
+      - "SI el usuario proporcionÃ³ hu_relacionada â†’ Registrar la referencia"
+      - "SI NO â†’ Buscar brevemente en {{archivos.backlog}} HUs del mismo mÃ³dulo"
+      - "  SI encuentra candidata â†’ Preguntar si desea vincular"
+      - "  SI NO encuentra â†’ Dejar campo como 'â€”'"
+
+  - paso: "Registro en Archivo de Pendientes"
+    obligatorio: true
+    acciones:
+      - "SI NO existe {{artifacts.pendientes}} â†’ Crear archivo usando plantilla {{plantillas_folder}}/pendientes_plantilla.md"
+      - "SI existe â†’ Leer archivo actual"
+      - "Agregar nueva fila en la tabla de Registro con todos los campos completados"
+      - "Guardar {{artifacts.pendientes}}"
+
+  - paso: "GeneraciÃ³n de Archivo Individual (Condicional)"
+    obligatorio: false
+    condicion: "SI nivel es DETALLADO (logs adjuntos, descripciÃ³n extensa, o categorÃ­a ðŸ“Ž Con Evidencia)"
+    acciones:
+      - "Cargar plantilla desde {{plantillas_folder}}/pendiente_detalle_plantilla.md"
+      - "Completar secciones aplicables: Metadata, DescripciÃ³n, Evidencia/Logs, AnÃ¡lisis Previo"
+      - "Dejar secciÃ³n ResoluciÃ³n vacÃ­a (se completa al promover/reclasificar/descartar)"
+      - "Guardar en {{artifacts.pendientes_folder}}/PND-[ID]_[descripcion_kebab_case].md"
+
+salida:
+  archivos_generados:
+    ruta_tabla: "{{artifacts.pendientes}} (creado si no existÃ­a)"
+    ruta_detalle: "{{artifacts.pendientes_folder}}/PND-[ID]_[descripcion].md (solo si nivel DETALLADO)"
+  archivos_actualizados:
+    - "{{artifacts.pendientes}} (nueva entrada agregada)"
+  mensaje_exito: |
+    ðŸ“‹ PENDIENTE REGISTRADO
+    
+    ðŸ†” ID: PND-[NNN]
+    ðŸ“‚ CategorÃ­a: [categorÃ­a]
+    ðŸ”¢ Prioridad: [prioridad]
+    ðŸ”— HU Relacionada: [HU-XXX / â€”]
+    ðŸ“Ž Detalle: [SÃ­ â€” archivo individual creado / No â€” solo en tabla]
+    
+    ðŸ“„ Archivo: {{artifacts.pendientes}}
+  siguiente:
+    - { accion: "Continuar con la tarea actual", desc: "El pendiente queda registrado para abordar despuÃ©s" }
+    - { comando: ">registrar_bug", desc: "Si se detecta un hallazgo que SÃ afecte funcionalidad activa" }
+
+errores:
+  no_es_arquitecto: {msg: "âŒ Solo el Arquitecto puede registrar pendientes", accion: "Usar >registrar_bug si eres Desarrollador"}
+  hallazgo_es_bug: {msg: "âš ï¸ Este hallazgo afecta funcionalidad activa â€” debe ser bug", accion: "Redirigir a >registrar_bug"}
+  pendientes_folder_no_existe: {msg: "âš ï¸ La carpeta {{artifacts.pendientes_folder}} no existe", accion: "Crear la carpeta automÃ¡ticamente antes de guardar"}

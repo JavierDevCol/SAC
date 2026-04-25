@@ -1,11 +1,9 @@
-﻿---
+﻿# Herramienta: Analizar Code Smells
 nombre: "Analizar Code Smells"
 comando: ">analizar_code_smells"
 alias: [">smells", ">code_review"]
 version: "4.1"
----
 
-```yaml
 mandatory:
   - instruccion: "Clasificar smells por severidad (Alta/Media/Baja)"
   - instruccion: "Proponer solución específica para cada smell"
@@ -85,4 +83,3 @@ errores:
 
 siguiente:
   - {comando: ">solucionar_smells", desc: "Aplicar refactorings para resolver smells detectados", chat_agente: "ArchDev Pro"}
-```

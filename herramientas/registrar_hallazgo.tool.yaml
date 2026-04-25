@@ -1,0 +1,176 @@
+﻿# Herramienta: Registrar Hallazgo
+nombre: "Registrar Hallazgo"
+comando: ">registrar_hallazgo"
+alias: [">hallazgo"]
+version: "1.0"
+
+# ============================================
+# REGISTRAR HALLAZGO - Dispatcher de ClasificaciÃ³n
+# ============================================
+# Archivo: registrar_hallazgo.tool.md
+# VersiÃ³n: 1.0
+# Disponible para: Arquitecto y Desarrollador
+# ============================================
+# NOTA: Esta herramienta NO tiene proceso propio de registro.
+# Es un dispatcher que recopila informaciÃ³n, clasifica el
+# hallazgo y redirige a >registrar_bug o >registrar_pendiente
+# transfiriendo todo el contexto recopilado.
+# ============================================
+
+# ============================================
+# MANDATORY - INSTRUCCIONES INVIOLABLES
+# ============================================
+mandatory:
+  # === BASE ESTÃNDAR (NO MODIFICAR) ===
+  - instruccion: "Seguir el proceso paso a paso en orden secuencial"
+  - instruccion: "Validar prerequisitos antes de ejecutar"
+  - instruccion: "Los pasos marcados como obligatorio:true NO se pueden omitir"
+  # === ESPECÃFICAS DE LA HERRAMIENTA ===
+  - instruccion: "NUNCA registrar directamente â€” siempre redirigir a >registrar_bug o >registrar_pendiente"
+  - instruccion: "SIEMPRE confirmar la clasificaciÃ³n con el usuario antes de redirigir"
+  - instruccion: "Transferir TODO el contexto recopilado a la herramienta destino (la herramienta destino salta su Paso 1)"
+  - instruccion: "SI el agente activo es Desarrollador y clasifica como pendiente â†’ Informar que >registrar_pendiente es exclusivo del Arquitecto y registrar como bug o anotar para que el Arquitecto lo registre despuÃ©s"
+
+# ============================================
+# PARÃMETROS
+# ============================================
+parametros:
+  requeridos:
+    - nombre: descripcion
+      tipo: string
+      descripcion: "DescripciÃ³n libre del hallazgo tal como el usuario lo percibe"
+  opcionales:
+    - nombre: proyecto
+      tipo: string
+      descripcion: "Proyecto afectado (si se omite, se detecta del contexto activo)"
+      defecto: null
+    - nombre: logs
+      tipo: string
+      descripcion: "Logs, mensajes de consola, stack traces o evidencia"
+      defecto: null
+
+# ============================================
+# INDICADORES DE CLASIFICACIÃ“N
+# ============================================
+indicadores_clasificacion:
+  bug_probable:
+    keywords_error:
+      - "Error:", "error:", "ERROR"
+      - "blocked", "failed", "rejected", "refused"
+      - "not allowed", "forbidden", "unauthorized"
+      - "crash", "exception", "throw", "unhandled"
+      - "Cannot read", "undefined is not", "null reference"
+      - "status 4xx", "status 5xx", "500", "404", "403"
+    comportamiento:
+      - "Funcionalidad que antes funcionaba ya no funciona"
+      - "OperaciÃ³n bloqueada o imposible de completar"
+      - "Datos incorrectos, perdidos o corruptos"
+      - "RedirecciÃ³n inesperada o loop infinito"
+    severidad_implicita: "Media o superior"
+
+  pendiente_probable:
+    keywords_warning:
+      - "Warning:", "warning:", "WARN"
+      - "deprecated", "deprecation"
+      - "aria-", "accessibility", "a11y"
+      - "performance", "slow", "optimization"
+      - "TODO", "FIXME", "HACK"
+    comportamiento:
+      - "Funciona correctamente pero muestra warning"
+      - "Mejora visual o de UX sin impacto funcional"
+      - "Deuda tÃ©cnica identificada"
+      - "Revisar o verificar algo para mÃ¡s adelante"
+      - "Analizar flujo o comportamiento"
+    severidad_implicita: "Baja"
+
+  indeterminado:
+    condicion: "No se detectan keywords claros Y el comportamiento es ambiguo"
+    accion: "Preguntar al usuario con opciÃ³n [I] Investigar"
+
+# ============================================
+# PROCESO
+# ============================================
+proceso:
+  - paso: "RecepciÃ³n Universal"
+    obligatorio: true
+    acciones:
+      - "Recopilar descripciÃ³n del hallazgo tal como el usuario la proporciona"
+      - "Detectar proyecto del contexto activo (SI no se proporcionÃ³ explÃ­citamente)"
+      - "Preguntar por evidencia:"
+      - "  > ðŸ¤· Â¿Tienes logs, mensajes de error o evidencia para adjuntar?"
+      - "  > - ðŸ“Ž [S] SÃ­, los pego a continuaciÃ³n"
+      - "  > - âž¡ï¸ [N] No, continuar con lo que tengo"
+      - "SI [S] â†’ Recopilar logs y almacenar como contexto"
+
+  - paso: "ClasificaciÃ³n AutomÃ¡tica"
+    obligatorio: true
+    acciones:
+      - "Analizar descripciÃ³n y logs contra indicadores_clasificacion:"
+      - "  1. Buscar keywords de error â†’ Sumar puntos hacia 'bug'"
+      - "  2. Buscar keywords de warning â†’ Sumar puntos hacia 'pendiente'"
+      - "  3. Evaluar comportamiento descrito â†’ Â¿Bloquea funcionalidad?"
+      - "  4. SI hay error de runtime o funcionalidad rota â†’ Bug probable"
+      - "  5. SI hay warning sin impacto funcional â†’ Pendiente probable"
+      - "  6. SI no es claro â†’ Indeterminado"
+      - "Mostrar evaluaciÃ³n al usuario:"
+      - ""
+      - "  ðŸ” Analizando hallazgo..."
+      - "  Indicadores detectados:"
+      - "    [âœ…/âš ï¸/â“] [indicador 1]"
+      - "    [âœ…/âš ï¸/â“] [indicador 2]"
+      - "  ðŸ“Š EvaluaciÃ³n: [AFECTA FUNCIONALIDAD â†’ Bug / NO AFECTA â†’ Pendiente / INDETERMINADO]"
+
+  - paso: "ConfirmaciÃ³n del Usuario"
+    obligatorio: true
+    acciones:
+      - "SI clasificaciÃ³n = Bug probable:"
+      - "  > ðŸ¤· Este hallazgo parece un **bug** que afecta funcionalidad. Â¿Confirmas?"
+      - "  > - ðŸ› [B] SÃ­, es un bug â†’ continuar con registro de bug"
+      - "  > - ðŸ“‹ [P] No, es solo un pendiente para despuÃ©s"
+      - "SI clasificaciÃ³n = Pendiente probable:"
+      - "  > ðŸ¤· Este hallazgo parece un **pendiente** (no afecta funcionalidad). Â¿Confirmas?"
+      - "  > - ðŸ“‹ [P] SÃ­, registrar como pendiente para despuÃ©s"
+      - "  > - ðŸ› [B] No, realmente es un bug que afecta algo"
+      - "SI clasificaciÃ³n = Indeterminado:"
+      - "  > ðŸ¤· No puedo determinar si esto afecta funcionalidad. Â¿QuÃ© tipo de hallazgo es?"
+      - "  > - ðŸ› [B] Es un bug â€” algo no funciona correctamente"
+      - "  > - ðŸ“‹ [P] Es un pendiente â€” funciona pero podrÃ­a mejorar"
+      - "  > - ðŸ” [I] No sÃ© â€” necesito investigar primero"
+
+  - paso: "RedirecciÃ³n con Contexto"
+    obligatorio: true
+    acciones:
+      - "Preparar paquete de contexto recopilado:"
+      - "  contexto_transferido:"
+      - "    descripcion: [descripciÃ³n del usuario]"
+      - "    proyecto: [proyecto detectado o proporcionado]"
+      - "    logs: [logs/evidencia si se adjuntaron]"
+      - "    clasificacion_sugerida: [bug/pendiente/investigacion]"
+      - "SI respuesta = [B]:"
+      - "  Ejecutar >registrar_bug con contexto_transferido"
+      - "  La herramienta destino SALTA su Paso 1 (RecepciÃ³n) y continÃºa desde Paso 2 (ClasificaciÃ³n de Severidad)"
+      - "SI respuesta = [P]:"
+      - "  SI agente activo = Desarrollador:"
+      - "    Informar: 'ðŸ“‹ Los pendientes son responsabilidad del Arquitecto.'"
+      - "    > ðŸ¤· Â¿CÃ³mo proceder?"
+      - "    > - ðŸ› [B] Registrar como bug en su lugar (Desarrollador puede)"
+      - "    > - ðŸ“ [N] Anotar para que el Arquitecto lo registre despuÃ©s"
+      - "    SI [N] â†’ Mostrar resumen formateado para copiar al Arquitecto y TERMINAR"
+      - "  SI agente activo = Arquitecto:"
+      - "    Ejecutar >registrar_pendiente con contexto_transferido"
+      - "    La herramienta destino SALTA su Paso 1 (RecepciÃ³n) y continÃºa desde Paso 2 (EvaluaciÃ³n de Severidad)"
+      - "SI respuesta = [I]:"
+      - "  SI agente activo = Arquitecto:"
+      - "    Ejecutar >registrar_pendiente con contexto_transferido + categoria='investigacion'"
+      - "  SI agente activo = Desarrollador:"
+      - "    Informar y anotar para el Arquitecto (mismo flujo que [P] + [N])"
+
+salida:
+  nota: "Esta herramienta no genera archivos propios. La salida es la de la herramienta destino."
+  mensaje_redireccion: |
+    â†ªï¸ Redirigiendo a >[herramienta_destino]...
+       Contexto transferido: descripciÃ³n âœ… | proyecto âœ… | logs [âœ…/â€”]
+       Continuando desde Paso [N] de >[herramienta_destino]
+
+errores:
+  sin_descripcion: {msg: "âŒ Se requiere al menos una descripciÃ³n del hallazgo", accion: "Solicitar descripciÃ³n al usuario"}

@@ -1,11 +1,9 @@
-﻿---
+﻿# Herramienta: Generar Architecture Decision Record (ADR)
 nombre: "Generar Architecture Decision Record (ADR)"
 comando: ">generar_adr"
 alias: [">crear_adr", ">nuevo_adr", ">adr"]
 version: "2.3"
----
 
-```yaml
 objetivo: |
   Generar documentación formal de decisiones arquitectónicas siguiendo estándares ADR,
   soportando múltiples formatos, para mantener trazabilidad de decisiones técnicas críticas.
@@ -144,4 +142,3 @@ errores:
   error_escritura: {msg: " Error al guardar", accion: "Verificar permisos"}
 
 siguiente: "Artefacto final independiente - sin flujo siguiente obligatorio"
-```

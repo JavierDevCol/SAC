@@ -1,11 +1,9 @@
-﻿---
+﻿# Herramienta: Refinar Historia de Usuario
 nombre: "Refinar Historia de Usuario"
 comando: ">refinar_hu"
 alias: [">refinar", ">hu"]
 version: "4.1"
----
 
-```yaml
 mandatory:
   - instruccion: "Generar archivo de refinamiento ANTES de actualizar estado"
   - instruccion: "NUNCA aceptar criterios de aceptación no medibles"
@@ -193,4 +191,3 @@ errores:
 
 siguiente:
   - {comando: ">validar_hu [ID-HU]", desc: "Validación arquitectónica de la HU refinada", chat_agente: "Arquitecto Onad"}
-```

@@ -1,11 +1,9 @@
-﻿---
+﻿# Herramienta: Validar Historia de Usuario
 nombre: "Validar Historia de Usuario"
 comando: ">validar_hu"
 alias: [">validar", ">aprobar_hu"]
 version: "4.1"
----
 
-```yaml
 mandatory:
   - instruccion: "Verificar alineación con reglas arquitectónicas del proyecto"
   - instruccion: "NO aprobar HU que violen principios arquitectónicos"
@@ -160,4 +158,3 @@ errores:
 siguiente:
   - {comando: ">planificar_hu [ID-HU]", desc: "Si APROBADA - crear plan de implementación", chat_agente: "Arquitecto Onad"}
   - {comando: ">refinar_hu [ID-HU]", desc: "Si AJUSTES - aplicar observaciones", chat_agente: "Refinador HU"}
-```

@@ -1,11 +1,9 @@
-﻿---
+﻿# Herramienta: Ejecutar Plan de Implementación
 nombre: "Ejecutar Plan de Implementación"
 comando: ">ejecutar_plan"
 alias: [">ejecutar", ">implementar"]
 version: "4.3"
----
 
-```yaml
 mandatory:
   - instruccion: "Ejecutar tareas del plan en ORDEN ESTRICTO"
   - instruccion: "DETENERSE INMEDIATAMENTE ante cualquier error"
@@ -195,4 +193,3 @@ errores:
 
 siguiente:
   - {comando: ">generar_commit", desc: "Documentar cambios realizados", chat_agente: "Cronista de Cambios"}
-```

@@ -1,11 +1,9 @@
-﻿---
+﻿# Herramienta: Tomar Contexto
 nombre: "Tomar Contexto"
 comando: ">tomar_contexto"
 alias: [">contexto", ">tc"]
 version: "4.1"
----
 
-```yaml
 mandatory:
   - instruccion: "Detectar tipo de workspace (unico/multi) ANTES de analizar"
   - instruccion: "En multi-proyecto: workspace.md + contextos individuales"
@@ -162,4 +160,3 @@ errores:
   sin_marcadores: {msg: " No se detectó ningún proyecto", accion: "Verificar carpeta correcta"}
   si_proyecto_no_encontrado: {msg: " Proyecto '[nombre]' no encontrado", accion: "Ejecutar sin parámetros para listar"}
   workspace_existente: {msg: "ℹ Ya existe contexto", accion: "Preguntar al usuario si Usar --force para regenerar"}
-```

@@ -1,11 +1,9 @@
-﻿---
+﻿# Herramienta: Generar Commit
 nombre: "Generar Commit"
 comando: ">generar_commit"
 alias: [">commit", ">gc"]
 version: "4.1"
----
 
-```yaml
 mandatory:
   - instruccion: "Seguir especificación Conventional Commits estrictamente"
   - instruccion: "Usar modo imperativo (Añadir, no Añadido)"
@@ -100,19 +98,3 @@ proceso:
 salida:
   mensaje_exito: |
      Mensaje de Commit Generado
-    ```
-    [tipo](alcance): descripción
-    
-    [cuerpo opcional]
-    ```
-     Ejecutar: git commit -m "[mensaje]"
-
-errores:
-  sin_repositorio: {msg: " No se encuentra repositorio git", accion: "Verificar git init"}
-  diff_vacio: {msg: "ℹ No hay cambios pendientes", accion: "Verificar git status"}
-  titulo_muy_largo: {msg: " Título excede 72 chars", accion: "Acortar manteniendo palabras clave"}
-
-siguiente:
-  - {accion: "git commit -m '[mensaje]'", desc: "Aplicar el commit generado"}
-  - {accion: "git add . && git commit -m '[mensaje]'", desc: "Agregar cambios y commitear"}
-```

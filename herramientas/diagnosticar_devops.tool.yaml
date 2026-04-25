@@ -1,10 +1,9 @@
-﻿---
+﻿# Herramienta: Diagnosticar DevOps
 nombre: "Diagnosticar DevOps"
 comando: ">diagnosticar_devops"
 alias: [">diagnostico", ">madurez_devops"]
----
+version: ""
 
-```yaml
 mandatory:
   - instruccion: "Evaluar TODAS las áreas antes del diagnóstico"
   - instruccion: "Priorizar backlog por impacto/esfuerzo"
@@ -118,4 +117,3 @@ errores:
 siguiente:
   - {accion: "Implementar Quick Win #1", desc: "Mayor impacto/menor esfuerzo"}
   - {comando: ">tomar_contexto", desc: "Generar contexto completo"}
-```
