@@ -2,7 +2,7 @@
 
 ## Pasos para Crear una Nueva Herramienta
 
-1. **Copiar este archivo** a `herramientas/[nombre].tool.md`
+1. **Copiar este archivo** a `herramientas/[nombre].tool.yaml`
 2. **Reemplazar todos los `[placeholders]`** con valores reales
 3. **Personalizar las instrucciones mandatory** específicas
 4. **Definir el proceso** con los pasos necesarios
@@ -22,20 +22,16 @@
 
 ---
 
-## 🔧 Esqueleto: Herramienta (`.tool.md`)
----
-nombre: [NOMBRE_HERRAMIENTA]
-comando: [COMANDO_ACTIVACION]
-alias: [COMANDOS SINONIMOS QUE ACTIVANLA HERRRAMIENTA]
----
-Cuerpo prompt de la herramienta en formato yaml: 
+## 🔧 Esqueleto: Herramienta (`.tool.yaml`)
+
+> El archivo `.tool.yaml` es YAML puro. Los campos `nombre`, `comando`, `alias` y `version` van al nivel raíz del archivo (sin frontmatter ni code blocks).
+
 ```yaml
-# ============================================
-# [NOMBRE HERRAMIENTA] - Herramienta de IA
-# ============================================
-# Archivo: [nombre_herramienta].tool.md
-# Versión: 1.0
-# ============================================
+# Herramienta: [NOMBRE_HERRAMIENTA]
+nombre: "[NOMBRE_HERRAMIENTA]"
+comando: "[COMANDO_ACTIVACION]"
+alias: [">alias1", ">alias2"]
+version: "1.0"
 
 # ============================================
 # MANDATORY - INSTRUCCIONES INVIOLABLES
