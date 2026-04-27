@@ -1,4 +1,4 @@
-﻿# 📦 Instalación de SAC v5.0
+﻿# 📦 Instalación de SAC v7.14.0
 
 > **SAC - Sistema Agéntico COCHAS**
 > Sistema de Orquestación de Agentes IA para GitHub Copilot
@@ -11,13 +11,30 @@
 
 **Windows (PowerShell):**
 ```powershell
-irm https://raw.githubusercontent.com/JavierDevCol/SAC/main/INSTALACION/bootstrap/install.ps1 | iex
+irm https://github.com/JavierDevCol/SAC/releases/latest/download/install.ps1 | iex
 ```
 
 **Linux/Mac (Bash):**
 ```bash
-curl -fsSL https://raw.githubusercontent.com/JavierDevCol/SAC/main/INSTALACION/bootstrap/install.sh | bash
+curl -fsSL https://github.com/JavierDevCol/SAC/releases/latest/download/install.sh | bash
 ```
+
+> 💡 **Instalación segura** (descargar, revisar, ejecutar):
+> ```powershell
+> # Windows
+> Invoke-WebRequest -Uri "https://github.com/JavierDevCol/SAC/releases/latest/download/install.ps1" -OutFile install.ps1
+> Get-Content install.ps1   # Revisar contenido
+> .\install.ps1
+> ```
+> ```bash
+> # Linux/Mac
+> curl -fsSL -o install.sh https://github.com/JavierDevCol/SAC/releases/latest/download/install.sh
+> cat install.sh            # Revisar contenido
+> chmod +x install.sh && ./install.sh
+> ```
+
+> 📌 **Versión fija** — reemplaza `latest` por el tag deseado:
+> `https://github.com/JavierDevCol/SAC/releases/download/v7.14.0/install.ps1`
 
 Esto:
 1. Clona el repositorio en caché del sistema

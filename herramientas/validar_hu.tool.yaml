@@ -2,12 +2,13 @@
 nombre: "Validar Historia de Usuario"
 comando: ">validar_hu"
 alias: [">validar", ">aprobar_hu"]
-version: "4.1"
+version: "4.2"
 
 mandatory:
   - instruccion: "Verificar alineación con reglas arquitectónicas del proyecto"
   - instruccion: "NO aprobar HU que violen principios arquitectónicos"
   - instruccion: "Documentar razones de rechazo o ajustes requeridos"
+  - instruccion: "Verificar dependencias (HUs, APIs, recursos) antes de aprobar"
 
 condiciones_entrada:
   - condicion: "HU en estado [R] Refinada"
@@ -30,6 +31,14 @@ parametros:
 veredictos:
   aprobada: {estado: "[A] Aprobada", siguiente: ">planificar_hu [ID-HU]"}
   ajustes: {estado: "[R] Refinada + observaciones", siguiente: ">refinar_hu [ID-HU]"}
+  bloqueada:
+    estado: "[B] Bloqueada"
+    siguiente: "Resolver dependencia antes de revalidar"
+    tipos_bloqueo:
+      - DEPENDENCIA_HU: "Requiere otra HU del backlog completada"
+      - DEPENDENCIA_EXTERNA: "Requiere sistema/API externa no disponible"
+      - DECISION_PENDIENTE: "Requiere decisión arquitectónica (ADR)"
+      - RECURSO_NO_DISPONIBLE: "Falta infraestructura o acceso"
   rechazada: {estado: "[B] Bloqueada", siguiente: "Requiere rediseño significativo"}
 
 proceso:
@@ -110,13 +119,30 @@ proceso:
       - "Es coherente con el contexto técnico documentado"
       - "No contradice decisiones arquitectónicas previas (ADRs)"
 
+  - paso: "Verificación de Dependencias"
+    obligatorio: true
+    acciones:
+      - "Extraer dependencias explícitas del refinamiento y CA (APIs, HUs prerequisito, recursos)"
+      - "Verificar en backlog si HUs dependientes están en estado [X] Completada"
+      - "Verificar si endpoints/APIs requeridos existen (según contexto del proyecto)"
+      - "SI hay dependencias no resueltas → Clasificar según tipo:"
+      - "  DEPENDENCIA_HU: Requiere otra HU del backlog completada"
+      - "  DEPENDENCIA_EXTERNA: Requiere sistema/API externa no disponible"
+      - "  DECISION_PENDIENTE: Requiere decisión arquitectónica (ADR)"
+      - "  RECURSO_NO_DISPONIBLE: Falta infraestructura o acceso"
+      - "SI bloqueante → Emitir veredicto 'bloqueada' con tipo y acción requerida para desbloquear"
+    comportamiento:
+      sin_dependencias: "Continuar al siguiente paso"
+      con_dependencias_resueltas: "Continuar al siguiente paso (documentar como nota informativa)"
+      con_dependencias_no_resueltas: "Veredicto BLOQUEADA — no continuar a viabilidad ni emisión"
+
   - paso: "Análisis de Viabilidad Técnica"
     obligatorio: true
     acciones: ["Evaluar complejidad de implementación", "Identificar riesgos técnicos", "Validar estimación propuesta"]
 
   - paso: "Emisión de Veredicto"
     obligatorio: true
-    acciones: ["Determinar resultado: APROBADA | AJUSTES | RECHAZADA", "Documentar razones detalladas", "Actualizar estado según veredictos"]
+    acciones: ["Determinar resultado: APROBADA | AJUSTES | BLOQUEADA | RECHAZADA", "Documentar razones detalladas", "Actualizar estado según veredictos"]
 
   - paso: "Persistir Aprobación en Refinamiento"
     obligatorio: true
@@ -139,6 +165,23 @@ proceso:
     condicion: "resultado == AJUSTES"
     acciones: ["Agregar sección '## Feedback de Validación' en refinamiento", "Incluir fecha, iteración, observaciones pendientes", "Marcar como [ ] pendientes de resolver"]
 
+  - paso: "Persistir Bloqueo"
+    obligatorio: true
+    condicion: "resultado == BLOQUEADA"
+    acciones:
+      - "Abrir archivo {{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento*.md"
+      - "Agregar sección '## Bloqueo de Validación' al final del archivo"
+      - "Rellenar con:"
+      - "  | Campo | Valor |"
+      - "  |-------|-------|"
+      - "  | **Estado** | 🚫 Bloqueada |"
+      - "  | **Tipo bloqueo** | [DEPENDENCIA_HU|DEPENDENCIA_EXTERNA|DECISION_PENDIENTE|RECURSO_NO_DISPONIBLE] |"
+      - "  | **Bloqueado por** | [Descripción: HU-XXX / endpoint / decisión / recurso] |"
+      - "  | **Acción requerida** | [Qué debe ocurrir para desbloquear] |"
+      - "  | **Fecha bloqueo** | [FECHA_ISO_8601] |"
+      - "Actualizar estado en backlog a [B] Bloqueada con motivo"
+    nota: "Permite a >sincronizar_backlog deducir el estado [B] y el motivo desde artefactos"
+
 salida:
   archivos_actualizados: ["{{archivos.backlog}}", "{{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md"]
   mensaje_aprobada: |
@@ -149,6 +192,12 @@ salida:
      HU REQUIERE AJUSTES: [ID-HU]
      Feedback en: {{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md
      Siguiente: >refinar_hu [ID-HU] (Refinador HU)
+  mensaje_bloqueada: |
+    🚫 HU BLOQUEADA: [ID-HU]
+     Tipo: [TIPO_BLOQUEO]
+     Motivo: [descripción de la dependencia no resuelta]
+     Acción requerida: [qué debe ocurrir para desbloquear]
+     Revalidar con: >validar_hu [ID-HU] (cuando se resuelva)
 
 errores:
   hu_no_encontrada: {msg: " HU [id_hu] no encontrada", accion: "Verificar ID y ejecutar *HU para listar"}
@@ -158,3 +207,4 @@ errores:
 siguiente:
   - {comando: ">planificar_hu [ID-HU]", desc: "Si APROBADA - crear plan de implementación", chat_agente: "Arquitecto Onad"}
   - {comando: ">refinar_hu [ID-HU]", desc: "Si AJUSTES - aplicar observaciones", chat_agente: "Refinador HU"}
+  - {comando: ">validar_hu [ID-HU]", desc: "Si BLOQUEADA - revalidar cuando se resuelva la dependencia", chat_agente: "Arquitecto Onad"}
