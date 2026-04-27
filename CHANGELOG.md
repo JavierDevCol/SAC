@@ -9,8 +9,8 @@
 
 | Componente | Versión Actual | Última Actualización |
 |------------|----------------|----------------------|
-| **Sistema SAC** | 7.13.0 | 2026-04-27 |
-| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.13.0 | 2026-04-27 |
+| **Sistema SAC** | 7.14.0 | 2026-04-27 |
+| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.14.0 | 2026-04-27 |
 | **Configuración Usuario** (`config/CONFIG_USER.template.yaml`) | 7.9.0 | 2026-04-24 |
 | **Roles SAC** (`agentes/*.rol.md`) | 7.12.0 | 2026-04-25 |
 | **Herramientas** (`herramientas/*.tool.yaml`) | 7.13.0 | 2026-04-27 |
@@ -22,6 +22,34 @@
 ---
 
 ## 🚀 Historial de Versiones
+
+### [7.14.0] - 2026-04-27
+
+#### 📦 Feat: Instalación vía GitHub Releases con sistema de tags versionados
+
+**Objetivo:** Migrar los enlaces de instalación bootstrap de `raw.githubusercontent.com/main` (mutable, con caching agresivo) a **GitHub Releases** con tags inmutables, e incorporar documentación completa de instalación remota, actualización y seguridad en la página pública de MkDocs.
+
+#### ✅ Cambios en Documentación
+
+| Cambio | Detalle |
+|--------|--------|
+| `docs/INSTALACION.md` — Opción 1: Bootstrap desde GitHub | Nuevo; un solo comando vía `releases/latest/download/` |
+| `docs/INSTALACION.md` — Opción 2: Instalación Segura | Nuevo; flujo descargar → revisar → ejecutar para entornos corporativos |
+| `docs/INSTALACION.md` — Sección Releases y Versionado | Nuevo; explica `latest` vs tag fijo con tabla comparativa |
+| `docs/INSTALACION.md` — Consideraciones de Seguridad | Nuevo; tabla de riesgos y mitigaciones |
+| `docs/INSTALACION.md` — Actualización y upgrade-all | Nuevo; comandos `sac --update` y `sac --upgrade-all` |
+| `docs/INSTALACION.md` — Más Información expandida | Tabla de recursos con links a GitHub, issues y releases |
+| `INSTALACION/README.md` — URLs bootstrap | Migradas de `raw.githubusercontent.com/main` a `releases/latest/download/` |
+| `INSTALACION/README.md` — Instalación segura | Nuevo bloque con flujo descargar-revisar-ejecutar |
+| `INSTALACION/README.md` — Versión fija | Nuevo; ejemplo de pinning a tag específico |
+
+#### ✅ Cambios en Configuración
+
+| Cambio | Detalle |
+|--------|--------|
+| `CONFIG_SYSTEM.yaml` | version 7.13.0 → 7.14.0 |
+
+---
 
 ### [7.13.0] - 2026-04-27
 
