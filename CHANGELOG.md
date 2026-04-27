@@ -9,11 +9,11 @@
 
 | Componente | Versión Actual | Última Actualización |
 |------------|----------------|----------------------|
-| **Sistema SAC** | 7.12.0 | 2026-04-25 |
-| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.12.0 | 2026-04-25 |
+| **Sistema SAC** | 7.13.0 | 2026-04-27 |
+| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.13.0 | 2026-04-27 |
 | **Configuración Usuario** (`config/CONFIG_USER.template.yaml`) | 7.9.0 | 2026-04-24 |
 | **Roles SAC** (`agentes/*.rol.md`) | 7.12.0 | 2026-04-25 |
-| **Herramientas** (`herramientas/*.tool.yaml`) | 7.12.0 | 2026-04-25 |
+| **Herramientas** (`herramientas/*.tool.yaml`) | 7.13.0 | 2026-04-27 |
 | **Plantillas** (`plantillas/`) | 7.12.0 | 2026-04-25 |
 | **Guía de Comandos** (`guias/guia_comandos.md`) | 7.3.0 | 2026-04-23 |
 | **Guía de Roles** (`guias/guia_roles_activos.md`) | 3.0 | 2026-01-05 |
@@ -22,6 +22,32 @@
 ---
 
 ## 🚀 Historial de Versiones
+
+### [7.13.0] - 2026-04-27
+
+#### 🛡️ Feat: Veredicto `bloqueada` y verificación de dependencias en `validar_hu`
+
+**Objetivo:** Formalizar el manejo de dependencias no resueltas (HUs, APIs externas, decisiones pendientes) durante la validación de HU, alineando la herramienta con la taxonomía de bloqueos definida en `guia_ciclo_vida_tareas.md`.
+
+#### ✅ Cambios en Herramientas
+
+| Cambio | Detalle |
+|--------|--------|
+| Nuevo veredicto `bloqueada` en `validar_hu` | Separado de `rechazada` — para dependencias no resueltas sin rediseño |
+| 4 tipos de bloqueo embebidos | `DEPENDENCIA_HU`, `DEPENDENCIA_EXTERNA`, `DECISION_PENDIENTE`, `RECURSO_NO_DISPONIBLE` — autosuficientes, sin referencia externa |
+| Nuevo paso "Verificación de Dependencias" | Entre Validación Arquitectónica y Análisis de Viabilidad Técnica |
+| Nuevo paso "Persistir Bloqueo" | Documenta bloqueo en refinamiento con tabla estructurada (tipo, motivo, acción requerida) |
+| Mensaje de salida `mensaje_bloqueada` | Incluye tipo, motivo y acción requerida |
+| Mandatory actualizado | Nueva instrucción: verificar dependencias antes de aprobar |
+| Versión herramienta | 4.1 → 4.2 |
+
+#### ✅ Cambios en Configuración
+
+| Cambio | Detalle |
+|--------|--------|
+| `CONFIG_SYSTEM.yaml` | version 7.12.0 → 7.13.0 |
+
+---
 
 ### [7.12.0] - 2026-04-25
 
