@@ -9,8 +9,8 @@
 
 | Componente | Versión Actual | Última Actualización |
 |------------|----------------|----------------------|
-| **Sistema SAC** | 7.15.0 | 2026-04-28 |
-| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.15.0 | 2026-04-28 |
+| **Sistema SAC** | 7.16.0 | 2026-04-28 |
+| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.16.0 | 2026-04-28 |
 | **Configuración Usuario** (`config/CONFIG_USER.template.yaml`) | 7.9.0 | 2026-04-24 |
 | **Roles SAC** (`agentes/*.rol.md`) | 7.15.0 | 2026-04-28 |
 | **Herramientas** (`herramientas/*.tool.yaml`) | 7.15.0 | 2026-04-28 |
@@ -22,6 +22,29 @@
 ---
 
 ## 🚀 Historial de Versiones
+
+### [7.16.0] - 2026-04-28
+
+#### 📦 Feat: Workflow de GitHub Actions para release automático al mergear PR
+
+**Objetivo:** Automatizar la creación de tags y GitHub Releases cuando un PR mergeado a `main` contiene un bump de versión en `CONFIG_SYSTEM.yaml`. Incluye extracción automática de notas del CHANGELOG y adjunta los scripts de bootstrap como assets descargables.
+
+#### ✅ Cambios en CI/CD
+
+| Cambio | Detalle |
+|--------|--------|
+| Nuevo `.github/workflows/release.yml` | Trigger: PR merged a main. Detecta versión en CONFIG_SYSTEM.yaml, compara con tags existentes, crea Release si es nueva |
+| Extracción de CHANGELOG | Parsea automáticamente la sección `### [X.Y.Z]` del CHANGELOG como notas del Release |
+| Assets de bootstrap | Adjunta `install.ps1` e `install.sh` al Release para que los enlaces `releases/latest/download/` funcionen |
+| Idempotencia | Si el tag ya existe, skip silencioso (soporta re-merge y múltiples PRs sin bump) |
+
+#### ✅ Cambios en Configuración
+
+| Cambio | Detalle |
+|--------|--------|
+| `CONFIG_SYSTEM.yaml` | version 7.15.0 → 7.16.0 |
+
+---
 
 ### [7.15.0] - 2026-04-28
 
