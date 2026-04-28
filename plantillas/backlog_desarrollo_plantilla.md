@@ -98,6 +98,9 @@ MULTI-PROYECTO: Crear una sección por proyecto:
 **Descripción:**
 Como [rol], quiero [funcionalidad] para [beneficio].
 
+<!-- SI Tipo=Bug: Usar descripción técnica breve (1-2 líneas).
+     El detalle completo vive en el archivo Ref_Bug. -->
+
 ---
 
 <!-- 
