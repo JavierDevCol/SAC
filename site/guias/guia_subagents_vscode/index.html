@@ -1,0 +1,2061 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Sistema de agentes IA especializados para GitHub Copilot">
+      
+      
+        <meta name="author" content="JavierDevCol">
+      
+      
+        <link rel="canonical" href="https://javierdevcol.github.io/SAC/guias/guia_subagents_vscode/">
+      
+      
+        <link rel="prev" href="../guia_creacion_agentes_vscode/">
+      
+      
+        <link rel="next" href="../../ejemplos/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Subagentes VS Code - SAC — Sistema Agéntico COCHAS</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#guia-de-analisis-subagents-en-vs-code-copilot" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../.." title="SAC — Sistema Agéntico COCHAS" class="md-header__button md-logo" aria-label="SAC — Sistema Agéntico COCHAS" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SAC — Sistema Agéntico COCHAS
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Subagentes VS Code
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Cambiar a modo oscuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo oscuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Cambiar a modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/JavierDevCol/SAC" title="Ir al repositorio" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    JavierDevCol/SAC
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Pestañas" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Inicio
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../INSTALACION/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Instalación
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../ROLES/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Agentes
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../HERRAMIENTAS/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Herramientas
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../estructura_directorio/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Estructura
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../guia_comandos/" class="md-tabs__link">
+          
+  
+  
+  Guías
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../ejemplos/" class="md-tabs__link">
+          
+  
+  
+  Ejemplos
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="SAC — Sistema Agéntico COCHAS" class="md-nav__button md-logo" aria-label="SAC — Sistema Agéntico COCHAS" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    SAC — Sistema Agéntico COCHAS
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/JavierDevCol/SAC" title="Ir al repositorio" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    JavierDevCol/SAC
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inicio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../INSTALACION/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Instalación
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ROLES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agentes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../HERRAMIENTAS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Herramientas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../estructura_directorio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Estructura
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guías
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guías
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guia_comandos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Comandos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guia_ciclo_vida_tareas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ciclo de Vida de HUs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guia_roles_activos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roles Activos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guia_creacion_roles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crear Roles SAC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guia_creacion_agentes_vscode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crear Agentes VS Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Subagentes VS Code
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Subagentes VS Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-que-es-un-subagente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. ¿Qué es un Subagente?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. ¿Qué es un Subagente?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flujo-de-ejecucion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flujo de ejecución
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-lo-que-ve-el-usuario" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Lo que ve el Usuario
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-como-se-invoca-un-subagente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Cómo se Invoca un Subagente
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Cómo se Invoca un Subagente">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#iniciado-por-el-agente-patron-principal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Iniciado por el agente (patrón principal)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#habilitacion-requerida" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Habilitación requerida
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#invocacion-desde-un-prompt-file-promptmd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Invocación desde un prompt file (.prompt.md)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-propiedades-de-control-en-frontmatter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Propiedades de Control en Frontmatter
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Propiedades de Control en Frontmatter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ejemplo-agente-solo-disponible-como-subagente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ejemplo: agente solo disponible como subagente
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-seleccion-de-modelo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Selección de Modelo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-restringir-que-subagentes-puede-usar-un-agente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Restringir qué Subagentes Puede Usar un Agente
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-subagentes-anidados-nested-subagents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Subagentes Anidados (Nested Subagents)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Subagentes Anidados (Nested Subagents)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#patron-recursivo-divide-y-venceras" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Patrón recursivo (divide y vencerás)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-patrones-de-orquestacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Patrones de Orquestación
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Patrones de Orquestación">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81-coordinador-trabajadores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1 Coordinador + Trabajadores
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82-revision-multi-perspectiva-en-paralelo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2 Revisión Multi-Perspectiva en Paralelo
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-escenarios-de-uso-recomendados" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Escenarios de Uso Recomendados
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-buenas-practicas-extraidas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Buenas Prácticas Extraídas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-aplicabilidad-para-sac" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Aplicabilidad para SAC
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. Aplicabilidad para SAC">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#propiedad-agents-pendiente-de-anadir-a-agentes-sac" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Propiedad agents pendiente de añadir a agentes SAC
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-referencia-rapida-de-frontmatter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Referencia Rápida de Frontmatter
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ejemplos
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ejemplos
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ejemplos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Índice
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ejemplos/herramientas/tomar_contexto_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tomar Contexto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ejemplos/herramientas/refinar_hu_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Refinar HU
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ejemplos/herramientas/generar_commit_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Generar Commit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ejemplos/herramientas/crear_pruebas_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crear Pruebas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ejemplos/herramientas/analizar_code_smells_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Analizar Code Smells
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ejemplos/herramientas/diagnosticar_devops_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Diagnosticar DevOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ejemplos/herramientas/ecommerce_mvp_completo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    eCommerce MVP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ejemplos/herramientas/solucionar_smells_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Solucionar Smells
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ejemplos/herramientas/verifica_pruebas_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Verificar Pruebas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-que-es-un-subagente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. ¿Qué es un Subagente?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. ¿Qué es un Subagente?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flujo-de-ejecucion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flujo de ejecución
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-lo-que-ve-el-usuario" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Lo que ve el Usuario
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-como-se-invoca-un-subagente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Cómo se Invoca un Subagente
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Cómo se Invoca un Subagente">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#iniciado-por-el-agente-patron-principal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Iniciado por el agente (patrón principal)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#habilitacion-requerida" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Habilitación requerida
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#invocacion-desde-un-prompt-file-promptmd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Invocación desde un prompt file (.prompt.md)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-propiedades-de-control-en-frontmatter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Propiedades de Control en Frontmatter
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Propiedades de Control en Frontmatter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ejemplo-agente-solo-disponible-como-subagente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ejemplo: agente solo disponible como subagente
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-seleccion-de-modelo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Selección de Modelo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-restringir-que-subagentes-puede-usar-un-agente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Restringir qué Subagentes Puede Usar un Agente
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-subagentes-anidados-nested-subagents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Subagentes Anidados (Nested Subagents)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Subagentes Anidados (Nested Subagents)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#patron-recursivo-divide-y-venceras" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Patrón recursivo (divide y vencerás)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-patrones-de-orquestacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Patrones de Orquestación
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Patrones de Orquestación">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81-coordinador-trabajadores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1 Coordinador + Trabajadores
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82-revision-multi-perspectiva-en-paralelo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2 Revisión Multi-Perspectiva en Paralelo
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-escenarios-de-uso-recomendados" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Escenarios de Uso Recomendados
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-buenas-practicas-extraidas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Buenas Prácticas Extraídas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-aplicabilidad-para-sac" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Aplicabilidad para SAC
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. Aplicabilidad para SAC">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#propiedad-agents-pendiente-de-anadir-a-agentes-sac" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Propiedad agents pendiente de añadir a agentes SAC
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-referencia-rapida-de-frontmatter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Referencia Rápida de Frontmatter
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="guia-de-analisis-subagents-en-vs-code-copilot">Guía de Análisis: Subagents en VS Code Copilot<a class="headerlink" href="#guia-de-analisis-subagents-en-vs-code-copilot" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Fuente:</strong> https://code.visualstudio.com/docs/copilot/agents/subagents<br />
+<strong>Fecha de análisis:</strong> 23 de abril de 2026<br />
+<strong>Aplicabilidad:</strong> Sistema SAC (Sistema Agéntico COCHAS)</p>
+</blockquote>
+<hr />
+<h2 id="1-que-es-un-subagente">1. ¿Qué es un Subagente?<a class="headerlink" href="#1-que-es-un-subagente" title="Permanent link">&para;</a></h2>
+<p>Un subagente es un <strong>agente de IA independiente</strong> que realiza trabajo focalizado (investigar, analizar código, revisar cambios) y reporta los resultados al agente principal. Su característica clave es el <strong>aislamiento de contexto</strong>: trabaja con solo la información relevante para su subtarea, sin cargar el historial completo de la conversación principal.</p>
+<h3 id="flujo-de-ejecucion">Flujo de ejecución<a class="headerlink" href="#flujo-de-ejecucion" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Usuario → Agente Principal → reconoce subtarea → lanza Subagente
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>                                                       ↓
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>                                              trabaja autónomamente
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>                                                       ↓
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>                                              devuelve solo resultado
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>                              ↑
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>              Agente Principal incorpora resultado y continúa
+</code></pre></div>
+<hr />
+<h2 id="2-lo-que-ve-el-usuario">2. Lo que ve el Usuario<a class="headerlink" href="#2-lo-que-ve-el-usuario" title="Permanent link">&para;</a></h2>
+<p>Cuando un subagente corre, aparece en el chat como una <strong>tool call colapsable</strong> que muestra:
+- Nombre del agente personalizado (si se especificó)
+- Herramienta en ejecución ("Reading file...", "Searching codebase...")</p>
+<p>Al expandirlo se ve: todas las tool calls realizadas, el prompt enviado y el resultado devuelto.</p>
+<hr />
+<h2 id="3-como-se-invoca-un-subagente">3. Cómo se Invoca un Subagente<a class="headerlink" href="#3-como-se-invoca-un-subagente" title="Permanent link">&para;</a></h2>
+<h3 id="iniciado-por-el-agente-patron-principal">Iniciado por el agente (patrón principal)<a class="headerlink" href="#iniciado-por-el-agente-patron-principal" title="Permanent link">&para;</a></h3>
+<p>El agente principal decide cuándo delegar. <strong>No requiere que el usuario escriba "usa un subagente"</strong>. El usuario puede insinuarlo con frases como:
+- <em>"investiga en paralelo..."</em>
+- <em>"analiza de forma aislada..."</em></p>
+<h3 id="habilitacion-requerida">Habilitación requerida<a class="headerlink" href="#habilitacion-requerida" title="Permanent link">&para;</a></h3>
+<ul>
+<li>La herramienta <code>runSubagent</code> debe estar habilitada en el agente principal</li>
+<li>Por defecto, subagentes <strong>no pueden invocar</strong> otros subagentes</li>
+<li>Para habilitar recursividad: <code>chat.subagents.allowInvocationsFromSubagents = true</code></li>
+</ul>
+<h3 id="invocacion-desde-un-prompt-file-promptmd">Invocación desde un prompt file (<code>.prompt.md</code>)<a class="headerlink" href="#invocacion-desde-un-prompt-file-promptmd" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>---
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>name: document-feature
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="gu">tools: [&#39;agent&#39;, &#39;read&#39;, &#39;search&#39;, &#39;edit&#39;]</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="gu">---</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>Run a subagent to research the new feature implementation details...
+</code></pre></div>
+<hr />
+<h2 id="4-propiedades-de-control-en-frontmatter">4. Propiedades de Control en Frontmatter<a class="headerlink" href="#4-propiedades-de-control-en-frontmatter" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Propiedad</th>
+<th>Valores</th>
+<th>Efecto</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>user-invocable</code></td>
+<td><code>true</code> (default) / <code>false</code></td>
+<td>Si <code>false</code>, el agente NO aparece en el dropdown del chat — solo accesible como subagente</td>
+</tr>
+<tr>
+<td><code>disable-model-invocation</code></td>
+<td><code>false</code> (default) / <code>true</code></td>
+<td>Si <code>true</code>, el agente NO puede ser invocado como subagente por otros agentes</td>
+</tr>
+<tr>
+<td><code>agents</code></td>
+<td>lista / <code>*</code> / <code>[]</code></td>
+<td>Restringe qué subagentes puede invocar este agente</td>
+</tr>
+<tr>
+<td><code>model</code></td>
+<td>nombre del modelo</td>
+<td>Modelo preferido cuando corre como subagente</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>⚠️ <strong>Deprecado:</strong> La propiedad <code>infer</code> — usar <code>user-invocable</code> y <code>disable-model-invocation</code> en su lugar.</p>
+</blockquote>
+<h3 id="ejemplo-agente-solo-disponible-como-subagente">Ejemplo: agente solo disponible como subagente<a class="headerlink" href="#ejemplo-agente-solo-disponible-como-subagente" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>---
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>name: internal-helper
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="gu">user-invocable: false</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="gu">---</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>Este agente solo puede ser invocado como subagente.
+</code></pre></div>
+<hr />
+<h2 id="5-seleccion-de-modelo">5. Selección de Modelo<a class="headerlink" href="#5-seleccion-de-modelo" title="Permanent link">&para;</a></h2>
+<p>Orden de prioridad para el modelo del subagente:</p>
+<ol>
+<li><strong>Parámetro explícito</strong> en la invocación del agente principal</li>
+<li><strong>Propiedad <code>model</code></strong> en el <code>.agent.md</code> del agente personalizado</li>
+<li><strong>Modelo del agente principal</strong> (herencia por defecto)</li>
+</ol>
+<blockquote>
+<p>⚠️ <strong>Restricción:</strong> El modelo solicitado no puede ser más costoso que el modelo principal. Si lo es, cae al modelo principal.</p>
+</blockquote>
+<hr />
+<h2 id="6-restringir-que-subagentes-puede-usar-un-agente">6. Restringir qué Subagentes Puede Usar un Agente<a class="headerlink" href="#6-restringir-que-subagentes-puede-usar-un-agente" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>---
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>name: TDD
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>tools: [&#39;agent&#39;]
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="gu">agents: [&#39;Red&#39;, &#39;Green&#39;, &#39;Refactor&#39;]</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="gu">---</span>
+</code></pre></div>
+<ul>
+<li>Lista de nombres → solo esos agentes disponibles como subagentes</li>
+<li><code>*</code> → todos los agentes disponibles (comportamiento por defecto)</li>
+<li><code>[]</code> → ningún subagente permitido</li>
+</ul>
+<blockquote>
+<p><strong>Nota importante:</strong> Listar explícitamente un agente en <code>agents</code> anula <code>disable-model-invocation: true</code>. Permite crear agentes protegidos de uso general pero accesibles para coordinadores específicos.</p>
+</blockquote>
+<hr />
+<h2 id="7-subagentes-anidados-nested-subagents">7. Subagentes Anidados (Nested Subagents)<a class="headerlink" href="#7-subagentes-anidados-nested-subagents" title="Permanent link">&para;</a></h2>
+<p>Por defecto <strong>deshabilitado</strong> para evitar recursión infinita.</p>
+<ul>
+<li>Activación: <code>chat.subagents.allowInvocationsFromSubagents = true</code></li>
+<li>Profundidad máxima: <strong>5 niveles</strong></li>
+</ul>
+<h3 id="patron-recursivo-divide-y-venceras">Patrón recursivo (divide y vencerás)<a class="headerlink" href="#patron-recursivo-divide-y-venceras" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>---
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>name: RecursiveProcessor
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>tools: [&#39;agent&#39;, &#39;read&#39;, &#39;search&#39;]
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="gu">agents: [RecursiveProcessor]</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="gu">---</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>Si la lista tiene más de 4 ítems → dividir en mitades y delegar cada mitad a RecursiveProcessor.
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>Si ≤ 4 ítems → procesar directamente.
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>Combinar resultados.
+</code></pre></div>
+<hr />
+<h2 id="8-patrones-de-orquestacion">8. Patrones de Orquestación<a class="headerlink" href="#8-patrones-de-orquestacion" title="Permanent link">&para;</a></h2>
+<h3 id="81-coordinador-trabajadores">8.1 Coordinador + Trabajadores<a class="headerlink" href="#81-coordinador-trabajadores" title="Permanent link">&para;</a></h3>
+<p>El agente coordinador gestiona el flujo y delega a agentes especializados. Cada trabajador tiene herramientas ajustadas a su rol.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>---
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>name: Feature Builder
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>tools: [&#39;agent&#39;, &#39;edit&#39;, &#39;search&#39;, &#39;read&#39;]
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="gu">agents: [&#39;Planner&#39;, &#39;Plan Architect&#39;, &#39;Implementer&#39;, &#39;Reviewer&#39;]</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="gu">---</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="k">1.</span> Planner: descomponer en tareas
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="k">2.</span> Plan Architect: validar contra patrones del código
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="k">3.</span> (ciclo) Si el Architect da feedback → Planner actualiza el plan
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="k">4.</span> Implementer: escribir código por tarea
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="k">5.</span> Reviewer: revisar implementación
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="k">6.</span> (ciclo) Si Reviewer detecta issues → Implementer aplica fixes
+</code></pre></div>
+<p>Los trabajadores (<code>user-invocable: false</code>) tienen herramientas mínimas para su función. Los de solo lectura (Planner, Reviewer) no necesitan <code>edit</code>.</p>
+<h3 id="82-revision-multi-perspectiva-en-paralelo">8.2 Revisión Multi-Perspectiva en Paralelo<a class="headerlink" href="#82-revision-multi-perspectiva-en-paralelo" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>---
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>name: Thorough Reviewer
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="gu">tools: [&#39;agent&#39;, &#39;read&#39;, &#39;search&#39;]</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="gu">---</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>Correr en paralelo:
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="k">-</span><span class="w"> </span>Subagente de Corrección: lógica, edge cases, tipos
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="k">-</span><span class="w"> </span>Subagente de Calidad: legibilidad, nombres, duplicados
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="k">-</span><span class="w"> </span>Subagente de Seguridad: validación de entradas, inyección, exposición de datos
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="k">-</span><span class="w"> </span>Subagente de Arquitectura: consistencia con patrones del código
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>Sintetizar hallazgos en un resumen priorizado.
+</code></pre></div>
+<blockquote>
+<p>Clave: cada subagente llega al código <strong>sin ser influenciado</strong> por los otros. Resultados más independientes y objetivos.</p>
+</blockquote>
+<hr />
+<h2 id="9-escenarios-de-uso-recomendados">9. Escenarios de Uso Recomendados<a class="headerlink" href="#9-escenarios-de-uso-recomendados" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Escenario</th>
+<th>Por qué usar subagente</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Investigar antes de implementar</td>
+<td>Contexto de investigación separado del contexto de implementación</td>
+</tr>
+<tr>
+<td>Análisis de código en paralelo</td>
+<td>Múltiples archivos/módulos analizados simultáneamente</td>
+</tr>
+<tr>
+<td>Explorar múltiples soluciones</td>
+<td>Cada alternativa evaluada en su propio contexto aislado</td>
+</tr>
+<tr>
+<td>Code review con foco especializado</td>
+<td>Perspectivas independientes y sin sesgo mutuo</td>
+</tr>
+<tr>
+<td>Consenso multi-modelo</td>
+<td>Mismo problema evaluado con diferentes modelos</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="10-buenas-practicas-extraidas">10. Buenas Prácticas Extraídas<a class="headerlink" href="#10-buenas-practicas-extraidas" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>Definir cuándo usar subagentes en las instrucciones del agente</strong>, no promtear manualmente cada vez</li>
+<li><strong>Describir claramente la tarea y el output esperado</strong> para que el subagente no devuelva contexto innecesario</li>
+<li><strong>Usar <code>user-invocable: false</code></strong> para agentes internos/trabajadores que no deberían aparecer en el dropdown</li>
+<li><strong>Restringir <code>agents</code></strong> cuando el coordinador solo debe usar subagentes específicos (evita selección incorrecta si hay agentes con nombres/descripciones similares)</li>
+<li><strong>Asignar modelo más ligero a trabajadores</strong> con foco estrecho — no necesitan el modelo más potente</li>
+<li><strong>Para revisión paralela</strong>: estructurar cada perspectiva como un subagente independiente para evitar anclas cognitivas entre ellas</li>
+</ol>
+<hr />
+<h2 id="11-aplicabilidad-para-sac">11. Aplicabilidad para SAC<a class="headerlink" href="#11-aplicabilidad-para-sac" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Capacidad VS Code</th>
+<th>Oportunidad en SAC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>user-invocable: false</code></td>
+<td>Agentes internos/auxiliares que no deben aparecer al usuario final</td>
+</tr>
+<tr>
+<td><code>agents: [lista]</code></td>
+<td>Definir en cada agente SAC qué otros agentes puede convocar</td>
+</tr>
+<tr>
+<td>Patrón Coordinador+Trabajadores</td>
+<td>Agente orquestador que delega a Arquitecto, Desarrollador, DevOps, Analista</td>
+</tr>
+<tr>
+<td>Revisión multi-perspectiva</td>
+<td>Validación de HUs desde múltiples ángulos en paralelo</td>
+</tr>
+<tr>
+<td>Subagente de investigación</td>
+<td>Precargar contexto del proyecto antes de una sesión de refinamiento</td>
+</tr>
+<tr>
+<td><code>disable-model-invocation: true</code></td>
+<td>Proteger agentes SAC de invocación no autorizada por agentes externos</td>
+</tr>
+</tbody>
+</table>
+<h3 id="propiedad-agents-pendiente-de-anadir-a-agentes-sac">Propiedad <code>agents</code> pendiente de añadir a agentes SAC<a class="headerlink" href="#propiedad-agents-pendiente-de-anadir-a-agentes-sac" title="Permanent link">&para;</a></h3>
+<p>Ningún agente <code>.agent.md</code> de SAC tiene actualmente la propiedad <code>agents</code> en su frontmatter. Añadirla permitiría:
+- Controlar exactamente qué agentes puede delegar cada uno
+- Evitar que el LLM seleccione un agente incorrecto cuando hay descripciones similares
+- Habilitar flujos de orquestación formales (ej. Arquitecto → Desarrollador → Cronista)</p>
+<hr />
+<h2 id="12-referencia-rapida-de-frontmatter">12. Referencia Rápida de Frontmatter<a class="headerlink" href="#12-referencia-rapida-de-frontmatter" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>---
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>name: &quot;Nombre del Agente&quot;
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>description: &quot;Descripción breve&quot;
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>model: &quot;Claude Sonnet 4.6 (copilot)&quot;   # opcional
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>tools: [&#39;agent&#39;, &#39;read&#39;, &#39;search&#39;, &#39;edit&#39;]
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>agents: [&#39;Agente1&#39;, &#39;Agente2&#39;]          # opcional: restringe subagentes
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>user-invocable: true                    # false = solo subagente
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="gu">disable-model-invocation: false         # true = no puede ser subagente</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="gu">---</span>
+</code></pre></div>
+<hr />
+<p><em>Documento generado a partir del análisis de la documentación oficial de VS Code Copilot Subagents (abril 2026)</em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

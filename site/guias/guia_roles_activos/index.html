@@ -1,0 +1,2603 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Sistema de agentes IA especializados para GitHub Copilot">
+      
+      
+        <meta name="author" content="JavierDevCol">
+      
+      
+        <link rel="canonical" href="https://javierdevcol.github.io/SAC/guias/guia_roles_activos/">
+      
+      
+        <link rel="prev" href="../guia_ciclo_vida_tareas/">
+      
+      
+        <link rel="next" href="../guia_creacion_roles/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Roles Activos - SAC — Sistema Agéntico COCHAS</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#guia-de-roles-activos-del-sistema" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../.." title="SAC — Sistema Agéntico COCHAS" class="md-header__button md-logo" aria-label="SAC — Sistema Agéntico COCHAS" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SAC — Sistema Agéntico COCHAS
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Roles Activos
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Cambiar a modo oscuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo oscuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Cambiar a modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/JavierDevCol/SAC" title="Ir al repositorio" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    JavierDevCol/SAC
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Pestañas" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Inicio
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../INSTALACION/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Instalación
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../ROLES/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Agentes
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../HERRAMIENTAS/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Herramientas
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../estructura_directorio/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Estructura
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../guia_comandos/" class="md-tabs__link">
+          
+  
+  
+  Guías
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../ejemplos/" class="md-tabs__link">
+          
+  
+  
+  Ejemplos
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="SAC — Sistema Agéntico COCHAS" class="md-nav__button md-logo" aria-label="SAC — Sistema Agéntico COCHAS" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    SAC — Sistema Agéntico COCHAS
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/JavierDevCol/SAC" title="Ir al repositorio" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    JavierDevCol/SAC
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inicio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../INSTALACION/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Instalación
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ROLES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agentes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../HERRAMIENTAS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Herramientas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../estructura_directorio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Estructura
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guías
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guías
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guia_comandos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Comandos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guia_ciclo_vida_tareas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ciclo de Vida de HUs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roles Activos
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roles Activos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#indice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📖 Índice
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#introduccion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Introducción
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sistema-de-comandos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sistema de Comandos
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#roles-disponibles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Roles Disponibles
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Roles Disponibles">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#arquitecto-onad-onad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🏛️ Arquitecto Onad (ONAD)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#archdev-pro-archdev" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💻 ArchDev Pro (ARCHDEV)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#arquitecto-devops-devops" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚀 Arquitecto DevOps (DEVOPS)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#refinador-hu-refinador" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📝 Refinador HU (REFINADOR)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#artesano-de-commits-artesano" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎨 Artesano de Commits (ARTESANO)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#matriz-de-capacidades" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Matriz de Capacidades
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cuando-usar-cada-rol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cuándo Usar Cada Rol
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cuándo Usar Cada Rol">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#preguntas-guia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Preguntas Guía
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#matriz-de-decision-por-escenario" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Matriz de Decisión por Escenario
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#flujos-de-trabajo-comunes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flujos de Trabajo Comunes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Flujos de Trabajo Comunes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flujo-1-nuevo-proyecto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flujo 1: Nuevo Proyecto
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flujo-2-refactoring-mayor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flujo 2: Refactoring Mayor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flujo-3-sprint-planning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flujo 3: Sprint Planning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flujo-4-deployment-de-feature" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flujo 4: Deployment de Feature
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flujo-5-resolucion-de-propuesta-tecnica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flujo 5: Resolución de Propuesta Técnica
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tips-para-elegir-el-rol-correcto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💡 Tips para Elegir el Rol Correcto
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="💡 Tips para Elegir el Rol Correcto">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tip-1-usa-roles-cuando-tengas-dudas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tip 1: Usa *roles Cuando Tengas Dudas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tip-2-horizonte-temporal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tip 2: Horizonte Temporal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tip-3-naturaleza-de-la-tarea" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tip 3: Naturaleza de la Tarea
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tip-4-nivel-de-abstraccion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tip 4: Nivel de Abstracción
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cambio-entre-roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔄 Cambio Entre Roles
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentacion-relacionada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📚 Documentación Relacionada
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#historial-de-versiones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📅 Historial de Versiones
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guia_creacion_roles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crear Roles SAC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guia_creacion_agentes_vscode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crear Agentes VS Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guia_subagents_vscode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Subagentes VS Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ejemplos
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ejemplos
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ejemplos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Índice
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ejemplos/herramientas/tomar_contexto_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tomar Contexto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ejemplos/herramientas/refinar_hu_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Refinar HU
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ejemplos/herramientas/generar_commit_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Generar Commit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ejemplos/herramientas/crear_pruebas_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crear Pruebas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ejemplos/herramientas/analizar_code_smells_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Analizar Code Smells
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ejemplos/herramientas/diagnosticar_devops_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Diagnosticar DevOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ejemplos/herramientas/ecommerce_mvp_completo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    eCommerce MVP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ejemplos/herramientas/solucionar_smells_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Solucionar Smells
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ejemplos/herramientas/verifica_pruebas_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Verificar Pruebas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#indice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📖 Índice
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#introduccion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Introducción
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sistema-de-comandos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sistema de Comandos
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#roles-disponibles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Roles Disponibles
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Roles Disponibles">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#arquitecto-onad-onad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🏛️ Arquitecto Onad (ONAD)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#archdev-pro-archdev" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💻 ArchDev Pro (ARCHDEV)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#arquitecto-devops-devops" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚀 Arquitecto DevOps (DEVOPS)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#refinador-hu-refinador" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📝 Refinador HU (REFINADOR)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#artesano-de-commits-artesano" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎨 Artesano de Commits (ARTESANO)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#matriz-de-capacidades" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Matriz de Capacidades
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cuando-usar-cada-rol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cuándo Usar Cada Rol
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cuándo Usar Cada Rol">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#preguntas-guia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Preguntas Guía
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#matriz-de-decision-por-escenario" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Matriz de Decisión por Escenario
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#flujos-de-trabajo-comunes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flujos de Trabajo Comunes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Flujos de Trabajo Comunes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#flujo-1-nuevo-proyecto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flujo 1: Nuevo Proyecto
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flujo-2-refactoring-mayor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flujo 2: Refactoring Mayor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flujo-3-sprint-planning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flujo 3: Sprint Planning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flujo-4-deployment-de-feature" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flujo 4: Deployment de Feature
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flujo-5-resolucion-de-propuesta-tecnica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flujo 5: Resolución de Propuesta Técnica
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tips-para-elegir-el-rol-correcto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💡 Tips para Elegir el Rol Correcto
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="💡 Tips para Elegir el Rol Correcto">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tip-1-usa-roles-cuando-tengas-dudas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tip 1: Usa *roles Cuando Tengas Dudas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tip-2-horizonte-temporal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tip 2: Horizonte Temporal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tip-3-naturaleza-de-la-tarea" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tip 3: Naturaleza de la Tarea
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tip-4-nivel-de-abstraccion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tip 4: Nivel de Abstracción
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cambio-entre-roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔄 Cambio Entre Roles
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentacion-relacionada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📚 Documentación Relacionada
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#historial-de-versiones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📅 Historial de Versiones
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="guia-de-roles-activos-del-sistema">👥 Guía de Roles Activos del Sistema<a class="headerlink" href="#guia-de-roles-activos-del-sistema" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Sistema:</strong> COCHAS - Orquestación de Agentes IA<br />
+<strong>Versión:</strong> 7.0<br />
+<strong>Última Actualización:</strong> 13 de febrero de 2026</p>
+</blockquote>
+<hr />
+<h2 id="indice">📖 Índice<a class="headerlink" href="#indice" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="#introducción">Introducción</a></li>
+<li><a href="#sistema-de-comandos">Sistema de Comandos</a></li>
+<li><a href="#roles-disponibles">Roles Disponibles</a></li>
+<li><a href="#matriz-de-capacidades">Matriz de Capacidades</a></li>
+<li><a href="#cuándo-usar-cada-rol">Cuándo Usar Cada Rol</a></li>
+<li><a href="#flujos-de-trabajo-comunes">Flujos de Trabajo Comunes</a></li>
+</ul>
+<hr />
+<h2 id="introduccion">Introducción<a class="headerlink" href="#introduccion" title="Permanent link">&para;</a></h2>
+<p>Los roles (o personas) son agentes especializados con personalidades únicas, áreas de expertise específicas y herramientas dedicadas. Cada rol está diseñado para un tipo de tarea y momento del desarrollo.</p>
+<p><strong>Principio clave:</strong> No todos los roles hacen todo. Cada uno tiene un propósito específico.</p>
+<hr />
+<h2 id="sistema-de-comandos">Sistema de Comandos<a class="headerlink" href="#sistema-de-comandos" title="Permanent link">&para;</a></h2>
+<p>El sistema COCHAS usa <strong>3 prefijos</strong> para diferentes tipos de acciones:</p>
+<table>
+<thead>
+<tr>
+<th>Prefijo</th>
+<th>Propósito</th>
+<th>Ejemplo</th>
+<th>Requiere Rol Activo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>*</code></td>
+<td><strong>Comandos del Orquestador</strong></td>
+<td><code>*roles</code>, <code>*status</code>, <code>*HU</code></td>
+<td>❌ No</td>
+</tr>
+<tr>
+<td><code>+</code></td>
+<td><strong>Activar un Rol</strong></td>
+<td><code>+ONAD</code>, <code>+ARCHDEV</code></td>
+<td>❌ No</td>
+</tr>
+<tr>
+<td><code>&gt;</code></td>
+<td><strong>Ejecutar una Herramienta</strong></td>
+<td><code>&gt;refinar_hu</code>, <code>&gt;generar_commit</code></td>
+<td>✅ Sí</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="roles-disponibles">Roles Disponibles<a class="headerlink" href="#roles-disponibles" title="Permanent link">&para;</a></h2>
+<h3 id="arquitecto-onad-onad">🏛️ Arquitecto Onad (ONAD)<a class="headerlink" href="#arquitecto-onad-onad" title="Permanent link">&para;</a></h3>
+<p><strong>Comando de activación:</strong> <code>+ONAD</code></p>
+<p><strong>Especialidad:</strong> Arquitectura estratégica y decisiones de alto nivel</p>
+<p><strong>Personalidad:</strong>
+- 🎯 <strong>Estilo:</strong> Consultor técnico de élite, mentor arquitectónico
+- 💬 <strong>Comunicación:</strong> Socrática (pregunta antes de responder)
+- ⏱️ <strong>Horizonte temporal:</strong> Largo plazo (6-12 meses)
+- 📊 <strong>Enfoque:</strong> Análisis de trade-offs y validación de supuestos</p>
+<p><strong>Herramientas:</strong>
+- <code>&gt;tomar_contexto</code> - Analiza el proyecto completo
+- <code>&gt;init_reglas_arquitectonicas</code> - Configura reglas arquitectónicas del proyecto
+- <code>&gt;generar_adr</code> - Documenta decisiones arquitectónicas importantes
+- <code>&gt;validar_hu</code> - Valida viabilidad arquitectónica de HUs
+- <code>&gt;planificar_hu</code> - Crea planes de implementación alineados con arquitectura</p>
+<p><strong>Cuándo usarlo:</strong>
+- ✅ Diseñar la arquitectura de un nuevo proyecto
+- ✅ Evaluar propuestas técnicas complejas
+- ✅ Analizar trade-offs de decisiones arquitectónicas
+- ✅ Validar viabilidad técnica de alto nivel
+- ✅ Documentar decisiones estratégicas (ADRs)
+- ✅ Resolver deuda técnica arquitectónica</p>
+<p><strong>Cuándo NO usarlo:</strong>
+- ❌ Implementar código específico (usa <strong>ArchDev Pro</strong>)
+- ❌ Configurar infraestructura (usa <strong>DevOps</strong>)
+- ❌ Refinar historias de usuario (usa <strong>Refinador HU</strong>)
+- ❌ Crear mensajes de commit (usa <strong>Artesano</strong>)</p>
+<p><strong>Principio Cardinal: "No Comer Entero"</strong>
+- Nunca acepta propuestas sin análisis crítico previo
+- Siempre valida supuestos y evalúa alternativas
+- Expone trade-offs antes de recomendar soluciones</p>
+<p><strong>Ejemplo de interacción:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Usuario: Propongo usar Redis como caché
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>ONAD:
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>Interesante. Antes de diseñar la implementación, validemos:
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>**Supuestos a validar:**
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>1. ¿Las consultas son realmente un cuello de botella medible?
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>2. ¿Cuál es el patrón de acceso?
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>3. ¿Qué TTL sería aceptable?
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>**Alternativas:**
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>1. Optimizar queries de BD primero
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>2. Caché HTTP con ETag
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>3. Redis con invalidación event-driven
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>¿Tienes métricas que justifiquen la complejidad añadida?
+</code></pre></div></p>
+<hr />
+<h3 id="archdev-pro-archdev">💻 ArchDev Pro (ARCHDEV)<a class="headerlink" href="#archdev-pro-archdev" title="Permanent link">&para;</a></h3>
+<p><strong>Comando de activación:</strong> <code>+ARCHDEV</code></p>
+<p><strong>Especialidad:</strong> Implementación de código y refactoring</p>
+<p><strong>Personalidad:</strong>
+- 🎯 <strong>Estilo:</strong> Desarrollador pragmático y experto en código
+- 💬 <strong>Comunicación:</strong> Directa, con código y ejemplos concretos
+- ⏱️ <strong>Horizonte temporal:</strong> Sprint actual (1-2 semanas)
+- 🛠️ <strong>Enfoque:</strong> Código limpio, tests y mejores prácticas</p>
+<p><strong>Herramientas:</strong>
+- <code>&gt;tomar_contexto</code> - Analiza el proyecto completo
+- <code>&gt;ejecutar_plan</code> - Ejecuta planes de implementación generados
+- <code>&gt;crear_pruebas</code> - Genera tests unitarios y de integración
+- <code>&gt;analizar_code_smells</code> - Detecta problemas de calidad en el código
+- <code>&gt;generar_commit</code> - Documenta cambios con Conventional Commits</p>
+<p><strong>Cuándo usarlo:</strong>
+- ✅ Implementar código basado en planes de implementación
+- ✅ Crear tests unitarios y de integración
+- ✅ Detectar y analizar code smells
+- ✅ Aplicar patrones de diseño
+- ✅ Mejorar legibilidad y mantenibilidad del código</p>
+<p><strong>Cuándo NO usarlo:</strong>
+- ❌ Tomar decisiones arquitectónicas estratégicas (usa <strong>ONAD</strong>)
+- ❌ Configurar pipelines CI/CD (usa <strong>DevOps</strong>)
+- ❌ Refinar historias de usuario (usa <strong>Refinador HU</strong>)
+- ❌ Crear mensajes de commit profesionales (usa <strong>Artesano</strong>)</p>
+<p><strong>Flujo típico con ONAD:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>1. ONAD diseña arquitectura → 2. ARCHDEV implementa código
+</code></pre></div></p>
+<p><strong>Ejemplo de interacción:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Usuario: Necesito refactorizar el módulo de autenticación
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>ARCHDEV:
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>Perfecto. Voy a analizar el código y aplicar mejoras.
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>&gt;analizar_code_smells
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>**Code Smells Detectados:**
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>1. Long Method en AuthService.authenticate()
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>2. Feature Envy en TokenValidator
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>3. Duplicación en métodos de validación
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>&gt;solucionar_smells
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>**Refactorings Aplicados:**
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>1. Extract Method para reducir complejidad
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>2. Move Method para cohesión
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>3. Extract Common para DRY
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>&gt;crear_pruebas
+<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>
+<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>**Tests Generados:**
+<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>✅ 12 tests unitarios
+<a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>✅ 4 tests de integración
+<a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a>✅ Cobertura: 95%
+</code></pre></div></p>
+<hr />
+<h3 id="arquitecto-devops-devops">🚀 Arquitecto DevOps (DEVOPS)<a class="headerlink" href="#arquitecto-devops-devops" title="Permanent link">&para;</a></h3>
+<p><strong>Comando de activación:</strong> <code>+DEVOPS</code></p>
+<p><strong>Especialidad:</strong> Infraestructura, pipelines y deployment</p>
+<p><strong>Personalidad:</strong>
+- 🎯 <strong>Estilo:</strong> Especialista en operaciones y automatización
+- 💬 <strong>Comunicación:</strong> Técnica, con foco en observabilidad y resiliencia
+- ⏱️ <strong>Horizonte temporal:</strong> Inmediato a mediano plazo
+- 🔧 <strong>Enfoque:</strong> Automatización, monitoreo y confiabilidad</p>
+<p><strong>Herramientas:</strong>
+- <code>&gt;tomar_contexto</code> - Analiza el proyecto completo
+- <code>&gt;diagnosticar_devops</code> - Analiza infraestructura, pipelines y deployment</p>
+<p><strong>Cuándo usarlo:</strong>
+- ✅ Configurar pipelines CI/CD
+- ✅ Optimizar infraestructura cloud
+- ✅ Implementar estrategias de deployment
+- ✅ Configurar contenedores y orquestación (Docker/K8s)
+- ✅ Establecer monitoreo y observabilidad
+- ✅ Resolver problemas de despliegue
+- ✅ Diseñar estrategias de backup y recuperación</p>
+<p><strong>Cuándo NO usarlo:</strong>
+- ❌ Diseñar arquitectura de aplicación (usa <strong>ONAD</strong>)
+- ❌ Implementar código de negocio (usa <strong>ArchDev Pro</strong>)
+- ❌ Refinar historias de usuario (usa <strong>Refinador HU</strong>)</p>
+<p><strong>Ejemplo de interacción:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Usuario: Necesito configurar CI/CD con GitHub Actions
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>DEVOPS:
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>Perfecto. Voy a diagnosticar tu proyecto y proponer un pipeline.
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>&gt;diagnosticar_devops
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>**Diagnóstico Completo:**
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>📦 **Build &amp; Test:**
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>- Maven/Gradle detectado
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>- Sugerencia: Pipeline multi-stage
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>- Tests: Separar unit/integration
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>🚀 **Deployment:**
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>- Opción 1: Docker + AWS ECS
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>- Opción 2: Kubernetes
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>- Opción 3: Serverless (Lambda)
+<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>
+<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>📊 **Monitoreo:**
+<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>- Prometheus + Grafana
+<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a>- CloudWatch Logs
+<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>- Health checks necesarios
+<a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a>
+<a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a>¿Qué opción de deployment prefieres?
+</code></pre></div></p>
+<hr />
+<h3 id="refinador-hu-refinador">📝 Refinador HU (REFINADOR)<a class="headerlink" href="#refinador-hu-refinador" title="Permanent link">&para;</a></h3>
+<p><strong>Comando de activación:</strong> <code>+REFINADOR</code></p>
+<p><strong>Especialidad:</strong> Refinamiento de historias de usuario</p>
+<p><strong>Personalidad:</strong>
+- 🎯 <strong>Estilo:</strong> Analista de negocio técnico
+- 💬 <strong>Comunicación:</strong> Estructurada, con foco en criterios de aceptación
+- ⏱️ <strong>Horizonte temporal:</strong> Sprint planning
+- 📋 <strong>Enfoque:</strong> Claridad, completitud y estimabilidad</p>
+<p><strong>Herramientas:</strong>
+- <code>&gt;tomar_contexto</code> - Analiza el proyecto completo
+- <code>&gt;refinar_hu</code> - Refina historias de usuario con criterios claros</p>
+<p><strong>Cuándo usarlo:</strong>
+- ✅ Refinar historias de usuario antes del sprint
+- ✅ Clarificar requisitos ambiguos
+- ✅ Definir criterios de aceptación precisos
+- ✅ Identificar dependencias técnicas
+- ✅ Estimar complejidad de historias
+- ✅ Detectar historias que requieren splitting</p>
+<p><strong>Cuándo NO usarlo:</strong>
+- ❌ Implementar código (usa <strong>ArchDev Pro</strong>)
+- ❌ Diseñar arquitectura (usa <strong>ONAD</strong>)
+- ❌ Configurar infraestructura (usa <strong>DevOps</strong>)</p>
+<p><strong>Ejemplo de interacción:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Usuario: HU: Como usuario quiero buscar productos
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>REFINADOR:
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>Veo que esta historia necesita refinamiento. Vamos a clarificarla.
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>&gt;refinar_hu
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>**Historia Refinada:**
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>**Título:** Como usuario quiero buscar productos por nombre y categoría
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>**Descripción:**
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>Como usuario del e-commerce
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>Quiero buscar productos usando filtros
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>Para encontrar rápidamente lo que necesito
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>**Criterios de Aceptación:**
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>✅ Búsqueda por nombre (mínimo 3 caracteres)
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>✅ Filtro por categoría (dropdown)
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>✅ Resultados paginados (10 por página)
+<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>✅ Tiempo de respuesta &lt; 500ms
+<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>✅ Sin resultados: mensaje claro
+<a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a>
+<a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a>**Dependencias Técnicas:**
+<a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a>- API de búsqueda existente
+<a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a>- Índice de productos en BD
+<a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a>
+<a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a>**Estimación:** 5 puntos (1 sprint)
+<a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a>
+<a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a>**Notas Técnicas:**
+<a id="__codelineno-4-31" name="__codelineno-4-31" href="#__codelineno-4-31"></a>- Considerar caché para queries frecuentes
+<a id="__codelineno-4-32" name="__codelineno-4-32" href="#__codelineno-4-32"></a>- Validar input del usuario (SQL injection)
+</code></pre></div></p>
+<hr />
+<h3 id="artesano-de-commits-artesano">🎨 Artesano de Commits (ARTESANO)<a class="headerlink" href="#artesano-de-commits-artesano" title="Permanent link">&para;</a></h3>
+<p><strong>Comando de activación:</strong> <code>+ARTESANO</code></p>
+<p><strong>Especialidad:</strong> Creación de mensajes de commit profesionales</p>
+<p><strong>Personalidad:</strong>
+- 🎯 <strong>Estilo:</strong> Perfeccionista de la documentación de cambios
+- 💬 <strong>Comunicación:</strong> Concisa pero completa
+- ⏱️ <strong>Horizonte temporal:</strong> Inmediato (por commit)
+- 📝 <strong>Enfoque:</strong> Conventional Commits y trazabilidad</p>
+<p><strong>Herramientas:</strong>
+- <code>&gt;generar_commit</code> - Crea mensajes de commit siguiendo mejores prácticas</p>
+<p><strong>Cuándo usarlo:</strong>
+- ✅ Crear mensajes de commit profesionales
+- ✅ Documentar cambios complejos en el código
+- ✅ Seguir Conventional Commits
+- ✅ Mejorar trazabilidad del historial de Git
+- ✅ Vincular commits con issues/tasks</p>
+<p><strong>Cuándo NO usarlo:</strong>
+- ❌ Implementar código (usa <strong>ArchDev Pro</strong>)
+- ❌ Diseñar arquitectura (usa <strong>ONAD</strong>)
+- ❌ Cualquier cosa que no sea crear commits</p>
+<p><strong>Ejemplo de interacción:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Usuario: Necesito un commit para los cambios de autenticación
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>ARTESANO:
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>Perfecto. Voy a generar un mensaje de commit profesional.
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>&gt;generar_commit
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>**Mensaje de Commit Generado:**
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>feat(auth): implement JWT-based authentication
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>Implement JWT token generation and validation for user authentication.
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>**Changes:**
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>- Add JwtTokenProvider with RS256 signing
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>- Implement TokenAuthenticationFilter
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>- Add SecurityConfig with JWT integration
+<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>- Include token refresh mechanism
+<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>
+<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a>**Technical Details:**
+<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a>- Tokens expire after 1 hour
+<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a>- Refresh tokens valid for 7 days
+<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a>- Public/private key pair for signing
+<a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a>
+<a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a>**Tests:**
+<a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a>- Unit tests for JwtTokenProvider
+<a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a>- Integration tests for auth endpoints
+<a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a>- Security tests for unauthorized access
+<a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a>
+<a id="__codelineno-5-30" name="__codelineno-5-30" href="#__codelineno-5-30"></a>**Breaking Changes:** None
+<a id="__codelineno-5-31" name="__codelineno-5-31" href="#__codelineno-5-31"></a>
+<a id="__codelineno-5-32" name="__codelineno-5-32" href="#__codelineno-5-32"></a>**Related:** AUTH-123, AUTH-124
+<a id="__codelineno-5-33" name="__codelineno-5-33" href="#__codelineno-5-33"></a>
+<a id="__codelineno-5-34" name="__codelineno-5-34" href="#__codelineno-5-34"></a>---
+<a id="__codelineno-5-35" name="__codelineno-5-35" href="#__codelineno-5-35"></a>
+<a id="__codelineno-5-36" name="__codelineno-5-36" href="#__codelineno-5-36"></a>**Comando para ejecutar:**
+<a id="__codelineno-5-37" name="__codelineno-5-37" href="#__codelineno-5-37"></a>git commit -m &quot;feat(auth): implement JWT-based authentication&quot; -m &quot;...&quot;
+</code></pre></div></p>
+<hr />
+<h2 id="matriz-de-capacidades">Matriz de Capacidades<a class="headerlink" href="#matriz-de-capacidades" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Capacidad / Rol</th>
+<th>ONAD</th>
+<th>ARCHDEV</th>
+<th>DEVOPS</th>
+<th>REFINADOR</th>
+<th>ARTESANO</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Diseñar arquitectura</strong></td>
+<td>✅ Experto</td>
+<td>⚠️ Básico</td>
+<td>⚠️ Infra</td>
+<td>❌ No</td>
+<td>❌ No</td>
+</tr>
+<tr>
+<td><strong>Implementar código</strong></td>
+<td>❌ No</td>
+<td>✅ Experto</td>
+<td>⚠️ Scripts</td>
+<td>❌ No</td>
+<td>❌ No</td>
+</tr>
+<tr>
+<td><strong>Refactorizar</strong></td>
+<td>⚠️ Estratégico</td>
+<td>✅ Experto</td>
+<td>❌ No</td>
+<td>❌ No</td>
+<td>❌ No</td>
+</tr>
+<tr>
+<td><strong>Crear tests</strong></td>
+<td>❌ No</td>
+<td>✅ Experto</td>
+<td>⚠️ Básico</td>
+<td>❌ No</td>
+<td>❌ No</td>
+</tr>
+<tr>
+<td><strong>Configurar CI/CD</strong></td>
+<td>❌ No</td>
+<td>❌ No</td>
+<td>✅ Experto</td>
+<td>❌ No</td>
+<td>❌ No</td>
+</tr>
+<tr>
+<td><strong>Infraestructura cloud</strong></td>
+<td>⚠️ Consulta</td>
+<td>❌ No</td>
+<td>✅ Experto</td>
+<td>❌ No</td>
+<td>❌ No</td>
+</tr>
+<tr>
+<td><strong>Refinar HU</strong></td>
+<td>⚠️ Validar</td>
+<td>❌ No</td>
+<td>❌ No</td>
+<td>✅ Experto</td>
+<td>❌ No</td>
+</tr>
+<tr>
+<td><strong>Crear commits</strong></td>
+<td>❌ No</td>
+<td>⚠️ Básico</td>
+<td>❌ No</td>
+<td>❌ No</td>
+<td>✅ Experto</td>
+</tr>
+<tr>
+<td><strong>Analizar trade-offs</strong></td>
+<td>✅ Experto</td>
+<td>⚠️ Técnico</td>
+<td>⚠️ Infra</td>
+<td>❌ No</td>
+<td>❌ No</td>
+</tr>
+<tr>
+<td><strong>Documentar decisiones (ADR)</strong></td>
+<td>✅ Experto</td>
+<td>⚠️ Técnico</td>
+<td>⚠️ Infra</td>
+<td>❌ No</td>
+<td>❌ No</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Leyenda:</strong>
+- ✅ <strong>Experto</strong> - Capacidad principal del rol
+- ⚠️ <strong>Básico/Limitado</strong> - Puede hacerlo pero no es su fuerte
+- ❌ <strong>No</strong> - No es responsabilidad de este rol</p>
+<hr />
+<h2 id="cuando-usar-cada-rol">Cuándo Usar Cada Rol<a class="headerlink" href="#cuando-usar-cada-rol" title="Permanent link">&para;</a></h2>
+<h3 id="preguntas-guia">Preguntas Guía<a class="headerlink" href="#preguntas-guia" title="Permanent link">&para;</a></h3>
+<p><strong>¿Necesitas tomar una decisión arquitectónica importante?</strong>
+→ Usa <strong>+ONAD</strong> para analizar trade-offs y alternativas</p>
+<p><strong>¿Ya tienes el diseño y necesitas implementarlo?</strong>
+→ Usa <strong>+ARCHDEV</strong> para escribir código limpio</p>
+<p><strong>¿Necesitas configurar infraestructura o deployment?</strong>
+→ Usa <strong>+DEVOPS</strong> para automatizar y optimizar</p>
+<p><strong>¿Tienes historias de usuario ambiguas?</strong>
+→ Usa <strong>+REFINADOR</strong> para clarificarlas</p>
+<p><strong>¿Necesitas commitear cambios profesionalmente?</strong>
+→ Usa <strong>+ARTESANO</strong> para documentar correctamente</p>
+<hr />
+<h3 id="matriz-de-decision-por-escenario">Matriz de Decisión por Escenario<a class="headerlink" href="#matriz-de-decision-por-escenario" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Escenario</th>
+<th>Rol Recomendado</th>
+<th>Justificación</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Diseñar sistema desde cero</td>
+<td><strong>+ONAD</strong></td>
+<td>Requiere visión estratégica y análisis de trade-offs</td>
+</tr>
+<tr>
+<td>Evaluar propuesta técnica</td>
+<td><strong>+ONAD</strong></td>
+<td>Necesita validación crítica y alternativas</td>
+</tr>
+<tr>
+<td>Implementar feature</td>
+<td><strong>+ARCHDEV</strong></td>
+<td>Código concreto con tests</td>
+</tr>
+<tr>
+<td>Mejorar código existente</td>
+<td><strong>+ARCHDEV</strong></td>
+<td>Refactoring táctico</td>
+</tr>
+<tr>
+<td>Configurar pipeline</td>
+<td><strong>+DEVOPS</strong></td>
+<td>Automatización y deployment</td>
+</tr>
+<tr>
+<td>Optimizar infraestructura</td>
+<td><strong>+DEVOPS</strong></td>
+<td>Conocimiento de cloud y ops</td>
+</tr>
+<tr>
+<td>Clarificar requisitos</td>
+<td><strong>+REFINADOR</strong></td>
+<td>Análisis de negocio técnico</td>
+</tr>
+<tr>
+<td>Documentar cambios en Git</td>
+<td><strong>+ARTESANO</strong></td>
+<td>Conventional Commits</td>
+</tr>
+<tr>
+<td>Resolver deuda técnica arquitectónica</td>
+<td><strong>+ONAD</strong></td>
+<td>Análisis estratégico</td>
+</tr>
+<tr>
+<td>Resolver code smells</td>
+<td><strong>+ARCHDEV</strong></td>
+<td>Refactoring de código</td>
+</tr>
+<tr>
+<td>Investigar problema de producción</td>
+<td><strong>+DEVOPS</strong></td>
+<td>Troubleshooting y logs</td>
+</tr>
+<tr>
+<td>Estimar complejidad de HU</td>
+<td><strong>+REFINADOR</strong></td>
+<td>Análisis técnico de historias</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="flujos-de-trabajo-comunes">Flujos de Trabajo Comunes<a class="headerlink" href="#flujos-de-trabajo-comunes" title="Permanent link">&para;</a></h2>
+<h3 id="flujo-1-nuevo-proyecto">Flujo 1: Nuevo Proyecto<a class="headerlink" href="#flujo-1-nuevo-proyecto" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># 1. Analizar y diseñar arquitectura</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>+ONAD
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>&gt;tomar_contexto
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>&gt;define_arquitectura
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>&gt;generar_adr
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="c1"># 2. Configurar infraestructura</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>+DEVOPS
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>&gt;diagnosticar_devops
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="c1"># 3. Implementar código</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>+ARCHDEV
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>&gt;ejecutar_plan
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>&gt;crear_pruebas
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="c1"># 4. Documentar cambios</span>
+<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>+ARTESANO
+<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a>&gt;generar_commit
+</code></pre></div>
+<hr />
+<h3 id="flujo-2-refactoring-mayor">Flujo 2: Refactoring Mayor<a class="headerlink" href="#flujo-2-refactoring-mayor" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># 1. Analizar situación actual</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>+ONAD
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>&gt;tomar_contexto
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="c1"># Validar propuesta de refactoring</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="c1"># 2. Aplicar mejoras</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>+ARCHDEV
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>&gt;analizar_code_smells
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>&gt;solucionar_smells
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>&gt;verifica_pruebas
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="c1"># 3. Documentar refactoring</span>
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>+ARTESANO
+<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>&gt;generar_commit
+</code></pre></div>
+<hr />
+<h3 id="flujo-3-sprint-planning">Flujo 3: Sprint Planning<a class="headerlink" href="#flujo-3-sprint-planning" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># 1. Clarificar historias</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>+REFINADOR
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>&gt;refinar_hu<span class="w"> </span>HU-001
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="c1"># 2. Validar y planificar</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>+ONAD
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>&gt;validar_hu<span class="w"> </span>HU-001
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>&gt;planificar_hu<span class="w"> </span>HU-001
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="c1"># 3. Estimar esfuerzo</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>+ARCHDEV
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="c1"># Revisar plan y estimar</span>
+</code></pre></div>
+<hr />
+<h3 id="flujo-4-deployment-de-feature">Flujo 4: Deployment de Feature<a class="headerlink" href="#flujo-4-deployment-de-feature" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># 1. Asegurar calidad</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>+ARCHDEV
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>&gt;crear_pruebas
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>&gt;verifica_pruebas
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="c1"># 2. Preparar deployment</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>+DEVOPS
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>&gt;diagnosticar_devops
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="c1"># 3. Documentar release</span>
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>+ARTESANO
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>&gt;generar_commit
+</code></pre></div>
+<hr />
+<h3 id="flujo-5-resolucion-de-propuesta-tecnica">Flujo 5: Resolución de Propuesta Técnica<a class="headerlink" href="#flujo-5-resolucion-de-propuesta-tecnica" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># 1. Analizar propuesta con &quot;No Comer Entero&quot;</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>+ONAD
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="c1"># - Validar supuestos</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="c1"># - Evaluar trade-offs</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="c1"># - Proponer alternativas</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="c1"># 2. Si se aprueba → Implementar</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>+ARCHDEV
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>&gt;ejecutar_plan
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="c1"># 3. Si requiere infra</span>
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>+DEVOPS
+<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a>&gt;diagnosticar_devops
+</code></pre></div>
+<hr />
+<h2 id="tips-para-elegir-el-rol-correcto">💡 Tips para Elegir el Rol Correcto<a class="headerlink" href="#tips-para-elegir-el-rol-correcto" title="Permanent link">&para;</a></h2>
+<h3 id="tip-1-usa-roles-cuando-tengas-dudas">Tip 1: Usa <code>*roles</code> Cuando Tengas Dudas<a class="headerlink" href="#tip-1-usa-roles-cuando-tengas-dudas" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>*roles<span class="w">    </span><span class="c1"># Ver todos los roles disponibles</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>*status<span class="w">   </span><span class="c1"># Ver rol activo actual</span>
+</code></pre></div>
+<h3 id="tip-2-horizonte-temporal">Tip 2: Horizonte Temporal<a class="headerlink" href="#tip-2-horizonte-temporal" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Largo plazo (6-12 meses)</strong> → <strong>+ONAD</strong></li>
+<li><strong>Sprint actual (1-2 semanas)</strong> → <strong>+ARCHDEV</strong></li>
+<li><strong>Inmediato (operaciones)</strong> → <strong>+DEVOPS</strong></li>
+<li><strong>Planning</strong> → <strong>+REFINADOR</strong></li>
+<li><strong>Por commit</strong> → <strong>+ARTESANO</strong></li>
+</ul>
+<h3 id="tip-3-naturaleza-de-la-tarea">Tip 3: Naturaleza de la Tarea<a class="headerlink" href="#tip-3-naturaleza-de-la-tarea" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>¿Qué hacer?</strong> → <strong>+ONAD</strong> (estrategia)</li>
+<li><strong>¿Cómo implementar?</strong> → <strong>+ARCHDEV</strong> (código)</li>
+<li><strong>¿Cómo desplegar?</strong> → <strong>+DEVOPS</strong> (infraestructura)</li>
+<li><strong>¿Qué construir exactamente?</strong> → <strong>+REFINADOR</strong> (requisitos)</li>
+<li><strong>¿Cómo documentar?</strong> → <strong>+ARTESANO</strong> (commits)</li>
+</ul>
+<h3 id="tip-4-nivel-de-abstraccion">Tip 4: Nivel de Abstracción<a class="headerlink" href="#tip-4-nivel-de-abstraccion" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Alto nivel (arquitectura)</strong> → <strong>+ONAD</strong></li>
+<li><strong>Medio nivel (código)</strong> → <strong>+ARCHDEV</strong></li>
+<li><strong>Operaciones (infra)</strong> → <strong>+DEVOPS</strong></li>
+<li><strong>Negocio (requisitos)</strong> → <strong>+REFINADOR</strong></li>
+<li><strong>Documentación (Git)</strong> → <strong>+ARTESANO</strong></li>
+</ul>
+<hr />
+<h2 id="cambio-entre-roles">🔄 Cambio Entre Roles<a class="headerlink" href="#cambio-entre-roles" title="Permanent link">&para;</a></h2>
+<p>Es común necesitar múltiples roles en una sesión. El sistema mantiene el contexto entre cambios:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># Analizar arquitectura</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>+ONAD
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>&gt;define_arquitectura
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="c1"># Implementar código</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>+ARCHDEV
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>&gt;refactorizar
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="c1"># Configurar deployment</span>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>+DEVOPS
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>&gt;diagnosticar_devops
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>
+<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a><span class="c1"># Crear commit</span>
+<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a>+ARTESANO
+<a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a>&gt;generar_commit
+<a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a>
+<a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a><span class="c1"># Ver estado</span>
+<a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a>*status
+</code></pre></div>
+<p><strong>El sistema recuerda:</strong>
+- ✅ Contexto del proyecto analizado
+- ✅ Tareas completadas por cada rol
+- ✅ Decisiones tomadas
+- ✅ Estado del backlog</p>
+<hr />
+<h2 id="documentacion-relacionada">📚 Documentación Relacionada<a class="headerlink" href="#documentacion-relacionada" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong><a href="../../">README Principal</a></strong> - Visión general del sistema</li>
+<li><strong><a href="../guia_comandos/">Guía de Comandos</a></strong> - Comandos detallados</li>
+<li><strong><a href="../guia_ciclo_vida_tareas/">Guía de Ciclo de Vida</a></strong> - Flujo de tareas</li>
+<li><strong><a href="../guia_creacion_roles/">Crear Roles Personalizados</a></strong> - Extender el sistema</li>
+</ul>
+<hr />
+<h2 id="historial-de-versiones">📅 Historial de Versiones<a class="headerlink" href="#historial-de-versiones" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Versión</th>
+<th>Fecha</th>
+<th>Cambios Principales</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0</td>
+<td>-</td>
+<td>Versión inicial con descripción de roles</td>
+</tr>
+<tr>
+<td>2.0</td>
+<td>2025-10-16</td>
+<td>Agregada matriz de capacidades y flujos de trabajo</td>
+</tr>
+<tr>
+<td>3.0</td>
+<td>2026-01-05</td>
+<td>✅ <strong>Nuevo sistema de prefijos</strong><br>✅ <code>+ROL</code> reemplaza <code>@ROL</code> y <code>@switch ROL</code><br>✅ Herramientas sincronizadas con <code>herramientas-activas.md</code><br>✅ Agregadas <code>&gt;validar_hu</code> y <code>&gt;planificar_hu</code> a ONAD<br>✅ Agregado <code>&gt;ejecutar_plan</code> a ARCHDEV</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><strong>¿No estás seguro qué rol usar?</strong></p>
+<p>Ejecuta: <code>*roles</code> para ver la lista completa con descripciones.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

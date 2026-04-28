@@ -9,19 +9,84 @@
 
 | Componente | Versión Actual | Última Actualización |
 |------------|----------------|----------------------|
-| **Sistema SAC** | 7.14.0 | 2026-04-27 |
-| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.14.0 | 2026-04-27 |
+| **Sistema SAC** | 7.16.0 | 2026-04-28 |
+| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.16.0 | 2026-04-28 |
 | **Configuración Usuario** (`config/CONFIG_USER.template.yaml`) | 7.9.0 | 2026-04-24 |
-| **Roles SAC** (`agentes/*.rol.md`) | 7.12.0 | 2026-04-25 |
-| **Herramientas** (`herramientas/*.tool.yaml`) | 7.13.0 | 2026-04-27 |
+| **Roles SAC** (`agentes/*.rol.md`) | 7.15.0 | 2026-04-28 |
+| **Herramientas** (`herramientas/*.tool.yaml`) | 7.15.0 | 2026-04-28 |
 | **Plantillas** (`plantillas/`) | 7.12.0 | 2026-04-25 |
-| **Guía de Comandos** (`guias/guia_comandos.md`) | 7.3.0 | 2026-04-23 |
+| **Guía de Comandos** (`guias/guia_comandos.md`) | 7.15.0 | 2026-04-28 |
 | **Guía de Roles** (`guias/guia_roles_activos.md`) | 3.0 | 2026-01-05 |
-| **Guía Ciclo de Vida** (`guias/guia_ciclo_vida_tareas.md`) | 7.3.0 | 2026-04-23 |
+| **Guía Ciclo de Vida** (`guias/guia_ciclo_vida_tareas.md`) | 7.15.0 | 2026-04-28 |
 
 ---
 
 ## 🚀 Historial de Versiones
+
+### [7.16.0] - 2026-04-28
+
+#### 📦 Feat: Workflow de GitHub Actions para release automático al mergear PR
+
+**Objetivo:** Automatizar la creación de tags y GitHub Releases cuando un PR mergeado a `main` contiene un bump de versión en `CONFIG_SYSTEM.yaml`. Incluye extracción automática de notas del CHANGELOG y adjunta los scripts de bootstrap como assets descargables.
+
+#### ✅ Cambios en CI/CD
+
+| Cambio | Detalle |
+|--------|--------|
+| Nuevo `.github/workflows/release.yml` | Trigger: PR merged a main. Detecta versión en CONFIG_SYSTEM.yaml, compara con tags existentes, crea Release si es nueva |
+| Extracción de CHANGELOG | Parsea automáticamente la sección `### [X.Y.Z]` del CHANGELOG como notas del Release |
+| Assets de bootstrap | Adjunta `install.ps1` e `install.sh` al Release para que los enlaces `releases/latest/download/` funcionen |
+| Idempotencia | Si el tag ya existe, skip silencioso (soporta re-merge y múltiples PRs sin bump) |
+
+#### ✅ Cambios en Configuración
+
+| Cambio | Detalle |
+|--------|--------|
+| `CONFIG_SYSTEM.yaml` | version 7.15.0 → 7.16.0 |
+
+---
+
+### [7.15.0] - 2026-04-28
+
+#### 🔄 Refactor: Migrar `>planificar_hu` del Arquitecto al Desarrollador con Directrices de Planificación
+
+**Objetivo:** Resolver la violación de SRP en el rol Arquitecto (que declaraba "NO implementación" pero planificaba a nivel táctico) y eliminar el cuello de botella que impedía flujo continuo. El Arquitecto ahora deja directrices estratégicas al aprobar la HU; el Desarrollador las consume al planificar.
+
+#### ✅ Cambios en Herramientas
+
+| Cambio | Detalle |
+|--------|--------|
+| `validar_hu` — Nueva subsección "Directrices de Planificación" | Se agrega al paso "Persistir Aprobación": campos Fases sugeridas, Componentes clave, Dependencias entre HUs, Riesgos a mitigar, Notas adicionales |
+| `validar_hu` — `siguiente` actualizado | `>planificar_hu` ahora apunta a `chat_agente: "ArchDev Pro"` en vez de `"Arquitecto Onad"` |
+| `planificar_hu` — Consumo de directrices | Nuevo bloque en paso "Cargar HU y Contexto": lee `### Directrices de Planificación` del refinamiento como recomendaciones (no mandatos); graceful degradation si no existen |
+| `registrar_bug` — `siguiente` actualizado | `>planificar_hu` apunta a `chat_agente: "ArchDev Pro"` |
+| `sincronizar_backlog` — `siguiente` actualizado | `>planificar_hu` apunta a `chat_agente: "ArchDev Pro"` |
+| `analizar_stack` — `siguiente` actualizado | `>planificar_hu` apunta a `chat_agente: "archdev_pro"` |
+
+#### ✅ Cambios en Roles
+
+| Cambio | Detalle |
+|--------|--------|
+| `arquitecto_onad.rol.md` | Removido `>planificar_hu` de tabla de herramientas |
+| `archdev_pro.rol.md` | Agregado `>planificar_hu` a tabla de herramientas |
+
+#### ✅ Cambios en Documentación
+
+| Cambio | Detalle |
+|--------|--------|
+| `docs/ROLES.md` | Arquitecto pierde `>planificar_hu`; Desarrollador lo gana |
+| `docs/guias/guia_comandos.md` | Tabla de agentes actualizada |
+| `docs/guias/guia_ciclo_vida_tareas.md` | Transición `[A]→[P]` ahora asignada a ArchDev Pro |
+| `docs/estructura_directorio.md` | Agente principal de `>planificar_hu` → Desarrollador |
+| `INSTALACION/README.md` | Tabla de herramientas actualizada |
+
+#### ✅ Cambios en Configuración
+
+| Cambio | Detalle |
+|--------|--------|
+| `CONFIG_SYSTEM.yaml` | version 7.14.0 → 7.15.0 |
+
+---
 
 ### [7.14.0] - 2026-04-27
 

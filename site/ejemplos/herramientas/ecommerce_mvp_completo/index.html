@@ -1,0 +1,2727 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Sistema de agentes IA especializados para GitHub Copilot">
+      
+      
+        <meta name="author" content="JavierDevCol">
+      
+      
+        <link rel="canonical" href="https://javierdevcol.github.io/SAC/ejemplos/herramientas/ecommerce_mvp_completo/">
+      
+      
+        <link rel="prev" href="../diagnosticar_devops_ejemplo/">
+      
+      
+        <link rel="next" href="../solucionar_smells_ejemplo/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>eCommerce MVP - SAC — Sistema Agéntico COCHAS</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ejemplo-completo-definicion-de-arquitectura-para-e-commerce-mvp" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../../.." title="SAC — Sistema Agéntico COCHAS" class="md-header__button md-logo" aria-label="SAC — Sistema Agéntico COCHAS" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SAC — Sistema Agéntico COCHAS
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              eCommerce MVP
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Cambiar a modo oscuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo oscuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Cambiar a modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/JavierDevCol/SAC" title="Ir al repositorio" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    JavierDevCol/SAC
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Pestañas" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Inicio
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../INSTALACION/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Instalación
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../ROLES/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Agentes
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../HERRAMIENTAS/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Herramientas
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../estructura_directorio/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Estructura
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../guias/guia_comandos/" class="md-tabs__link">
+          
+  
+  
+  Guías
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+  Ejemplos
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="SAC — Sistema Agéntico COCHAS" class="md-nav__button md-logo" aria-label="SAC — Sistema Agéntico COCHAS" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    SAC — Sistema Agéntico COCHAS
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/JavierDevCol/SAC" title="Ir al repositorio" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    JavierDevCol/SAC
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inicio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../INSTALACION/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Instalación
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ROLES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agentes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../HERRAMIENTAS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Herramientas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../estructura_directorio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Estructura
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guías
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guías
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guias/guia_comandos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Comandos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guias/guia_ciclo_vida_tareas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ciclo de Vida de HUs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guias/guia_roles_activos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roles Activos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guias/guia_creacion_roles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crear Roles SAC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guias/guia_creacion_agentes_vscode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crear Agentes VS Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guias/guia_subagents_vscode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Subagentes VS Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ejemplos
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ejemplos
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Índice
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tomar_contexto_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tomar Contexto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../refinar_hu_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Refinar HU
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../generar_commit_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Generar Commit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../crear_pruebas_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crear Pruebas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../analizar_code_smells_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Analizar Code Smells
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../diagnosticar_devops_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Diagnosticar DevOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    eCommerce MVP
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    eCommerce MVP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#contexto-inicial-del-proyecto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📋 Contexto Inicial del Proyecto
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📋 Contexto Inicial del Proyecto">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#solicitud-del-usuario" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Solicitud del Usuario
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#proceso-de-analisis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔄 Proceso de Análisis
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔄 Proceso de Análisis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#paso-1-clarificacion-de-requisitos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 1: Clarificación de Requisitos
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Paso 1: Clarificación de Requisitos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#requisitos-funcionales" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requisitos Funcionales
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#requisitos-no-funcionales" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requisitos No Funcionales
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#equipo-y-organizacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Equipo y Organización
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#restricciones-de-negocio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Restricciones de Negocio
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evolucion-y-escalado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evolución y Escalado
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-2-analisis-de-opciones-arquitectonicas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 2: Análisis de Opciones Arquitectónicas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Paso 2: Análisis de Opciones Arquitectónicas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#opciones-seleccionadas-para-evaluacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opciones Seleccionadas para Evaluación
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opciones-descartadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opciones Descartadas
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-3-comparacion-detallada-de-opciones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 3: Comparación Detallada de Opciones
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Paso 3: Comparación Detallada de Opciones">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tabla-comparativa-consolidada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tabla Comparativa Consolidada
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#detalle-por-opcion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Detalle por Opción
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Detalle por Opción">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#opcion-a-monolito-modular-con-arquitectura-hexagonal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opción A: Monolito Modular con Arquitectura Hexagonal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opcion-b-microservicios-basico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opción B: Microservicios Básico
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opcion-c-serverless-aws-lambda" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opción C: Serverless (AWS Lambda)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-4-recomendacion-fundamentada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 4: Recomendación Fundamentada
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recomendacion-arquitectonica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ Recomendación Arquitectónica
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="✅ Recomendación Arquitectónica">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#opcion-seleccionada-monolito-modular-con-arquitectura-hexagonal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opción Seleccionada: Monolito Modular con Arquitectura Hexagonal
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Opción Seleccionada: Monolito Modular con Arquitectura Hexagonal">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#alineacion-con-requisitos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Alineación con Requisitos
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-5-riesgos-y-mitigaciones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 5: Riesgos y Mitigaciones
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-6-roadmap-tecnico-inicial" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 6: Roadmap Técnico Inicial
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#roadmap-de-implementacion-primeros-3-meses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🛠️ Roadmap de Implementación (Primeros 3 Meses)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🛠️ Roadmap de Implementación (Primeros 3 Meses)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sprint-0-fundaciones-semana-1-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sprint 0: Fundaciones (Semana 1-2)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sprint-1-2-implementacion-core-semana-3-6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sprint 1-2: Implementación Core (Semana 3-6)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sprint-3-4-checkout-y-pagos-semana-7-10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sprint 3-4: Checkout y Pagos (Semana 7-10)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sprint-5-6-refinamiento-pre-mvp-semana-11-12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sprint 5-6: Refinamiento Pre-MVP (Semana 11-12)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-7-condiciones-de-re-evaluacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 7: Condiciones de Re-evaluación
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#condiciones-de-re-evaluacion-arquitectonica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔄 Condiciones de Re-evaluación Arquitectónica
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔄 Condiciones de Re-evaluación Arquitectónica">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#paso-8-invocacion-de-generar_adr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 8: Invocación de generar_adr
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generacion-de-adr-formal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📝 Generación de ADR Formal
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#metricas-de-exito-del-proyecto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📊 Métricas de Éxito del Proyecto
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📊 Métricas de Éxito del Proyecto">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objetivos-a-validar-en-los-primeros-6-meses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objetivos a Validar en los Primeros 6 Meses
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lecciones-aprendidas-para-actualizar-post-lanzamiento" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎓 Lecciones Aprendidas (Para Actualizar Post-Lanzamiento)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📚 Referencias
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../solucionar_smells_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Solucionar Smells
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../verifica_pruebas_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Verificar Pruebas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#contexto-inicial-del-proyecto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📋 Contexto Inicial del Proyecto
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📋 Contexto Inicial del Proyecto">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#solicitud-del-usuario" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Solicitud del Usuario
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#proceso-de-analisis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔄 Proceso de Análisis
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔄 Proceso de Análisis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#paso-1-clarificacion-de-requisitos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 1: Clarificación de Requisitos
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Paso 1: Clarificación de Requisitos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#requisitos-funcionales" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requisitos Funcionales
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#requisitos-no-funcionales" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requisitos No Funcionales
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#equipo-y-organizacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Equipo y Organización
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#restricciones-de-negocio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Restricciones de Negocio
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evolucion-y-escalado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evolución y Escalado
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-2-analisis-de-opciones-arquitectonicas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 2: Análisis de Opciones Arquitectónicas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Paso 2: Análisis de Opciones Arquitectónicas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#opciones-seleccionadas-para-evaluacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opciones Seleccionadas para Evaluación
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opciones-descartadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opciones Descartadas
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-3-comparacion-detallada-de-opciones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 3: Comparación Detallada de Opciones
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Paso 3: Comparación Detallada de Opciones">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tabla-comparativa-consolidada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tabla Comparativa Consolidada
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#detalle-por-opcion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Detalle por Opción
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Detalle por Opción">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#opcion-a-monolito-modular-con-arquitectura-hexagonal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opción A: Monolito Modular con Arquitectura Hexagonal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opcion-b-microservicios-basico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opción B: Microservicios Básico
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opcion-c-serverless-aws-lambda" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opción C: Serverless (AWS Lambda)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-4-recomendacion-fundamentada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 4: Recomendación Fundamentada
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recomendacion-arquitectonica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ Recomendación Arquitectónica
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="✅ Recomendación Arquitectónica">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#opcion-seleccionada-monolito-modular-con-arquitectura-hexagonal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opción Seleccionada: Monolito Modular con Arquitectura Hexagonal
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Opción Seleccionada: Monolito Modular con Arquitectura Hexagonal">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#alineacion-con-requisitos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Alineación con Requisitos
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-5-riesgos-y-mitigaciones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 5: Riesgos y Mitigaciones
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-6-roadmap-tecnico-inicial" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 6: Roadmap Técnico Inicial
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#roadmap-de-implementacion-primeros-3-meses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🛠️ Roadmap de Implementación (Primeros 3 Meses)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🛠️ Roadmap de Implementación (Primeros 3 Meses)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sprint-0-fundaciones-semana-1-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sprint 0: Fundaciones (Semana 1-2)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sprint-1-2-implementacion-core-semana-3-6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sprint 1-2: Implementación Core (Semana 3-6)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sprint-3-4-checkout-y-pagos-semana-7-10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sprint 3-4: Checkout y Pagos (Semana 7-10)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sprint-5-6-refinamiento-pre-mvp-semana-11-12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sprint 5-6: Refinamiento Pre-MVP (Semana 11-12)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-7-condiciones-de-re-evaluacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 7: Condiciones de Re-evaluación
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#condiciones-de-re-evaluacion-arquitectonica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔄 Condiciones de Re-evaluación Arquitectónica
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔄 Condiciones de Re-evaluación Arquitectónica">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#paso-8-invocacion-de-generar_adr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 8: Invocación de generar_adr
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generacion-de-adr-formal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📝 Generación de ADR Formal
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#metricas-de-exito-del-proyecto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📊 Métricas de Éxito del Proyecto
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📊 Métricas de Éxito del Proyecto">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objetivos-a-validar-en-los-primeros-6-meses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objetivos a Validar en los Primeros 6 Meses
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lecciones-aprendidas-para-actualizar-post-lanzamiento" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎓 Lecciones Aprendidas (Para Actualizar Post-Lanzamiento)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📚 Referencias
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="ejemplo-completo-definicion-de-arquitectura-para-e-commerce-mvp">🛒 Ejemplo Completo: Definición de Arquitectura para E-Commerce MVP<a class="headerlink" href="#ejemplo-completo-definicion-de-arquitectura-para-e-commerce-mvp" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Herramienta utilizada:</strong> <code>define_arquitectura</code><br />
+<strong>Fecha:</strong> 7 de octubre de 2025<br />
+<strong>Caso de uso:</strong> Startup de e-commerce para tienda de ropa con MVP en 3 meses</p>
+</blockquote>
+<hr />
+<h2 id="contexto-inicial-del-proyecto">📋 Contexto Inicial del Proyecto<a class="headerlink" href="#contexto-inicial-del-proyecto" title="Permanent link">&para;</a></h2>
+<h3 id="solicitud-del-usuario">Solicitud del Usuario<a class="headerlink" href="#solicitud-del-usuario" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Estoy iniciando un proyecto de e-commerce para una tienda de ropa que actualmente vende solo físicamente. Queremos validar el canal online con un MVP.
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>**Requisitos Funcionales Iniciales:**
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>- Catálogo de productos (300 productos iniciales)
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>- Carrito de compras
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>- Checkout con integración a pasarela de pagos (Stripe)
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>- Gestión básica de órdenes
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>- Panel administrativo simple
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>**Requisitos No Funcionales:**
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>- Esperamos ~500 usuarios concurrentes en picos (fin de semana)
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>- Uptime deseable: 99% (no crítico para MVP)
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>- Tiempo de respuesta: &lt; 2 segundos está bien inicialmente
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>**Equipo:**
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>- 2 desarrolladores backend (1 mid-level Java, 1 junior)
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>- 1 desarrollador frontend (React)
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>- Sin DevOps dedicado
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>**Restricciones:**
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>- Presupuesto limitado: ~$300/mes para infraestructura
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>- Time-to-market crítico: MVP en 2.5 meses
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>- Crecimiento futuro incierto (depende de validación del canal)
+</code></pre></div>
+<hr />
+<h2 id="proceso-de-analisis">🔄 Proceso de Análisis<a class="headerlink" href="#proceso-de-analisis" title="Permanent link">&para;</a></h2>
+<h3 id="paso-1-clarificacion-de-requisitos"><strong>Paso 1: Clarificación de Requisitos</strong><a class="headerlink" href="#paso-1-clarificacion-de-requisitos" title="Permanent link">&para;</a></h3>
+<p><strong>Preguntas realizadas por la herramienta:</strong></p>
+<h4 id="requisitos-funcionales">Requisitos Funcionales<a class="headerlink" href="#requisitos-funcionales" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>¿Cuántos dominios de negocio diferentes abarcará el sistema inicialmente?</p>
+</blockquote>
+<p><strong>Respuesta:</strong>
+- 3 dominios principales: Catálogo, Carrito/Checkout, Gestión de Órdenes
+- Todos están claramente separados
+- No se espera crecimiento de dominios en los primeros 6 meses</p>
+<h4 id="requisitos-no-funcionales">Requisitos No Funcionales<a class="headerlink" href="#requisitos-no-funcionales" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>¿Cuáles son los requisitos no funcionales más críticos?</p>
+</blockquote>
+<p><strong>Respuesta:</strong>
+- <strong>Alta disponibilidad:</strong> 99% es suficiente (no 99.9%)
+- <strong>Latencia:</strong> &lt; 2 segundos es aceptable para MVP
+- <strong>Escalabilidad:</strong> 500 usuarios concurrentes, máx. 1,000 en Black Friday
+- <strong>Seguridad:</strong> PCI-DSS compliance delegado a Stripe
+- <strong>Observabilidad:</strong> Logs básicos suficientes inicialmente</p>
+<h4 id="equipo-y-organizacion">Equipo y Organización<a class="headerlink" href="#equipo-y-organizacion" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>¿Cuál es la experiencia del equipo con arquitecturas distribuidas?</p>
+</blockquote>
+<p><strong>Respuesta:</strong>
+- 1 dev mid-level: Experiencia con Spring Boot monolítico, sin microservicios
+- 1 dev junior: Sin experiencia profesional previa
+- Frontend dev: Experiencia con React, consume APIs REST
+- Sin experiencia en Kubernetes, Docker básico</p>
+<h4 id="restricciones-de-negocio">Restricciones de Negocio<a class="headerlink" href="#restricciones-de-negocio" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>¿Cuál es el presupuesto y presión de time-to-market?</p>
+</blockquote>
+<p><strong>Respuesta:</strong>
+- Presupuesto infraestructura: $300/mes máximo
+- Time-to-market: 2.5 meses CRÍTICO (lanzamiento antes de temporada alta)
+- Inversión inicial limitada, depende de validación para recaudar más fondos</p>
+<h4 id="evolucion-y-escalado">Evolución y Escalado<a class="headerlink" href="#evolucion-y-escalado" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>¿Existe previsión de escalado por dominios?</p>
+</blockquote>
+<p><strong>Respuesta:</strong>
+- Si el MVP es exitoso (&gt; 5,000 usuarios sostenidos), se planea:
+  - Marketplace (vendedores externos)
+  - Suscripciones/membresías
+  - App móvil nativa
+- Horizonte: 12-18 meses después del lanzamiento</p>
+<hr />
+<h3 id="paso-2-analisis-de-opciones-arquitectonicas"><strong>Paso 2: Análisis de Opciones Arquitectónicas</strong><a class="headerlink" href="#paso-2-analisis-de-opciones-arquitectonicas" title="Permanent link">&para;</a></h3>
+<h4 id="opciones-seleccionadas-para-evaluacion">Opciones Seleccionadas para Evaluación<a class="headerlink" href="#opciones-seleccionadas-para-evaluacion" title="Permanent link">&para;</a></h4>
+<ol>
+<li><strong>Monolito Modular</strong> con Arquitectura Hexagonal</li>
+<li><strong>Microservicios Básico</strong> (3 servicios: Catálogo, Carrito, Órdenes)</li>
+<li><strong>Serverless</strong> (AWS Lambda + API Gateway)</li>
+</ol>
+<h4 id="opciones-descartadas">Opciones Descartadas<a class="headerlink" href="#opciones-descartadas" title="Permanent link">&para;</a></h4>
+<p>❌ <strong>Arquitectura Orientada a Eventos (EDA):</strong>
+- <strong>Razón:</strong> Complejidad innecesaria para MVP
+- <strong>Justificación:</strong> No hay integraciones complejas que requieran desacoplamiento temporal</p>
+<p>❌ <strong>CQRS:</strong>
+- <strong>Razón:</strong> Over-engineering para volumen esperado
+- <strong>Justificación:</strong> Separación lectura/escritura no aporta beneficio con 500 usuarios concurrentes</p>
+<hr />
+<h3 id="paso-3-comparacion-detallada-de-opciones"><strong>Paso 3: Comparación Detallada de Opciones</strong><a class="headerlink" href="#paso-3-comparacion-detallada-de-opciones" title="Permanent link">&para;</a></h3>
+<h4 id="tabla-comparativa-consolidada">Tabla Comparativa Consolidada<a class="headerlink" href="#tabla-comparativa-consolidada" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Criterio</th>
+<th>Monolito Modular</th>
+<th>Microservicios</th>
+<th>Serverless</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Complejidad Inicial</strong></td>
+<td>🟢 Baja</td>
+<td>🔴 Alta</td>
+<td>🟡 Media</td>
+</tr>
+<tr>
+<td><strong>Complejidad Operativa</strong></td>
+<td>🟢 Baja</td>
+<td>🔴 Alta</td>
+<td>🟡 Media</td>
+</tr>
+<tr>
+<td><strong>Velocidad Desarrollo Inicial</strong></td>
+<td>🟢 8-10 sem</td>
+<td>🔴 14-16 sem</td>
+<td>🟡 10-12 sem</td>
+</tr>
+<tr>
+<td><strong>Escalabilidad Horizontal</strong></td>
+<td>🟡 Media</td>
+<td>🟢 Alta</td>
+<td>🟢 Alta</td>
+</tr>
+<tr>
+<td><strong>Coste Mensual (inicial)</strong></td>
+<td>🟢 $100-150</td>
+<td>🔴 $400-600</td>
+<td>🟢 $50-100</td>
+</tr>
+<tr>
+<td><strong>Adecuación Equipo</strong></td>
+<td>🟢 Excelente</td>
+<td>🔴 Inadecuado</td>
+<td>🟡 Aceptable</td>
+</tr>
+<tr>
+<td><strong>Observabilidad/Debugging</strong></td>
+<td>🟢 Simple</td>
+<td>🔴 Complejo</td>
+<td>🟡 Medio</td>
+</tr>
+<tr>
+<td><strong>Vendor Lock-in</strong></td>
+<td>🟢 Ninguno</td>
+<td>🟢 Ninguno</td>
+<td>🔴 Alto (AWS)</td>
+</tr>
+<tr>
+<td><strong>Tiempo Hasta Producción</strong></td>
+<td>🟢 2-3 meses</td>
+<td>🔴 4-5 meses</td>
+<td>🟡 3-4 meses</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="detalle-por-opcion">Detalle por Opción<a class="headerlink" href="#detalle-por-opcion" title="Permanent link">&para;</a></h4>
+<h5 id="opcion-a-monolito-modular-con-arquitectura-hexagonal"><strong>Opción A: Monolito Modular con Arquitectura Hexagonal</strong><a class="headerlink" href="#opcion-a-monolito-modular-con-arquitectura-hexagonal" title="Permanent link">&para;</a></h5>
+<p><strong>✅ Ventajas:</strong>
+- Complejidad inicial y operativa muy baja
+- Velocidad de desarrollo alta (sin overhead de comunicación entre servicios)
+- Debugging y testing simplificados (todo en un proceso)
+- Coste de infraestructura mínimo ($100-150/mes)
+- Ideal para equipo pequeño (2-4 desarrolladores)
+- Transacciones ACID simples (sin distributed transactions)
+- Sin vendor lock-in</p>
+<p><strong>❌ Desventajas:</strong>
+- Escalabilidad horizontal limitada (escala todo o nada)
+- Acoplamiento de deployment (un bug en un módulo puede afectar todo)
+- Riesgo de degradación a "Big Ball of Mud" sin disciplina arquitectónica
+- Tiempo de build y startup puede crecer con el tamaño</p>
+<p><strong>🎯 Cuándo Elegir:</strong>
+- MVP o validación de producto ✅
+- Equipo pequeño sin experiencia en sistemas distribuidos ✅
+- Requisitos de escalabilidad moderados (miles de usuarios, no millones) ✅
+- Presión alta de time-to-market ✅</p>
+<p><strong>⚙️ Requisitos de Equipo:</strong>
+- 2-4 desarrolladores backend
+- Nivel: Junior-Mid ✅
+- DevOps básico (deployment de un artefacto) ✅</p>
+<p><strong>⚠️ Riesgos:</strong>
+- Sin límites de módulo claros, puede convertirse en monolito acoplado
+- <strong>Mitigación:</strong> Aplicar Arquitectura Hexagonal desde el inicio, ArchUnit tests</p>
+<p><strong>🛠️ Stack Sugerido:</strong>
+- Spring Boot 3.x (modular con subproyectos Gradle)
+- PostgreSQL
+- Docker + AWS Elastic Beanstalk (o equivalente)
+- Redis (caché opcional)</p>
+<hr />
+<h5 id="opcion-b-microservicios-basico"><strong>Opción B: Microservicios Básico</strong><a class="headerlink" href="#opcion-b-microservicios-basico" title="Permanent link">&para;</a></h5>
+<p><strong>✅ Ventajas:</strong>
+- Escalabilidad independiente por servicio
+- Aislamiento de fallos (un servicio caído no tumba todo)
+- Equipos autónomos (cada equipo puede trabajar en un servicio)
+- Deployment independiente</p>
+<p><strong>❌ Desventajas:</strong>
+- Complejidad operativa alta (múltiples deployments, networking, service mesh)
+- Observabilidad compleja (tracing distribuido, correlación de logs)
+- Debugging difícil (problemas pueden cruzar múltiples servicios)
+- Latencia de red entre servicios
+- Distributed transactions complejas (eventual consistency, sagas)
+- Coste de infraestructura alto ($400-600/mes inicial)
+- Requiere experiencia que el equipo NO tiene ❌</p>
+<p><strong>🎯 Cuándo Elegir:</strong>
+- Equipo grande (8+ desarrolladores) con experiencia
+- Requisitos de escalabilidad muy alta
+- Deployment frecuente e independiente por módulo</p>
+<p><strong>⚙️ Requisitos de Equipo:</strong>
+- 8+ desarrolladores backend
+- 2+ DevOps/SRE dedicados ❌
+- Nivel: Senior (experiencia con Kubernetes, observabilidad) ❌</p>
+<p><strong>⚠️ Riesgos:</strong>
+- Sobrecarga operativa puede paralizar equipo pequeño ⚠️
+- <strong>Conclusión:</strong> NO RECOMENDADO para este proyecto</p>
+<hr />
+<h5 id="opcion-c-serverless-aws-lambda"><strong>Opción C: Serverless (AWS Lambda)</strong><a class="headerlink" href="#opcion-c-serverless-aws-lambda" title="Permanent link">&para;</a></h5>
+<p><strong>✅ Ventajas:</strong>
+- Coste optimizado (pay-per-use, ~$50-100/mes inicial)
+- Escalabilidad automática sin configuración
+- No requiere gestión de servidores
+- Despliegues independientes por función</p>
+<p><strong>❌ Desventajas:</strong>
+- Vendor lock-in fuerte con AWS ⚠️
+- Cold starts (latencia inicial 1-3 segundos)
+- Debugging complejo (logs distribuidos en CloudWatch)
+- Límites de ejecución (15 min timeout Lambda)
+- Curva de aprendizaje nueva para el equipo
+- Dificultad para desarrollo local</p>
+<p><strong>🎯 Cuándo Elegir:</strong>
+- Cargas de trabajo irregulares (picos esporádicos)
+- Presupuesto muy limitado
+- Equipo con experiencia en cloud-native</p>
+<p><strong>⚙️ Requisitos de Equipo:</strong>
+- 2-3 desarrolladores backend
+- Nivel: Mid (experiencia con AWS) ⚠️
+- Familiaridad con arquitectura event-driven</p>
+<p><strong>⚠️ Riesgos:</strong>
+- Vendor lock-in dificulta migración futura
+- Cold starts pueden afectar experiencia de usuario
+- <strong>Conclusión:</strong> POSIBLE pero con trade-offs significativos</p>
+<hr />
+<h3 id="paso-4-recomendacion-fundamentada"><strong>Paso 4: Recomendación Fundamentada</strong><a class="headerlink" href="#paso-4-recomendacion-fundamentada" title="Permanent link">&para;</a></h3>
+<h2 id="recomendacion-arquitectonica">✅ Recomendación Arquitectónica<a class="headerlink" href="#recomendacion-arquitectonica" title="Permanent link">&para;</a></h2>
+<h3 id="opcion-seleccionada-monolito-modular-con-arquitectura-hexagonal">Opción Seleccionada: <strong>Monolito Modular con Arquitectura Hexagonal</strong><a class="headerlink" href="#opcion-seleccionada-monolito-modular-con-arquitectura-hexagonal" title="Permanent link">&para;</a></h3>
+<p><strong>Recomiendo Monolito Modular porque:</strong></p>
+<ol>
+<li>✅ <strong>Maximiza velocidad de desarrollo:</strong> Permite entregar MVP en 2.5 meses (vs 4-5 meses con microservicios)</li>
+<li>✅ <strong>Alineado con capacidades del equipo:</strong> Complejidad manejable para equipo junior-mid sin DevOps dedicado</li>
+<li>✅ <strong>Optimiza presupuesto:</strong> Coste de infraestructura ~$120/mes vs $500+ de microservicios o lock-in de serverless</li>
+<li>✅ <strong>Evolutividad preservada:</strong> Límites de módulo claros (Arquitectura Hexagonal) permiten extracción futura a microservicios si e-commerce es exitoso</li>
+<li>✅ <strong>Reduce riesgos:</strong> Tecnologías conocidas por el equipo (Spring Boot), sin aprendizaje de paradigmas nuevos</li>
+</ol>
+<p><strong>A pesar de aceptar los siguientes trade-offs:</strong></p>
+<ul>
+<li>⚠️ <strong>Escalabilidad horizontal limitada inicialmente</strong> (aceptable para 500-1,000 usuarios concurrentes)</li>
+<li>⚠️ <strong>Deployment acoplado</strong> (mitigado con tests automatizados + feature flags + releases controladas)</li>
+<li>⚠️ <strong>Requiere disciplina arquitectónica</strong> para mantener límites de módulo (mitigado con ArchUnit tests automáticos)</li>
+</ul>
+<hr />
+<h4 id="alineacion-con-requisitos">Alineación con Requisitos<a class="headerlink" href="#alineacion-con-requisitos" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Requisito</th>
+<th>Prioridad Usuario</th>
+<th>Soporte de Arquitectura</th>
+<th>Justificación</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Time-to-market (2.5 meses)</td>
+<td>🔴 CRÍTICO</td>
+<td>🟢 EXCELENTE</td>
+<td>Desarrollo lineal sin overhead de coordinación</td>
+</tr>
+<tr>
+<td>Presupuesto ($300/mes)</td>
+<td>🔴 CRÍTICO</td>
+<td>🟢 EXCELENTE</td>
+<td>$120/mes infraestructura, 60% bajo presupuesto</td>
+</tr>
+<tr>
+<td>Escalabilidad (500 users)</td>
+<td>🟡 MEDIO</td>
+<td>🟢 SUFICIENTE</td>
+<td>Monolito escala vertical hasta 2-3K usuarios</td>
+</tr>
+<tr>
+<td>Equipo sin DevOps</td>
+<td>🔴 CRÍTICO</td>
+<td>🟢 EXCELENTE</td>
+<td>Deployment simple (un artefacto .jar)</td>
+</tr>
+<tr>
+<td>Evolución futura</td>
+<td>🟡 MEDIO</td>
+<td>🟢 BUENA</td>
+<td>Límites de módulo claros facilitan extracción</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="paso-5-riesgos-y-mitigaciones"><strong>Paso 5: Riesgos y Mitigaciones</strong><a class="headerlink" href="#paso-5-riesgos-y-mitigaciones" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Riesgo</th>
+<th>Probabilidad</th>
+<th>Impacto</th>
+<th>Mitigación Propuesta</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>R1</td>
+<td>Monolito se degrada a "Big Ball of Mud" por falta de disciplina</td>
+<td>🟡 MEDIA</td>
+<td>🔴 ALTO</td>
+<td>- Aplicar Arquitectura Hexagonal desde inicio<br>- Code reviews enfocados en límites de módulo<br>- ArchUnit tests automáticos en CI<br>- Ejecutar <code>analizar_code_smells</code> mensualmente</td>
+</tr>
+<tr>
+<td>R2</td>
+<td>Escalabilidad insuficiente si crecimiento es más rápido de lo esperado</td>
+<td>🟡 MEDIA</td>
+<td>🟡 MEDIO</td>
+<td>- Diseñar con límites de módulo claros desde inicio<br>- Plan de extracción de primer microservicio preparado<br>- Monitoreo de métricas de carga desde día 1<br>- Umbral de pivot: 2,000 usuarios concurrentes</td>
+</tr>
+<tr>
+<td>R3</td>
+<td>Equipo junior no adopta patrones arquitectónicos correctamente</td>
+<td>🟡 MEDIA</td>
+<td>🟡 MEDIO</td>
+<td>- Sesiones de pair programming iniciales<br>- Documentar patrones en <code>artefactos/arquitectura_patrones.md</code><br>- Usar <code>refactorizar</code> proactivamente<br>- Code reviews obligatorios</td>
+</tr>
+<tr>
+<td>R4</td>
+<td>Integración con Stripe falla o cambia API</td>
+<td>🟢 BAJA</td>
+<td>🟡 MEDIO</td>
+<td>- Usar SDK oficial de Stripe<br>- Testing exhaustivo en sandbox<br>- Capa anticorrupción para aislamiento</td>
+</tr>
+<tr>
+<td>R5</td>
+<td>Falta de observabilidad dificulta debugging</td>
+<td>🟡 MEDIA</td>
+<td>🟢 BAJO</td>
+<td>- Implementar logs estructurados (JSON)<br>- APM básico (New Relic free tier o Elastic APM)<br>- Healthchecks y métricas básicas</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="paso-6-roadmap-tecnico-inicial"><strong>Paso 6: Roadmap Técnico Inicial</strong><a class="headerlink" href="#paso-6-roadmap-tecnico-inicial" title="Permanent link">&para;</a></h3>
+<h2 id="roadmap-de-implementacion-primeros-3-meses">🛠️ Roadmap de Implementación (Primeros 3 Meses)<a class="headerlink" href="#roadmap-de-implementacion-primeros-3-meses" title="Permanent link">&para;</a></h2>
+<h3 id="sprint-0-fundaciones-semana-1-2"><strong>Sprint 0: Fundaciones (Semana 1-2)</strong><a class="headerlink" href="#sprint-0-fundaciones-semana-1-2" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[ ] Definir límites de módulos/dominios con equipo (sesión de Event Storming)</li>
+<li>[ ] Crear estructura de proyecto con submódulos Gradle:</li>
+<li><code>catalog-module</code></li>
+<li><code>cart-checkout-module</code></li>
+<li><code>order-management-module</code></li>
+<li><code>shared-domain</code></li>
+<li>[ ] Establecer convenciones de capas (domain, application, infrastructure)</li>
+<li>[ ] Configurar ArchUnit para validar reglas arquitectónicas</li>
+<li>[ ] Documentar patrones en <code>artefactos/arquitectura_patrones.md</code></li>
+<li>[ ] Setup de infraestructura base (AWS Elastic Beanstalk + PostgreSQL RDS)</li>
+</ul>
+<h3 id="sprint-1-2-implementacion-core-semana-3-6"><strong>Sprint 1-2: Implementación Core (Semana 3-6)</strong><a class="headerlink" href="#sprint-1-2-implementacion-core-semana-3-6" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[ ] <strong>Catálogo:</strong></li>
+<li>Modelo de dominio (Product, Category)</li>
+<li>API REST para listado y búsqueda</li>
+<li>Integración con PostgreSQL</li>
+<li>[ ] <strong>Carrito:</strong></li>
+<li>Gestión de sesión (Redis)</li>
+<li>Agregar/remover productos</li>
+<li>[ ] <strong>Autenticación básica</strong> (Spring Security + JWT)</li>
+<li>[ ] <strong>Frontend:</strong> Integración React con APIs</li>
+</ul>
+<h3 id="sprint-3-4-checkout-y-pagos-semana-7-10"><strong>Sprint 3-4: Checkout y Pagos (Semana 7-10)</strong><a class="headerlink" href="#sprint-3-4-checkout-y-pagos-semana-7-10" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[ ] <strong>Checkout:</strong></li>
+<li>Validación de inventario</li>
+<li>Integración con Stripe (SDK oficial)</li>
+<li>Webhook para confirmación de pago</li>
+<li>[ ] <strong>Órdenes:</strong></li>
+<li>Creación de orden post-pago</li>
+<li>Estados de orden (pending, paid, shipped, delivered)</li>
+<li>[ ] <strong>Panel Admin básico:</strong> Gestión de productos y órdenes</li>
+<li>[ ] <strong>Testing:</strong> Cobertura mínima 70%</li>
+</ul>
+<h3 id="sprint-5-6-refinamiento-pre-mvp-semana-11-12"><strong>Sprint 5-6: Refinamiento Pre-MVP (Semana 11-12)</strong><a class="headerlink" href="#sprint-5-6-refinamiento-pre-mvp-semana-11-12" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[ ] Ejecutar <code>analizar_code_smells</code> y aplicar <code>refactorizar</code> si necesario</li>
+<li>[ ] Documentación de APIs (Swagger/OpenAPI)</li>
+<li>[ ] Hardening de seguridad básico (OWASP Top 10)</li>
+<li>[ ] Pruebas de carga (Apache JMeter) - validar 500 usuarios concurrentes</li>
+<li>[ ] Observabilidad: Logs estructurados + healthchecks</li>
+<li>[ ] Preparación para Go-Live (runbooks, rollback plan)</li>
+</ul>
+<hr />
+<h3 id="paso-7-condiciones-de-re-evaluacion"><strong>Paso 7: Condiciones de Re-evaluación</strong><a class="headerlink" href="#paso-7-condiciones-de-re-evaluacion" title="Permanent link">&para;</a></h3>
+<h2 id="condiciones-de-re-evaluacion-arquitectonica">🔄 Condiciones de Re-evaluación Arquitectónica<a class="headerlink" href="#condiciones-de-re-evaluacion-arquitectonica" title="Permanent link">&para;</a></h2>
+<p><strong>Debes considerar revisar esta decisión si:</strong></p>
+<ol>
+<li><strong>Crecimiento de usuarios:</strong> Se superan 2,000 usuarios concurrentes sostenidos (4x objetivo inicial)</li>
+<li><strong>Ventas mensuales:</strong> &gt; $50K sostenidas (indicador de éxito comercial)</li>
+<li><strong>Crecimiento de dominios:</strong> Se añaden &gt; 3 dominios de negocio nuevos (marketplace, subscripciones, B2B)</li>
+<li><strong>Problemas de deployment:</strong> Frecuencia de deployment deseable &gt; 5 veces/día pero bloqueada por acoplamiento</li>
+<li><strong>Crecimiento de equipo:</strong> El equipo crece a 8+ desarrolladores con múltiples equipos autónomos</li>
+<li><strong>Requisitos de latencia:</strong> Tiempos de respuesta sostenidos &gt; 1 segundo (p95)</li>
+</ol>
+<p><strong>Revisión programada:</strong> Junio 2026 (8 meses post-lanzamiento) o al alcanzar $50K ventas mensuales</p>
+<p><strong>Plan de migración preparado:</strong>
+- Primer microservicio candidato: <strong>Catálogo</strong> (si se supera 10K productos o se requiere escalabilidad independiente)
+- Estrategia: Strangler Fig Pattern (migración incremental)</p>
+<hr />
+<h3 id="paso-8-invocacion-de-generar_adr"><strong>Paso 8: Invocación de <code>generar_adr</code></strong><a class="headerlink" href="#paso-8-invocacion-de-generar_adr" title="Permanent link">&para;</a></h3>
+<h2 id="generacion-de-adr-formal">📝 Generación de ADR Formal<a class="headerlink" href="#generacion-de-adr-formal" title="Permanent link">&para;</a></h2>
+<p><strong>Confirmación del usuario:</strong> ✅ Aprobado</p>
+<p><strong>Comando ejecutado:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>&gt;<span class="w"> </span>generar_adr
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="nv">titulo</span><span class="o">=</span><span class="s2">&quot;Selección de Arquitectura Monolito Modular para E-Commerce MVP&quot;</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="nv">contexto</span><span class="o">=</span><span class="s2">&quot;Startup de e-commerce con equipo pequeño (2 devs backend, 1 frontend), presupuesto limitado (</span><span class="nv">$300</span><span class="s2">/mes), time-to-market crítico (2.5 meses). Volumen esperado: 500 usuarios concurrentes.&quot;</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="nv">decision</span><span class="o">=</span><span class="s2">&quot;Monolito Modular con Arquitectura Hexagonal. Maximiza velocidad de desarrollo, alinea con capacidades del equipo, optimiza presupuesto, preserva evolutividad futura.&quot;</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="nv">consecuencias</span><span class="o">=</span><span class="s2">&quot;Positivas: Time-to-market reducido (2.5 meses vs 4-5), coste optimizado (</span><span class="nv">$120</span><span class="s2">/mes vs </span><span class="nv">$500</span><span class="s2">+), tecnologías conocidas. Negativas: Escalabilidad horizontal limitada (aceptable para 500-1K usuarios), deployment acoplado (mitigado con tests + feature flags).&quot;</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="nv">opciones_consideradas</span><span class="o">=</span><span class="s2">&quot;1. Microservicios (descartado por sobrecarga operativa excesiva). 2. Serverless (descartado por vendor lock-in y cold starts). 3. Monolito Modular (seleccionado).&quot;</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="nv">formato</span><span class="o">=</span>nygard
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="nv">autores</span><span class="o">=</span><span class="s2">&quot;ArchDev Pro, Tech Lead, Product Owner&quot;</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="nv">estado</span><span class="o">=</span>aceptado
+</code></pre></div></p>
+<p><strong>Resultado:</strong>
+✅ ADR generado exitosamente en <code>artefactos/adr/001-seleccion-arquitectura-monolito-modular-ecommerce-mvp.md</code></p>
+<hr />
+<h2 id="metricas-de-exito-del-proyecto">📊 Métricas de Éxito del Proyecto<a class="headerlink" href="#metricas-de-exito-del-proyecto" title="Permanent link">&para;</a></h2>
+<h3 id="objetivos-a-validar-en-los-primeros-6-meses">Objetivos a Validar en los Primeros 6 Meses<a class="headerlink" href="#objetivos-a-validar-en-los-primeros-6-meses" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Métrica</th>
+<th>Objetivo</th>
+<th>Medición</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Time-to-Market</strong></td>
+<td>≤ 2.5 meses</td>
+<td>✅ Arquitectura permite cumplir objetivo</td>
+</tr>
+<tr>
+<td><strong>Coste Infraestructura</strong></td>
+<td>≤ $300/mes</td>
+<td>✅ Estimado $120-150/mes (50% bajo presupuesto)</td>
+</tr>
+<tr>
+<td><strong>Usuarios Concurrentes</strong></td>
+<td>500 (picos 1,000)</td>
+<td>Monitoreo continuo en producción</td>
+</tr>
+<tr>
+<td><strong>Tiempo Respuesta (p95)</strong></td>
+<td>&lt; 2 segundos</td>
+<td>APM + tests de carga validarán</td>
+</tr>
+<tr>
+<td><strong>Uptime</strong></td>
+<td>99%+</td>
+<td>Monitoreo con healthchecks</td>
+</tr>
+<tr>
+<td><strong>Cobertura Tests</strong></td>
+<td>70%+</td>
+<td>JaCoCo en pipeline CI</td>
+</tr>
+<tr>
+<td><strong>Deuda Técnica</strong></td>
+<td>Controlada</td>
+<td><code>analizar_code_smells</code> mensual</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="lecciones-aprendidas-para-actualizar-post-lanzamiento">🎓 Lecciones Aprendidas (Para Actualizar Post-Lanzamiento)<a class="headerlink" href="#lecciones-aprendidas-para-actualizar-post-lanzamiento" title="Permanent link">&para;</a></h2>
+<p><em>Esta sección se actualizará después del lanzamiento del MVP con learnings reales:</em></p>
+<ul>
+<li>¿La arquitectura seleccionada permitió cumplir el time-to-market?</li>
+<li>¿Surgieron problemas de escalabilidad no anticipados?</li>
+<li>¿Fue necesario refactorizar antes de lo esperado?</li>
+<li>¿El equipo adoptó correctamente los patrones arquitectónicos?</li>
+</ul>
+<hr />
+<h2 id="referencias">📚 Referencias<a class="headerlink" href="#referencias" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Análisis completo:</strong> Este documento</li>
+<li><strong>ADR generado:</strong> <code>artefactos/adr/001-seleccion-arquitectura-monolito-modular-ecommerce-mvp.md</code></li>
+<li><strong>Herramienta utilizada:</strong> <code>define_arquitectura</code> v2.0</li>
+<li><strong>Patrones aplicados:</strong> </li>
+<li><a href="https://alistair.cockburn.us/hexagonal-architecture/">Arquitectura Hexagonal</a></li>
+<li><a href="https://martinfowler.com/bliki/MonolithFirst.html">Monolith First</a></li>
+<li><a href="https://martinfowler.com/bliki/StranglerFigApplication.html">Strangler Fig Pattern</a> (para migración futura)</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

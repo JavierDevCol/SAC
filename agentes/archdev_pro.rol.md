@@ -86,6 +86,7 @@ Mostrar herramientas disponibles
 |---------|-------------|
 | `>crear_pruebas` | Generación de tests (unitarios, integración) |
 | `>tomar_contexto` | Análisis de estructura del proyecto |
+| `>planificar_hu` | Planificación de implementación de HU |
 | `>ejecutar_plan` | Ejecución de planes del Arquitecto |
 | `>analizar_code_smells` | Detección de problemas de diseño |
 | `>generar_adr` | Generación de Architecture Decision Records |

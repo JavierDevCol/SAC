@@ -1,0 +1,1869 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Sistema de agentes IA especializados para GitHub Copilot">
+      
+      
+        <meta name="author" content="JavierDevCol">
+      
+      
+        <link rel="canonical" href="https://javierdevcol.github.io/SAC/ejemplos/herramientas/adr/adr_001_seleccion_microservicios/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>ADR 001: Migración de Monolito a Arquitectura de Microservicios - SAC — Sistema Agéntico COCHAS</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#adr-001-migracion-de-monolito-a-arquitectura-de-microservicios" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../../../.." title="SAC — Sistema Agéntico COCHAS" class="md-header__button md-logo" aria-label="SAC — Sistema Agéntico COCHAS" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SAC — Sistema Agéntico COCHAS
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              ADR 001: Migración de Monolito a Arquitectura de Microservicios
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Cambiar a modo oscuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo oscuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Cambiar a modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/JavierDevCol/SAC" title="Ir al repositorio" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    JavierDevCol/SAC
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Pestañas" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Inicio
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../INSTALACION/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Instalación
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../ROLES/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Agentes
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../HERRAMIENTAS/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Herramientas
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../estructura_directorio/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Estructura
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../guias/guia_comandos/" class="md-tabs__link">
+          
+  
+  
+  Guías
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../" class="md-tabs__link">
+          
+  
+  
+  Ejemplos
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="SAC — Sistema Agéntico COCHAS" class="md-nav__button md-logo" aria-label="SAC — Sistema Agéntico COCHAS" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    SAC — Sistema Agéntico COCHAS
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/JavierDevCol/SAC" title="Ir al repositorio" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    JavierDevCol/SAC
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inicio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../INSTALACION/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Instalación
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../ROLES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agentes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../HERRAMIENTAS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Herramientas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../estructura_directorio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Estructura
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guías
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guías
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../guias/guia_comandos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Comandos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../guias/guia_ciclo_vida_tareas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ciclo de Vida de HUs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../guias/guia_roles_activos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roles Activos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../guias/guia_creacion_roles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crear Roles SAC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../guias/guia_creacion_agentes_vscode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crear Agentes VS Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../guias/guia_subagents_vscode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Subagentes VS Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ejemplos
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ejemplos
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Índice
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tomar_contexto_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tomar Contexto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../refinar_hu_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Refinar HU
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../generar_commit_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Generar Commit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../crear_pruebas_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crear Pruebas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../analizar_code_smells_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Analizar Code Smells
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../diagnosticar_devops_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Diagnosticar DevOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ecommerce_mvp_completo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    eCommerce MVP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../solucionar_smells_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Solucionar Smells
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../verifica_pruebas_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Verificar Pruebas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#contexto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contexto
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Contexto">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#situacion-actual" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Situación Actual
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#problemas-identificados" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problemas Identificados
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#umbrales-de-pivot-alcanzados" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Umbrales de Pivot Alcanzados
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decisión
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Decisión">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#estrategia-de-migracion-24-meses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Estrategia de Migración (24 meses)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Estrategia de Migración (24 meses)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fase-1-fundaciones-meses-1-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fase 1: Fundaciones (Meses 1-3)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fase-2-primer-microservicio-piloto-meses-4-6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fase 2: Primer Microservicio Piloto (Meses 4-6)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fase-3-servicios-de-negocio-core-meses-7-12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fase 3: Servicios de Negocio Core (Meses 7-12)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fase-4-servicios-transaccionales-meses-13-18" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fase 4: Servicios Transaccionales (Meses 13-18)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fase-5-consolidacion-meses-19-24" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fase 5: Consolidación (Meses 19-24)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#principios-de-diseno" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Principios de Diseño
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consecuencias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Consecuencias
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Consecuencias">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#positivas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Positivas ✅
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#negativas-trade-offs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Negativas / Trade-offs ⚠️
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#riesgos-mitigados" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Riesgos Mitigados
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#opciones-consideradas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opciones Consideradas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Opciones Consideradas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#opcion-1-mantener-monolito-modular-descartada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opción 1: Mantener Monolito Modular (Descartada) ❌
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opcion-2-big-bang-reescribir-todo-a-microservicios-descartada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opción 2: "Big Bang" - Reescribir todo a Microservicios (Descartada) ❌
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opcion-3-migracion-gradual-con-strangler-fig-seleccionada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opción 3: Migración Gradual con Strangler Fig (Seleccionada) ✅
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#validacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validación
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Validación">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#metricas-de-exito" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Métricas de Éxito
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#condiciones-de-re-evaluacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Condiciones de Re-evaluación
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Referencias
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aprobaciones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Aprobaciones
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#historial-de-cambios" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Historial de Cambios
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="adr-001-migracion-de-monolito-a-arquitectura-de-microservicios">ADR 001: Migración de Monolito a Arquitectura de Microservicios<a class="headerlink" href="#adr-001-migracion-de-monolito-a-arquitectura-de-microservicios" title="Permanent link">&para;</a></h1>
+<p><strong>Estado:</strong> Aceptado<br />
+<strong>Fecha:</strong> 2025-03-15<br />
+<strong>Autores:</strong> Equipo de Arquitectura, CTO, Tech Leads</p>
+<hr />
+<h2 id="contexto">Contexto<a class="headerlink" href="#contexto" title="Permanent link">&para;</a></h2>
+<p>Nuestra plataforma de e-commerce ha crecido significativamente en los últimos 18 meses desde su lanzamiento inicial como monolito modular. Actualmente enfrentamos los siguientes desafíos:</p>
+<h3 id="situacion-actual">Situación Actual<a class="headerlink" href="#situacion-actual" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Usuarios concurrentes:</strong> 8,000+ en horarios pico (16x crecimiento desde lanzamiento)</li>
+<li><strong>Tamaño del monolito:</strong> 450,000 líneas de código, tiempo de build 25 minutos</li>
+<li><strong>Equipo:</strong> Crecimiento de 3 a 15 desarrolladores organizados en 4 equipos</li>
+<li><strong>Deployment:</strong> Cada deployment (1-2 por semana) requiere coordinar múltiples equipos y tiene riesgo de afectar toda la plataforma</li>
+<li><strong>Dominios de negocio:</strong> 6 dominios (Catálogo, Carrito, Órdenes, Pagos, Marketplace, Suscripciones)</li>
+</ul>
+<h3 id="problemas-identificados">Problemas Identificados<a class="headerlink" href="#problemas-identificados" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Escalabilidad:</strong> El módulo de Catálogo requiere 4x más recursos que otros módulos, pero escalar el monolito completo es costoso ($800/mes → $3,200/mes para 4 instancias)</li>
+<li><strong>Velocidad de desarrollo:</strong> Equipos bloqueados esperando merges y resolución de conflictos. Ciclo de feedback aumentó de 2 días a 7 días</li>
+<li><strong>Deployment acoplado:</strong> Un bug en el módulo de Marketplace retrasó release crítico de Pagos 3 días</li>
+<li><strong>Tecnología:</strong> Módulo de Búsqueda requiere Elasticsearch pero agregar dependencia al monolito afecta startup time de toda la app</li>
+<li><strong>Organización:</strong> Equipos autónomos (Catálogo, Marketplace, Subscripciones) no pueden avanzar independientemente</li>
+</ol>
+<h3 id="umbrales-de-pivot-alcanzados">Umbrales de Pivot Alcanzados<a class="headerlink" href="#umbrales-de-pivot-alcanzados" title="Permanent link">&para;</a></h3>
+<p>En el ADR original (ADR-000) definimos condiciones para revisar la arquitectura:</p>
+<ul>
+<li>✅ Usuarios concurrentes &gt; 2,000 (alcanzado: 8,000+)</li>
+<li>✅ Equipo &gt; 8 desarrolladores (alcanzado: 15)</li>
+<li>✅ Dominios de negocio &gt; 3 (alcanzado: 6)</li>
+<li>✅ Deployment frecuente bloqueado por acoplamiento</li>
+</ul>
+<hr />
+<h2 id="decision">Decisión<a class="headerlink" href="#decision" title="Permanent link">&para;</a></h2>
+<p><strong>Migraremos gradualmente del monolito modular a una arquitectura de microservicios</strong> siguiendo el patrón Strangler Fig, comenzando con los módulos de mayor beneficio/riesgo.</p>
+<h3 id="estrategia-de-migracion-24-meses">Estrategia de Migración (24 meses)<a class="headerlink" href="#estrategia-de-migracion-24-meses" title="Permanent link">&para;</a></h3>
+<h4 id="fase-1-fundaciones-meses-1-3"><strong>Fase 1: Fundaciones (Meses 1-3)</strong><a class="headerlink" href="#fase-1-fundaciones-meses-1-3" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Implementar API Gateway (Kong o AWS API Gateway)</li>
+<li>Setup de Service Mesh (Istio)</li>
+<li>Infraestructura de observabilidad centralizada (ELK + Prometheus + Jaeger)</li>
+<li>CI/CD pipeline para microservicios (Jenkins + ArgoCD)</li>
+<li>Service template (Spring Boot + Docker + Helm charts)</li>
+</ul>
+<h4 id="fase-2-primer-microservicio-piloto-meses-4-6"><strong>Fase 2: Primer Microservicio Piloto (Meses 4-6)</strong><a class="headerlink" href="#fase-2-primer-microservicio-piloto-meses-4-6" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Servicio Catálogo</strong> (primer candidato por alta demanda de recursos)</li>
+<li>Extraer usando Strangler Fig: nuevo tráfico → microservicio, legacy → monolito</li>
+<li>Validar patrón de comunicación (REST + eventos asíncronos con Kafka)</li>
+<li>Aprendizajes para siguientes extracciones</li>
+</ul>
+<h4 id="fase-3-servicios-de-negocio-core-meses-7-12"><strong>Fase 3: Servicios de Negocio Core (Meses 7-12)</strong><a class="headerlink" href="#fase-3-servicios-de-negocio-core-meses-7-12" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Servicio Marketplace</strong> (equipo autónomo, deploy independiente)</li>
+<li><strong>Servicio Suscripciones</strong> (lógica de negocio compleja, evolución rápida)</li>
+<li><strong>Servicio Búsqueda</strong> (requiere stack especializado: Elasticsearch)</li>
+</ul>
+<h4 id="fase-4-servicios-transaccionales-meses-13-18"><strong>Fase 4: Servicios Transaccionales (Meses 13-18)</strong><a class="headerlink" href="#fase-4-servicios-transaccionales-meses-13-18" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Servicio Órdenes</strong> (orquestación con Saga Pattern)</li>
+<li><strong>Servicio Pagos</strong> (alta criticidad, requiere aislamiento)</li>
+<li><strong>Servicio Carrito</strong> (sesiones, alta escritura)</li>
+</ul>
+<h4 id="fase-5-consolidacion-meses-19-24"><strong>Fase 5: Consolidación (Meses 19-24)</strong><a class="headerlink" href="#fase-5-consolidacion-meses-19-24" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Deprecación gradual del monolito legacy</li>
+<li>Migración de datos históricos si es necesario</li>
+<li>Optimización de costos y performance</li>
+<li>Runbooks y documentación completa</li>
+</ul>
+<h3 id="principios-de-diseno">Principios de Diseño<a class="headerlink" href="#principios-de-diseno" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Domain-Driven Design:</strong> Cada microservicio representa un bounded context</li>
+<li><strong>Base de datos por servicio:</strong> Cada servicio tiene su propia BD (excepto datos compartidos read-only)</li>
+<li><strong>Comunicación asíncrona preferida:</strong> Eventos via Kafka para desacoplamiento</li>
+<li><strong>API REST para lectura:</strong> Queries síncronos cuando sea necesario</li>
+<li><strong>Saga Pattern:</strong> Para transacciones distribuidas (ej: checkout)</li>
+<li><strong>Backward compatibility:</strong> Versioning de APIs para evitar breaking changes</li>
+</ol>
+<hr />
+<h2 id="consecuencias">Consecuencias<a class="headerlink" href="#consecuencias" title="Permanent link">&para;</a></h2>
+<h3 id="positivas">Positivas ✅<a class="headerlink" href="#positivas" title="Permanent link">&para;</a></h3>
+<p><strong>Corto Plazo (6 meses):</strong>
+- ✅ Escalabilidad independiente del módulo Catálogo reduce costos 40% ($3,200 → $1,900/mes)
+- ✅ Equipos de Marketplace y Suscripciones pueden deployar independientemente (2-3x por semana)
+- ✅ Tiempo de build del monolito reducido 30% (de 25 min a 17 min)</p>
+<p><strong>Medio Plazo (12 meses):</strong>
+- ✅ Velocidad de desarrollo aumentada: ciclo de feedback 7 días → 2-3 días
+- ✅ Reducción de incidentes críticos por deployment acoplado (-70%)
+- ✅ Stack tecnológico especializado por servicio (Elasticsearch en Búsqueda, Redis en Carrito)</p>
+<p><strong>Largo Plazo (24 meses):</strong>
+- ✅ Escalabilidad horizontal ilimitada por servicio
+- ✅ Autonomía completa de equipos (Conway's Law aplicado correctamente)
+- ✅ Resiliencia mejorada (fault isolation)
+- ✅ Time-to-market reducido para nuevas features</p>
+<h3 id="negativas-trade-offs">Negativas / Trade-offs ⚠️<a class="headerlink" href="#negativas-trade-offs" title="Permanent link">&para;</a></h3>
+<p><strong>Complejidad Operativa:</strong>
+- ⚠️ Incremento de 1 deployment → 10+ deployments coordinados
+- ⚠️ Debugging distribuido más complejo (requiere tracing correlacionado)
+- ⚠️ Necesidad de contratar 2 SRE/DevOps dedicados ($180K/año adicional)</p>
+<p><strong>Costos de Infraestructura:</strong>
+- ⚠️ Costo inicial de infraestructura aumenta 50% por overhead de networking, service mesh, observabilidad
+- ⚠️ Proyección: $1,900/mes actual → $2,800/mes con 6 microservicios (aún menor que 4x instancias monolito)</p>
+<p><strong>Transacciones Distribuidas:</strong>
+- ⚠️ Eventual consistency introduce complejidad en flujos transaccionales (checkout)
+- ⚠️ Requiere Saga Pattern (orquestación o coreografía)
+- ⚠️ Debugging de fallos distribuidos más difícil</p>
+<p><strong>Migración Gradual:</strong>
+- ⚠️ Período de transición con dual-write/read (18-24 meses)
+- ⚠️ Mantenimiento paralelo de monolito y microservicios</p>
+<p><strong>Data Consistency:</strong>
+- ⚠️ Queries cross-service requieren API composition o CQRS views
+- ⚠️ Reportes que cruzan múltiples servicios son más complejos</p>
+<h3 id="riesgos-mitigados">Riesgos Mitigados<a class="headerlink" href="#riesgos-mitigados" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Riesgo</th>
+<th>Probabilidad</th>
+<th>Mitigación</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fallo en primer microservicio paraliza migración</td>
+<td>🟡 MEDIA</td>
+<td>Piloto con Catálogo (no transaccional, fácil rollback)</td>
+</tr>
+<tr>
+<td>Overhead operativo paraliza equipo</td>
+<td>🟡 MEDIA</td>
+<td>Contratar 2 SRE dedicados antes de Fase 1</td>
+</tr>
+<tr>
+<td>Data inconsistency en flujos críticos</td>
+<td>🔴 ALTA</td>
+<td>Saga Pattern + tests exhaustivos + feature flags</td>
+</tr>
+<tr>
+<td>Costos se disparan fuera de control</td>
+<td>🟡 MEDIA</td>
+<td>Monitoring de costos por servicio + rightsizing mensual</td>
+</tr>
+<tr>
+<td>Debugging imposible en producción</td>
+<td>🟡 MEDIA</td>
+<td>Distributed tracing (Jaeger) + logging estructurado + APM</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="opciones-consideradas">Opciones Consideradas<a class="headerlink" href="#opciones-consideradas" title="Permanent link">&para;</a></h2>
+<h3 id="opcion-1-mantener-monolito-modular-descartada">Opción 1: Mantener Monolito Modular (Descartada) ❌<a class="headerlink" href="#opcion-1-mantener-monolito-modular-descartada" title="Permanent link">&para;</a></h3>
+<p><strong>Pros:</strong>
+- Sin complejidad adicional
+- Sin costos de migración
+- Equipo ya familiarizado</p>
+<p><strong>Contras:</strong>
+- Escalabilidad sigue siendo problema crítico (costos crecientes)
+- Velocidad de desarrollo continuará degradándose
+- Equipos bloqueados (no resuelve problema organizacional)
+- <strong>Razón de descarte:</strong> No resuelve problemas críticos actuales</p>
+<h3 id="opcion-2-big-bang-reescribir-todo-a-microservicios-descartada">Opción 2: "Big Bang" - Reescribir todo a Microservicios (Descartada) ❌<a class="headerlink" href="#opcion-2-big-bang-reescribir-todo-a-microservicios-descartada" title="Permanent link">&para;</a></h3>
+<p><strong>Pros:</strong>
+- Arquitectura final limpia desde día 1
+- Sin dual-write/read</p>
+<p><strong>Contras:</strong>
+- Riesgo extremadamente alto (6-9 meses sin features nuevas)
+- "Second System Syndrome"
+- No genera valor de negocio durante migración
+- <strong>Razón de descarte:</strong> Riesgo inaceptable, viola principio de entrega continua</p>
+<h3 id="opcion-3-migracion-gradual-con-strangler-fig-seleccionada">Opción 3: Migración Gradual con Strangler Fig (Seleccionada) ✅<a class="headerlink" href="#opcion-3-migracion-gradual-con-strangler-fig-seleccionada" title="Permanent link">&para;</a></h3>
+<p><strong>Pros:</strong>
+- Riesgo controlado (microservicio por microservicio)
+- Valor de negocio continuo
+- Aprendizajes aplicados a siguientes migraciones
+- Rollback fácil por fase</p>
+<p><strong>Contras:</strong>
+- Período de transición largo (24 meses)
+- Complejidad temporal de mantener dos sistemas</p>
+<p><strong>Razón de selección:</strong> Balance óptimo entre riesgo y beneficio</p>
+<hr />
+<h2 id="validacion">Validación<a class="headerlink" href="#validacion" title="Permanent link">&para;</a></h2>
+<h3 id="metricas-de-exito">Métricas de Éxito<a class="headerlink" href="#metricas-de-exito" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Métrica</th>
+<th>Baseline</th>
+<th>Objetivo 6m</th>
+<th>Objetivo 12m</th>
+<th>Objetivo 24m</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Deployment Frequency</strong></td>
+<td>1-2/semana</td>
+<td>3-5/semana</td>
+<td>10+/semana</td>
+<td>20+/semana</td>
+</tr>
+<tr>
+<td><strong>Lead Time for Changes</strong></td>
+<td>7 días</td>
+<td>4 días</td>
+<td>2 días</td>
+<td>1 día</td>
+</tr>
+<tr>
+<td><strong>MTTR (Mean Time to Recovery)</strong></td>
+<td>4 horas</td>
+<td>2 horas</td>
+<td>1 hora</td>
+<td>30 min</td>
+</tr>
+<tr>
+<td><strong>Change Failure Rate</strong></td>
+<td>15%</td>
+<td>10%</td>
+<td>5%</td>
+<td>3%</td>
+</tr>
+<tr>
+<td><strong>Costo Infraestructura</strong></td>
+<td>$1,900/mes</td>
+<td>$2,200/mes</td>
+<td>$2,500/mes</td>
+<td>$2,800/mes</td>
+</tr>
+<tr>
+<td><strong>P95 Latency</strong></td>
+<td>800ms</td>
+<td>600ms</td>
+<td>400ms</td>
+<td>300ms</td>
+</tr>
+<tr>
+<td><strong>Uptime</strong></td>
+<td>99.5%</td>
+<td>99.7%</td>
+<td>99.9%</td>
+<td>99.95%</td>
+</tr>
+</tbody>
+</table>
+<h3 id="condiciones-de-re-evaluacion">Condiciones de Re-evaluación<a class="headerlink" href="#condiciones-de-re-evaluacion" title="Permanent link">&para;</a></h3>
+<p><strong>Pausar migración si:</strong>
+- Change Failure Rate &gt; 25% durante 2 meses consecutivos
+- Costos superan $4,000/mes sin justificación de valor
+- MTTR aumenta &gt; 6 horas sostenido
+- 3+ incidentes críticos relacionados con arquitectura distribuida en 1 mes</p>
+<p><strong>Acelerar migración si:</strong>
+- Éxito del piloto (Catálogo) supera expectativas en 50%+
+- Equipos solicitan independencia antes de lo planificado
+- Problemas de escalabilidad se intensifican</p>
+<hr />
+<h2 id="referencias">Referencias<a class="headerlink" href="#referencias" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>ADR Supersedido:</strong> ADR-000: Selección de Monolito Modular Inicial</li>
+<li><strong>Análisis de Viabilidad:</strong> <code>docs/analisis-migracion-microservicios-2025-02.pdf</code></li>
+<li><strong>Spike Técnico:</strong> <code>docs/poc-strangler-fig-catalog-service.md</code></li>
+<li><strong>Benchmarks de Costos:</strong> <code>docs/cost-analysis-microservices-vs-monolith.xlsx</code></li>
+<li><strong>Referencias Externas:</strong></li>
+<li><a href="https://martinfowler.com/bliki/StranglerFigApplication.html">Strangler Fig Pattern - Martin Fowler</a></li>
+<li><a href="https://samnewman.io/books/building_microservices_2nd_edition/">Building Microservices - Sam Newman</a></li>
+<li><a href="https://microservices.io/patterns/data/saga.html">Saga Pattern</a></li>
+</ul>
+<hr />
+<h2 id="aprobaciones">Aprobaciones<a class="headerlink" href="#aprobaciones" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Rol</th>
+<th>Nombre</th>
+<th>Fecha</th>
+<th>Firma</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CTO</td>
+<td>[Nombre]</td>
+<td>2025-03-15</td>
+<td>✅ Aprobado</td>
+</tr>
+<tr>
+<td>VP Engineering</td>
+<td>[Nombre]</td>
+<td>2025-03-15</td>
+<td>✅ Aprobado</td>
+</tr>
+<tr>
+<td>Tech Lead (Catálogo)</td>
+<td>[Nombre]</td>
+<td>2025-03-14</td>
+<td>✅ Aprobado</td>
+</tr>
+<tr>
+<td>Tech Lead (Marketplace)</td>
+<td>[Nombre]</td>
+<td>2025-03-14</td>
+<td>✅ Aprobado</td>
+</tr>
+<tr>
+<td>Head of SRE</td>
+<td>[Nombre]</td>
+<td>2025-03-15</td>
+<td>✅ Aprobado con observaciones*</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Observaciones SRE:</strong> Requiere contratar 2 SRE adicionales antes de Fase 1 para garantizar soporte operativo.</p>
+<hr />
+<h2 id="historial-de-cambios">Historial de Cambios<a class="headerlink" href="#historial-de-cambios" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Fecha</th>
+<th>Versión</th>
+<th>Cambios</th>
+<th>Autor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2025-03-15</td>
+<td>1.0</td>
+<td>Creación inicial</td>
+<td>Equipo de Arquitectura</td>
+</tr>
+<tr>
+<td>2025-03-20</td>
+<td>1.1</td>
+<td>Agregadas observaciones de SRE sobre contratación</td>
+<td>Head of SRE</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

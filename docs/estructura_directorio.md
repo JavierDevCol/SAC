@@ -159,7 +159,7 @@ ia_prompts/
 | Init Reglas Arquitectónicas | `>init_reglas_arquitectonicas` | Arquitecto |
 | Refinar HU | `>refinar_hu` | Analista de Requisitos |
 | Validar HU | `>validar_hu` | Arquitecto |
-| Planificar HU | `>planificar_hu` | Arquitecto |
+| Planificar HU | `>planificar_hu` | Desarrollador |
 | Ejecutar Plan | `>ejecutar_plan` | Desarrollador |
 | Crear Pruebas | `>crear_pruebas` | Desarrollador |
 | Analizar Code Smells | `>analizar_code_smells` | Desarrollador |

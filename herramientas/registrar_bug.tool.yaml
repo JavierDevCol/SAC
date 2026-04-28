@@ -175,7 +175,7 @@ salida:
     
     ðŸ“„ Archivo: {{artifacts.bugs_folder}}/BUG-[ID]_[descripcion].md
   siguiente:
-    - { comando: ">planificar_hu", desc: "Planificar resoluciÃ³n del bug (si se creÃ³ HU nueva)", chat_agente: "Arquitecto" }
+    - { comando: ">planificar_hu", desc: "Planificar resoluciÃ³n del bug (si se creÃ³ HU nueva)", chat_agente: "ArchDev Pro" }
     - { comando: ">ejecutar_plan", desc: "Ejecutar correcciÃ³n directamente (si ya hay plan)", chat_agente: "Desarrollador" }
 
 errores:

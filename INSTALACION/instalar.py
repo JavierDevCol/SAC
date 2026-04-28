@@ -503,17 +503,59 @@ def configure_git_safe_directory(repo_path):
 
 
 def update_repository(repo_path):
-    """Actualiza el repositorio con git pull."""
+    """Actualiza el repositorio con git pull, asegurando que la rama sea la correcta."""
     print_info("Actualizando repositorio...")
-    
+
     try:
+        # Asegurar que estamos en la rama principal y que su upstream es origin/REPO_BRANCH
+        current_branch = subprocess.run(
+            ["git", "-C", str(repo_path), "rev-parse", "--abbrev-ref", "HEAD"],
+            capture_output=True, text=True, timeout=10
+        ).stdout.strip()
+
+        if current_branch != REPO_BRANCH:
+            # Verificar si la rama principal ya existe localmente
+            branches = subprocess.run(
+                ["git", "-C", str(repo_path), "branch", "--list", REPO_BRANCH],
+                capture_output=True, text=True, timeout=10
+            ).stdout.strip()
+
+            if branches:
+                subprocess.run(
+                    ["git", "-C", str(repo_path), "checkout", REPO_BRANCH],
+                    capture_output=True, text=True, timeout=10
+                )
+            else:
+                subprocess.run(
+                    ["git", "-C", str(repo_path), "checkout", "-b", REPO_BRANCH,
+                     "--track", f"origin/{REPO_BRANCH}"],
+                    capture_output=True, text=True, timeout=10
+                )
+        else:
+            # Asegurar que el upstream apunta a origin/REPO_BRANCH
+            subprocess.run(
+                ["git", "-C", str(repo_path), "branch",
+                 "--set-upstream-to", f"origin/{REPO_BRANCH}", REPO_BRANCH],
+                capture_output=True, text=True, timeout=10
+            )
+
+        # Hacer fetch explícito de la rama correcta
+        fetch_result = subprocess.run(
+            ["git", "-C", str(repo_path), "fetch", "origin", REPO_BRANCH],
+            capture_output=True, text=True, timeout=60
+        )
+        if fetch_result.returncode != 0:
+            print_error(f"Error al hacer fetch: {fetch_result.stderr}")
+            return False
+
+        # Pull --ff-only con rama explícita
         result = subprocess.run(
-            ["git", "-C", str(repo_path), "pull", "--ff-only"],
+            ["git", "-C", str(repo_path), "pull", "--ff-only", "origin", REPO_BRANCH],
             capture_output=True,
             text=True,
             timeout=60
         )
-        
+
         if result.returncode == 0:
             if "Already up to date" in result.stdout or "Ya está actualizado" in result.stdout:
                 print_success("El repositorio ya está actualizado")
@@ -523,7 +565,7 @@ def update_repository(repo_path):
         else:
             print_error(f"Error al actualizar: {result.stderr}")
             return False
-            
+
     except subprocess.TimeoutExpired:
         print_error("Tiempo de espera agotado al actualizar")
         return False

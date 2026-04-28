@@ -197,5 +197,5 @@ errores:
 
 siguiente:
   - { comando: ">tomar_contexto", desc: "Generar contexto completo del proyecto", chat_agente: "archdev_pro" }
-  - { comando: ">planificar_hu", desc: "Planificar historias de usuario", chat_agente: "refinador_hu" }
+  - { comando: ">planificar_hu", desc: "Planificar historias de usuario", chat_agente: "archdev_pro" }
   - { comando: ">analizar_code_smells", desc: "Detectar problemas de cÃ³digo", chat_agente: "archdev_pro" }

@@ -1,0 +1,1983 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Sistema de agentes IA especializados para GitHub Copilot">
+      
+      
+        <meta name="author" content="JavierDevCol">
+      
+      
+        <link rel="canonical" href="https://javierdevcol.github.io/SAC/ejemplos/herramientas/generar_commit_ejemplo/">
+      
+      
+        <link rel="prev" href="../refinar_hu_ejemplo/">
+      
+      
+        <link rel="next" href="../crear_pruebas_ejemplo/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Generar Commit - SAC — Sistema Agéntico COCHAS</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ejemplo-de-uso-herramienta-generar_commit" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../../.." title="SAC — Sistema Agéntico COCHAS" class="md-header__button md-logo" aria-label="SAC — Sistema Agéntico COCHAS" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SAC — Sistema Agéntico COCHAS
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Generar Commit
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Cambiar a modo oscuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo oscuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Cambiar a modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/JavierDevCol/SAC" title="Ir al repositorio" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    JavierDevCol/SAC
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Pestañas" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Inicio
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../INSTALACION/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Instalación
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../ROLES/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Agentes
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../HERRAMIENTAS/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Herramientas
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../estructura_directorio/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Estructura
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../guias/guia_comandos/" class="md-tabs__link">
+          
+  
+  
+  Guías
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+  Ejemplos
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="SAC — Sistema Agéntico COCHAS" class="md-nav__button md-logo" aria-label="SAC — Sistema Agéntico COCHAS" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    SAC — Sistema Agéntico COCHAS
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/JavierDevCol/SAC" title="Ir al repositorio" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    JavierDevCol/SAC
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inicio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../INSTALACION/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Instalación
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ROLES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agentes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../HERRAMIENTAS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Herramientas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../estructura_directorio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Estructura
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guías
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guías
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guias/guia_comandos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Comandos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guias/guia_ciclo_vida_tareas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ciclo de Vida de HUs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guias/guia_roles_activos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roles Activos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guias/guia_creacion_roles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crear Roles SAC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guias/guia_creacion_agentes_vscode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crear Agentes VS Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guias/guia_subagents_vscode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Subagentes VS Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ejemplos
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ejemplos
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Índice
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tomar_contexto_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tomar Contexto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../refinar_hu_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Refinar HU
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Generar Commit
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Generar Commit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#contexto-del-ejemplo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔍 Contexto del Ejemplo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#entrada-proporcionada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📥 Entrada Proporcionada
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📥 Entrada Proporcionada">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#git-diff-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Git Diff Output:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#contexto-adicional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contexto Adicional:
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuracion-seleccionada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚙️ Configuración Seleccionada
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#procesamiento-paso-a-paso" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔄 Procesamiento Paso a Paso
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔄 Procesamiento Paso a Paso">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#paso-2-analisis-del-contexto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 2: Análisis del Contexto
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-3-clasificacion-del-tipo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 3: Clasificación del Tipo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-4-determinacion-del-alcance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 4: Determinación del Alcance
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-5-construccion-del-titulo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 5: Construcción del Título
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-6-generacion-del-cuerpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 6: Generación del Cuerpo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-7-validacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 7: Validación
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#salida-generada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📤 Salida Generada
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📤 Salida Generada">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mensaje-de-commit-completo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mensaje de Commit Completo:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comando-sugerido" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comando Sugerido:
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resultado-final" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ Resultado Final
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#variaciones-del-ejemplo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔄 Variaciones del Ejemplo
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔄 Variaciones del Ejemplo">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#si-se-hubiera-elegido-modo-automatico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Si se hubiera elegido Modo Automático:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#si-se-hubiera-detectado-breaking-change" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Si se hubiera detectado Breaking Change:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#si-hubiera-multiples-modulos-afectados" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Si hubiera múltiples módulos afectados:
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notas-adicionales" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📚 Notas Adicionales
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../crear_pruebas_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crear Pruebas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../analizar_code_smells_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Analizar Code Smells
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../diagnosticar_devops_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Diagnosticar DevOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ecommerce_mvp_completo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    eCommerce MVP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../solucionar_smells_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Solucionar Smells
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../verifica_pruebas_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Verificar Pruebas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#contexto-del-ejemplo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔍 Contexto del Ejemplo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#entrada-proporcionada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📥 Entrada Proporcionada
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📥 Entrada Proporcionada">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#git-diff-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Git Diff Output:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#contexto-adicional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contexto Adicional:
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuracion-seleccionada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚙️ Configuración Seleccionada
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#procesamiento-paso-a-paso" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔄 Procesamiento Paso a Paso
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔄 Procesamiento Paso a Paso">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#paso-2-analisis-del-contexto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 2: Análisis del Contexto
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-3-clasificacion-del-tipo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 3: Clasificación del Tipo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-4-determinacion-del-alcance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 4: Determinación del Alcance
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-5-construccion-del-titulo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 5: Construcción del Título
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-6-generacion-del-cuerpo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 6: Generación del Cuerpo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-7-validacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paso 7: Validación
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#salida-generada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📤 Salida Generada
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📤 Salida Generada">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mensaje-de-commit-completo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mensaje de Commit Completo:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comando-sugerido" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comando Sugerido:
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resultado-final" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ Resultado Final
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#variaciones-del-ejemplo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔄 Variaciones del Ejemplo
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔄 Variaciones del Ejemplo">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#si-se-hubiera-elegido-modo-automatico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Si se hubiera elegido Modo Automático:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#si-se-hubiera-detectado-breaking-change" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Si se hubiera detectado Breaking Change:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#si-hubiera-multiples-modulos-afectados" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Si hubiera múltiples módulos afectados:
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notas-adicionales" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📚 Notas Adicionales
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="ejemplo-de-uso-herramienta-generar_commit">📝 Ejemplo de Uso: Herramienta generar_commit<a class="headerlink" href="#ejemplo-de-uso-herramienta-generar_commit" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Herramienta:</strong> <code>generar_commit</code><br />
+<strong>Fecha del ejemplo:</strong> 10 de octubre de 2025<br />
+<strong>Escenario:</strong> Implementación de autenticación JWT en una API Spring Boot</p>
+</blockquote>
+<hr />
+<h2 id="contexto-del-ejemplo">🔍 Contexto del Ejemplo<a class="headerlink" href="#contexto-del-ejemplo" title="Permanent link">&para;</a></h2>
+<p><strong>Situación:</strong> Un desarrollador ha implementado un sistema de autenticación JWT y necesita documentar los cambios realizados con un commit claro y estandarizado.</p>
+<p><strong>Estado del repositorio:</strong>
+- Branch actual: <code>feature/user-authentication</code>
+- Issue relacionado: <code>#AUTH-123 - Implementar autenticación con JWT</code>
+- Archivos modificados: 3 archivos principales</p>
+<hr />
+<h2 id="entrada-proporcionada">📥 Entrada Proporcionada<a class="headerlink" href="#entrada-proporcionada" title="Permanent link">&para;</a></h2>
+<h3 id="git-diff-output">Git Diff Output:<a class="headerlink" href="#git-diff-output" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>diff<span class="w"> </span>--git<span class="w"> </span>a/src/main/java/com/ecommerce/service/UserService.java<span class="w"> </span>b/src/main/java/com/ecommerce/service/UserService.java
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>index<span class="w"> </span><span class="m">1234567</span>..abcdefg<span class="w"> </span><span class="m">100644</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>---<span class="w"> </span>a/src/main/java/com/ecommerce/service/UserService.java
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>+++<span class="w"> </span>b/src/main/java/com/ecommerce/service/UserService.java
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>@@<span class="w"> </span>-15,6<span class="w"> </span>+15,18<span class="w"> </span>@@<span class="w"> </span>public<span class="w"> </span>class<span class="w"> </span>UserService<span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">     </span><span class="o">}</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>+<span class="w">    </span>public<span class="w"> </span>User<span class="w"> </span>authenticateUser<span class="o">(</span>String<span class="w"> </span>email,<span class="w"> </span>String<span class="w"> </span>password<span class="o">)</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>+<span class="w">        </span>validateCredentials<span class="o">(</span>email,<span class="w"> </span>password<span class="o">)</span><span class="p">;</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>+<span class="w">        </span>User<span class="w"> </span><span class="nv">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>userRepository.findByEmail<span class="o">(</span>email<span class="o">)</span><span class="p">;</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="o">(</span>user<span class="w"> </span>!<span class="o">=</span><span class="w"> </span>null<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>passwordEncoder.matches<span class="o">(</span>password,<span class="w"> </span>user.getHashedPassword<span class="o">()))</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>+<span class="w">            </span>user.setLastLoginDate<span class="o">(</span>LocalDateTime.now<span class="o">())</span><span class="p">;</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>+<span class="w">            </span><span class="k">return</span><span class="w"> </span>userRepository.save<span class="o">(</span>user<span class="o">)</span><span class="p">;</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>+<span class="w">        </span><span class="o">}</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>+<span class="w">        </span>throw<span class="w"> </span>new<span class="w"> </span>AuthenticationException<span class="o">(</span><span class="s2">&quot;Invalid credentials&quot;</span><span class="o">)</span><span class="p">;</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>+<span class="w">    </span><span class="o">}</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>+
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">     </span>private<span class="w"> </span>void<span class="w"> </span>validateEmail<span class="o">(</span>String<span class="w"> </span>email<span class="o">)</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>diff<span class="w"> </span>--git<span class="w"> </span>a/src/main/java/com/ecommerce/config/SecurityConfig.java<span class="w"> </span>b/src/main/java/com/ecommerce/config/SecurityConfig.java
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>new<span class="w"> </span>file<span class="w"> </span>mode<span class="w"> </span><span class="m">100644</span>
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>index<span class="w"> </span><span class="m">0000000</span>..xyz9876
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>---<span class="w"> </span>/dev/null
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>+++<span class="w"> </span>b/src/main/java/com/ecommerce/config/SecurityConfig.java
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>@@<span class="w"> </span>-0,0<span class="w"> </span>+1,25<span class="w"> </span>@@
+<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>+@Configuration
+<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>+@EnableWebSecurity
+<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>+public<span class="w"> </span>class<span class="w"> </span>SecurityConfig<span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>+<span class="w">    </span>
+<a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>+<span class="w">    </span>@Bean
+<a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>+<span class="w">    </span>public<span class="w"> </span>JwtAuthenticationFilter<span class="w"> </span>jwtAuthenticationFilter<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>+<span class="w">        </span><span class="k">return</span><span class="w"> </span>new<span class="w"> </span>JwtAuthenticationFilter<span class="o">()</span><span class="p">;</span>
+<a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a>+<span class="w">    </span><span class="o">}</span>
+<a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a>+<span class="w">    </span>
+<a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a>+<span class="w">    </span>@Bean
+<a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a>+<span class="w">    </span>public<span class="w"> </span>SecurityFilterChain<span class="w"> </span>filterChain<span class="o">(</span>HttpSecurity<span class="w"> </span>http<span class="o">)</span><span class="w"> </span>throws<span class="w"> </span>Exception<span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a>+<span class="w">        </span><span class="k">return</span><span class="w"> </span>http
+<a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a>+<span class="w">            </span>.csrf<span class="o">()</span>.disable<span class="o">()</span>
+<a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a>+<span class="w">            </span>.sessionManagement<span class="o">()</span>.sessionCreationPolicy<span class="o">(</span>SessionCreationPolicy.STATELESS<span class="o">)</span>
+<a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a>+<span class="w">            </span>.and<span class="o">()</span>
+<a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a>+<span class="w">            </span>.authorizeHttpRequests<span class="o">(</span>auth<span class="w"> </span>-&gt;<span class="w"> </span>auth
+<a id="__codelineno-0-42" name="__codelineno-0-42" href="#__codelineno-0-42"></a>+<span class="w">                </span>.requestMatchers<span class="o">(</span><span class="s2">&quot;/api/auth/**&quot;</span><span class="o">)</span>.permitAll<span class="o">()</span>
+<a id="__codelineno-0-43" name="__codelineno-0-43" href="#__codelineno-0-43"></a>+<span class="w">                </span>.anyRequest<span class="o">()</span>.authenticated<span class="o">()</span>
+<a id="__codelineno-0-44" name="__codelineno-0-44" href="#__codelineno-0-44"></a>+<span class="w">            </span><span class="o">)</span>
+<a id="__codelineno-0-45" name="__codelineno-0-45" href="#__codelineno-0-45"></a>+<span class="w">            </span>.addFilterBefore<span class="o">(</span>jwtAuthenticationFilter<span class="o">()</span>,<span class="w"> </span>UsernamePasswordAuthenticationFilter.class<span class="o">)</span>
+<a id="__codelineno-0-46" name="__codelineno-0-46" href="#__codelineno-0-46"></a>+<span class="w">            </span>.build<span class="o">()</span><span class="p">;</span>
+<a id="__codelineno-0-47" name="__codelineno-0-47" href="#__codelineno-0-47"></a>+<span class="w">    </span><span class="o">}</span>
+<a id="__codelineno-0-48" name="__codelineno-0-48" href="#__codelineno-0-48"></a>+<span class="o">}</span>
+<a id="__codelineno-0-49" name="__codelineno-0-49" href="#__codelineno-0-49"></a>
+<a id="__codelineno-0-50" name="__codelineno-0-50" href="#__codelineno-0-50"></a>diff<span class="w"> </span>--git<span class="w"> </span>a/pom.xml<span class="w"> </span>b/pom.xml
+<a id="__codelineno-0-51" name="__codelineno-0-51" href="#__codelineno-0-51"></a>index<span class="w"> </span>abc123..def456<span class="w"> </span><span class="m">100644</span>
+<a id="__codelineno-0-52" name="__codelineno-0-52" href="#__codelineno-0-52"></a>---<span class="w"> </span>a/pom.xml
+<a id="__codelineno-0-53" name="__codelineno-0-53" href="#__codelineno-0-53"></a>+++<span class="w"> </span>b/pom.xml
+<a id="__codelineno-0-54" name="__codelineno-0-54" href="#__codelineno-0-54"></a>@@<span class="w"> </span>-45,6<span class="w"> </span>+45,12<span class="w"> </span>@@
+<a id="__codelineno-0-55" name="__codelineno-0-55" href="#__codelineno-0-55"></a><span class="w">         </span>&lt;artifactId&gt;spring-boot-starter-validation&lt;/artifactId&gt;
+<a id="__codelineno-0-56" name="__codelineno-0-56" href="#__codelineno-0-56"></a><span class="w">     </span>&lt;/dependency&gt;
+<a id="__codelineno-0-57" name="__codelineno-0-57" href="#__codelineno-0-57"></a>+<span class="w">    </span>&lt;dependency&gt;
+<a id="__codelineno-0-58" name="__codelineno-0-58" href="#__codelineno-0-58"></a>+<span class="w">        </span>&lt;groupId&gt;io.jsonwebtoken&lt;/groupId&gt;
+<a id="__codelineno-0-59" name="__codelineno-0-59" href="#__codelineno-0-59"></a>+<span class="w">        </span>&lt;artifactId&gt;jjwt-api&lt;/artifactId&gt;
+<a id="__codelineno-0-60" name="__codelineno-0-60" href="#__codelineno-0-60"></a>+<span class="w">        </span>&lt;version&gt;0.11.5&lt;/version&gt;
+<a id="__codelineno-0-61" name="__codelineno-0-61" href="#__codelineno-0-61"></a>+<span class="w">    </span>&lt;/dependency&gt;
+<a id="__codelineno-0-62" name="__codelineno-0-62" href="#__codelineno-0-62"></a><span class="w"> </span>&lt;/dependencies&gt;
+</code></pre></div>
+<h3 id="contexto-adicional">Contexto Adicional:<a class="headerlink" href="#contexto-adicional" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Branch name:</strong> <code>feature/user-authentication</code></li>
+<li><strong>Issue/Ticket:</strong> <code>#AUTH-123</code></li>
+<li><strong>Archivos afectados:</strong> UserService.java, SecurityConfig.java (nuevo), pom.xml</li>
+</ul>
+<hr />
+<h2 id="configuracion-seleccionada">⚙️ Configuración Seleccionada<a class="headerlink" href="#configuracion-seleccionada" title="Permanent link">&para;</a></h2>
+<p><strong>Paso 1: Selección de Modo</strong>
+- <strong>Modo elegido:</strong> Configuración Manual</p>
+<p><strong>Parámetros configurados:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>📝 Tipo de Commit: auto (detectar automáticamente)
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>📄 Incluir cuerpo detallado: true
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>🎯 Formato del alcance: auto (inferir del contexto)
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>⚠️ Breaking change: false
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>📏 Límite de caracteres del título: 50
+</code></pre></div></p>
+<hr />
+<h2 id="procesamiento-paso-a-paso">🔄 Procesamiento Paso a Paso<a class="headerlink" href="#procesamiento-paso-a-paso" title="Permanent link">&para;</a></h2>
+<h3 id="paso-2-analisis-del-contexto">Paso 2: Análisis del Contexto<a class="headerlink" href="#paso-2-analisis-del-contexto" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Archivos detectados:</strong> 3 archivos (service, config, dependency)</li>
+<li><strong>Branch pattern:</strong> <code>feature/</code> → sugiere nueva funcionalidad</li>
+<li><strong>Cambios críticos:</strong> Nuevo archivo de configuración + dependencia JWT</li>
+<li><strong>Alcance inferido:</strong> Autenticación/Security</li>
+</ul>
+<h3 id="paso-3-clasificacion-del-tipo">Paso 3: Clasificación del Tipo<a class="headerlink" href="#paso-3-clasificacion-del-tipo" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Detección automática:</strong> <code>feat</code> (nueva funcionalidad)</li>
+<li><strong>Justificación:</strong> Nuevos métodos públicos + nueva configuración + nueva dependencia</li>
+</ul>
+<h3 id="paso-4-determinacion-del-alcance">Paso 4: Determinación del Alcance<a class="headerlink" href="#paso-4-determinacion-del-alcance" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Estrategia:</strong> auto</li>
+<li><strong>Análisis:</strong> Archivos relacionados con autenticación y seguridad</li>
+<li><strong>Alcance generado:</strong> <code>auth</code> (conciso y descriptivo)</li>
+</ul>
+<h3 id="paso-5-construccion-del-titulo">Paso 5: Construcción del Título<a class="headerlink" href="#paso-5-construccion-del-titulo" title="Permanent link">&para;</a></h3>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>feat(auth): Implement JWT-based user authentication
+</code></pre></div>
+- <strong>Longitud:</strong> 48 caracteres (dentro del límite de 50)
+- <strong>Formato:</strong> Conventional Commits compliant
+- <strong>Verbo imperativo:</strong> "Implement"</p>
+<h3 id="paso-6-generacion-del-cuerpo">Paso 6: Generación del Cuerpo<a class="headerlink" href="#paso-6-generacion-del-cuerpo" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Párrafo justificativo:</strong> Explica el porqué del cambio</li>
+<li><strong>Lista de cambios:</strong> Detalla modificaciones específicas</li>
+<li><strong>Referencias:</strong> Incluye issue tracking</li>
+</ul>
+<h3 id="paso-7-validacion">Paso 7: Validación<a class="headerlink" href="#paso-7-validacion" title="Permanent link">&para;</a></h3>
+<ul>
+<li>✅ Formato Conventional Commits válido</li>
+<li>✅ Límite de caracteres respetado</li>
+<li>✅ Referencias incluidas</li>
+</ul>
+<hr />
+<h2 id="salida-generada">📤 Salida Generada<a class="headerlink" href="#salida-generada" title="Permanent link">&para;</a></h2>
+<h3 id="mensaje-de-commit-completo">Mensaje de Commit Completo:<a class="headerlink" href="#mensaje-de-commit-completo" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>feat<span class="o">(</span>auth<span class="o">)</span>:<span class="w"> </span>Implement<span class="w"> </span>JWT-based<span class="w"> </span>user<span class="w"> </span>authentication
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>Add<span class="w"> </span>comprehensive<span class="w"> </span>JWT<span class="w"> </span>authentication<span class="w"> </span>system<span class="w"> </span>to<span class="w"> </span>improve<span class="w"> </span>API<span class="w"> </span>security
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>and<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>stateless<span class="w"> </span>session<span class="w"> </span>management<span class="w"> </span>across<span class="w"> </span>the<span class="w"> </span>platform.
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>-<span class="w"> </span>Add<span class="w"> </span>authenticateUser<span class="w"> </span>method<span class="w"> </span>with<span class="w"> </span>credential<span class="w"> </span>validation
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>-<span class="w"> </span>Create<span class="w"> </span>SecurityConfig<span class="w"> </span>with<span class="w"> </span>JWT<span class="w"> </span>filter<span class="w"> </span>configuration<span class="w">  </span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>-<span class="w"> </span>Integrate<span class="w"> </span>password<span class="w"> </span>encoding<span class="w"> </span>verification<span class="w"> </span><span class="k">in</span><span class="w"> </span>UserService
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>-<span class="w"> </span>Configure<span class="w"> </span>stateless<span class="w"> </span>session<span class="w"> </span>policy<span class="w"> </span><span class="k">for</span><span class="w"> </span>REST<span class="w"> </span>API
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>-<span class="w"> </span>Add<span class="w"> </span>JWT<span class="w"> </span>dependency<span class="w"> </span>to<span class="w"> </span>project<span class="w"> </span>dependencies
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>-<span class="w"> </span>Update<span class="w"> </span>last<span class="w"> </span>login<span class="w"> </span>timestamp<span class="w"> </span>on<span class="w"> </span>successful<span class="w"> </span>authentication
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>-<span class="w"> </span>Add<span class="w"> </span>authentication<span class="w"> </span>exception<span class="w"> </span>handling<span class="w"> </span><span class="k">for</span><span class="w"> </span>invalid<span class="w"> </span>credentials
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>Refs:<span class="w"> </span><span class="c1">#AUTH-123</span>
+</code></pre></div>
+<h3 id="comando-sugerido">Comando Sugerido:<a class="headerlink" href="#comando-sugerido" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;feat(auth): Implement JWT-based user authentication</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="s2">Add comprehensive JWT authentication system to improve API security</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="s2">and enable stateless session management across the platform.</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="s2">- Add authenticateUser method with credential validation</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="s2">- Create SecurityConfig with JWT filter configuration  </span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="s2">- Integrate password encoding verification in UserService</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="s2">- Configure stateless session policy for REST API</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="s2">- Add JWT dependency to project dependencies</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="s2">- Update last login timestamp on successful authentication</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="s2">- Add authentication exception handling for invalid credentials</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="s2">Refs: #AUTH-123&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="resultado-final">✅ Resultado Final<a class="headerlink" href="#resultado-final" title="Permanent link">&para;</a></h2>
+<p><strong>Configuración aplicada:</strong>
+- ✅ Tipo detectado: <code>feat</code> (nueva funcionalidad)
+- ✅ Alcance inferido: <code>auth</code> (autenticación)
+- ✅ Cuerpo detallado incluido
+- ✅ Referencias agregadas: <code>#AUTH-123</code>
+- ✅ Longitud del título: 48 caracteres</p>
+<p><strong>Beneficios del commit generado:</strong>
+- 📋 <strong>Trazabilidad:</strong> Vinculado al issue original
+- 🎯 <strong>Claridad:</strong> Explica tanto el qué como el porqué
+- 📊 <strong>Detalle técnico:</strong> Lista cambios específicos realizados
+- 🔍 <strong>Búsqueda:</strong> Fácil de encontrar en el historial con <code>git log --grep="auth"</code>
+- 📈 <strong>Métricas:</strong> Compatible con herramientas de análisis de commits</p>
+<hr />
+<h2 id="variaciones-del-ejemplo">🔄 Variaciones del Ejemplo<a class="headerlink" href="#variaciones-del-ejemplo" title="Permanent link">&para;</a></h2>
+<h3 id="si-se-hubiera-elegido-modo-automatico">Si se hubiera elegido <strong>Modo Automático:</strong><a class="headerlink" href="#si-se-hubiera-elegido-modo-automatico" title="Permanent link">&para;</a></h3>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>feat<span class="o">(</span>auth<span class="o">)</span>:<span class="w"> </span>Add<span class="w"> </span>JWT<span class="w"> </span>authentication<span class="w"> </span>system
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>Refs:<span class="w"> </span><span class="c1">#AUTH-123</span>
+</code></pre></div>
+<em>(Título únicamente, sin cuerpo detallado)</em></p>
+<h3 id="si-se-hubiera-detectado-breaking-change">Si se hubiera detectado <strong>Breaking Change:</strong><a class="headerlink" href="#si-se-hubiera-detectado-breaking-change" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>feat<span class="o">(</span>auth<span class="o">)</span>:<span class="w"> </span>Implement<span class="w"> </span>JWT-based<span class="w"> </span>user<span class="w"> </span>authentication
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>BREAKING<span class="w"> </span>CHANGE:<span class="w"> </span>Authentication<span class="w"> </span>endpoint<span class="w"> </span>now<span class="w"> </span>requires<span class="w"> </span>JWT<span class="w"> </span>tokens
+</code></pre></div>
+<h3 id="si-hubiera-multiples-modulos-afectados">Si hubiera <strong>múltiples módulos afectados:</strong><a class="headerlink" href="#si-hubiera-multiples-modulos-afectados" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>feat<span class="o">(</span>multi<span class="o">)</span>:<span class="w"> </span>Implement<span class="w"> </span>JWT<span class="w"> </span>authentication<span class="w"> </span>across<span class="w"> </span>services
+</code></pre></div>
+<hr />
+<h2 id="notas-adicionales">📚 Notas Adicionales<a class="headerlink" href="#notas-adicionales" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Tiempo estimado de generación:</strong> &lt; 5 segundos</li>
+<li><strong>Precisión de detección automática:</strong> Alta (basada en patrones claros)</li>
+<li><strong>Casos de uso similares:</strong> Features de autenticación, autorización, seguridad</li>
+<li><strong>Herramientas complementarias:</strong> Se integra bien con <code>refactorizar</code> y <code>crear_pruebas</code></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

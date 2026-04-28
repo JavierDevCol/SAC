@@ -1,0 +1,2274 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Sistema de agentes IA especializados para GitHub Copilot">
+      
+      
+        <meta name="author" content="JavierDevCol">
+      
+      
+        <link rel="canonical" href="https://javierdevcol.github.io/SAC/guias/guia_ciclo_vida_tareas/">
+      
+      
+        <link rel="prev" href="../guia_comandos/">
+      
+      
+        <link rel="next" href="../guia_roles_activos/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Ciclo de Vida de HUs - SAC — Sistema Agéntico COCHAS</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#guia-del-ciclo-de-vida-de-tareas" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../.." title="SAC — Sistema Agéntico COCHAS" class="md-header__button md-logo" aria-label="SAC — Sistema Agéntico COCHAS" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SAC — Sistema Agéntico COCHAS
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Ciclo de Vida de HUs
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Cambiar a modo oscuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo oscuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Cambiar a modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/JavierDevCol/SAC" title="Ir al repositorio" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    JavierDevCol/SAC
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Pestañas" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Inicio
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../INSTALACION/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Instalación
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../ROLES/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Agentes
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../HERRAMIENTAS/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Herramientas
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../estructura_directorio/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Estructura
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../guia_comandos/" class="md-tabs__link">
+          
+  
+  
+  Guías
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../ejemplos/" class="md-tabs__link">
+          
+  
+  
+  Ejemplos
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="SAC — Sistema Agéntico COCHAS" class="md-nav__button md-logo" aria-label="SAC — Sistema Agéntico COCHAS" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    SAC — Sistema Agéntico COCHAS
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/JavierDevCol/SAC" title="Ir al repositorio" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    JavierDevCol/SAC
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inicio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../INSTALACION/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Instalación
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ROLES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agentes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../HERRAMIENTAS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Herramientas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../estructura_directorio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Estructura
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guías
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guías
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guia_comandos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Comandos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ciclo de Vida de HUs
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ciclo de Vida de HUs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#indice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📖 Índice
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#introduccion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Introducción
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Introducción">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#principios-del-sistema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Principios del Sistema
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#estados-de-las-tareas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Estados de las Tareas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Estados de las Tareas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#estado-1-pendiente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📋 Estado 1: Pendiente [ ]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#estado-2-refinada-r" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📝 Estado 2: Refinada [R]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#estado-3-aprobada-a" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ Estado 3: Aprobada [A]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#estado-4-planificada-p" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📋 Estado 4: Planificada [P]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#estado-5-en-ejecucion-e" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚡ Estado 5: En Ejecución [E]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#estado-6-completada-x" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎉 Estado 6: Completada [X]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#estado-7-bloqueada-b" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚫 Estado 7: Bloqueada [B]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#flujo-de-validacion-secuencial" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flujo de Validación Secuencial
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Flujo de Validación Secuencial">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagrama-de-flujo-principal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Diagrama de Flujo Principal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flujo-con-bloqueos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flujo con Bloqueos
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reglas-estrictas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reglas Estrictas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reglas Estrictas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prohibido-saltar-estados" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ❌ Prohibido Saltar Estados
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solo-roles-y-herramientas-autorizadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔒 Solo Roles y Herramientas Autorizadas
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resumen-rapido" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Resumen Rápido
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guia_roles_activos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roles Activos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guia_creacion_roles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crear Roles SAC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guia_creacion_agentes_vscode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crear Agentes VS Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guia_subagents_vscode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Subagentes VS Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ejemplos
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ejemplos
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ejemplos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Índice
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ejemplos/herramientas/tomar_contexto_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tomar Contexto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ejemplos/herramientas/refinar_hu_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Refinar HU
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ejemplos/herramientas/generar_commit_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Generar Commit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ejemplos/herramientas/crear_pruebas_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crear Pruebas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ejemplos/herramientas/analizar_code_smells_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Analizar Code Smells
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ejemplos/herramientas/diagnosticar_devops_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Diagnosticar DevOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ejemplos/herramientas/ecommerce_mvp_completo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    eCommerce MVP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ejemplos/herramientas/solucionar_smells_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Solucionar Smells
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ejemplos/herramientas/verifica_pruebas_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Verificar Pruebas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#indice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📖 Índice
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#introduccion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Introducción
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Introducción">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#principios-del-sistema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Principios del Sistema
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#estados-de-las-tareas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Estados de las Tareas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Estados de las Tareas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#estado-1-pendiente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📋 Estado 1: Pendiente [ ]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#estado-2-refinada-r" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📝 Estado 2: Refinada [R]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#estado-3-aprobada-a" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ Estado 3: Aprobada [A]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#estado-4-planificada-p" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📋 Estado 4: Planificada [P]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#estado-5-en-ejecucion-e" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚡ Estado 5: En Ejecución [E]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#estado-6-completada-x" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎉 Estado 6: Completada [X]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#estado-7-bloqueada-b" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚫 Estado 7: Bloqueada [B]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#flujo-de-validacion-secuencial" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flujo de Validación Secuencial
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Flujo de Validación Secuencial">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagrama-de-flujo-principal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Diagrama de Flujo Principal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flujo-con-bloqueos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flujo con Bloqueos
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reglas-estrictas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reglas Estrictas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reglas Estrictas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prohibido-saltar-estados" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ❌ Prohibido Saltar Estados
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solo-roles-y-herramientas-autorizadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔒 Solo Roles y Herramientas Autorizadas
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resumen-rapido" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Resumen Rápido
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="guia-del-ciclo-de-vida-de-tareas">🔄 Guía del Ciclo de Vida de Tareas<a class="headerlink" href="#guia-del-ciclo-de-vida-de-tareas" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Sistema:</strong> SAC - Sistema Agéntico COCHAS<br />
+<strong>Versión:</strong> 7.2.0<br />
+<strong>Última Actualización:</strong> 23 de abril de 2026</p>
+</blockquote>
+<hr />
+<h2 id="indice">📖 Índice<a class="headerlink" href="#indice" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="#introducción">Introducción</a></li>
+<li><a href="#estados-de-las-tareas">Estados de las Tareas</a></li>
+<li><a href="#flujo-de-validación-secuencial">Flujo de Validación Secuencial</a></li>
+<li><a href="#el-backlog-de-desarrollo">El Backlog de Desarrollo</a></li>
+<li><a href="#roles-y-responsabilidades">Roles y Responsabilidades</a></li>
+<li><a href="#ejemplos-prácticos">Ejemplos Prácticos</a></li>
+</ul>
+<hr />
+<h2 id="introduccion">Introducción<a class="headerlink" href="#introduccion" title="Permanent link">&para;</a></h2>
+<p>El sistema SAC implementa un <strong>flujo de validación secuencial</strong> para las tareas de desarrollo, garantizando que cada tarea pase por las etapas necesarias de refinamiento, aprobación, planificación e implementación antes de ser marcada como completada.</p>
+<h3 id="principios-del-sistema">Principios del Sistema<a class="headerlink" href="#principios-del-sistema" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Validación Secuencial:</strong> Las tareas deben pasar por estados específicos en orden</li>
+<li><strong>Responsabilidad de Roles:</strong> Solo ciertos roles pueden cambiar estados específicos</li>
+<li><strong>Trazabilidad:</strong> Todo cambio de estado queda registrado en <code>{{session_state_location}}</code></li>
+<li><strong>No Saltar Pasos:</strong> No se puede pasar directamente de Pendiente a Completada</li>
+<li><strong>Bloqueos Explícitos:</strong> Las dependencias no resueltas bloquean el avance</li>
+</ol>
+<hr />
+<h2 id="estados-de-las-tareas">Estados de las Tareas<a class="headerlink" href="#estados-de-las-tareas" title="Permanent link">&para;</a></h2>
+<p>El sistema define <strong>7 estados</strong> para el ciclo de vida de una HU/Tarea:</p>
+<table>
+<thead>
+<tr>
+<th>Estado</th>
+<th>Símbolo</th>
+<th>Descripción</th>
+<th>Herramienta</th>
+<th>Siguiente</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pendiente</td>
+<td><code>[ ]</code></td>
+<td>HU creada, sin analizar</td>
+<td>-</td>
+<td><code>refinar_hu</code></td>
+</tr>
+<tr>
+<td>Refinada</td>
+<td><code>[R]</code></td>
+<td>Analizada con criterios y estimación</td>
+<td><code>refinar_hu</code></td>
+<td><code>validar_hu</code></td>
+</tr>
+<tr>
+<td>Aprobada</td>
+<td><code>[A]</code></td>
+<td>Validada arquitectónicamente</td>
+<td><code>validar_hu</code></td>
+<td><code>planificar_hu</code></td>
+</tr>
+<tr>
+<td>Planificada</td>
+<td><code>[P]</code></td>
+<td>Tiene plan de implementación</td>
+<td><code>planificar_hu</code></td>
+<td><code>ejecutar_plan</code></td>
+</tr>
+<tr>
+<td>En Ejecución</td>
+<td><code>[E]</code></td>
+<td>Agente está ejecutando el plan</td>
+<td><code>ejecutar_plan</code></td>
+<td>Continuar</td>
+</tr>
+<tr>
+<td>Completada</td>
+<td><code>[X]</code></td>
+<td>Implementación terminada</td>
+<td><code>ejecutar_plan</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td>Bloqueada</td>
+<td><code>[B]</code></td>
+<td>Dependencias no resueltas</td>
+<td>Cualquiera</td>
+<td>Resolver bloqueo</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="estado-1-pendiente">📋 Estado 1: Pendiente <code>[ ]</code><a class="headerlink" href="#estado-1-pendiente" title="Permanent link">&para;</a></h3>
+<p><strong>Descripción:</strong> Tarea creada pero no refinada. Requiere clarificación de requisitos.</p>
+<p><strong>Características:</strong>
+- Descripción básica de qué hacer
+- Puede tener requisitos ambiguos
+- Necesita criterios de aceptación claros
+- Estimación inicial puede ser imprecisa</p>
+<p><strong>Responsable de avanzar:</strong> <code>Refinador HU</code> mediante <code>refinar_hu</code></p>
+<p><strong>Siguiente estado:</strong> <code>[R]</code> Refinada</p>
+<p><strong>Ejemplo en backlog:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gu">### ARCHDEV-001: Implementar Auth Service</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Estado:**</span> [ ] Pendiente
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Por qué:**</span> Necesario para autenticación de usuarios
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Origen:**</span> ONAD-001
+</code></pre></div></p>
+<hr />
+<h3 id="estado-2-refinada-r">📝 Estado 2: Refinada <code>[R]</code><a class="headerlink" href="#estado-2-refinada-r" title="Permanent link">&para;</a></h3>
+<p><strong>Descripción:</strong> Tarea con criterios de aceptación claros, dependencias identificadas y estimación precisa.</p>
+<p><strong>Características:</strong>
+- Criterios de aceptación definidos (SMART)
+- Dependencias técnicas identificadas
+- Estimación de esfuerzo validada
+- Casos de borde considerados
+- Desglose técnico vertical</p>
+<p><strong>Artefacto generado:</strong> <code>{{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md</code></p>
+<p><strong>Responsable de avanzar:</strong> <code>Arquitecto Onad</code> mediante <code>validar_hu</code></p>
+<p><strong>Siguiente estado:</strong> <code>[A]</code> Aprobada</p>
+<p><strong>Ejemplo en backlog:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="gu">### ARCHDEV-001: Implementar Auth Service</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Estado:**</span> [R] Refinada
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Refinamiento:**</span> <span class="sb">`{{artifacts.hu_refinamientos}}/ARCHDEV-001_refinamiento.md`</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Fecha refinamiento:**</span> 2026-01-04T10:00:00
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Estimación:**</span> 8 SP / 12 horas
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="gs">**Criterios de Aceptación:**</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>✅ Generación de tokens JWT con RS256
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>✅ Validación de tokens en cada request
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>✅ Refresh tokens con expiración de 7 días
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>✅ Tests unitarios con cobertura &gt; 90%
+</code></pre></div></p>
+<hr />
+<h3 id="estado-3-aprobada-a">✅ Estado 3: Aprobada <code>[A]</code><a class="headerlink" href="#estado-3-aprobada-a" title="Permanent link">&para;</a></h3>
+<p><strong>Descripción:</strong> Tarea validada arquitectónicamente y lista para planificación.</p>
+<p><strong>Características:</strong>
+- Alineada con decisiones arquitectónicas
+- Trade-offs evaluados y aprobados
+- Riesgos identificados y mitigados
+- Sin conflictos con otras decisiones
+- Cumple reglas de <code>{{reglas_arquitectonicas_location}}</code></p>
+<p><strong>Responsable de avanzar:</strong> <code>Arquitecto Onad</code> mediante <code>planificar-hu</code></p>
+<p><strong>Siguiente estado:</strong> <code>[P]</code> Planificada</p>
+<p><strong>Ejemplo en backlog:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="gu">### ARCHDEV-001: Implementar Auth Service</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Estado:**</span> [A] Aprobada
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Aprobado por:**</span> ONAD el 2026-01-04T11:30:00
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="gs">**Notas de Aprobación:**</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="k">-</span><span class="w"> </span>✅ Alineado con arquitectura hexagonal
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="k">-</span><span class="w"> </span>✅ JWT preferido sobre sesiones por escalabilidad
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="k">-</span><span class="w"> </span>⚠️ Considerar rate limiting para endpoints de login
+</code></pre></div></p>
+<hr />
+<h3 id="estado-4-planificada-p">📋 Estado 4: Planificada <code>[P]</code><a class="headerlink" href="#estado-4-planificada-p" title="Permanent link">&para;</a></h3>
+<p><strong>Descripción:</strong> Tarea con plan de implementación detallado generado.</p>
+<p><strong>Características:</strong>
+- Plan paso a paso generado
+- Código de ejemplo incluido
+- Comandos exactos documentados
+- Tests especificados
+- Checklist de validación por sección</p>
+<p><strong>Artefacto generado:</strong> <code>{{artifacts.planes_folder}}/[ID-HU]_plan_implementacion.md</code></p>
+<p><strong>Responsable de avanzar:</strong> <code>ArchDev Pro</code> mediante <code>ejecutar-plan</code></p>
+<p><strong>Siguiente estado:</strong> <code>[E]</code> En Ejecución</p>
+<p><strong>Ejemplo en backlog:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="gu">### ARCHDEV-001: Implementar Auth Service</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Estado:**</span> [P] Planificada
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Plan:**</span> <span class="sb">`{{artifacts.planes_folder}}/ARCHDEV-001_plan_implementacion.md`</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Fecha planificación:**</span> 2026-01-04T12:00:00
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Secciones:**</span> 7
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Archivos a modificar:**</span> 8
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Tests a crear:**</span> 15
+</code></pre></div></p>
+<hr />
+<h3 id="estado-5-en-ejecucion-e">⚡ Estado 5: En Ejecución <code>[E]</code><a class="headerlink" href="#estado-5-en-ejecucion-e" title="Permanent link">&para;</a></h3>
+<p><strong>Descripción:</strong> ArchDev Pro está ejecutando activamente el plan de implementación.</p>
+<p><strong>Características:</strong>
+- Ejecución en progreso
+- Tracking de pasos completados
+- Progreso porcentual visible
+- Puede retomarse si se interrumpe</p>
+<p><strong>Artefacto generado:</strong> <code>{{ejecuciones_location}}/ejecucion_[ID-HU]_[timestamp]_EN_PROGRESO.json</code></p>
+<p><strong>Responsable:</strong> <code>ArchDev Pro</code> (continúa ejecución)</p>
+<p><strong>Siguiente estado:</strong> <code>[X]</code> Completada (éxito) o permanece <code>[E]</code> (en progreso)</p>
+<p><strong>Ejemplo en backlog:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="gu">### ARCHDEV-001: Implementar Auth Service</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Estado:**</span> [E] En Ejecución
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Inicio ejecución:**</span> 2026-01-04T14:00:00
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Progreso:**</span> 65% (27/42 pasos)
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Sección actual:**</span> 4/7 - Lógica de Aplicación
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Tracking:**</span> <span class="sb">`{{ejecuciones_location}}/ejecucion_ARCHDEV-001_20260104_140000_EN_PROGRESO.json`</span>
+</code></pre></div></p>
+<hr />
+<h3 id="estado-6-completada-x">🎉 Estado 6: Completada <code>[X]</code><a class="headerlink" href="#estado-6-completada-x" title="Permanent link">&para;</a></h3>
+<p><strong>Descripción:</strong> Tarea implementada, testeada y lista para deployment.</p>
+<p><strong>Características:</strong>
+- Código implementado según diseño
+- Tests unitarios y de integración pasando
+- Build exitoso
+- Commit realizado
+- Documentación actualizada</p>
+<p><strong>Artefacto generado:</strong> <code>{{ejecuciones_location}}/ejecucion_[ID-HU]_[timestamp]_COMPLETADA.json</code></p>
+<p><strong>Responsable:</strong> <code>ArchDev Pro</code> (al finalizar ejecución)</p>
+<p><strong>Estado final:</strong> No hay siguiente estado</p>
+<p><strong>Ejemplo en backlog:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="gu">### ARCHDEV-001: Implementar Auth Service</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Estado:**</span> [X] Completada
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Completado:**</span> 2026-01-04T16:45:00
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Duración:**</span> 2h 45min
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Commit:**</span> a3f5c21
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="gs">**Implementación:**</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>✅ JwtTokenProvider con generación RS256
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>✅ 15 tests unitarios + 5 integración
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>✅ Cobertura: 95%
+</code></pre></div></p>
+<hr />
+<h3 id="estado-7-bloqueada-b">🚫 Estado 7: Bloqueada <code>[B]</code><a class="headerlink" href="#estado-7-bloqueada-b" title="Permanent link">&para;</a></h3>
+<p><strong>Descripción:</strong> Tarea con dependencias no resueltas que impiden el avance.</p>
+<p><strong>Características:</strong>
+- Puede ocurrir desde cualquier estado
+- Motivo de bloqueo documentado
+- Acción requerida especificada
+- No puede avanzar hasta resolver</p>
+<p><strong>Tipos de bloqueo:</strong>
+- <code>DEPENDENCIA_HU</code> - Requiere otra HU completada
+- <code>DEPENDENCIA_EXTERNA</code> - Requiere sistema/API externa
+- <code>DECISION_PENDIENTE</code> - Requiere decisión arquitectónica
+- <code>RECURSO_NO_DISPONIBLE</code> - Falta infraestructura o acceso</p>
+<p><strong>¿Quién puede marcar una tarea como bloqueada?</strong></p>
+<blockquote>
+<p>✅ <strong>Cualquier rol activo</strong> puede marcar una tarea como <code>[B]</code> Bloqueada si detecta un impedimento que bloquea la ejecución de la tarea.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Rol</th>
+<th>Puede Bloquear</th>
+<th>Motivos Típicos</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>+ONAD</strong></td>
+<td>✅ Sí</td>
+<td>Decisión arquitectónica pendiente, dependencia técnica no resuelta</td>
+</tr>
+<tr>
+<td><strong>+ARCHDEV</strong></td>
+<td>✅ Sí</td>
+<td>Dependencia de código de otra HU, API externa no disponible</td>
+</tr>
+<tr>
+<td><strong>+DEVOPS</strong></td>
+<td>✅ Sí</td>
+<td>Infraestructura no disponible, acceso denegado</td>
+</tr>
+<tr>
+<td><strong>+REFINADOR</strong></td>
+<td>✅ Sí</td>
+<td>Requisitos ambiguos que requieren clarificación del PO</td>
+</tr>
+<tr>
+<td><strong>+ARTESANO</strong></td>
+<td>✅ Sí</td>
+<td>Cambios pendientes de otros commits</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Proceso para marcar como bloqueada:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>1. ROL detecta impedimento durante su trabajo
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>2. ROL documenta el bloqueo:
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>   - Motivo del bloqueo
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>   - Tipo de bloqueo (DEPENDENCIA_HU, DECISION_PENDIENTE, etc.)
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>   - Acción requerida para desbloquear
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>   - Estado previo al bloqueo
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>3. ROL actualiza estado a [B] en session_state.json
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>4. ROL notifica al usuario sobre el bloqueo
+</code></pre></div>
+<p><strong>Responsable de desbloquear:</strong> Quien pueda resolver la dependencia (puede ser el mismo rol u otro)</p>
+<p><strong>Siguiente estado:</strong> Estado anterior al bloqueo (una vez resuelto)</p>
+<p><strong>Ejemplo en backlog:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="gu">### ARCHDEV-003: Implementar Payment Integration</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Estado:**</span> [B] Bloqueada
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Estado previo:**</span> [R] Refinada
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Bloqueado por:**</span> +ARCHDEV
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Motivo:**</span> Dependencia de ARCHDEV-001 (Auth Service) no completada
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Tipo:**</span> DEPENDENCIA_HU
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Acción requerida:**</span> Completar ARCHDEV-001 primero
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Fecha bloqueo:**</span> 2026-01-04T10:30:00
+</code></pre></div></p>
+<hr />
+<h2 id="flujo-de-validacion-secuencial">Flujo de Validación Secuencial<a class="headerlink" href="#flujo-de-validacion-secuencial" title="Permanent link">&para;</a></h2>
+<h3 id="diagrama-de-flujo-principal">Diagrama de Flujo Principal<a class="headerlink" href="#diagrama-de-flujo-principal" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>┌─────────────┐
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>│  Pendiente  │  ← Tarea creada
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>│     [ ]     │
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>└──────┬──────┘
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>       │ refinar_hu (REFINADOR)
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>       ▼
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>┌─────────────┐
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>│  Refinada   │  ← Criterios claros, estimación precisa
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>│     [R]     │
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>└──────┬──────┘
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>       │ validar_hu (ONAD)
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>       ▼
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>┌─────────────┐
+<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>│  Aprobada   │  ← Validación arquitectónica
+<a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a>│     [A]     │
+<a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a>└──────┬──────┘
+<a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a>       │ planificar-hu (ONAD)
+<a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a>       ▼
+<a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a>┌─────────────┐
+<a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a>│ Planificada │  ← Plan de implementación generado
+<a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a>│     [P]     │
+<a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a>└──────┬──────┘
+<a id="__codelineno-8-23" name="__codelineno-8-23" href="#__codelineno-8-23"></a>       │ ejecutar-plan (ARCHDEV)
+<a id="__codelineno-8-24" name="__codelineno-8-24" href="#__codelineno-8-24"></a>       ▼
+<a id="__codelineno-8-25" name="__codelineno-8-25" href="#__codelineno-8-25"></a>┌─────────────┐
+<a id="__codelineno-8-26" name="__codelineno-8-26" href="#__codelineno-8-26"></a>│ En Ejecución│  ← Implementación en progreso
+<a id="__codelineno-8-27" name="__codelineno-8-27" href="#__codelineno-8-27"></a>│     [E]     │
+<a id="__codelineno-8-28" name="__codelineno-8-28" href="#__codelineno-8-28"></a>└──────┬──────┘
+<a id="__codelineno-8-29" name="__codelineno-8-29" href="#__codelineno-8-29"></a>       │ (finaliza ejecución)
+<a id="__codelineno-8-30" name="__codelineno-8-30" href="#__codelineno-8-30"></a>       ▼
+<a id="__codelineno-8-31" name="__codelineno-8-31" href="#__codelineno-8-31"></a>┌─────────────┐
+<a id="__codelineno-8-32" name="__codelineno-8-32" href="#__codelineno-8-32"></a>│ Completada  │  ← Código implementado y testeado
+<a id="__codelineno-8-33" name="__codelineno-8-33" href="#__codelineno-8-33"></a>│     [X]     │
+<a id="__codelineno-8-34" name="__codelineno-8-34" href="#__codelineno-8-34"></a>└─────────────┘
+<a id="__codelineno-8-35" name="__codelineno-8-35" href="#__codelineno-8-35"></a>
+<a id="__codelineno-8-36" name="__codelineno-8-36" href="#__codelineno-8-36"></a>        ┌─────────────┐
+<a id="__codelineno-8-37" name="__codelineno-8-37" href="#__codelineno-8-37"></a>        │  Bloqueada  │  ← Puede ocurrir desde cualquier estado
+<a id="__codelineno-8-38" name="__codelineno-8-38" href="#__codelineno-8-38"></a>        │     [B]     │
+<a id="__codelineno-8-39" name="__codelineno-8-39" href="#__codelineno-8-39"></a>        └─────────────┘
+</code></pre></div>
+<h3 id="flujo-con-bloqueos">Flujo con Bloqueos<a class="headerlink" href="#flujo-con-bloqueos" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>[ ] ──→ [R] ──→ [A] ──→ [P] ──→ [E] ──→ [X]
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a> ↓       ↓       ↓       ↓       ↓
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a> └───────┴───────┴───────┴───────┘
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>                 ↓
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>              [B] Bloqueada
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>                 ↓
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>         (resolver bloqueo)
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>                 ↓
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>         (vuelve al estado anterior)
+</code></pre></div>
+<hr />
+<h3 id="reglas-estrictas">Reglas Estrictas<a class="headerlink" href="#reglas-estrictas" title="Permanent link">&para;</a></h3>
+<h4 id="prohibido-saltar-estados">❌ Prohibido Saltar Estados<a class="headerlink" href="#prohibido-saltar-estados" title="Permanent link">&para;</a></h4>
+<p><strong>No se puede:</strong>
+- <code>[ ]</code> → <code>[X]</code> (de Pendiente directamente a Completada)
+- <code>[ ]</code> → <code>[A]</code> (de Pendiente directamente a Aprobada)
+- <code>[R]</code> → <code>[X]</code> (de Refinada directamente a Completada)
+- <code>[R]</code> → <code>[P]</code> (de Refinada directamente a Planificada)
+- <code>[A]</code> → <code>[E]</code> (de Aprobada directamente a En Ejecución)</p>
+<p><strong>Siempre debe ser secuencial:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>[ ] → [R] → [A] → [P] → [E] → [X]
+</code></pre></div></p>
+<hr />
+<h4 id="solo-roles-y-herramientas-autorizadas">🔒 Solo Roles y Herramientas Autorizadas<a class="headerlink" href="#solo-roles-y-herramientas-autorizadas" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Transición</th>
+<th>Rol</th>
+<th>Herramienta</th>
+<th>Comando</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>[ ]</code> → <code>[R]</code></td>
+<td>Refinador HU</td>
+<td><code>refinar_hu</code></td>
+<td><code>refinar_hu [ID-HU]</code></td>
+</tr>
+<tr>
+<td><code>[R]</code> → <code>[A]</code></td>
+<td>Arquitecto Onad</td>
+<td><code>validar_hu</code></td>
+<td><code>validar-hu [ID-HU]</code></td>
+</tr>
+<tr>
+<td><code>[A]</code> → <code>[P]</code></td>
+<td>Arquitecto Onad</td>
+<td><code>planificar_hu</code></td>
+<td><code>planificar-hu [ID-HU]</code></td>
+</tr>
+<tr>
+<td><code>[P]</code> → <code>[E]</code></td>
+<td>ArchDev Pro</td>
+<td><code>ejecutar_plan</code></td>
+<td><code>ejecutar-plan [ID-HU]</code></td>
+</tr>
+<tr>
+<td>"secciones": 7,</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>"archivos_a_modificar": 8,</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>"tests_a_crear": 15,</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>"completado": true</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>},</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>"ejecucion": null,</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>"bloqueado": false,</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>"dependencias": []</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>}</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>]</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>}</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>---
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>## Roles y Responsabilidades
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>### 👥 Refinador HU
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>**Transición:** `[ ]` → `[R]`
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>**Herramienta:** `refinar_hu`
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>**Proceso:**
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>1. Lee tarea en estado `[ ]` del backlog
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>2. Ejecuta `refinar_hu [ID-HU]`
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a>3. Define criterios de aceptación SMART
+<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a>4. Identifica dependencias técnicas
+<a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a>5. Estima esfuerzo con precisión
+<a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a>6. Genera artefacto de refinamiento
+<a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a>7. Actualiza backlog y session_state a `[R]`
+<a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a>
+<a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a>---
+<a id="__codelineno-11-20" name="__codelineno-11-20" href="#__codelineno-11-20"></a>
+<a id="__codelineno-11-21" name="__codelineno-11-21" href="#__codelineno-11-21"></a>### 🏛️ Arquitecto Onad
+<a id="__codelineno-11-22" name="__codelineno-11-22" href="#__codelineno-11-22"></a>
+<a id="__codelineno-11-23" name="__codelineno-11-23" href="#__codelineno-11-23"></a>**Transiciones:** `[R]` → `[A]` y `[A]` → `[P]`
+<a id="__codelineno-11-24" name="__codelineno-11-24" href="#__codelineno-11-24"></a>**Herramientas:** `validar_hu`, `planificar_hu`
+<a id="__codelineno-11-25" name="__codelineno-11-25" href="#__codelineno-11-25"></a>
+<a id="__codelineno-11-26" name="__codelineno-11-26" href="#__codelineno-11-26"></a>**Proceso de validación:**
+<a id="__codelineno-11-27" name="__codelineno-11-27" href="#__codelineno-11-27"></a>1. Lee tarea en estado `[R]`
+<a id="__codelineno-11-28" name="__codelineno-11-28" href="#__codelineno-11-28"></a>2. Ejecuta `validar-hu [ID-HU]`
+<a id="__codelineno-11-29" name="__codelineno-11-29" href="#__codelineno-11-29"></a>3. Valida alineación arquitectónica
+<a id="__codelineno-11-30" name="__codelineno-11-30" href="#__codelineno-11-30"></a>4. Actualiza a `[A]`
+<a id="__codelineno-11-31" name="__codelineno-11-31" href="#__codelineno-11-31"></a>
+<a id="__codelineno-11-32" name="__codelineno-11-32" href="#__codelineno-11-32"></a>**Proceso de planificación:**
+<a id="__codelineno-11-33" name="__codelineno-11-33" href="#__codelineno-11-33"></a>1. Lee tarea en estado `[A]`
+<a id="__codelineno-11-34" name="__codelineno-11-34" href="#__codelineno-11-34"></a>2. Ejecuta `planificar-hu [ID-HU]`
+<a id="__codelineno-11-35" name="__codelineno-11-35" href="#__codelineno-11-35"></a>3. Genera plan de implementación detallado
+<a id="__codelineno-11-36" name="__codelineno-11-36" href="#__codelineno-11-36"></a>4. Actualiza a `[P]`
+<a id="__codelineno-11-37" name="__codelineno-11-37" href="#__codelineno-11-37"></a>
+<a id="__codelineno-11-38" name="__codelineno-11-38" href="#__codelineno-11-38"></a>---
+<a id="__codelineno-11-39" name="__codelineno-11-39" href="#__codelineno-11-39"></a>
+<a id="__codelineno-11-40" name="__codelineno-11-40" href="#__codelineno-11-40"></a>### 💻 ArchDev Pro
+<a id="__codelineno-11-41" name="__codelineno-11-41" href="#__codelineno-11-41"></a>
+<a id="__codelineno-11-42" name="__codelineno-11-42" href="#__codelineno-11-42"></a>**Transiciones:** `[P]` → `[E]` → `[X]`
+<a id="__codelineno-11-43" name="__codelineno-11-43" href="#__codelineno-11-43"></a>**Herramienta:** `ejecutar_plan`
+<a id="__codelineno-11-44" name="__codelineno-11-44" href="#__codelineno-11-44"></a>
+<a id="__codelineno-11-45" name="__codelineno-11-45" href="#__codelineno-11-45"></a>**Proceso:**
+<a id="__codelineno-11-46" name="__codelineno-11-46" href="#__codelineno-11-46"></a>1. Lee tarea en estado `[P]`
+<a id="__codelineno-11-47" name="__codelineno-11-47" href="#__codelineno-11-47"></a>2. Ejecuta `ejecutar-plan [ID-HU]`
+<a id="__codelineno-11-48" name="__codelineno-11-48" href="#__codelineno-11-48"></a>3. Estado cambia a `[E]` al iniciar
+<a id="__codelineno-11-49" name="__codelineno-11-49" href="#__codelineno-11-49"></a>4. Implementa código según plan
+<a id="__codelineno-11-50" name="__codelineno-11-50" href="#__codelineno-11-50"></a>5. Estado cambia a `[X]` al completar
+<a id="__codelineno-11-51" name="__codelineno-11-51" href="#__codelineno-11-51"></a>
+<a id="__codelineno-11-52" name="__codelineno-11-52" href="#__codelineno-11-52"></a>---
+<a id="__codelineno-11-53" name="__codelineno-11-53" href="#__codelineno-11-53"></a>
+<a id="__codelineno-11-54" name="__codelineno-11-54" href="#__codelineno-11-54"></a>## 📊 Métricas y Visibilidad
+<a id="__codelineno-11-55" name="__codelineno-11-55" href="#__codelineno-11-55"></a>
+<a id="__codelineno-11-56" name="__codelineno-11-56" href="#__codelineno-11-56"></a>### Ver Estado del Backlog
+<a id="__codelineno-11-57" name="__codelineno-11-57" href="#__codelineno-11-57"></a>
+<a id="__codelineno-11-58" name="__codelineno-11-58" href="#__codelineno-11-58"></a>```bash
+<a id="__codelineno-11-59" name="__codelineno-11-59" href="#__codelineno-11-59"></a>/cochas status
+<a id="__codelineno-11-60" name="__codelineno-11-60" href="#__codelineno-11-60"></a>
+<a id="__codelineno-11-61" name="__codelineno-11-61" href="#__codelineno-11-61"></a># Salida incluye:
+<a id="__codelineno-11-62" name="__codelineno-11-62" href="#__codelineno-11-62"></a>📋 **Tablero de Tareas:**
+<a id="__codelineno-11-63" name="__codelineno-11-63" href="#__codelineno-11-63"></a>- [ ] Pendientes: 2
+<a id="__codelineno-11-64" name="__codelineno-11-64" href="#__codelineno-11-64"></a>- [R] Refinadas: 1
+<a id="__codelineno-11-65" name="__codelineno-11-65" href="#__codelineno-11-65"></a>- [A] Aprobadas: 1
+<a id="__codelineno-11-66" name="__codelineno-11-66" href="#__codelineno-11-66"></a>- [P] Planificadas: 2
+<a id="__codelineno-11-67" name="__codelineno-11-67" href="#__codelineno-11-67"></a>- [E] En Ejecución: 1
+<a id="__codelineno-11-68" name="__codelineno-11-68" href="#__codelineno-11-68"></a>- [X] Completadas: 5
+<a id="__codelineno-11-69" name="__codelineno-11-69" href="#__codelineno-11-69"></a>- [B] Bloqueadas: 1
+</code></pre></div></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="resumen-rapido">🎯 Resumen Rápido<a class="headerlink" href="#resumen-rapido" title="Permanent link">&para;</a></h2>
+<p><strong>Flujo secuencial obligatorio (7 estados):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>[ ] Pendiente
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>  ↓ refinar_hu (REFINADOR)
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>[R] Refinada
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>  ↓ validar_hu (ONAD)
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>[A] Aprobada
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>  ↓ planificar-hu (ONAD)
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>[P] Planificada
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>  ↓ ejecutar-plan (ARCHDEV)
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>[E] En Ejecución
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>  ↓ (finaliza)
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>[X] Completada
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>
+<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>[B] Bloqueada (puede ocurrir en cualquier momento)
+</code></pre></div></p>
+<p><strong>Archivos centrales:</strong>
+- Workspace: <code>{{archivos.workspace}}</code>
+- Backlog: <code>{{archivos.backlog}}</code>
+- Contextos: <code>{{artifacts.contextos_folder}}/</code>
+- Refinamientos: <code>{{artifacts.hu_refinamientos}}/</code>
+- Planes: <code>{{artifacts.planes_folder}}/</code>
+- Ejecuciones: <code>{{artifacts.ejecuciones}}/</code></p>
+<p><strong>Comando útil:</strong> <code>/cochas status</code> para ver progreso general</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
