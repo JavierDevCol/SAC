@@ -9,12 +9,12 @@
 
 | Componente | Versión Actual | Última Actualización |
 |------------|----------------|----------------------|
-| **Sistema SAC** | 7.16.0 | 2026-04-28 |
-| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.16.0 | 2026-04-28 |
+| **Sistema SAC** | 7.17.0 | 2026-04-28 |
+| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.17.0 | 2026-04-28 |
 | **Configuración Usuario** (`config/CONFIG_USER.template.yaml`) | 7.9.0 | 2026-04-24 |
-| **Roles SAC** (`agentes/*.rol.md`) | 7.15.0 | 2026-04-28 |
-| **Herramientas** (`herramientas/*.tool.yaml`) | 7.15.0 | 2026-04-28 |
-| **Plantillas** (`plantillas/`) | 7.12.0 | 2026-04-25 |
+| **Roles SAC** (`agentes/*.rol.md`) | 7.17.0 | 2026-04-28 |
+| **Herramientas** (`herramientas/*.tool.yaml`) | 7.17.0 | 2026-04-28 |
+| **Plantillas** (`plantillas/`) | 7.16.1 | 2026-04-28 |
 | **Guía de Comandos** (`guias/guia_comandos.md`) | 7.15.0 | 2026-04-28 |
 | **Guía de Roles** (`guias/guia_roles_activos.md`) | 3.0 | 2026-01-05 |
 | **Guía Ciclo de Vida** (`guias/guia_ciclo_vida_tareas.md`) | 7.15.0 | 2026-04-28 |
@@ -22,6 +22,61 @@
 ---
 
 ## 🚀 Historial de Versiones
+
+### [7.17.0] - 2026-04-28
+
+#### 📦 Feat: Resumen de backlog en inicialización del Analista y flag `--resumen` en `>sincronizar_backlog`
+
+**Objetivo:** Dar visibilidad inmediata del estado del backlog al usuario cuando inicia conversación con el Analista de Requisitos, y ofrecer un comando ligero para consultar el estado sin ejecutar la sincronización completa.
+
+#### ✅ Cambios en Roles
+
+| Cambio | Detalle |
+|--------|---------|
+| `refinador_hu.rol.md` | Nuevo Paso 2 "Mostrar Estado del Backlog" en Inicialización: lee Resumen de Estados e Índice Rápido, muestra bloque compacto con contadores y próxima acción sugerida (prioridad: Bloqueadas → Pendientes → Refinadas → Aprobadas → Completadas) |
+| `refinador_hu.rol.md` | Paso "Detectar Tipo de Solicitud" renumerado de Paso 2 a Paso 3 |
+
+#### ✅ Cambios en Herramientas
+
+| Cambio | Detalle |
+|--------|---------|
+| `sincronizar_backlog.tool.yaml` | Nuevo parámetro `--resumen` (alias `--status`): lectura rápida del backlog sin escanear artefactos en disco |
+| `sincronizar_backlog.tool.yaml` | Nuevo paso "Atajo Resumen Rápido" con condición `resumen=true`: extrae contadores, índice rápido y próxima acción sugerida, luego termina sin continuar el flujo de sincronización |
+| `sincronizar_backlog.tool.yaml` | Nuevo alias `>resumen_backlog` agregado al comando |
+
+#### ✅ Cambios en Configuración
+
+| Cambio | Detalle |
+|--------|---------|
+| `CONFIG_SYSTEM.yaml` | version 7.16.1 → 7.17.0 |
+
+---
+
+### [7.16.1] - 2026-04-28
+
+#### 🐛 Fix: Contexto mínimo en HUs tipo Bug creadas desde `>registrar_bug`
+
+**Objetivo:** Al crear una nueva HU tipo Bug en el backlog (flujo [N]), se transferían solo título, tipo y Ref_Bug — sin origen, descripción ni dependencias. Esto dejaba la HU sin contexto útil, obligando a cargar el archivo BUG por separado.
+
+#### ✅ Cambios en Herramientas
+
+| Cambio | Detalle |
+|--------|---------|
+| `registrar_bug.tool.yaml` | Paso "Crear nueva HU tipo Bug" ahora incluye campos: Origen, Descripción (1-2 líneas técnicas) y Dependencias |
+
+#### ✅ Cambios en Plantillas
+
+| Cambio | Detalle |
+|--------|---------|
+| `backlog_desarrollo_plantilla.md` | Comentario HTML indicando usar descripción técnica breve (no user story) cuando Tipo=Bug, con referencia al archivo Ref_Bug como fuente de verdad |
+
+#### ✅ Cambios en Configuración
+
+| Cambio | Detalle |
+|--------|---------|
+| `CONFIG_SYSTEM.yaml` | version 7.16.0 → 7.16.1 |
+
+---
 
 ### [7.16.0] - 2026-04-28
 

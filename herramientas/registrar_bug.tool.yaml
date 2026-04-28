@@ -132,8 +132,9 @@ proceso:
       - "SI [N] Crear nueva HU tipo Bug:"
       - "  1. Agregar nueva entrada en {{archivos.backlog}} con formato:"
       - "     ### HU-[siguiente_ID]: ðŸ› [TÃ­tulo del bug]"
-      - "     Con campos: Tipo=Bug, Prioridad segÃºn severidad, Ref_Bug=BUG-NNN"
-      - "  2. Estado del bug: 'ðŸ”— Vinculado a HU' con la nueva HU creada"
+      - "     Con campos: Tipo=Bug, Prioridad segÃºn severidad, Ref_Bug=BUG-NNN"      - "     Origen: [HU/contexto donde se detectÃ³]"
+      - "     DescripciÃ³n: [1-2 lÃ­neas: quÃ© falla y dÃ³nde. Detalle completo en Ref_Bug.]"
+      - "     Dependencias: [HU de origen si aplica]"      - "  2. Estado del bug: 'ðŸ”— Vinculado a HU' con la nueva HU creada"
 
   - paso: "Documentar CorrecciÃ³n"
     obligatorio: false

@@ -1,7 +1,7 @@
 ﻿# Herramienta: Sincronizar Backlog
 nombre: "Sincronizar Backlog"
 comando: ">sincronizar_backlog"
-alias: [">sync_backlog", ">sync"]
+alias: [">sync_backlog", ">sync", ">resumen_backlog"]
 version: "1.0"
 
 mandatory:
@@ -34,6 +34,10 @@ parametros:
     - nombre: dry_run
       tipo: flag
       descripcion: "Solo mostrar reporte sin aplicar cambios"
+    - nombre: resumen
+      tipo: flag
+      alias: ["--status"]
+      descripcion: "Mostrar solo el resumen de estados del backlog sin escanear artefactos ni aplicar correcciones. Lectura rápida y ligera."
 
 # ============================================
 # LÃ“GICA DE DEDUCCIÃ“N DE ESTADOS
@@ -97,11 +101,36 @@ proceso:
   - paso: "InicializaciÃ³n de ParÃ¡metros"
     obligatorio: true
     acciones:
-      - "Establecer valores por defecto: id_hu=null, proyecto=null, auto=false, dry_run=false"
-      - "Mostrar resumen compacto de configuraciÃ³n activa:"
-      - "  âš™ï¸ ConfiguraciÃ³n: hu=[todas] | proyecto=[todos] | auto=[no] | dry_run=[no]"
+      - "Establecer valores por defecto: id_hu=null, proyecto=null, auto=false, dry_run=false, resumen=false"
+      - "Mostrar resumen compacto de configuración activa:"
+      - "  ⚙️ Configuración: hu=[todas] | proyecto=[todos] | auto=[no] | dry_run=[no] | resumen=[no]"
       - "  Personaliza con: >sincronizar_backlog --id_hu HU-001 --dry_run"
-    nota: "Garantiza evaluaciÃ³n correcta de condiciones y visibilidad de la configuraciÃ³n activa"
+    nota: "Garantiza evaluación correcta de condiciones y visibilidad de la configuración activa"
+
+  - paso: "Atajo Resumen Rápido"
+    obligatorio: true
+    condicion: "resumen=true"
+    acciones:
+      - "Leer {{archivos.backlog}}"
+      - "Extraer sección '## 📊 Resumen de Estados'"
+      - "Extraer sección '## 📇 Índice Rápido'"
+      - "SI parámetro proyecto → Extraer también 'Resumen por Proyecto' filtrado"
+      - "Mostrar al usuario:"
+      - ""
+      - "  📊 Resumen del Backlog"
+      - "  ━━━━━━━━━━━━━━━━━━━━"
+      - "  [ ] Pendientes: N | [R] Refinadas: N | [A] Aprobadas: N"
+      - "  [P] Planificadas: N | [E] En Ejecución: N | [X] Completadas: N | [B] Bloqueadas: N"
+      - "  Total: N HUs"
+      - ""
+      - "  📇 Índice Rápido:"
+      - "  | ID | Título | Estado | Prioridad | Tipo |"
+      - "  [tabla existente del backlog]"
+      - ""
+      - "  ⚡ Próxima acción sugerida: [según prioridad de estados]"
+      - ""
+      - "TERMINAR aquí. No continuar con los pasos siguientes."
+    nota: "Lectura ligera sin escaneo de artefactos. Ideal para consulta rápida del estado."
 
   - paso: "Cargar Backlog"
     obligatorio: true
