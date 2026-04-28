@@ -2,7 +2,7 @@
 nombre: "Ejecutar Plan de Implementación"
 comando: ">ejecutar_plan"
 alias: [">ejecutar", ">implementar"]
-version: "4.3"
+version: "5.0"
 
 mandatory:
   - instruccion: "Ejecutar tareas del plan en ORDEN ESTRICTO"
@@ -11,6 +11,8 @@ mandatory:
   - instruccion: "NO improvisar ni saltar tareas del plan"
   - instruccion: "ACTUALIZAR plan EN TIEMPO REAL: [ ]  [X], estados de tareas"
   - instruccion: "Estados de tareas: [PENDIENTE]  [EN_PROGRESO]  [EJECUTADA]"
+  - instruccion: "En HUs particionadas, respetar dependencias entre tasks funcionales antes de ejecutar"
+  - instruccion: "Validar campo Modo del plan (Plano|Particionada) para determinar estrategia de ejecución"
 
 reglas_arquitectonicas_requeridas:
   descripcion: "Si hay reglas arquitectónicas cargadas, aplicar:"
@@ -47,8 +49,18 @@ parametros:
       defecto: null
     - nombre: modo_ejecucion
       tipo: string
-      valores: [completo, fase_por_fase, tarea_por_tarea]
+      valores: [completo, fase_por_fase, tarea_por_tarea, task_por_task, task_especifica]
       defecto: fase_por_fase
+      descripcion: |
+        - completo: ejecuta todo sin pausas (HU plana: fases; HU particionada: T1→T2→T3)
+        - fase_por_fase: pausa entre fases (solo HU plana; en particionada degrada a task_por_task)
+        - tarea_por_tarea: pausa en cada tarea técnica (aplica en ambos modos)
+        - task_por_task: pausa entre tasks funcionales (solo HU particionada; en plana degrada a fase_por_fase)
+        - task_especifica: ejecuta solo la task indicada en task_id (solo HU particionada)
+    - nombre: task_id
+      tipo: string
+      descripcion: "ID de task funcional a ejecutar (ej: HU-012-T1). Solo aplica con modo_ejecucion=task_especifica. Si no se especifica, lista tasks disponibles."
+      defecto: null
     - nombre: auto_commit
       tipo: boolean
       defecto: false
@@ -57,15 +69,19 @@ proceso:
   - paso: "Inicialización de Parámetros"
     obligatorio: true
     acciones:
-      - "Establecer valores por defecto para parámetros opcionales no especificados: modo_ejecucion='fase_por_fase', auto_commit=false"
+      - "Establecer valores por defecto para parámetros opcionales no especificados: modo_ejecucion='fase_por_fase', auto_commit=false, task_id=null"
       - "Mostrar resumen compacto de configuración activa:"
-      - "  ⚙️ Configuración: modo_ejecucion=[valor] | auto_commit=[valor]"
-      - "  Personaliza con: >ejecutar_plan [ID-HU] --modo_ejecucion completo --auto_commit true"
+      - "  ⚙️ Configuración: modo_ejecucion=[valor] | auto_commit=[valor] | task_id=[valor]"
+      - "  Personaliza con: >ejecutar_plan [ID-HU] --modo_ejecucion task_especifica --task_id HU-XXX-T1"
     nota: "Garantiza evaluación correcta de condiciones y visibilidad de la configuración activa"
     validaciones_combinacion:
       - si: "modo_ejecucion=completo AND auto_commit=true"
         accion: "⛔ Combinación prohibida. Usar fase_por_fase con auto_commit, o completo sin auto_commit"
         razon: "Ejecutar todo sin pausas Y con commit automático elimina toda supervisión humana"
+      - si: "task_id != null AND modo_ejecucion != task_especifica"
+        accion: "⚠️ Parámetro task_id ignorado. Solo aplica con --modo_ejecucion task_especifica"
+      - si: "modo_ejecucion=task_especifica AND task_id = null"
+        accion: "Listar tasks disponibles con estado de ejecutabilidad (ver paso Resolver Modo)"
 
   - paso: "Cargar Plan de Implementación"
     obligatorio: true
@@ -84,6 +100,42 @@ proceso:
       no_encontrado: " Plan no encontrado. Ejecutar >planificar_hu primero"
       estado_invalido: " HU debe estar en estado [P] Planificada"
 
+  - paso: "Resolver Modo de Ejecución"
+    obligatorio: true
+    acciones:
+      - "Extraer campo 'Modo' de Metadata del plan: [Plano | Particionada]"
+      - "SI Modo = 'Plano' (HU sin tasks):"
+      - "  - modo_ejecucion IN [completo, fase_por_fase, tarea_por_tarea] → ✅ Comportamiento estándar sin cambios"
+      - "  - modo_ejecucion = task_por_task → ⚠️ Degradar a fase_por_fase con aviso:"
+      - "    'ℹ️ HU-XXX no está particionada en tasks. Ejecutando en modo fase_por_fase.'"
+      - "  - modo_ejecucion = task_especifica → ⛔ Error:"
+      - "    '⛔ HU-XXX no tiene tasks funcionales. Usa --modo_ejecucion completo|fase_por_fase|tarea_por_tarea.'"
+      - "SI Modo = 'Particionada' (HU con tasks):"
+      - "  - modo_ejecucion = completo → ✅ Ejecutar tasks secuencialmente (T1→T2→T3) sin pausas entre tasks"
+      - "  - modo_ejecucion = task_por_task → ✅ Ejecutar tasks con pausa de confirmación entre cada task"
+      - "  - modo_ejecucion = tarea_por_tarea → ✅ Pausa en cada tarea técnica (cross-task, granularidad máxima)"
+      - "  - modo_ejecucion = fase_por_fase → ⚠️ Degradar a task_por_task con aviso:"
+      - "    'ℹ️ HU-XXX está particionada. Ejecutando en modo task_por_task (pausa entre tasks).'"
+      - "  - modo_ejecucion = task_especifica:"
+      - "    SI task_id proporcionado:"
+      - "      1. Verificar que task_id existe en tabla 'Dependencias entre Tasks'"
+      - "      2. Verificar que TODAS las tasks de las que depende estén en [EJECUTADA]"
+      - "      3. SI dependencias no satisfechas → ⛔ Error:"
+      - "         '⛔ No se puede ejecutar [task_id]. Dependencias no satisfechas:'"
+      - "         '  → [dep_task] está en [estado]. Ejecutar primero:'"
+      - "         '  >ejecutar_plan [ID-HU] --modo_ejecucion task_especifica --task_id [dep_task]'"
+      - "      4. SI dependencias satisfechas → Ejecutar SOLO las tareas técnicas de esa task"
+      - "    SI task_id NO proporcionado:"
+      - "      1. Leer tabla 'Dependencias entre Tasks' del plan"
+      - "      2. Evaluar ejecutabilidad de cada task (dependencias satisfechas?)"
+      - "      3. Mostrar resumen:"
+      - "         '📋 Tasks de HU-XXX:'"
+      - "         '| Task | Descripción | Estado | Ejecutable? |'"
+      - "         '| HU-XXX-T1 | [desc] | [estado] | ✅/⛔ (requiere T[N]) |'"
+      - "      4. Preguntar: '¿Qué task deseas ejecutar?'"
+      - "      5. ESPERAR respuesta del usuario"
+    nota: "La degradación con aviso educa al usuario sin bloquearlo. Los modos viejos NUNCA rompen."
+
   - paso: "Validar Entorno de Ejecución"
     obligatorio: true
     acciones:
@@ -96,9 +148,11 @@ proceso:
       entorno_invalido: "⛔ Entorno no preparado. Detallar requisitos faltantes antes de continuar"
       sin_framework_tests: "⚠️ No se detectó framework de tests. Confirmar con usuario antes de continuar"
 
-  - paso: "Ejecutar Fases Secuencialmente"
+  - paso: "Ejecutar Plan según Modo Resuelto"
     obligatorio: true
-    acciones:
+    descripcion: "Estrategia de iteración adaptada al Modo del plan (Plano o Particionada)"
+    acciones_modo_plano:
+      - "(Comportamiento actual sin cambios para HUs sin tasks)"
       - "Para cada fase del plan:"
       - "  1. Anunciar inicio de fase"
       - "  2. Para cada tarea de la fase:"
@@ -108,13 +162,37 @@ proceso:
       - "     d. Al completar TODOS los pasos de la tarea: EDITAR ARCHIVO del plan cambiando [EN_PROGRESO] → [EJECUTADA]"
       - "     e. EDITAR ARCHIVO del plan: agregar fila en tabla 'Historial de Ejecución' con fecha, tarea y resultado"
       - "     f. Actualizar fila de la fase en tabla 'Progreso General': incrementar progreso [X/Y]"
+    acciones_modo_particionada:
+      - "(Iteración por tasks funcionales → fases internas → tareas técnicas)"
+      - "Determinar scope de ejecución según modo resuelto:"
+      - "  - completo/task_por_task → tasks_a_ejecutar = TODAS las tasks en orden"
+      - "  - task_especifica → tasks_a_ejecutar = [task_id]"
+      - "Para cada task funcional en tasks_a_ejecutar:"
+      - "  1. Anunciar inicio de task: '═══ Task [ID-HU]-T[N]: [Título] ═══'"
+      - "  2. SI task tiene dependencias → Verificar TODAS en estado [EJECUTADA]"
+      - "  3. Para cada fase interna de la task:"
+      - "     3.1. Anunciar fase: '### Fase [M]: [Nombre]'"
+      - "     3.2. Para cada tarea técnica de la fase:"
+      - "        a. EDITAR ARCHIVO del plan: cambiar [PENDIENTE] → [EN_PROGRESO] en la línea de la tarea"
+      - "        b. Ejecutar los pasos de la tarea (crear/modificar código)"
+      - "        c. Por cada paso completado: EDITAR ARCHIVO del plan cambiando '- [ ]' → '- [X]' en ese paso específico"
+      - "        d. Al completar TODOS los pasos: EDITAR ARCHIVO del plan cambiando [EN_PROGRESO] → [EJECUTADA]"
+      - "        e. EDITAR ARCHIVO del plan: agregar fila en 'Historial de Ejecución' con fecha, task, tarea y resultado"
+      - "        f. Actualizar progreso de la task en tabla 'Progreso General'"
+      - "  4. Validar CAs granulares de la task: marcar [ ] → [X] en sección 'Validar CAs de T[N]'"
+      - "  5. EDITAR ARCHIVO del plan: cambiar estado de la task en tabla Progreso General"
+      - "  6. SI modo_ejecucion = task_por_task → Pausa de confirmación:"
+      - "     '✅ Task [ID-HU]-T[N] completada. [M] tareas ejecutadas.'"
+      - "     '📝 ¿Commit? (>generar_commit) | ▶️ ¿Continuar con T[N+1]?'"
+      - "  7. SI modo_ejecucion = task_especifica → Finalizar tras completar la task"
     critico: "Los pasos c, d, e y f son BLOQUEANTES — NO avanzar a la siguiente tarea sin haber EDITADO el archivo del plan. Si el archivo no refleja el estado actual, la ejecución es inválida."
     reanudacion:
       descripcion: "Si el plan tiene tareas [EJECUTADA], saltar a la primera tarea [PENDIENTE]"
       acciones:
         - "Verificar que los archivos generados por tareas [EJECUTADA] existen en el filesystem"
         - "Si algún archivo falta, marcar la tarea como [PENDIENTE] y re-ejecutarla"
-        - "Informar al usuario: 'Reanudando desde tarea T[N] — [X] tareas ya completadas'"
+        - "SI Modo = Particionada: identificar la task funcional activa (primera con tareas [PENDIENTE])"
+        - "Informar al usuario: 'Reanudando desde tarea T[N] (Task [ID-HU]-T[M]) — [X] tareas ya completadas'"
     max_reintentos_por_tarea: 2
     si_max_reintentos:
       accion: "DETENER. La tarea T[N] falló [max_reintentos] veces consecutivas"
@@ -139,7 +217,15 @@ proceso:
 
   - paso: "Validar Criterios de Aceptación"
     obligatorio: true
-    acciones: ["Para cada criterio de aceptación: 1. Verificar cumplimiento", "2. Marcar [ ]  [X] en plan Y en HU original"]
+    acciones:
+      - "SI Modo = Plano: Para cada CA del plan → Verificar cumplimiento → Marcar [ ] → [X] en plan Y en HU"
+      - "SI Modo = Particionada Y modo_ejecucion = task_especifica:"
+      - "  Solo validar CAs granulares de la task ejecutada (ya validados en paso anterior)"
+      - "  NO validar CAs de integración (padre) hasta que TODAS las tasks estén [EJECUTADA]"
+      - "SI Modo = Particionada Y modo_ejecucion IN [completo, task_por_task]:"
+      - "  1. CAs granulares ya validados por task en paso anterior"
+      - "  2. Validar CAs de integración (padre) en 'Fase Final: Validar CAs de Integración'"
+      - "  3. Marcar [ ] → [X] en plan Y en HU original"
     si_error:
       criterio_no_cumplido: " DETENER. Criterio [X] no cumplido"
 
@@ -153,6 +239,12 @@ proceso:
     acciones:
       - "VERIFICAR: Leer archivo del plan y confirmar que TODAS las tareas están en [EJECUTADA] y TODOS los pasos en [X]"
       - "SI hay discrepancias: EDITAR ARCHIVO del plan para corregir estados pendientes ANTES de continuar"
+      - "SI Modo = Particionada Y modo_ejecucion = task_especifica:"
+      - "  - Verificar si TODAS las tasks del plan están [EJECUTADA]"
+      - "  - SI quedan tasks pendientes → NO completar la HU. Mostrar:"
+      - "    '✅ Task [task_id] completada. HU aún en progreso — [N] tasks pendientes.'"
+      - "    '▶️ Siguiente: >ejecutar_plan [ID-HU] --modo_ejecucion task_especifica --task_id [siguiente_task]'"
+      - "  - SI todas las tasks completadas → Continuar con finalización completa"
       - "EDITAR ARCHIVO del plan: cambiar campo Estado en tabla Metadata → 'COMPLETADO'"
       - "Cambiar estado HU a [X] Completada en {{archivos.backlog}}"
       - "SI Multi-Proyecto → Actualizar contadores en sección 'Resumen por Proyecto'"
@@ -174,15 +266,25 @@ salida:
     - ruta: "{{artifacts.planes_folder}}/[ID-HU]_plan_implementacion.md"
     - ruta: "{{archivos.backlog}}"
     - descripcion: "Archivos de código según plan"
-  estado_hu_final: "[C] Completada"
-  mensaje_exito: |
+  estado_hu_final_completo: "[C] Completada"
+  estado_hu_final_task_parcial: "[E] En Ejecución (tasks pendientes)"
+  mensaje_exito_completo: |
      IMPLEMENTACIÓN COMPLETADA: [ID-HU]
     
      Resumen:
-    - Fases: [N/N] 
+    - Tasks: [T/T]  (si particionada)
     - Tareas: [M/M] 
     - Criterios de Aceptación: [Y/Y] 
     - Tests:  Pasando
+  mensaje_exito_task: |
+     TASK COMPLETADA: [task_id]
+    
+     Resumen Task:
+    - Tareas: [M/M] 
+    - CAs granulares: [Y/Y] 
+    - Tests:  Pasando
+     Progreso HU: [T_completadas/T_total] tasks
+    ▶️ Siguiente: >ejecutar_plan [ID-HU] --modo_ejecucion task_especifica --task_id [siguiente_task]
 
 errores:
   plan_no_encontrado: {msg: " Plan no encontrado", accion: "Ejecutar >planificar_hu primero"}
