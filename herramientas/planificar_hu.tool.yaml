@@ -2,7 +2,7 @@
 nombre: "Planificar Historia de Usuario"
 comando: ">planificar_hu"
 alias: [">planificar", ">plan_hu"]
-version: "4.1"
+version: "5.0"
 
 mandatory:
   - instruccion: "Generar plan alineado con arquitectura del proyecto"
@@ -12,6 +12,8 @@ mandatory:
   - instruccion: "Incluir TODOS los criterios de aceptación de la HU en Fase Final"
   - instruccion: "SI campo Tipo no existe en la HU → asumir Tipo=Funcional"
   - instruccion: "SI Tipo=Bug → Cargar archivo de bug referenciado y usar estructura_fases.bugfix"
+  - instruccion: "SI Modo=Particionada en refinamiento → Organizar plan por tasks funcionales con fases internas"
+  - instruccion: "Numerar tareas técnicas GLOBALMENTE (T01...T[N]) incluso en modo particionada"
 
 reglas_arquitectonicas_requeridas:
   descripcion: "Si hay reglas arquitectónicas cargadas, aplicar:"
@@ -192,24 +194,74 @@ proceso:
 
   - paso: "Secuenciación de Tareas"
     obligatorio: true
-    acciones: 
-      - "Ordenar tareas por dependencias"
-      - "Agrupar en fases según 'fases_plan' detectado"
-      - "Asignar rutas consultando '## 4. Arquitectura' > '### Estructura del Proyecto'"
-      - "Asignar estimación por tarea"
+    acciones:
+      - "Extraer campo 'Modo' del refinamiento: [Plano | Particionada]"
+      - ""
+      - "SI Modo = 'Plano' (comportamiento actual sin cambios):"
+      - "  Ordenar tareas por dependencias"
+      - "  Agrupar en fases según 'fases_plan' detectado"
+      - "  Numerar tareas secuencialmente: T01, T02, T03..."
+      - "  Asignar rutas consultando '## 4. Arquitectura' > '### Estructura del Proyecto'"
+      - "  Asignar estimación por tarea"
+      - ""
+      - "SI Modo = 'Particionada':"
+      - "  1. Extraer tasks funcionales del refinamiento (campo Tasks: HU-XXX-T1, T2, T3...)"
+      - "  2. Extraer sección 'Estrategia Recomendada' > orden de ejecución del refinamiento"
+      - "  3. Construir tabla 'Dependencias entre Tasks':"
+      - "     - Leer sección '### Dependencias' y '### Directrices de Planificación' del refinamiento"
+      - "     - Inferir dependencias: si T2 usa componentes/ports/entidades creados en T1, T2 depende de T1"
+      - "     - SI HU compartida con tasks backend + frontend: frontend depende de backend (siempre)"
+      - "     - Marcar columna 'Ejecutable?' según dependencias (✅ si sin deps, ⛔ si tiene)"
+      - "  4. Para CADA task funcional:"
+      - "     a. Leer CAs granulares de la task en el refinamiento"
+      - "     b. Leer desglose técnico de la task en el refinamiento"
+      - "     c. Detectar proyecto destino (SI compartida: ¿la task es backend o frontend?)"
+      - "     d. Seleccionar fases arquitectónicas según proyecto/stack de la task:"
+      - "        - Task backend Hexagonal → Dominio, Aplicación, Infraestructura, Testing"
+      - "        - Task backend MVC → Modelos, Controladores, Vistas, Testing"
+      - "        - Task frontend React/Vue → Setup, Componentes, Integración, Testing"
+      - "        - Task script/CLI → Setup, Lógica, Testing"
+      - "        - DEFAULT → Preparación, Implementación, Testing"
+      - "     e. Agrupar tareas técnicas de la task en sus fases"
+      - "     f. Agregar sección 'Validar CAs de T[N]' al final de la task (CAs granulares)"
+      - "  5. Numerar tareas técnicas GLOBALMENTE: T01, T02... T[N] (cross-task, secuencial)"
+      - "     RAZON: Numeración global permite reanudación unívoca y dependencias cross-task claras"
+      - "  6. En campo 'Dependencia' de cada tarea, marcar dependencias cross-task con indicador:"
+      - "     - Dependencia intra-task: 'Dependencia: T12' (sin marca)"
+      - "     - Dependencia cross-task: 'Dependencia: T03 ⟵T1' (indica que T03 pertenece a otra task)"
+      - "     RAZON: Permite al ejecutor validar si la task dependiente está [EJECUTADA]"
+      - "  7. Generar tabla 'Progreso General' agrupada por task (no por fase)"
+      - "  8. Agregar 'Fase Final: Validar CAs de Integración' con los CAs padre de la HU"
 
   - paso: "Generación del Plan"
     obligatorio: true
-    acciones: 
+    acciones:
       - "Leer plantilla desde {{plantillas.plan_implementacion}}"
       - "Rellenar metadata (ID-HU, título, fecha, estimación)"
       - "Rellenar campo 'Arquitectura' con estilo de '## 4. Arquitectura'"
-      - "Generar tabla 'Progreso General' con fases de 'fases_plan'"
-      - "Generar secciones de fase según 'fases_plan'"
-      - "En cada tarea, usar rutas de '### Estructura del Proyecto' (NO genéricas)"
-      - "Ejemplo correcto: 'Crear User.php en app/Models/' (ruta real)"
-      - "Ejemplo incorrecto: 'Crear User en models/' (ruta genérica)"
-      - "Copiar criterios de aceptación de la HU a Fase Final"
+      - ""
+      - "SI Modo = 'Plano' (comportamiento actual):"
+      - "  Rellenar campo 'Modo' en Metadata con 'Plano'"
+      - "  Generar tabla 'Progreso General' con fases de 'fases_plan'"
+      - "  Generar secciones de fase según 'fases_plan'"
+      - "  En cada tarea, usar rutas de '### Estructura del Proyecto' (NO genéricas)"
+      - "  Copiar criterios de aceptación de la HU a Fase Final"
+      - ""
+      - "SI Modo = 'Particionada':"
+      - "  Rellenar campo 'Modo' en Metadata con 'Particionada'"
+      - "  Rellenar campo 'Tasks' en Metadata con lista de task IDs"
+      - "  Generar sección '## Dependencias entre Tasks' después de Metadata"
+      - "  Generar tabla 'Progreso General' agrupada por task:"
+      - "    | Task | Descripción | Estado | Progreso |"
+      - "  Para cada task funcional:"
+      - "    Generar sección '## Task [ID-HU]-T[N]: [Título]' con subcampos:"
+      - "      Traza CA padre, Estimación, Depende de"
+      - "    Generar sub-fases internas (### Fase M: [Nombre])"
+      - "    Generar tareas técnicas con numeración global (#### T[NN])"
+      - "    En cada tarea, usar rutas de '### Estructura del Proyecto' (NO genéricas)"
+      - "    Agregar sección '### Validar CAs de T[N]' con CAs granulares"
+      - "  Generar 'Fase Final: Validar CAs de Integración' con CAs padre"
+      - ""
       - "Guardar en {{artifacts.planes_folder}}/[ID-HU]_plan_implementacion.md"
 
   - paso: "Actualización de Estado"
@@ -225,8 +277,10 @@ salida:
   mensaje_exito: |
      PLAN GENERADO: [ID-HU]
      Artefacto: {{artifacts.planes_folder}}/[ID-HU]_plan_implementacion.md
+     Modo: [Plano|Particionada] | Tasks: [N] (si particionada)
      Fases: [N] | Tareas: [M] | Estimación: [X]h | Criterios: [Y]
      Siguiente: >ejecutar_plan [ID-HU]
+     Modos disponibles: --modo_ejecucion [completo|task_por_task|task_especifica] (si particionada)
 
 errores:
   hu_no_aprobada: {msg: " HU no está en estado [A] Aprobada", accion: "Ejecutar >validar_hu primero"}
