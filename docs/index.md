@@ -24,7 +24,7 @@ SAC instala en tu proyecto un conjunto de **agentes Copilot** con roles especial
 
 === "Windows"
     ```powershell
-    irm https://raw.githubusercontent.com/JavierDevCol/SAC/main/INSTALACION/bootstrap/install.ps1 | iex
+©    irm https://raw.githubusercontent.com/JavierDevCol/SAC/main/INSTALACION/bootstrap/install.ps1 | iex
     # Reiniciar terminal, luego:
     sac "C:/mi-proyecto"
     ```

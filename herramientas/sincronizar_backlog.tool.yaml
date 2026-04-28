@@ -225,4 +225,4 @@ errores:
 siguiente:
   - {comando: ">refinar_hu [ID-HU]", desc: "Refinar HUs que estÃ©n en estado Pendiente", chat_agente: "Refinador HU"}
   - {comando: ">validar_hu [ID-HU]", desc: "Validar HUs Refinadas pendientes de aprobaciÃ³n", chat_agente: "Arquitecto Onad"}
-  - {comando: ">planificar_hu [ID-HU]", desc: "Planificar HUs Aprobadas", chat_agente: "Arquitecto Onad"}
+  - {comando: ">planificar_hu [ID-HU]", desc: "Planificar HUs Aprobadas", chat_agente: "ArchDev Pro"}

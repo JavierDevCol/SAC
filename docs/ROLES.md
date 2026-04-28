@@ -35,7 +35,7 @@
 |-------|-------|
 | **Principio** | "No Comer Entero" |
 | **Especialidad** | Arquitectura estratégica, DDD, decisiones técnicas |
-| **Herramientas** | `>tomar_contexto`, `>analizar_stack`, `>validar_hu`, `>planificar_hu`, `>generar_adr`, `>init_reglas_arquitectonicas` |
+| **Herramientas** | `>tomar_contexto`, `>analizar_stack`, `>validar_hu`, `>generar_adr`, `>init_reglas_arquitectonicas` |
 | **Cuándo usar** | Decisiones arquitectónicas, validación de HUs, planificación, ADRs |
 
 ### @desarrollador (Desarrollador)
@@ -44,8 +44,8 @@
 |-------|-------|
 | **Principio** | "Código con Propósito" |
 | **Especialidad** | Java/Spring Boot, TDD, refactoring, implementación |
-| **Herramientas** | `>tomar_contexto`, `>analizar_stack`, `>generar_adr`, `>ejecutar_plan`, `>crear_pruebas`, `>analizar_code_smells`, `>generar_commit` |
-| **Cuándo usar** | Implementación de código, testing, refactoring |
+| **Herramientas** | `>tomar_contexto`, `>analizar_stack`, `>generar_adr`, `>planificar_hu`, `>ejecutar_plan`, `>crear_pruebas`, `>analizar_code_smells`, `>generar_commit` |
+| **Cuándo usar** | Planificación de HUs, implementación de código, testing, refactoring |
 
 ### @devops (DevOps)
 

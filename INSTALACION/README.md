@@ -234,7 +234,7 @@ Una vez activado un agente, puedes usar sus herramientas con el prefijo `>`:
 | Tomar Contexto | `>tomar_contexto` | Todos |
 | Refinar HU | `>refinar_hu` | Refinador |
 | Validar HU | `>validar_hu` | Arquitecto |
-| Planificar HU | `>planificar_hu` | Arquitecto |
+| Planificar HU | `>planificar_hu` | ArchDev Pro |
 | Ejecutar Plan | `>ejecutar_plan` | ArchDev Pro |
 | Crear Pruebas | `>crear_pruebas` | ArchDev Pro |
 | Analizar Code Smells | `>analizar_code_smells` | ArchDev Pro |

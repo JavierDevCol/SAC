@@ -1,0 +1,2170 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Sistema de agentes IA especializados para GitHub Copilot">
+      
+      
+        <meta name="author" content="JavierDevCol">
+      
+      
+        <link rel="canonical" href="https://javierdevcol.github.io/SAC/guias/guia_comandos/">
+      
+      
+        <link rel="prev" href="../../estructura_directorio/">
+      
+      
+        <link rel="next" href="../guia_ciclo_vida_tareas/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Comandos - SAC — Sistema Agéntico COCHAS</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#guia-completa-de-comandos-del-sistema" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../.." title="SAC — Sistema Agéntico COCHAS" class="md-header__button md-logo" aria-label="SAC — Sistema Agéntico COCHAS" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SAC — Sistema Agéntico COCHAS
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Comandos
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Cambiar a modo oscuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo oscuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Cambiar a modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Cambiar a modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Buscar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/JavierDevCol/SAC" title="Ir al repositorio" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    JavierDevCol/SAC
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Pestañas" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Inicio
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../INSTALACION/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Instalación
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../ROLES/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Agentes
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../HERRAMIENTAS/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Herramientas
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../estructura_directorio/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Estructura
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+  Guías
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../ejemplos/" class="md-tabs__link">
+          
+  
+  
+  Ejemplos
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="SAC — Sistema Agéntico COCHAS" class="md-nav__button md-logo" aria-label="SAC — Sistema Agéntico COCHAS" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    SAC — Sistema Agéntico COCHAS
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/JavierDevCol/SAC" title="Ir al repositorio" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    JavierDevCol/SAC
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inicio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../INSTALACION/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Instalación
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ROLES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Agentes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../HERRAMIENTAS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Herramientas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../estructura_directorio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Estructura
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guías
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guías
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Comandos
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Comandos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#indice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📖 Índice
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sistema-de-prefijos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sistema de Prefijos
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Sistema de Prefijos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#regla-principal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Regla Principal
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#invocar-agentes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Invocar Agentes (@)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Invocar Agentes (@)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tabla-de-agentes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tabla de Agentes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ejecucion-de-herramientas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ejecución de Herramientas (&gt;)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ejecución de Herramientas (&gt;)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#herramienta-parametros" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        &gt;herramienta [parámetros]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#casos-de-uso-comunes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Casos de Uso Comunes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Casos de Uso Comunes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#caso-1-primera-vez-en-el-sistema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Caso 1: Primera Vez en el Sistema
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#caso-2-refinar-una-historia-de-usuario" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Caso 2: Refinar una Historia de Usuario
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#caso-3-implementar-codigo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Caso 3: Implementar Código
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#caso-4-generar-commit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Caso 4: Generar Commit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#caso-5-cambiar-entre-agentes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Caso 5: Cambiar Entre Agentes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gestion-de-errores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gestión de Errores
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Gestión de Errores">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#error-rol-no-existe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error: Rol No Existe
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-herramienta-sin-rol-activo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error: Herramienta Sin Rol Activo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-herramienta-no-disponible-en-rol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error: Herramienta No Disponible en Rol
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-herramienta-no-existe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error: Herramienta No Existe
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tips-y-mejores-practicas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💡 Tips y Mejores Prácticas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="💡 Tips y Mejores Prácticas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tip-1-siempre-empieza-con-roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tip 1: Siempre Empieza con *roles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tip-2-verifica-el-estado-regularmente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tip 2: Verifica el Estado Regularmente
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tip-3-analiza-el-proyecto-una-vez" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tip 3: Analiza el Proyecto Una Vez
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tip-4-secuencia-tipica-de-trabajo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tip 4: Secuencia Típica de Trabajo
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#historial-de-versiones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📅 Historial de Versiones
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentacion-relacionada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📚 Documentación Relacionada
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guia_ciclo_vida_tareas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ciclo de Vida de HUs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guia_roles_activos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roles Activos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guia_creacion_roles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crear Roles SAC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guia_creacion_agentes_vscode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crear Agentes VS Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guia_subagents_vscode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Subagentes VS Code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ejemplos
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ejemplos
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ejemplos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Índice
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ejemplos/herramientas/tomar_contexto_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tomar Contexto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ejemplos/herramientas/refinar_hu_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Refinar HU
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ejemplos/herramientas/generar_commit_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Generar Commit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ejemplos/herramientas/crear_pruebas_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crear Pruebas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ejemplos/herramientas/analizar_code_smells_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Analizar Code Smells
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ejemplos/herramientas/diagnosticar_devops_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Diagnosticar DevOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ejemplos/herramientas/ecommerce_mvp_completo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    eCommerce MVP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ejemplos/herramientas/solucionar_smells_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Solucionar Smells
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ejemplos/herramientas/verifica_pruebas_ejemplo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Verificar Pruebas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#indice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📖 Índice
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sistema-de-prefijos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sistema de Prefijos
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Sistema de Prefijos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#regla-principal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Regla Principal
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#invocar-agentes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Invocar Agentes (@)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Invocar Agentes (@)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tabla-de-agentes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tabla de Agentes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ejecucion-de-herramientas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ejecución de Herramientas (&gt;)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ejecución de Herramientas (&gt;)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#herramienta-parametros" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        &gt;herramienta [parámetros]
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#casos-de-uso-comunes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Casos de Uso Comunes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Casos de Uso Comunes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#caso-1-primera-vez-en-el-sistema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Caso 1: Primera Vez en el Sistema
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#caso-2-refinar-una-historia-de-usuario" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Caso 2: Refinar una Historia de Usuario
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#caso-3-implementar-codigo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Caso 3: Implementar Código
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#caso-4-generar-commit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Caso 4: Generar Commit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#caso-5-cambiar-entre-agentes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Caso 5: Cambiar Entre Agentes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gestion-de-errores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gestión de Errores
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Gestión de Errores">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#error-rol-no-existe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error: Rol No Existe
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-herramienta-sin-rol-activo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error: Herramienta Sin Rol Activo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-herramienta-no-disponible-en-rol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error: Herramienta No Disponible en Rol
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-herramienta-no-existe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error: Herramienta No Existe
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tips-y-mejores-practicas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💡 Tips y Mejores Prácticas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="💡 Tips y Mejores Prácticas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tip-1-siempre-empieza-con-roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tip 1: Siempre Empieza con *roles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tip-2-verifica-el-estado-regularmente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tip 2: Verifica el Estado Regularmente
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tip-3-analiza-el-proyecto-una-vez" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tip 3: Analiza el Proyecto Una Vez
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tip-4-secuencia-tipica-de-trabajo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tip 4: Secuencia Típica de Trabajo
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#historial-de-versiones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📅 Historial de Versiones
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentacion-relacionada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📚 Documentación Relacionada
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="guia-completa-de-comandos-del-sistema">📋 Guía Completa de Comandos del Sistema<a class="headerlink" href="#guia-completa-de-comandos-del-sistema" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Sistema:</strong> SAC - Sistema Agéntico COCHAS<br />
+<strong>Versión:</strong> 7.2.0<br />
+<strong>Última Actualización:</strong> 23 de abril de 2026</p>
+</blockquote>
+<hr />
+<h2 id="indice">📖 Índice<a class="headerlink" href="#indice" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="#sistema-de-prefijos">Sistema de Prefijos</a></li>
+<li><a href="#invocar-agentes-">Invocar Agentes (@)</a></li>
+<li><a href="#ejecución-de-herramientas-">Ejecución de Herramientas (&gt;)</a></li>
+<li><a href="#casos-de-uso-comunes">Casos de Uso Comunes</a></li>
+<li><a href="#gestión-de-errores">Gestión de Errores</a></li>
+</ul>
+<hr />
+<h2 id="sistema-de-prefijos">Sistema de Prefijos<a class="headerlink" href="#sistema-de-prefijos" title="Permanent link">&para;</a></h2>
+<p>El sistema SAC usa <strong>1 prefijo</strong> principal para ejecutar herramientas:</p>
+<table>
+<thead>
+<tr>
+<th>Prefijo</th>
+<th>Propósito</th>
+<th>Requiere Agente Activo</th>
+<th>Ejemplos</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>@</code></td>
+<td><strong>Invocar un Agente</strong></td>
+<td>❌ No</td>
+<td><code>@arquitecto</code>, <code>@desarrollador</code></td>
+</tr>
+<tr>
+<td><code>&gt;</code></td>
+<td><strong>Ejecutar una Herramienta</strong></td>
+<td>✅ Sí</td>
+<td><code>&gt;refinar_hu</code>, <code>&gt;generar_commit</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="regla-principal">Regla Principal<a class="headerlink" href="#regla-principal" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>@ = Invocar agente en Copilot Chat
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>&gt; = Ejecutar herramienta (con agente activo)
+</code></pre></div>
+<hr />
+<h2 id="invocar-agentes">Invocar Agentes (<code>@</code>)<a class="headerlink" href="#invocar-agentes" title="Permanent link">&para;</a></h2>
+<p>En Copilot Chat escribe <code>@nombre_agente</code> para activar un agente SAC.</p>
+<hr />
+<h3 id="tabla-de-agentes">Tabla de Agentes<a class="headerlink" href="#tabla-de-agentes" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Invocación</th>
+<th>Agente</th>
+<th>Herramientas Disponibles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>@arquitecto</code></td>
+<td>Arquitecto</td>
+<td><code>&gt;tomar_contexto</code>, <code>&gt;analizar_stack</code>, <code>&gt;init_reglas_arquitectonicas</code>, <code>&gt;generar_adr</code>, <code>&gt;validar_hu</code>, <code>&gt;planificar_hu</code></td>
+</tr>
+<tr>
+<td><code>@desarrollador</code></td>
+<td>Desarrollador</td>
+<td><code>&gt;tomar_contexto</code>, <code>&gt;analizar_stack</code>, <code>&gt;generar_adr</code>, <code>&gt;ejecutar_plan</code>, <code>&gt;crear_pruebas</code>, <code>&gt;analizar_code_smells</code>, <code>&gt;generar_commit</code></td>
+</tr>
+<tr>
+<td><code>@devops</code></td>
+<td>DevOps</td>
+<td><code>&gt;tomar_contexto</code>, <code>&gt;generar_adr</code>, <code>&gt;diagnosticar_devops</code>, <code>&gt;generar_commit</code></td>
+</tr>
+<tr>
+<td><code>@analista_historias</code></td>
+<td>Analista de Requisitos</td>
+<td><code>&gt;tomar_contexto</code>, <code>&gt;refinar_hu</code>, <code>&gt;generar_commit</code></td>
+</tr>
+<tr>
+<td><code>@narrador_commit</code></td>
+<td>Cronista de Cambios</td>
+<td><code>&gt;generar_commit</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="ejecucion-de-herramientas">Ejecución de Herramientas (<code>&gt;</code>)<a class="headerlink" href="#ejecucion-de-herramientas" title="Permanent link">&para;</a></h2>
+<p>Los comandos con <code>&gt;</code> ejecutan herramientas del rol activo.</p>
+<hr />
+<h3 id="herramienta-parametros"><code>&gt;herramienta [parámetros]</code><a class="headerlink" href="#herramienta-parametros" title="Permanent link">&para;</a></h3>
+<p><strong>Descripción:</strong> Ejecuta una herramienta del rol activo.</p>
+<p><strong>Formato:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>&gt;nombre_herramienta
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>&gt;nombre_herramienta parámetro1
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>&gt;nombre_herramienta parámetro1 parámetro2
+</code></pre></div></p>
+<p><strong>Requisitos:</strong>
+- ✅ Debe haber un rol activo (<code>+ROL</code> previo)
+- ✅ La herramienta debe pertenecer al rol activo</p>
+<p><strong>Ejemplos por Rol:</strong></p>
+<p><strong>Con @arquitecto activo:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>&gt;tomar_contexto
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>&gt;analizar_stack
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>&gt;generar_adr ADR-001
+</code></pre></div></p>
+<p><strong>Con @desarrollador activo:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>&gt;crear_pruebas src/services/UserService.java
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>&gt;analizar_code_smells
+</code></pre></div></p>
+<p><strong>Con @analista_historias activo:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>&gt;refinar_hu HU-001
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>&gt;validar_hu HU-001
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>&gt;planificar_hu HU-001
+</code></pre></div></p>
+<p><strong>Con @narrador_commit activo:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>&gt;generar_commit
+</code></pre></div></p>
+<p><strong>Con @devops activo:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>&gt;diagnosticar_devops
+</code></pre></div></p>
+<hr />
+<h2 id="casos-de-uso-comunes">Casos de Uso Comunes<a class="headerlink" href="#casos-de-uso-comunes" title="Permanent link">&para;</a></h2>
+<h3 id="caso-1-primera-vez-en-el-sistema">Caso 1: Primera Vez en el Sistema<a class="headerlink" href="#caso-1-primera-vez-en-el-sistema" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Paso 1: Analizar el proyecto con el Arquitecto</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>@arquitecto
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>&gt;tomar_contexto
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="c1"># Paso 2: Analizar el stack tecnológico</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>&gt;analizar_stack
+</code></pre></div>
+<hr />
+<h3 id="caso-2-refinar-una-historia-de-usuario">Caso 2: Refinar una Historia de Usuario<a class="headerlink" href="#caso-2-refinar-una-historia-de-usuario" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># Activar agente de refinamiento</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>@analista_historias
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="c1"># Refinar la HU específica</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>&gt;refinar_hu<span class="w"> </span>HU-001
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="c1"># Validar el refinamiento con Arquitecto</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>@arquitecto
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>&gt;validar_hu<span class="w"> </span>HU-001
+</code></pre></div>
+<hr />
+<h3 id="caso-3-implementar-codigo">Caso 3: Implementar Código<a class="headerlink" href="#caso-3-implementar-codigo" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Activar agente de desarrollo</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>@desarrollador
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="c1"># Ejecutar plan de desarrollo</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>&gt;ejecutar_plan<span class="w"> </span>HU-001
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="c1"># Crear pruebas</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>&gt;crear_pruebas<span class="w"> </span>src/services/AuthService.java
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="c1"># Analizar code smells</span>
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>&gt;analizar_code_smells
+</code></pre></div>
+<hr />
+<h3 id="caso-4-generar-commit">Caso 4: Generar Commit<a class="headerlink" href="#caso-4-generar-commit" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># Activar agente de commits</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>@narrador_commit
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="c1"># Generar mensaje de commit</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>&gt;generar_commit
+</code></pre></div>
+<hr />
+<h3 id="caso-5-cambiar-entre-agentes">Caso 5: Cambiar Entre Agentes<a class="headerlink" href="#caso-5-cambiar-entre-agentes" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># Abrir nuevo chat con otro agente</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>@desarrollador
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="c1"># Continuar trabajando</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>&gt;ejecutar_plan<span class="w"> </span>HU-001
+</code></pre></div>
+<hr />
+<h2 id="gestion-de-errores">Gestión de Errores<a class="headerlink" href="#gestion-de-errores" title="Permanent link">&para;</a></h2>
+<h3 id="error-rol-no-existe">Error: Rol No Existe<a class="headerlink" href="#error-rol-no-existe" title="Permanent link">&para;</a></h3>
+<p><strong>Entrada:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>+DEVELOPER
+</code></pre></div></p>
+<p><strong>Salida:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>❌ El rol &#39;DEVELOPER&#39; no existe en el sistema.
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>💡 Usa *roles para ver la lista completa de roles disponibles.
+</code></pre></div></p>
+<hr />
+<h3 id="error-herramienta-sin-rol-activo">Error: Herramienta Sin Rol Activo<a class="headerlink" href="#error-herramienta-sin-rol-activo" title="Permanent link">&para;</a></h3>
+<p><strong>Entrada:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>&gt;refactorizar
+</code></pre></div>
+(Sin tener un rol activo)</p>
+<p><strong>Salida:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>❌ Error: Debes activar un rol primero con +COMANDO
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>💡 Usa *roles para ver los roles disponibles.
+</code></pre></div></p>
+<hr />
+<h3 id="error-herramienta-no-disponible-en-rol">Error: Herramienta No Disponible en Rol<a class="headerlink" href="#error-herramienta-no-disponible-en-rol" title="Permanent link">&para;</a></h3>
+<p><strong>Entrada:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>+ARTESANO
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>&gt;refinar_hu HU-001
+</code></pre></div></p>
+<p><strong>Salida:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>❌ La herramienta &#39;refinar_hu&#39; no está disponible en el rol &#39;Artesano de Commits&#39;.
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>🛠️ Herramientas disponibles para este rol:
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>  &gt;generar_commit
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>💡 Para usar &#39;refinar_hu&#39;, activa el rol con: +REFINADOR
+</code></pre></div></p>
+<hr />
+<h3 id="error-herramienta-no-existe">Error: Herramienta No Existe<a class="headerlink" href="#error-herramienta-no-existe" title="Permanent link">&para;</a></h3>
+<p><strong>Entrada:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>+ARCHDEV
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>&gt;compilar_proyecto
+</code></pre></div></p>
+<p><strong>Salida:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>❌ La herramienta &#39;compilar_proyecto&#39; no existe en el sistema.
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>🛠️ Herramientas disponibles para &#39;ArchDev Pro&#39;:
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>  &gt;refactorizar
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>  &gt;crear_pruebas
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>  &gt;analizar_code_smells
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>  &gt;ejecutar_plan
+</code></pre></div></p>
+<hr />
+<h2 id="tips-y-mejores-practicas">💡 Tips y Mejores Prácticas<a class="headerlink" href="#tips-y-mejores-practicas" title="Permanent link">&para;</a></h2>
+<h3 id="tip-1-siempre-empieza-con-roles">Tip 1: Siempre Empieza con <code>*roles</code><a class="headerlink" href="#tip-1-siempre-empieza-con-roles" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>*roles<span class="w">  </span><span class="c1"># Ver qué roles hay disponibles</span>
+</code></pre></div>
+<h3 id="tip-2-verifica-el-estado-regularmente">Tip 2: Verifica el Estado Regularmente<a class="headerlink" href="#tip-2-verifica-el-estado-regularmente" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>*status<span class="w">  </span><span class="c1"># Ver rol activo y progreso</span>
+</code></pre></div>
+<h3 id="tip-3-analiza-el-proyecto-una-vez">Tip 3: Analiza el Proyecto Una Vez<a class="headerlink" href="#tip-3-analiza-el-proyecto-una-vez" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>+ONAD
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>&gt;tomar_contexto<span class="w">  </span><span class="c1"># Se guarda y reutiliza por otros roles</span>
+</code></pre></div>
+<h3 id="tip-4-secuencia-tipica-de-trabajo">Tip 4: Secuencia Típica de Trabajo<a class="headerlink" href="#tip-4-secuencia-tipica-de-trabajo" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>*HU<span class="w">                    </span><span class="c1"># Ver qué HUs hay</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>+REFINADOR<span class="w">             </span><span class="c1"># Activar rol</span>
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>&gt;refinar_hu<span class="w"> </span>HU-001<span class="w">     </span><span class="c1"># Trabajar la HU</span>
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>+ARCHDEV<span class="w">               </span><span class="c1"># Cambiar a desarrollo</span>
+<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>&gt;ejecutar_plan<span class="w"> </span>HU-001<span class="w">  </span><span class="c1"># Implementar</span>
+<a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a>+ARTESANO<span class="w">              </span><span class="c1"># Cambiar a commits</span>
+<a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a>&gt;generar_commit<span class="w">        </span><span class="c1"># Crear commit</span>
+</code></pre></div>
+<hr />
+<h2 id="historial-de-versiones">📅 Historial de Versiones<a class="headerlink" href="#historial-de-versiones" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Versión</th>
+<th>Fecha</th>
+<th>Cambios Principales</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0</td>
+<td>2025-10-16</td>
+<td>Versión inicial con comandos <code>/cochas</code></td>
+</tr>
+<tr>
+<td>2.0</td>
+<td>2025-10-16</td>
+<td>Documentación completa de <code>/cochas</code></td>
+</tr>
+<tr>
+<td>3.0</td>
+<td>2026-01-05</td>
+<td>✅ <strong>Nuevo sistema de prefijos</strong><br>✅ <code>*</code> para comandos orquestador<br>✅ <code>+</code> para activar roles<br>✅ <code>&gt;</code> para herramientas<br>✅ Eliminados comandos <code>/cochas</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="documentacion-relacionada">📚 Documentación Relacionada<a class="headerlink" href="#documentacion-relacionada" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong><a href="../guia_roles_activos/">Roles Activos</a></strong> - Lista completa de roles</li>
+<li><strong><a href="../../HERRAMIENTAS/">Herramientas</a></strong> - Lista de herramientas</li>
+<li><strong><a href="../guia_ciclo_vida_tareas/">Ciclo de Vida</a></strong> - Flujo de tareas</li>
+</ul>
+<hr />
+<p><strong>¿Necesitas ayuda?</strong> Usa <code>*help</code> en cualquier momento.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Volver al principio
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

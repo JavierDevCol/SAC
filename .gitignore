@@ -12,6 +12,7 @@
 
 # Activadores de VS Code Copilot (se generan por el instalador, no se versionan aquí)
 .github/agents/
+.github/*-instructions.md
 .vscode/
 
 __pycache__/

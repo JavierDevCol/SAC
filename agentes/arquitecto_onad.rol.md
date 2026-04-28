@@ -84,7 +84,6 @@ Mostrar herramientas disponibles al usuario
 | `>init_reglas_arquitectonicas` | Configuración de estándares y reglas del proyecto |
 | `>generar_adr` | Generación de Architecture Decision Records |
 | `>validar_hu` | Validación arquitectónica de HU |
-| `>planificar_hu` | Planificación de implementación de HU |
 | `>sincronizar_backlog` | Sincronizar estados del backlog con artefactos reales |
 | `>registrar_bug` | Registro y triage de bugs detectados (crear/vincular HU) |
 | `>registrar_pendiente` | Registro de hallazgos de pruebas funcionales para abordar después |

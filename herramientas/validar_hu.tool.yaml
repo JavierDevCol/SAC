@@ -158,7 +158,16 @@ proceso:
       - "  | **Fecha aprobación** | [FECHA_ISO_8601] |"
       - "  | **Nivel validación** | [nivel_validacion usado] |"
       - "  | **Notas** | [Resumen de validación o 'Sin observaciones'] |"
-    nota: "Este marcador permite a >sincronizar_backlog deducir el estado [A] Aprobada desde artefactos"
+      - ""
+      - "Agregar subsección '### Directrices de Planificación' después de la tabla de aprobación:"
+      - "  - **Fases sugeridas:** [Estilo arquitectónico y orden de fases recomendado según contexto]"
+      - "  - **Componentes clave:** [Componentes de alto nivel a crear/modificar con ubicación sugerida]"
+      - "  - **Dependencias entre HUs:** [HUs que deben completarse antes o que comparten recursos]"
+      - "  - **Riesgos a mitigar:** [Riesgos técnicos detectados durante validación que impactan planificación]"
+      - "  - **Notas adicionales:** [ADRs relevantes, patrones recomendados, consideraciones especiales]"
+      - "SI no hay directrices relevantes para algún campo → Omitir ese campo (no usar 'N/A')"
+      - "MÍNIMO: al menos un campo debe tener contenido útil; si no hay nada que aportar, usar solo campo 'Notas adicionales' con 'Sin directrices específicas'"
+    nota: "Este marcador permite a >sincronizar_backlog deducir el estado [A] Aprobada desde artefactos. Las directrices son RECOMENDACIONES para >planificar_hu, no mandatos."
 
   - paso: "Persistir Feedback"
     obligatorio: true
@@ -205,6 +214,6 @@ errores:
   sin_reglas: {msg: "ℹ Sin reglas arquitectónicas", accion: "Validación basada en mejores prácticas generales"}
 
 siguiente:
-  - {comando: ">planificar_hu [ID-HU]", desc: "Si APROBADA - crear plan de implementación", chat_agente: "Arquitecto Onad"}
+  - {comando: ">planificar_hu [ID-HU]", desc: "Si APROBADA - crear plan de implementación", chat_agente: "ArchDev Pro"}
   - {comando: ">refinar_hu [ID-HU]", desc: "Si AJUSTES - aplicar observaciones", chat_agente: "Refinador HU"}
   - {comando: ">validar_hu [ID-HU]", desc: "Si BLOQUEADA - revalidar cuando se resuelva la dependencia", chat_agente: "Arquitecto Onad"}

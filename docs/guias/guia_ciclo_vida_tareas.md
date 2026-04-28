@@ -370,7 +370,7 @@ El sistema define **7 estados** para el ciclo de vida de una HU/Tarea:
 |------------|-----|-------------|---------|
 | `[ ]` → `[R]` | Refinador HU | `refinar_hu` | `refinar_hu [ID-HU]` |
 | `[R]` → `[A]` | Arquitecto Onad | `validar_hu` | `validar-hu [ID-HU]` |
-| `[A]` → `[P]` | Arquitecto Onad | `planificar_hu` | `planificar-hu [ID-HU]` |
+| `[A]` → `[P]` | ArchDev Pro | `planificar_hu` | `planificar-hu [ID-HU]` |
 | `[P]` → `[E]` | ArchDev Pro | `ejecutar_plan` | `ejecutar-plan [ID-HU]` |
         "secciones": 7,
         "archivos_a_modificar": 8,

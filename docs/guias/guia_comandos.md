@@ -44,8 +44,8 @@ En Copilot Chat escribe `@nombre_agente` para activar un agente SAC.
 
 | Invocación | Agente | Herramientas Disponibles |
 |------------|--------|--------------------------|
-| `@arquitecto` | Arquitecto | `>tomar_contexto`, `>analizar_stack`, `>init_reglas_arquitectonicas`, `>generar_adr`, `>validar_hu`, `>planificar_hu` |
-| `@desarrollador` | Desarrollador | `>tomar_contexto`, `>analizar_stack`, `>generar_adr`, `>ejecutar_plan`, `>crear_pruebas`, `>analizar_code_smells`, `>generar_commit` |
+| `@arquitecto` | Arquitecto | `>tomar_contexto`, `>analizar_stack`, `>init_reglas_arquitectonicas`, `>generar_adr`, `>validar_hu` |
+| `@desarrollador` | Desarrollador | `>tomar_contexto`, `>analizar_stack`, `>generar_adr`, `>planificar_hu`, `>ejecutar_plan`, `>crear_pruebas`, `>analizar_code_smells`, `>generar_commit` |
 | `@devops` | DevOps | `>tomar_contexto`, `>generar_adr`, `>diagnosticar_devops`, `>generar_commit` |
 | `@analista_historias` | Analista de Requisitos | `>tomar_contexto`, `>refinar_hu`, `>generar_commit` |
 | `@cronista_de_cambios` | Cronista de Cambios | `>generar_commit` |
