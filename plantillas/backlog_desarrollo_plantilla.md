@@ -61,9 +61,9 @@
   Esta tabla se regenera automáticamente con >sincronizar_backlog.
 -->
 
-| ID | Título | Estado | Prioridad | Tipo |
-|----|--------|--------|-----------|------|
-| [ID-HU] | [Título] | [ ] | [Alta\|Media\|Baja] | [Funcional\|Bug\|Técnica] |
+| ID | Título | Estado | Prioridad | Tipo | Tasks |
+|----|--------|--------|-----------|------|-------|
+| [ID-HU] | [Título] | [ ] | [Alta\|Media\|Baja] | [Funcional\|Bug\|Técnica] | [— \| T1,T2,...] |
 
 ---
 
@@ -145,6 +145,7 @@ Como [rol], quiero [funcionalidad] para [beneficio].
 - **Refinamiento:** `{{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md`
 - **Fecha refinamiento:** [timestamp]
 - **Estimación:** [X] SP / [Y] horas
+- **Tasks:** [— | [ID-HU]-T1, [ID-HU]-T2, ...] (solo si particionada)
 
 **Descripción:**
 Como [rol], quiero [funcionalidad] para [beneficio].
@@ -176,6 +177,7 @@ Como [rol], quiero [funcionalidad] para [beneficio].
 - **Refinamiento:** `{{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md`
 - **Fecha refinamiento:** [timestamp]
 - **Estimación:** [X] SP / [Y] horas
+- **Tasks:** [— | [ID-HU]-T1, [ID-HU]-T2, ...] (solo si particionada)
 - **Fecha aprobación:** [timestamp]
 - **Aprobado por:** Arquitecto Onad
 
@@ -209,6 +211,7 @@ Como [rol], quiero [funcionalidad] para [beneficio].
 - **Refinamiento:** `{{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md`
 - **Fecha refinamiento:** [timestamp]
 - **Estimación:** [X] SP / [Y] horas
+- **Tasks:** [— | [ID-HU]-T1, [ID-HU]-T2, ...] (solo si particionada)
 - **Fecha aprobación:** [timestamp]
 - **Plan:** `{{artifacts.planes_folder}}/[ID-HU]_plan_implementacion.md`
 - **Fecha planificación:** [timestamp]
