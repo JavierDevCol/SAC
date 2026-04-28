@@ -8,6 +8,8 @@ mandatory:
   - instruccion: "Generar archivo de refinamiento ANTES de actualizar estado"
   - instruccion: "NUNCA aceptar criterios de aceptación no medibles"
   - instruccion: "Usar desglose VERTICAL (end-to-end), nunca horizontal"
+  - instruccion: "Evaluar partición en tasks funcionales para HUs de complejidad MEDIO o ALTO"
+  - instruccion: "NO forzar partición en HUs de complejidad BAJO (2-3 SP)"
 
 reglas_arquitectonicas_requeridas:
   descripcion: "Si hay reglas arquitectónicas cargadas, considerar:"
@@ -94,6 +96,31 @@ proceso:
     obligatorio: true
     acciones: ["Analizar indicadores según matriz_complejidad", "Clasificar:  BAJO |  MEDIO |  ALTO", "Anunciar nivel al usuario"]
 
+  - paso: "Evaluación de Partición en Tasks"
+    obligatorio: true
+    condicion: "complejidad >= MEDIO (🟡) AND CAs identificados >= 3"
+    acciones:
+      - "Analizar si la HU contiene múltiples objetivos funcionales independientes"
+      - "Indicadores de partición necesaria:"
+      - "  - CAs que agrupan funcionalidades distintas (ej: validar formulario vs enviar email)"
+      - "  - >5 CAs en total"
+      - "  - Slices que podrían entregarse y testearse de forma independiente"
+      - "  - Estimación >= 8 SP"
+      - "SI se detecta necesidad de partición → Proponer al usuario:"
+      - "  '📦 Esta HU tiene [N] objetivos funcionales independientes.'"
+      - "  '💡 Recomiendo particionarla en [M] tasks funcionales:'"
+      - "  '  T1: [Objetivo funcional 1] (CAs: CA-01, CA-02)'"
+      - "  '  T2: [Objetivo funcional 2] (CAs: CA-03, CA-04)'"
+      - "  '  T3: [Objetivo funcional 3] (CAs: CA-05)'"
+      - "  🤷 ¿Aceptas la partición?"
+      - "  ✅ [S] Sí, particionar"
+      - "  ✏️ [E] Editar partición propuesta"
+      - "  ❌ [N] No, mantener como HU única (formato plano)"
+      - "SI usuario acepta partición → Activar modo PARTICIONADA"
+      - "SI usuario rechaza → Continuar con formato plano actual"
+    si_no_cumple_condicion: "HU simple (🟢 BAJO o <3 CAs) → Continuar con formato plano sin ofrecer partición"
+    nota: "La partición es una SUGERENCIA, nunca obligatoria. El usuario decide."
+
   - paso: "Preguntas de Clarificación"
     obligatorio: true
     acciones: ["Identificar ambigüedades en narrativa", "Generar preguntas priorizadas (Alta/Media/Baja)", "Alta: afectan estimación | Media: mejoran UX | Baja: detalles impl"]
@@ -105,7 +132,35 @@ proceso:
   - paso: "Desglose Técnico Vertical"
     obligatorio: true
     condicion: "generar_tareas=true"
-    acciones: ["Identificar slices end-to-end mínimos", "Generar tareas por slice (frontendapiserviciopersistenciatesting)", "Asignar IDs: HU-XXX-UI-01, HU-XXX-API-01"]
+    acciones_modo_plano:
+      - "(Cuando NO hay partición en tasks)"
+      - "Identificar slices end-to-end mínimos"
+      - "Generar tareas por slice (frontend→api→servicio→persistencia→testing)"
+      - "Asignar IDs: HU-XXX-UI-01, HU-XXX-API-01"
+    acciones_modo_particionada:
+      - "(Cuando SÍ hay partición en tasks)"
+      - "Para cada Task funcional:"
+      - "  1. Definir CAs de integración de la HU padre (resumen del objetivo de cada task)"
+      - "  2. Definir CAs granulares de la task (verificables de forma aislada)"
+      - "  3. Generar desglose técnico por capa DENTRO de cada task"
+      - "  4. Asignar IDs: [ID-HU]-T[N] para tasks, [ID-HU]-T[N]-API-01 para tareas técnicas"
+      - "Estructura jerárquica:"
+      - "  HU-001 (padre)"
+      - "    ├── CA-01 (integración) → traza a HU-001-T1"
+      - "    ├── CA-02 (integración) → traza a HU-001-T2"
+      - "    ├── HU-001-T1"
+      - "    │   ├── CA-T1-01 (granular)"
+      - "    │   ├── CA-T1-02 (granular)"
+      - "    │   └── Desglose técnico: API-01, SVC-01, DB-01, TEST-01"
+      - "    └── HU-001-T2"
+      - "        ├── CA-T2-01 (granular)"
+      - "        └── Desglose técnico: API-01, SVC-01, TEST-01"
+      - "Regla de trazabilidad:"
+      - "  - Todas las CAs granulares de T[N] completadas → CA-[N] del padre se cumple"
+      - "  - Todas las CAs del padre satisfechas → HU completada"
+      - "Estimación por task:"
+      - "  - Cada task tiene su propia estimación en SP"
+      - "  - SP del padre = suma de SP de tasks + overhead de integración (si aplica)"
 
   - paso: "Estrategia y Estimación"
     obligatorio: true
@@ -123,6 +178,7 @@ proceso:
       - "Generar {{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento_[concepto].md desde {{plantillas.refinamiento_hu}}"
       - "Rellenar Iteración: 1"
       - "Actualizar estado HU a [R] Refinada"
+      - "SI modo PARTICIONADA → Agregar campo '- **Tasks:** [ID-HU]-T1, [ID-HU]-T2, ...' a la HU en el backlog"
       - "Determinar proyecto de la HU:"
       - "  SI parámetro 'proyecto' especificado → usar ese valor"
       - "  SI Mono-Proyecto → usar nombre del proyecto único"
@@ -182,6 +238,7 @@ salida:
      REFINAMIENTO COMPLETADO: [ID-HU]
      Artefacto: {{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento_[concepto].md
      CA: [X] mejorados + [Y] nuevos | SP: [Z] | Riesgos: [N]
+     Tasks: [M] tasks funcionales (si particionada) | Sin partición (si plano)
      Siguiente: >validar_hu [ID-HU]
 
 errores:

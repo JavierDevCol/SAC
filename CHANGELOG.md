@@ -9,12 +9,12 @@
 
 | Componente | Versión Actual | Última Actualización |
 |------------|----------------|----------------------|
-| **Sistema SAC** | 7.17.0 | 2026-04-28 |
-| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.17.0 | 2026-04-28 |
+| **Sistema SAC** | 7.18.0 | 2026-04-28 |
+| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.18.0 | 2026-04-28 |
 | **Configuración Usuario** (`config/CONFIG_USER.template.yaml`) | 7.9.0 | 2026-04-24 |
 | **Roles SAC** (`agentes/*.rol.md`) | 7.17.0 | 2026-04-28 |
-| **Herramientas** (`herramientas/*.tool.yaml`) | 7.17.0 | 2026-04-28 |
-| **Plantillas** (`plantillas/`) | 7.16.1 | 2026-04-28 |
+| **Herramientas** (`herramientas/*.tool.yaml`) | 7.18.0 | 2026-04-28 |
+| **Plantillas** (`plantillas/`) | 7.18.0 | 2026-04-28 |
 | **Guía de Comandos** (`guias/guia_comandos.md`) | 7.15.0 | 2026-04-28 |
 | **Guía de Roles** (`guias/guia_roles_activos.md`) | 3.0 | 2026-01-05 |
 | **Guía Ciclo de Vida** (`guias/guia_ciclo_vida_tareas.md`) | 7.15.0 | 2026-04-28 |
@@ -22,6 +22,40 @@
 ---
 
 ## 🚀 Historial de Versiones
+
+### [7.18.0] - 2026-04-28
+
+#### 📦 Feat: Descomposición jerárquica de HUs en Tasks funcionales con CAs granulares
+
+**Objetivo:** Permitir que HUs de complejidad media-alta se descompongan en Tasks funcionales (work items lógicos) con sus propios Criterios de Aceptación granulares y desglose técnico, manteniendo trazabilidad CA padre ↔ CA hijas. Las Tasks viven dentro del refinamiento (sin explosión de archivos) y se referencian como texto plano en el backlog.
+
+#### ✅ Cambios en Herramientas
+
+| Cambio | Detalle |
+|--------|---------||
+| `refinar_hu.tool.yaml` | Nueva regla mandatory: evaluar partición en tasks para complejidad ≥ MEDIO |
+| `refinar_hu.tool.yaml` | Nuevo paso "Evaluación de Partición en Tasks": detecta HUs con múltiples objetivos funcionales independientes, propone partición al usuario (nunca forzada) |
+| `refinar_hu.tool.yaml` | Paso "Desglose Técnico Vertical" transformado: soporta modo plano (actual) y modo particionada (tasks funcionales con CAs granulares + desglose técnico por task) |
+| `refinar_hu.tool.yaml` | Persistencia: agrega campo `Tasks` a la HU en backlog cuando hay partición |
+| `validar_hu.tool.yaml` | Paso "Validación de CAs": verifica trazabilidad CA padre ↔ Tasks si modo particionada; sugiere partición si HU plana con ≥6 CAs y complejidad ≥ MEDIO |
+
+#### ✅ Cambios en Plantillas
+
+| Cambio | Detalle |
+|--------|---------||
+| `refinamiento_hu_plantilla.md` | Metadata: nuevos campos `Modo` (Plano/Particionada) y `Tasks` |
+| `refinamiento_hu_plantilla.md` | Sección 2 (CAs): comentarios de traza a tasks |
+| `refinamiento_hu_plantilla.md` | Sección 4: dos opciones (4A modo plano, 4B modo particionada con Tasks que incluyen CAs granulares + desglose técnico por task) |
+| `backlog_desarrollo_plantilla.md` | Campo `Tasks` agregado a plantillas de estado [R], [A], [P] |
+| `backlog_desarrollo_plantilla.md` | Índice Rápido: nueva columna `Tasks` |
+
+#### ✅ Cambios en Configuración
+
+| Cambio | Detalle |
+|--------|---------||
+| `CONFIG_SYSTEM.yaml` | version 7.17.0 → 7.18.0 |
+
+---
 
 ### [7.17.0] - 2026-04-28
 
