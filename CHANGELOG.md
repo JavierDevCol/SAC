@@ -9,12 +9,12 @@
 
 | Componente | Versión Actual | Última Actualización |
 |------------|----------------|----------------------|
-| **Sistema SAC** | 7.18.0 | 2026-04-28 |
-| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.18.0 | 2026-04-28 |
+| **Sistema SAC** | 7.19.0 | 2026-04-28 |
+| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.19.0 | 2026-04-28 |
 | **Configuración Usuario** (`config/CONFIG_USER.template.yaml`) | 7.9.0 | 2026-04-24 |
 | **Roles SAC** (`agentes/*.rol.md`) | 7.17.0 | 2026-04-28 |
-| **Herramientas** (`herramientas/*.tool.yaml`) | 7.18.0 | 2026-04-28 |
-| **Plantillas** (`plantillas/`) | 7.18.0 | 2026-04-28 |
+| **Herramientas** (`herramientas/*.tool.yaml`) | 7.19.0 | 2026-04-28 |
+| **Plantillas** (`plantillas/`) | 7.19.0 | 2026-04-28 |
 | **Guía de Comandos** (`guias/guia_comandos.md`) | 7.15.0 | 2026-04-28 |
 | **Guía de Roles** (`guias/guia_roles_activos.md`) | 3.0 | 2026-01-05 |
 | **Guía Ciclo de Vida** (`guias/guia_ciclo_vida_tareas.md`) | 7.15.0 | 2026-04-28 |
@@ -22,6 +22,56 @@
 ---
 
 ## 🚀 Historial de Versiones
+
+### [7.19.0] - 2026-04-28
+
+#### 📦 Feat: Soporte de ejecución por tasks funcionales en pipeline planificar→ejecutar
+
+**Objetivo:** Completar el soporte end-to-end de HUs particionadas en tasks funcionales. El refinador ya soportaba partición (v7.18.0), pero el planificador y ejecutor no sabían generar ni iterar planes organizados por tasks. Esta versión cierra la brecha: planes conscientes de tasks con dependencias explícitas, ejecución granular por task (completa, task_por_task, task_especifica), y retrocompatibilidad total con HUs planas.
+
+#### ✅ Cambios en Herramientas
+
+| Cambio | Detalle |
+|--------|---------|
+| `ejecutar_plan.tool.yaml` v4.3 → v5.0 | Nuevos `modo_ejecucion`: `task_por_task` (pausa entre tasks) y `task_especifica` (ejecuta solo una task) |
+| `ejecutar_plan.tool.yaml` | Nuevo parámetro `task_id`: ID de task funcional para modo `task_especifica` |
+| `ejecutar_plan.tool.yaml` | Nuevo paso "Resolver Modo de Ejecución": detecta campo Modo del plan, degrada modos incompatibles con aviso (nunca rompe), valida dependencias entre tasks |
+| `ejecutar_plan.tool.yaml` | Paso "Ejecutar Fases" transformado a "Ejecutar Plan según Modo Resuelto": doble estrategia (acciones_modo_plano = comportamiento actual, acciones_modo_particionada = iteración por tasks → fases internas) |
+| `ejecutar_plan.tool.yaml` | Paso "Validar CAs" evolucionado: CAs granulares por task + CAs de integración al final |
+| `ejecutar_plan.tool.yaml` | Paso "Finalización" evolucionado: soporta finalización parcial (task_especifica con tasks pendientes mantiene HU en [E]) |
+| `ejecutar_plan.tool.yaml` | Salida diferenciada: `mensaje_exito_completo` vs `mensaje_exito_task` |
+| `planificar_hu.tool.yaml` v4.1 → v5.0 | Nuevas mandatory: organizar plan por tasks si Modo=Particionada, numeración global de tareas técnicas |
+| `planificar_hu.tool.yaml` | Paso "Secuenciación de Tareas" bifurcado: Modo Plano (sin cambios) vs Modo Particionada (tasks → fases internas, tabla dependencias, numeración global, marca cross-task ⟵T[N]) |
+| `planificar_hu.tool.yaml` | Paso "Generación del Plan" bifurcado: genera campos Modo/Tasks en Metadata, sección Dependencias entre Tasks, progreso por task, sub-fases por task, CAs granulares por task + CAs integración |
+
+#### ✅ Cambios en Plantillas
+
+| Cambio | Detalle |
+|--------|---------|
+| `plan_implementacion_plantilla.md` v2.0 → v3.0 | Metadata: nuevos campos `Modo` (Plano/Particionada) y `Tasks` |
+| `plan_implementacion_plantilla.md` | Progreso General: opción tabla por fases (plano) o por tasks (particionada) |
+| `plan_implementacion_plantilla.md` | Nueva sección condicional "Dependencias entre Tasks" con tabla Task/Depende de/Razón/Ejecutable |
+| `plan_implementacion_plantilla.md` | Estructura dual: Opción A (modo plano, sin cambios) vs Opción B (modo particionada: Task > Fases internas > Tareas técnicas con dependencias cross-task ⟵T[N]) |
+| `plan_implementacion_plantilla.md` | Fase Final: CAs de integración (padre) con nota sobre CAs granulares validados por task |
+| `plan_implementacion_plantilla.md` | Historial de Ejecución: columna Task agregada para modo particionada |
+
+#### ✅ Cambios en Configuración
+
+| Cambio | Detalle |
+|--------|---------|
+| `CONFIG_SYSTEM.yaml` | version 7.18.0 → 7.19.0 |
+
+#### 📊 Tabla de compatibilidad modo_ejecucion
+
+| `modo_ejecucion` | HU Plana | HU Particionada |
+|---|---|---|
+| `completo` | ✅ Igual que antes | ✅ T1→T2→T3 sin pausas |
+| `fase_por_fase` | ✅ Igual que antes | ⚠️→ `task_por_task` con aviso |
+| `tarea_por_tarea` | ✅ Igual que antes | ✅ Pausa en cada tarea técnica |
+| `task_por_task` (nuevo) | ⚠️→ `fase_por_fase` con aviso | ✅ Pausa entre tasks funcionales |
+| `task_especifica` (nuevo) | ⛔ Error claro | ✅ Solo task indicada en task_id |
+
+---
 
 ### [7.18.0] - 2026-04-28
 
