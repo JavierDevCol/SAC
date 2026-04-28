@@ -1,6 +1,6 @@
 ﻿---
 tipo: plan_implementacion
-version: "2.0"
+version: "3.0"
 generado_por: ">planificar_hu"
 actualizado_por: ">ejecutar_plan"
 ---
@@ -19,30 +19,40 @@ actualizado_por: ">ejecutar_plan"
 | **Última actualización** | [FECHA_ISO_8601] |
 | **Estimación total** | [X] horas |
 | **Estado** | [PENDIENTE \| EN_PROGRESO \| COMPLETADO \| BLOQUEADO] |
+| **Modo** | [Plano \| Particionada] |
+| **Tasks** | [— \| [ID-HU]-T1, [ID-HU]-T2, ...] |
 
 ## Progreso General
 
 <!--
 INSTRUCCIÓN PARA >planificar_hu:
-Generar filas de fases según arquitectura detectada en contexto_proyecto.md:
 
-SI arquitectura = Hexagonal:
-  Fases: Infraestructura  Dominio  Aplicación  Adaptadores  Testing  Validación
+SI Modo = 'Plano':
+  Generar filas de fases según arquitectura detectada en contexto_proyecto.md:
 
-SI arquitectura = MVC:
-  Fases: Infraestructura  Modelos  Controladores  Vistas  Testing  Validación
+  SI arquitectura = Hexagonal:
+    Fases: Infraestructura  Dominio  Aplicación  Adaptadores  Testing  Validación
 
-SI arquitectura = Capas:
-  Fases: Infraestructura  Datos  Negocio  Presentación  Testing  Validación
+  SI arquitectura = MVC:
+    Fases: Infraestructura  Modelos  Controladores  Vistas  Testing  Validación
 
-SI arquitectura = Script/CLI:
-  Fases: Setup  Lógica Principal  Testing  Validación
+  SI arquitectura = Capas:
+    Fases: Infraestructura  Datos  Negocio  Presentación  Testing  Validación
 
-SI arquitectura = Frontend (React/Vue/Angular):
-  Fases: Setup  Componentes  Hooks/Services  Integración  Testing  Validación
+  SI arquitectura = Script/CLI:
+    Fases: Setup  Lógica Principal  Testing  Validación
 
-DEFAULT:
-  Fases: Preparación  Implementación  Testing  Validación
+  SI arquitectura = Frontend (React/Vue/Angular):
+    Fases: Setup  Componentes  Hooks/Services  Integración  Testing  Validación
+
+  DEFAULT:
+    Fases: Preparación  Implementación  Testing  Validación
+
+  Usar tabla de fases (formato actual).
+
+SI Modo = 'Particionada':
+  Generar tabla agrupada por task funcional (NO por fase arquitectónica).
+  Agregar fila final para Validación CA Integración.
 -->
 
 | Fase | Estado | Progreso |
@@ -53,7 +63,43 @@ DEFAULT:
 | Fase N: Testing | [ESTADO] | [X/Y] tareas |
 | Fase Final: Validación CA | [ESTADO] | [X/Y] criterios |
 
+<!-- OPCIÓN PARTICIONADA: Reemplazar tabla anterior por esta si Modo = Particionada -->
+<!--
+| Task | Descripción | Estado | Progreso |
+|------|-------------|--------|----------|
+| [ID-HU]-T1 | [Título task 1] | [ESTADO] | [X/Y] tareas |
+| [ID-HU]-T2 | [Título task 2] | [ESTADO] | [X/Y] tareas |
+| [ID-HU]-T3 | [Título task 3] | [ESTADO] | [X/Y] tareas |
+| — | Validación CA Integración | [ESTADO] | [X/Y] criterios |
+-->
+
 ---
+
+<!-- ======================================================================== -->
+<!-- SECCIÓN SOLO PARTICIONADA: Dependencias entre Tasks                     -->
+<!-- Incluir SOLO si Modo = Particionada. Eliminar si Modo = Plano.          -->
+<!-- ======================================================================== -->
+<!--
+## Dependencias entre Tasks
+
+| Task | Depende de | Razón | Ejecutable? |
+|------|-----------|-------|:-----------:|
+| [ID-HU]-T1 | — | Sin dependencias | ✅ |
+| [ID-HU]-T2 | [ID-HU]-T1 | [Razón: requiere entidades/ports/endpoints de T1] | ⛔ |
+| [ID-HU]-T3 | [ID-HU]-T1, [ID-HU]-T2 | [Razón: requiere backend completo] | ⛔ |
+
+> 💡 La columna "Ejecutable?" se evalúa en tiempo de ejecución por >ejecutar_plan según el estado actual de cada task.
+-->
+
+---
+
+<!-- ======================================================================== -->
+<!-- ESTRUCTURA MODO PLANO (sin tasks): Usar secciones de fase directas      -->
+<!-- ESTRUCTURA MODO PARTICIONADA: Usar secciones de Task > Fases internas   -->
+<!-- Elegir UNA estructura según el Modo del refinamiento. Eliminar la otra. -->
+<!-- ======================================================================== -->
+
+<!-- ═══ OPCIÓN A: MODO PLANO (eliminar si Modo = Particionada) ═══ -->
 
 ## Fase 1: [NOMBRE_FASE_1]
 
@@ -134,13 +180,69 @@ Frontend: Hooks, Services, API calls
 - [ ] Validar flujo completo
 - **Estimación:** [X]h | **Dependencia:** [dependencias]
 
+<!-- ═══ OPCIÓN B: MODO PARTICIONADA (eliminar Opción A si se usa esta) ═══ -->
+
+<!--
+## Task [ID-HU]-T1: [Título de la task funcional]
+**Traza CA padre:** CA-01
+**Estimación:** [X] SP (~[Y]h)
+**Depende de:** —
+
+### Fase 1: [Nombre fase según arquitectura de la task]
+
+#### T01: [Título de la tarea] [PENDIENTE]
+- [ ] Paso 1: [Descripción]
+- [ ] Paso 2: [Descripción]
+- **Estimación:** [X]h | **Dependencia:** —
+
+### Fase 2: [Nombre fase]
+
+#### T02: [Título de la tarea] [PENDIENTE]
+- [ ] [Descripción del paso]
+- **Estimación:** [X]h | **Dependencia:** T01
+
+### Fase N: Testing
+
+#### T03: Tests [Componente] [PENDIENTE]
+- [ ] Tests unitarios
+- [ ] Tests integración
+- **Estimación:** [X]h | **Dependencia:** T01, T02
+
+### Validar CAs de T1
+
+- [ ] **CA-T1-01:** [Descripción del CA granular 1]
+- [ ] **CA-T1-02:** [Descripción del CA granular 2]
+
+---
+
+## Task [ID-HU]-T2: [Título de la task funcional]
+**Traza CA padre:** CA-02
+**Estimación:** [X] SP (~[Y]h)
+**Depende de:** [ID-HU]-T1
+
+### Fase 1: [Nombre fase]
+
+#### T04: [Título de la tarea] [PENDIENTE]
+- [ ] [Descripción del paso]
+- **Estimación:** [X]h | **Dependencia:** T01 ⟵T1
+
+> NOTA sobre dependencias cross-task:
+> - Dependencia intra-task: "Dependencia: T05" (sin marca, misma task)
+> - Dependencia cross-task: "Dependencia: T01 ⟵T1" (tarea T01 pertenece a task T1)
+> El ejecutor usa la marca ⟵T[N] para validar que la task dependiente esté [EJECUTADA].
+
+### Validar CAs de T2
+
+- [ ] **CA-T2-01:** [Descripción del CA granular 1]
+-->
+
 ---
 
 ## Fase Final: Validar Criterios de Aceptación
 
 >  **IMPORTANTE:** Copiar criterios de aceptación de la HU.
-> Al validar cada criterio, marcarlo aquí Y en la HU.
-
+> Al validar cada criterio, marcarlo aquí Y en la HU.> En modo Particionada, esta sección contiene los CAs de INTEGRACIÓN (padre).
+> Los CAs granulares se validan dentro de cada task.
 ### Criterios de Aceptación
 
 - [ ] **CA-01:** [Descripción del criterio de aceptación 1]
@@ -173,6 +275,14 @@ Frontend: Hooks, Services, API calls
 
 ## Historial de Ejecución
 
+<!-- Modo Plano: usar tabla sin columna Task -->
 | Fecha | Acción | Tarea | Resultado |
 |-------|--------|-------|-----------|
 | [FECHA] | Inicio | - | Plan creado |
+
+<!-- Modo Particionada: usar tabla CON columna Task -->
+<!--
+| Fecha | Acción | Task | Tarea | Resultado |
+|-------|--------|------|-------|-----------|
+| [FECHA] | Inicio | — | — | Plan creado |
+-->
