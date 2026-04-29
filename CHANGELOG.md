@@ -9,11 +9,11 @@
 
 | Componente | Versión Actual | Última Actualización |
 |------------|----------------|----------------------|
-| **Sistema SAC** | 7.21.1 | 2026-04-29 |
-| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.21.1 | 2026-04-29 |
+| **Sistema SAC** | 7.21.2 | 2026-04-29 |
+| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.21.2 | 2026-04-29 |
 | **Configuración Usuario** (`config/CONFIG_USER.template.yaml`) | 7.9.0 | 2026-04-24 |
 | **Roles SAC** (`agentes/*.rol.md`) | 7.21.1 | 2026-04-29 |
-| **Herramientas** (`herramientas/*.tool.yaml`) | 7.21.0 | 2026-04-28 |
+| **Herramientas** (`herramientas/*.tool.yaml`) | 7.21.2 | 2026-04-29 |
 | **Plantillas** (`plantillas/`) | 7.21.0 | 2026-04-28 |
 | **Guía de Comandos** (`guias/guia_comandos.md`) | 7.15.0 | 2026-04-28 |
 | **Guía de Roles** (`guias/guia_roles_activos.md`) | 3.0 | 2026-01-05 |
@@ -22,6 +22,33 @@
 ---
 
 ## 🚀 Historial de Versiones
+
+### [7.21.2] - 2026-04-29
+
+#### 🐛 Fix: Corregir flujo `>registrar_hallazgo` y coherencia con herramientas destino
+
+**Objetivo:** Resolver 5 inconsistencias detectadas en el flujo dispatcher→destino: colisión de alias, pérdida de ID al saltar Paso 1, re-confirmación redundante, campo `ya_corregido` no transferido, y prerequisitos no validados.
+
+#### ✅ Cambios en Herramientas
+
+| Cambio | Detalle |
+|--------|--------|
+| `registrar_hallazgo.tool.yaml` | Agregar `origen`, `ya_corregido`, `clasificacion_confirmada` al contexto transferido |
+| `registrar_hallazgo.tool.yaml` | Reemplazar "SALTA Paso 1" por "MODO ABREVIADO" que preserva asignación de ID |
+| `registrar_hallazgo.tool.yaml` | Agregar validación de prerequisitos antes de redirigir |
+| `registrar_hallazgo.tool.yaml` | Agregar pregunta `¿ya fue corregido?` en Paso 1 de recepción |
+| `registrar_pendiente.tool.yaml` | Eliminar alias duplicado `>hallazgo` (evita colisión con dispatcher) |
+| `registrar_pendiente.tool.yaml` | Agregar salto condicional de Paso 2 cuando `origen=dispatcher` |
+| `registrar_pendiente.tool.yaml` | Agregar instrucción MODO ABREVIADO en Paso 1 |
+| `registrar_bug.tool.yaml` | Agregar instrucción MODO ABREVIADO en Paso 1 |
+
+#### ✅ Cambios en Configuración
+
+| Cambio | Detalle |
+|--------|--------|
+| `CONFIG_SYSTEM.yaml` | version 7.21.1 → 7.21.2 |
+
+---
 
 ### [7.21.1] - 2026-04-29
 
