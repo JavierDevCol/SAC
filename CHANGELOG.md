@@ -9,12 +9,12 @@
 
 | Componente | Versión Actual | Última Actualización |
 |------------|----------------|----------------------|
-| **Sistema SAC** | 7.20.0 | 2026-04-28 |
-| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.20.0 | 2026-04-28 |
+| **Sistema SAC** | 7.21.0 | 2026-04-28 |
+| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.21.0 | 2026-04-28 |
 | **Configuración Usuario** (`config/CONFIG_USER.template.yaml`) | 7.9.0 | 2026-04-24 |
 | **Roles SAC** (`agentes/*.rol.md`) | 7.17.0 | 2026-04-28 |
-| **Herramientas** (`herramientas/*.tool.yaml`) | 7.20.0 | 2026-04-28 |
-| **Plantillas** (`plantillas/`) | 7.20.0 | 2026-04-28 |
+| **Herramientas** (`herramientas/*.tool.yaml`) | 7.21.0 | 2026-04-28 |
+| **Plantillas** (`plantillas/`) | 7.21.0 | 2026-04-28 |
 | **Guía de Comandos** (`guias/guia_comandos.md`) | 7.15.0 | 2026-04-28 |
 | **Guía de Roles** (`guias/guia_roles_activos.md`) | 3.0 | 2026-01-05 |
 | **Guía Ciclo de Vida** (`guias/guia_ciclo_vida_tareas.md`) | 7.15.0 | 2026-04-28 |
@@ -22,6 +22,61 @@
 ---
 
 ## 🚀 Historial de Versiones
+
+### [7.21.0] - 2026-04-28
+
+#### 📦 Refactor: Nomenclatura jerárquica TASK-N / TASK-N-EJEC-NN + propagación [~] candidato
+
+**Objetivo:** Unificar nomenclatura de tasks funcionales y tareas técnicas con IDs compuestos auto-documentados. Eliminar marcas `⟵T[N]` (redundantes con IDs compuestos). Formalizar cadena de satisfacción ascendente con estado intermedio `[~]` candidato.
+
+**Nomenclatura nueva:**
+| Antes | Ahora | Contexto |
+|-------|-------|----------|
+| `[ID-HU]-T1` | `[ID-HU]-TASK-1` | Task funcional |
+| `T01`, `T02` | `TASK-1-EJEC-01`, `TASK-1-EJEC-02` | Tarea técnica (compuesta, por task) |
+| `CA-T1-01` | `CA-TASK1-01` | CA granular |
+| `T03 ⟵T1` | `TASK-1-EJEC-03` | Dependencia cross-task (auto-documentada) |
+
+**Propagación ascendente:**
+| Estado | Símbolo | Significado |
+|--------|---------|-------------|
+| Pendiente | `[ ]` | No validado aún |
+| Candidato | `[~]` | CAs granulares pasan, pendiente integración |
+| Cumplido | `[X]` | Validado contra código + integración |
+| Fallido | `[!]` | Validación falló |
+
+#### ✅ Cambios en Herramientas
+
+| Cambio | Detalle |
+|--------|--------|
+| `refinar_hu.tool.yaml` | Nomenclatura: `T1`→`TASK-1`, `CA-T1-01`→`CA-TASK1-01`, `[ID-HU]-T[N]-API-01`→`[ID-HU]-TASK-N-API-01` |
+| `refinar_hu.tool.yaml` | Cadena satisfacción: incluye estado `[~]` candidato antes de `[X]` |
+| `validar_hu.tool.yaml` | Nomenclatura: `T[N]`→`TASK-N` en cadena de satisfacción |
+| `planificar_hu.tool.yaml` | Nomenclatura: `T01`→`TASK-N-EJEC-NN` (IDs compuestos por task) |
+| `planificar_hu.tool.yaml` | Eliminadas marcas `⟵T[N]` — IDs compuestos son auto-documentados |
+| `ejecutar_plan.tool.yaml` | Nomenclatura: IDs compuestos en actualización en tiempo real, reanudación, mensajes |
+| `ejecutar_plan.tool.yaml` | Nuevo: CAs granulares pasan a `[~]` candidato (no `[X]` directo) |
+| `validar_ca.tool.yaml` | Nuevo: lógica de propagación ascendente `[ ]→[~]→[X]` con estados formalizados |
+| `validar_ca.tool.yaml` | Nuevo: `--scope integracion` confirma `[~]→[X]` o `[~]→[!]` |
+
+#### ✅ Cambios en Plantillas
+
+| Cambio | Detalle |
+|--------|--------|
+| `refinamiento_hu_plantilla.md` | Tasks: `[ID-HU]-T1`→`[ID-HU]-TASK-1`, CAs: `CA-T1-01`→`CA-TASK1-01` |
+| `refinamiento_hu_plantilla.md` | Desglose: `[ID-HU]-T1-API-01`→`[ID-HU]-TASK-1-API-01` |
+| `refinamiento_hu_plantilla.md` | Cadena satisfacción: incluye `[~]` candidato |
+| `plan_implementacion_plantilla.md` | Tareas técnicas: `T01`→`TASK-1-EJEC-01` (IDs compuestos) |
+| `plan_implementacion_plantilla.md` | Eliminada notación `⟵T[N]` y nota explicativa — reemplazada por nota sobre prefijos |
+| `plan_implementacion_plantilla.md` | CAs: `CA-T1-01`→`CA-TASK1-01` en tablas de verificación |
+| `backlog_desarrollo_plantilla.md` | Índice Rápido: `T1,T2`→`TASK-1,TASK-2` |
+| `backlog_desarrollo_plantilla.md` | Estados [R], [A], [P]: `[ID-HU]-T1`→`[ID-HU]-TASK-1` |
+
+#### ✅ Cambios en Configuración
+
+| Cambio | Detalle |
+|--------|--------|
+| `CONFIG_SYSTEM.yaml` | version 7.20.0 → 7.21.0 |
 
 ### [7.20.0] - 2026-04-28
 
