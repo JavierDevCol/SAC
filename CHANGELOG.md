@@ -9,11 +9,11 @@
 
 | Componente | Versión Actual | Última Actualización |
 |------------|----------------|----------------------|
-| **Sistema SAC** | 7.21.2 | 2026-04-29 |
-| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.21.2 | 2026-04-29 |
+| **Sistema SAC** | 7.22.0 | 2026-04-29 |
+| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.22.0 | 2026-04-29 |
 | **Configuración Usuario** (`config/CONFIG_USER.template.yaml`) | 7.9.0 | 2026-04-24 |
 | **Roles SAC** (`agentes/*.rol.md`) | 7.21.1 | 2026-04-29 |
-| **Herramientas** (`herramientas/*.tool.yaml`) | 7.21.2 | 2026-04-29 |
+| **Herramientas** (`herramientas/*.tool.yaml`) | 7.22.0 | 2026-04-29 |
 | **Plantillas** (`plantillas/`) | 7.21.0 | 2026-04-28 |
 | **Guía de Comandos** (`guias/guia_comandos.md`) | 7.15.0 | 2026-04-28 |
 | **Guía de Roles** (`guias/guia_roles_activos.md`) | 3.0 | 2026-01-05 |
@@ -22,6 +22,30 @@
 ---
 
 ## 🚀 Historial de Versiones
+
+### [7.22.0] - 2026-04-29
+
+#### ♻️ Refactor: Simplificar triage de `>registrar_bug` a flujo único HU-Bug
+
+**Objetivo:** Eliminar las opciones [V] Vincular y [A] Agregar ajuste del triage de bugs, que no aplican en un flujo post-testing. Los bugs siempre generan una HU tipo Bug con referencia a la HU de origen.
+
+#### ✅ Cambios en Herramientas
+
+| Cambio | Detalle |
+|--------|--------|
+| `registrar_bug.tool.yaml` | Eliminar opciones [V] Vincular y [A] Agregar ajuste del Paso 4 |
+| `registrar_bug.tool.yaml` | Renombrar Paso 4 a "Contextualización — Búsqueda de HU de Origen" |
+| `registrar_bug.tool.yaml` | Nuevo Paso 5 "Crear HU tipo Bug en Backlog" (siempre se ejecuta) |
+| `registrar_bug.tool.yaml` | Agregar campo `Detectado_en` para trazabilidad con HU de origen |
+| `registrar_bug.tool.yaml` | Actualizar mandatory: "SIEMPRE crear HU tipo Bug en el backlog" |
+
+#### ✅ Cambios en Configuración
+
+| Cambio | Detalle |
+|--------|--------|
+| `CONFIG_SYSTEM.yaml` | version 7.21.2 → 7.22.0 |
+
+---
 
 ### [7.21.2] - 2026-04-29
 
