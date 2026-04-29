@@ -9,12 +9,12 @@
 
 | Componente | Versión Actual | Última Actualización |
 |------------|----------------|----------------------|
-| **Sistema SAC** | 7.23.0 | 2026-04-29 |
-| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.23.0 | 2026-04-29 |
+| **Sistema SAC** | 7.24.0 | 2026-04-29 |
+| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.24.0 | 2026-04-29 |
 | **Configuración Usuario** (`config/CONFIG_USER.template.yaml`) | 7.9.0 | 2026-04-24 |
 | **Roles SAC** (`agentes/*.rol.md`) | 7.21.1 | 2026-04-29 |
-| **Herramientas** (`herramientas/*.tool.yaml`) | 7.23.0 | 2026-04-29 |
-| **Plantillas** (`plantillas/`) | 7.23.0 | 2026-04-29 |
+| **Herramientas** (`herramientas/*.tool.yaml`) | 7.24.0 | 2026-04-29 |
+| **Plantillas** (`plantillas/`) | 7.24.0 | 2026-04-29 |
 | **Guía de Comandos** (`guias/guia_comandos.md`) | 7.15.0 | 2026-04-28 |
 | **Guía de Roles** (`guias/guia_roles_activos.md`) | 3.0 | 2026-01-05 |
 | **Guía Ciclo de Vida** (`guias/guia_ciclo_vida_tareas.md`) | 7.15.0 | 2026-04-28 |
@@ -22,6 +22,40 @@
 ---
 
 ## 🚀 Historial de Versiones
+
+### [7.24.0] - 2026-04-29
+
+#### ✨ Feat: Ciclo reducido para bugs — saltar `>refinar_hu` y `>validar_hu`
+
+**Objetivo:** Los bugs ya no requieren el ciclo completo de vida de una HU. `registrar_bug` produce contexto equivalente a un refinamiento (causa raíz, archivos afectados, corrección sugerida), por lo que la HU-Bug se crea directamente en estado `[P] Planificable`.
+
+**Flujo anterior:** `registrar_bug` → `refinar_hu` → `validar_hu` → `planificar_hu` → `ejecutar_plan` (5 pasos)
+**Flujo nuevo:** `registrar_bug` → `planificar_hu` → `ejecutar_plan` (3 pasos)
+
+#### ✅ Cambios en Herramientas
+
+| Cambio | Detalle |
+|--------|--------|
+| `registrar_bug.tool.yaml` | HU-Bug se crea en estado `[P] Planificable` (no `🆕`) |
+| `registrar_bug.tool.yaml` | Agregar campo `Proyecto` a la HU-Bug en backlog |
+| `registrar_bug.tool.yaml` | Nuevo paso "Corrección Sugerida" para bugs no corregidos |
+| `planificar_hu.tool.yaml` | Aceptar bugs desde `[P]` (eliminar restricción `[R]`/`[A]`) |
+| `planificar_hu.tool.yaml` | Eliminar referencia obsoleta a `🐛 Ajustes por Bug en refinamiento` |
+| `planificar_hu.tool.yaml` | Leer `Corrección Sugerida` del archivo bug para generar plan |
+
+#### ✅ Cambios en Plantillas
+
+| Cambio | Detalle |
+|--------|--------|
+| `bug_plantilla.md` | Sección Corrección acepta variante `SUGERIDA` para bugs no corregidos |
+
+#### ✅ Cambios en Configuración
+
+| Cambio | Detalle |
+|--------|--------|
+| `CONFIG_SYSTEM.yaml` | version 7.23.0 → 7.24.0 |
+
+---
 
 ### [7.23.0] - 2026-04-29
 
