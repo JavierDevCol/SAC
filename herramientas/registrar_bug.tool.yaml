@@ -24,8 +24,8 @@ mandatory:
   # === CONFIGURACIÃ“N DE IDIOMA ===
   - instruccion: "Generar TODOS los artefactos/documentos en el idioma definido en 'idiomas.documentacion'"
   # === ESPECÃFICAS DE LA HERRAMIENTA ===
-  - instruccion: "Todo bug DEBE tener triage antes de considerarse procesado"
-  - instruccion: "SIEMPRE buscar HUs existentes en el backlog antes de crear una nueva"
+  - instruccion: "Todo bug DEBE tener contextualizaciÃ³n de origen antes de considerarse procesado"
+  - instruccion: "SIEMPRE crear HU tipo Bug en el backlog. Buscar HU de origen para trazabilidad"
   - instruccion: "Los bugs afectan funcionalidad del sistema â€” priorizar resoluciÃ³n"
   - instruccion: "El ID del bug sigue el patrÃ³n BUG-NNN (autoincremental basado en archivos existentes en {{artifacts.bugs_folder}})"
   - instruccion: "Al registrar un bug ya corregido, completar TODAS las secciones incluyendo CorrecciÃ³n y LecciÃ³n Aprendida"
@@ -94,48 +94,38 @@ proceso:
       - "SI hay inconsistencia entre capas/componentes â†’ Documentar con tabla comparativa"
       - "Listar archivos afectados con descripciÃ³n del problema en cada uno"
 
-  - paso: "Triage â€” BÃºsqueda de HU Existente"
+  - paso: "ContextualizaciÃ³n â€” BÃºsqueda de HU de Origen"
     obligatorio: true
-    condicion: "SI NO es --ya_corregido (bugs ya corregidos no necesitan triage)"
+    condicion: "SI NO es --ya_corregido (bugs ya corregidos registran detectado_en directamente)"
     acciones:
       - "Leer {{archivos.backlog}}"
       - "Buscar HUs cuyo alcance funcional cubra el mÃ³dulo/componente afectado por el bug"
-      - "Buscar HUs con estado [E] En EjecuciÃ³n o [P] Planificada en el mismo mÃ³dulo"
       - "SI encuentra HU(s) candidata(s):"
       - "  Mostrar al usuario las HUs encontradas con su estado actual"
       - "  Preguntar:"
-      - "  > ðŸ¤· Â¿CÃ³mo proceder con este bug?"
-      - "  > - ðŸ”— [V] Vincular a HU-XXX (se resolverÃ¡ cuando se complete esa HU)"
-      - "  > - ðŸ“ [A] Agregar ajuste a HU-XXX (instrucciones de correcciÃ³n en la HU existente)"
-      - "  > - ðŸ†• [N] Crear nueva HU tipo Bug (es un problema independiente)"
+      - "  > ðŸ¤· Â¿Este bug se detectÃ³ probando alguna de estas HUs?"
+      - "  > - [HU-XXX] [TÃ­tulo de la HU]"
+      - "  > - âŒ [N] Ninguna â€” se detectÃ³ en otro contexto"
+      - "  SI selecciona HU â†’ Registrar detectado_en = HU-XXX"
+      - "  SI [N] â†’ Registrar detectado_en = [contexto libre del usuario o parÃ¡metro detectado_en]"
       - "SI NO encuentra HUs relacionadas:"
-      - "  Informar: 'No se encontraron HUs que cubran este mÃ³dulo. Se crearÃ¡ nueva HU tipo Bug.'"
+      - "  Registrar detectado_en = [parÃ¡metro detectado_en o contexto proporcionado por el usuario]"
 
-  - paso: "AcciÃ³n segÃºn Triage"
+  - paso: "Crear HU tipo Bug en Backlog"
     obligatorio: true
     condicion: "SI NO es --ya_corregido"
     acciones:
-      - "SI [V] Vincular a HU existente:"
-      - "  1. Registrar en el archivo bug la referencia: 'Detectado en HU-XXX'"
-      - "  2. Estado del bug: 'ðŸ”— Vinculado a HU'"
-      - "  3. NO crear nueva HU en backlog"
-      - "SI [A] Agregar ajuste a HU existente:"
-      - "  1. Leer refinamiento de la HU desde {{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento*.md"
-      - "  2. SI el refinamiento NO tiene secciÃ³n '## ðŸ› Ajustes por Bug' â†’ Crearla al final antes de la firma"
-      - "  3. Agregar bloque de ajuste en esa secciÃ³n:"
-      - "     ### BUG-NNN: [TÃ­tulo del bug]"
-      - "     - **Severidad:** [severidad]"
-      - "     - **Causa raÃ­z:** [resumen de causa raÃ­z del paso anterior]"
-      - "     - **Archivos a modificar:** [lista de archivos afectados]"
-      - "     - **CorrecciÃ³n sugerida:** [instrucciones concretas de quÃ© cambiar]"
-      - "  4. Registrar en el archivo bug: 'Ajuste agregado a HU-XXX'"
-      - "  5. Estado del bug: 'ðŸ“ Ajuste en HU'"
-      - "SI [N] Crear nueva HU tipo Bug:"
-      - "  1. Agregar nueva entrada en {{archivos.backlog}} con formato:"
-      - "     ### HU-[siguiente_ID]: ðŸ› [TÃ­tulo del bug]"
-      - "     Con campos: Tipo=Bug, Prioridad segÃºn severidad, Ref_Bug=BUG-NNN"      - "     Origen: [HU/contexto donde se detectÃ³]"
-      - "     DescripciÃ³n: [1-2 lÃ­neas: quÃ© falla y dÃ³nde. Detalle completo en Ref_Bug.]"
-      - "     Dependencias: [HU de origen si aplica]"      - "  2. Estado del bug: 'ðŸ”— Vinculado a HU' con la nueva HU creada"
+      - "Agregar nueva entrada en {{archivos.backlog}} con formato:"
+      - "  ### HU-[siguiente_ID]: ðŸ› [TÃ­tulo del bug]"
+      - "  Con campos:"
+      - "    Tipo: Bug"
+      - "    Prioridad: [segÃºn severidad del Paso 2]"
+      - "    Ref_Bug: BUG-NNN"
+      - "    Detectado_en: [HU-XXX / contexto de detecciÃ³n]"
+      - "    DescripciÃ³n: [1-2 lÃ­neas: quÃ© falla y dÃ³nde. Detalle completo en Ref_Bug.]"
+      - "    Dependencias: [HU de origen si aplica]"
+      - "  Registrar en archivo bug la HU creada"
+      - "  Estado del bug: 'ðŸ†• HU-Bug Creada'"
 
   - paso: "Documentar CorrecciÃ³n"
     obligatorio: false
@@ -166,14 +156,13 @@ salida:
   archivos_generados:
     ruta: "{{artifacts.bugs_folder}}/BUG-[ID]_[descripcion].md"
   archivos_actualizados:
-    - "{{archivos.backlog}} (si se creÃ³ nueva HU tipo Bug)"
-    - "{{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento*.md (si se agregÃ³ ajuste a HU existente)"
+    - "{{archivos.backlog}} (HU tipo Bug creada)"
   mensaje_exito: |
     ðŸ› BUG REGISTRADO
     
     ðŸ“‹ ID: BUG-[ID]
     ðŸ”´ Severidad: [severidad]
-    ðŸ“Œ Estado: [ðŸ†• Nuevo / ðŸ”— Vinculado a HU-XXX / ðŸ“ Ajuste en HU-XXX / âœ… Corregido]
+    ðŸ“Œ Estado: [ðŸ†• HU-Bug Creada / âœ… Corregido]
     
     ðŸ“„ Archivo: {{artifacts.bugs_folder}}/BUG-[ID]_[descripcion].md
   siguiente:
