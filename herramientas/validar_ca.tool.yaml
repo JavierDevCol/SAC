@@ -1,0 +1,162 @@
+# Herramienta: Validar Criterios de Aceptación
+nombre: "Validar Criterios de Aceptación"
+comando: ">validar_ca"
+alias: [">verificar_ca", ">check_ca"]
+version: "1.0"
+
+mandatory:
+  - instruccion: "Leer CAs SIEMPRE desde el refinamiento (fuente de verdad), NUNCA del plan"
+  - instruccion: "Verificar cada CA contra el código real en el filesystem y resultados de tests"
+  - instruccion: "Marcar estado de verificación en el plan (checkboxes), NO en el refinamiento"
+  - instruccion: "DETENER y reportar ante el primer CA no cumplido"
+  - instruccion: "Distinguir CAs granulares (por task) de CAs de integración (padre)"
+
+condiciones_entrada:
+  - condicion: "HU en estado [E] En Ejecución con plan existente"
+    si_no_cumple: "Ejecutar >ejecutar_plan primero"
+  - condicion: "Al menos una tarea técnica en estado [EJECUTADA] en el plan"
+    si_no_cumple: "No hay código implementado que validar"
+
+parametros:
+  requeridos:
+    - nombre: id_hu
+      tipo: string
+      descripcion: "Identificador de la HU a validar"
+  opcionales:
+    - nombre: task_id
+      tipo: string
+      descripcion: "ID de task funcional específica (ej: HU-012-T1). Si no se especifica, valida según scope."
+      defecto: null
+    - nombre: scope
+      tipo: string
+      valores: [granulares, integracion, todos]
+      defecto: todos
+      descripcion: |
+        - granulares: solo CAs granulares de la task indicada (requiere task_id)
+        - integracion: solo CAs de integración (padre) de la HU
+        - todos: granulares de todas las tasks + integración
+
+proceso:
+  - paso: "Inicialización"
+    obligatorio: true
+    acciones:
+      - "Establecer valores por defecto: task_id=null, scope='todos'"
+      - "Mostrar resumen:"
+      - "  ⚙️ Configuración: scope=[valor] | task_id=[valor]"
+      - "  Personaliza con: >validar_ca [ID-HU] --task_id HU-XXX-T1 --scope granulares"
+    validaciones:
+      - si: "scope=granulares AND task_id=null"
+        accion: "⛔ Se requiere --task_id para scope=granulares"
+      - si: "scope=integracion AND task_id != null"
+        accion: "⚠️ Parámetro task_id ignorado — scope=integracion valida CAs del padre"
+
+  - paso: "Cargar Fuentes de Datos"
+    obligatorio: true
+    acciones:
+      - "Cargar refinamiento desde {{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento*.md"
+      - "Cargar plan desde {{artifacts.planes_folder}}/[ID-HU]_plan_implementacion.md"
+      - "Extraer campo 'Modo' del plan: [Plano | Particionada]"
+      - "SI Modo = Plano Y task_id != null → ⛔ Error: HU plana no tiene tasks"
+      - "Extraer campo '- **Proyecto:**' de la HU para determinar directorio de código"
+    si_error:
+      refinamiento_no_encontrado: "⛔ Refinamiento no encontrado para [id_hu]"
+      plan_no_encontrado: "⛔ Plan no encontrado. Ejecutar >planificar_hu primero"
+
+  - paso: "Determinar CAs a Validar"
+    obligatorio: true
+    acciones:
+      - "SI Modo = 'Plano':"
+      - "  Extraer CAs de sección '## 2. Criterios de Aceptación' del refinamiento"
+      - "  cas_a_validar = todos los CAs"
+      - ""
+      - "SI Modo = 'Particionada':"
+      - "  SI scope = 'granulares' (requiere task_id):"
+      - "    Buscar sección 'Task [task_id]' en el refinamiento"
+      - "    Extraer CAs granulares de '#### Criterios de Aceptación (granulares)'"
+      - "    cas_a_validar = CAs granulares de esa task"
+      - "  SI scope = 'integracion':"
+      - "    Extraer CAs de sección '## 2. Criterios de Aceptación (Integración)' del refinamiento"
+      - "    cas_a_validar = CAs de integración (padre)"
+      - "    PREREQUISITO: Verificar que TODAS las tasks estén en [EJECUTADA] en el plan"
+      - "    SI hay tasks pendientes → ⛔ 'No se pueden validar CAs de integración. Tasks pendientes: [lista]'"
+      - "  SI scope = 'todos':"
+      - "    SI task_id proporcionado → cas_a_validar = granulares de esa task"
+      - "    SI task_id NO proporcionado → cas_a_validar = granulares de TODAS las tasks + integración"
+      - "    PREREQUISITO integración: misma regla de tasks completadas"
+
+  - paso: "Validar Cada CA contra Código y Tests"
+    obligatorio: true
+    acciones:
+      - "Para cada CA en cas_a_validar:"
+      - "  1. Analizar el texto del CA: extraer la condición (Dado), acción (Cuando), resultado (Entonces)"
+      - "  2. Identificar archivos de código relevantes al CA:"
+      - "     - SI CA menciona endpoint → verificar existencia de ruta en controller/routes"
+      - "     - SI CA menciona validación → verificar lógica de validación en código"
+      - "     - SI CA menciona respuesta HTTP → verificar status code en handler"
+      - "     - SI CA menciona cálculo → verificar lógica en entidad/servicio"
+      - "     - SI CA menciona seguridad → verificar middleware auth/authorize"
+      - "     - SI CA menciona UI → verificar componente renderiza elementos esperados"
+      - "  3. Verificar existencia de test que cubra el CA:"
+      - "     - Buscar test cuyo nombre/describe coincida con el comportamiento del CA"
+      - "     - SI no hay test → ⚠️ 'CA-XX sin cobertura de test directa'"
+      - "  4. Emitir veredicto por CA:"
+      - "     - ✅ CUMPLIDO: código implementa lo especificado + test existe"
+      - "     - ⚠️ PARCIAL: código existe pero falta test, o test existe pero lógica incompleta"
+      - "     - ❌ NO CUMPLIDO: código no implementa lo especificado"
+    si_error:
+      ca_no_cumplido: "⛔ DETENER al primer CA con veredicto ❌. Reportar qué falta."
+
+  - paso: "Actualizar Estado en Plan"
+    obligatorio: true
+    acciones:
+      - "SI Modo = 'Plano':"
+      - "  EDITAR plan: en 'Fase Final: Validar CAs' marcar [ ] → [X] para CAs cumplidos"
+      - ""
+      - "SI Modo = 'Particionada' Y scope IN [granulares, todos]:"
+      - "  EDITAR plan: en '### Validar CAs de T[N]' marcar [ ] → [X] para CAs cumplidos"
+      - ""
+      - "SI Modo = 'Particionada' Y scope IN [integracion, todos]:"
+      - "  EDITAR plan: en 'Fase Final: Validar CAs de Integración' marcar [ ] → [X]"
+      - ""
+      - "EDITAR refinamiento: marcar [ ] → [X] en los CAs validados del refinamiento"
+      - "EDITAR backlog: SI TODOS los CAs padre cumplidos → marcar en HU del backlog"
+
+  - paso: "Emitir Reporte"
+    obligatorio: true
+    acciones:
+      - "Generar reporte compacto con resultado por CA"
+
+salida:
+  archivos_actualizados:
+    - ruta: "{{artifacts.planes_folder}}/[ID-HU]_plan_implementacion.md"
+      detalle: "Checkboxes de CAs actualizados"
+    - ruta: "{{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento*.md"
+      detalle: "CAs marcados como verificados"
+    - ruta: "{{archivos.backlog}}"
+      detalle: "CAs de la HU marcados (si todos cumplidos)"
+  mensaje_exito: |
+    ✅ VALIDACIÓN DE CAs COMPLETADA: [ID-HU] [scope]
+    
+    📊 Resultado:
+    - CAs validados: [X/Y] ✅
+    - CAs parciales: [P] ⚠️ (si aplica)
+    - CAs no cumplidos: [F] ❌ (si aplica)
+    
+    Detalle:
+    | CA | Veredicto | Evidencia |
+    |----|-----------|-----------|
+    | CA-XX | ✅/⚠️/❌ | [archivo o test que lo respalda] |
+  mensaje_exito_parcial: |
+    ⚠️ VALIDACIÓN PARCIAL: [ID-HU] Task [task_id]
+    - CAs granulares: [X/Y] ✅
+    - Pendientes CAs integración: ejecutar >validar_ca [ID-HU] --scope integracion cuando todas las tasks estén completas
+
+errores:
+  refinamiento_no_encontrado: {msg: "⛔ Refinamiento no encontrado", accion: "Verificar que la HU fue refinada"}
+  plan_no_encontrado: {msg: "⛔ Plan no encontrado", accion: "Ejecutar >planificar_hu primero"}
+  sin_codigo: {msg: "⛔ No hay código implementado", accion: "Ejecutar >ejecutar_plan primero"}
+  tasks_pendientes_integracion: {msg: "⛔ No se pueden validar CAs de integración", accion: "Completar todas las tasks primero"}
+
+siguiente:
+  - {comando: ">generar_commit", desc: "Si todos los CAs pasan, documentar cambios", chat_agente: "Cronista de Cambios"}
+  - {comando: ">ejecutar_plan [ID-HU] --modo_ejecucion task_especifica --task_id [siguiente]", desc: "Continuar con siguiente task", chat_agente: "ArchDev Pro"}
