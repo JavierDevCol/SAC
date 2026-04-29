@@ -88,6 +88,7 @@ Mostrar herramientas disponibles
 | `>tomar_contexto` | Análisis de estructura del proyecto |
 | `>planificar_hu` | Planificación de implementación de HU |
 | `>ejecutar_plan` | Ejecución de planes del Arquitecto |
+| `>validar_ca` | Validación de CAs contra código real y tests |
 | `>analizar_code_smells` | Detección de problemas de diseño |
 | `>generar_adr` | Generación de Architecture Decision Records |
 | `>sincronizar_backlog` | Sincronizar estados del backlog con artefactos reales |
