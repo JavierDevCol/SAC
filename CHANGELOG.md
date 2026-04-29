@@ -9,12 +9,12 @@
 
 | Componente | Versión Actual | Última Actualización |
 |------------|----------------|----------------------|
-| **Sistema SAC** | 7.22.0 | 2026-04-29 |
-| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.22.0 | 2026-04-29 |
+| **Sistema SAC** | 7.23.0 | 2026-04-29 |
+| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.23.0 | 2026-04-29 |
 | **Configuración Usuario** (`config/CONFIG_USER.template.yaml`) | 7.9.0 | 2026-04-24 |
 | **Roles SAC** (`agentes/*.rol.md`) | 7.21.1 | 2026-04-29 |
-| **Herramientas** (`herramientas/*.tool.yaml`) | 7.22.0 | 2026-04-29 |
-| **Plantillas** (`plantillas/`) | 7.21.0 | 2026-04-28 |
+| **Herramientas** (`herramientas/*.tool.yaml`) | 7.23.0 | 2026-04-29 |
+| **Plantillas** (`plantillas/`) | 7.23.0 | 2026-04-29 |
 | **Guía de Comandos** (`guias/guia_comandos.md`) | 7.15.0 | 2026-04-28 |
 | **Guía de Roles** (`guias/guia_roles_activos.md`) | 3.0 | 2026-01-05 |
 | **Guía Ciclo de Vida** (`guias/guia_ciclo_vida_tareas.md`) | 7.15.0 | 2026-04-28 |
@@ -22,6 +22,36 @@
 ---
 
 ## 🚀 Historial de Versiones
+
+### [7.23.0] - 2026-04-29
+
+#### ✨ Feat: Centralizar lecciones aprendidas de bugs
+
+**Objetivo:** Persistir lecciones aprendidas en un archivo centralizado que se consulta antes de cada implementación, cerrando el ciclo bug→lección→prevención.
+
+#### ✅ Cambios en Plantillas
+
+| Cambio | Detalle |
+|--------|--------|
+| `lecciones_aprendidas_plantilla.md` | Nueva plantilla — tabla concisa (máx 3 líneas por lección) |
+
+#### ✅ Cambios en Herramientas
+
+| Cambio | Detalle |
+|--------|--------|
+| `registrar_bug.tool.yaml` | Paso "Lección Aprendida" agrega fila al archivo centralizado `{{artifacts.lecciones_aprendidas}}` |
+| `registrar_bug.tool.yaml` | Restricción: cada lección máx 1-3 líneas, directa y puntual |
+| `ejecutar_plan.tool.yaml` | Cargar `{{artifacts.lecciones_aprendidas}}` como contexto preventivo en Paso 2 |
+| `ejecutar_plan.tool.yaml` | Nueva sección `lecciones_aprendidas` con instrucción de consulta antes de implementar |
+
+#### ✅ Cambios en Configuración
+
+| Cambio | Detalle |
+|--------|--------|
+| `CONFIG_SYSTEM.yaml` | Agregar ruta `artifacts.lecciones_aprendidas` |
+| `CONFIG_SYSTEM.yaml` | version 7.22.0 → 7.23.0 |
+
+---
 
 ### [7.22.0] - 2026-04-29
 
