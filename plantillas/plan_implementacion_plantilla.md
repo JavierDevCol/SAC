@@ -22,7 +22,7 @@ validado_por: ">validar_ca"
 | **Estimación total** | [X] horas |
 | **Estado** | [PENDIENTE \| EN_PROGRESO \| COMPLETADO \| BLOQUEADO] |
 | **Modo** | [Plano \| Particionada] |
-| **Tasks** | [— \| [ID-HU]-T1, [ID-HU]-T2, ...] |
+| **Tasks** | [— \| [ID-HU]-TASK-1, [ID-HU]-TASK-2, ...] |
 
 ## Progreso General
 
@@ -69,9 +69,9 @@ SI Modo = 'Particionada':
 <!--
 | Task | Descripción | Estado | Progreso |
 |------|-------------|--------|----------|
-| [ID-HU]-T1 | [Título task 1] | [ESTADO] | [X/Y] tareas |
-| [ID-HU]-T2 | [Título task 2] | [ESTADO] | [X/Y] tareas |
-| [ID-HU]-T3 | [Título task 3] | [ESTADO] | [X/Y] tareas |
+| [ID-HU]-TASK-1 | [Título task 1] | [ESTADO] | [X/Y] tareas |
+| [ID-HU]-TASK-2 | [Título task 2] | [ESTADO] | [X/Y] tareas |
+| [ID-HU]-TASK-3 | [Título task 3] | [ESTADO] | [X/Y] tareas |
 | — | Validación CA Integración | [ESTADO] | [X/Y] criterios |
 -->
 
@@ -86,9 +86,9 @@ SI Modo = 'Particionada':
 
 | Task | Depende de | Razón | Ejecutable? |
 |------|-----------|-------|:-----------:|
-| [ID-HU]-T1 | — | Sin dependencias | ✅ |
-| [ID-HU]-T2 | [ID-HU]-T1 | [Razón: requiere entidades/ports/endpoints de T1] | ⛔ |
-| [ID-HU]-T3 | [ID-HU]-T1, [ID-HU]-T2 | [Razón: requiere backend completo] | ⛔ |
+| [ID-HU]-TASK-1 | — | Sin dependencias | ✅ |
+| [ID-HU]-TASK-2 | [ID-HU]-TASK-1 | [Razón: requiere entidades/ports/endpoints de TASK-1] | ⛔ |
+| [ID-HU]-TASK-3 | [ID-HU]-TASK-1, [ID-HU]-TASK-2 | [Razón: requiere backend completo] | ⛔ |
 
 > 💡 La columna "Ejecutable?" se evalúa en tiempo de ejecución por >ejecutar_plan según el estado actual de cada task.
 -->
@@ -117,7 +117,7 @@ Frontend: Dependencias, Estructura de carpetas
 
 ### [Subsección 1.1]
 
-#### T01: [Título de la tarea] [PENDIENTE]
+#### EJEC-01: [Título de la tarea] [PENDIENTE]
 - [ ] Paso 1: [Descripción]
 - [ ] Paso 2: [Descripción]
 - **Estimación:** [X]h | **Dependencia:** -
@@ -138,9 +138,9 @@ Frontend: Componentes, Props/State
 
 ### [Subsección 2.1]
 
-#### T02: [Título de la tarea] [PENDIENTE]
+#### EJEC-02: [Título de la tarea] [PENDIENTE]
 - [ ] [Descripción del paso]
-- **Estimación:** [X]h | **Dependencia:** T01
+- **Estimación:** [X]h | **Dependencia:** EJEC-01
 
 ---
 
@@ -158,9 +158,9 @@ Frontend: Hooks, Services, API calls
 
 ### [Subsección 3.1]
 
-#### T03: [Título de la tarea] [PENDIENTE]
+#### EJEC-03: [Título de la tarea] [PENDIENTE]
 - [ ] [Descripción del paso]
-- **Estimación:** [X]h | **Dependencia:** T02
+- **Estimación:** [X]h | **Dependencia:** EJEC-02
 
 ---
 
@@ -168,7 +168,7 @@ Frontend: Hooks, Services, API calls
 
 ### Tests Unitarios
 
-#### T[N]: Tests de [Componente] [PENDIENTE]
+#### EJEC-[N]: Tests de [Componente] [PENDIENTE]
 - [ ] Crear tests para [componente]
 - [ ] Cubrir casos felices
 - [ ] Cubrir casos de borde
@@ -177,7 +177,7 @@ Frontend: Hooks, Services, API calls
 
 ### Tests de Integración
 
-#### T[N+1]: Tests de Integración [PENDIENTE]
+#### EJEC-[N+1]: Tests de Integración [PENDIENTE]
 - [ ] Crear tests de integración
 - [ ] Validar flujo completo
 - **Estimación:** [X]h | **Dependencia:** [dependencias]
@@ -185,64 +185,62 @@ Frontend: Hooks, Services, API calls
 <!-- ═══ OPCIÓN B: MODO PARTICIONADA (eliminar Opción A si se usa esta) ═══ -->
 
 <!--
-## Task [ID-HU]-T1: [Título de la task funcional]
+## Task [ID-HU]-TASK-1: [Título de la task funcional]
 **Traza CA padre:** CA-01
 **Estimación:** [X] SP (~[Y]h)
 **Depende de:** —
 
 ### Fase 1: [Nombre fase según arquitectura de la task]
 
-#### T01: [Título de la tarea] [PENDIENTE]
+#### TASK-1-EJEC-01: [Título de la tarea] [PENDIENTE]
 - [ ] Paso 1: [Descripción]
 - [ ] Paso 2: [Descripción]
 - **Estimación:** [X]h | **Dependencia:** —
 
 ### Fase 2: [Nombre fase]
 
-#### T02: [Título de la tarea] [PENDIENTE]
+#### TASK-1-EJEC-02: [Título de la tarea] [PENDIENTE]
 - [ ] [Descripción del paso]
-- **Estimación:** [X]h | **Dependencia:** T01
+- **Estimación:** [X]h | **Dependencia:** TASK-1-EJEC-01
 
 ### Fase N: Testing
 
-#### T03: Tests [Componente] [PENDIENTE]
+#### TASK-1-EJEC-03: Tests [Componente] [PENDIENTE]
 - [ ] Tests unitarios
 - [ ] Tests integración
-- **Estimación:** [X]h | **Dependencia:** T01, T02
+- **Estimación:** [X]h | **Dependencia:** TASK-1-EJEC-01, TASK-1-EJEC-02
 
-### ✅ Validar CAs de T1 → ver refinamiento sección Task [ID-HU]-T1
+### ✅ Validar CAs de TASK-1 → ver refinamiento sección Task [ID-HU]-TASK-1
 
 > Los CAs granulares viven en el refinamiento (fuente de verdad).
-> >validar_ca [ID-HU] --task_id [ID-HU]-T1 --scope granulares
+> >validar_ca [ID-HU] --task_id [ID-HU]-TASK-1 --scope granulares
 
 | CA | Verificado |
 |----|:----------:|
-| CA-T1-01 | [ ] |
-| CA-T1-02 | [ ] |
+| CA-TASK1-01 | [ ] |
+| CA-TASK1-02 | [ ] |
 
 ---
 
-## Task [ID-HU]-T2: [Título de la task funcional]
+## Task [ID-HU]-TASK-2: [Título de la task funcional]
 **Traza CA padre:** CA-02
 **Estimación:** [X] SP (~[Y]h)
-**Depende de:** [ID-HU]-T1
+**Depende de:** [ID-HU]-TASK-1
 
 ### Fase 1: [Nombre fase]
 
-#### T04: [Título de la tarea] [PENDIENTE]
+#### TASK-2-EJEC-01: [Título de la tarea] [PENDIENTE]
 - [ ] [Descripción del paso]
-- **Estimación:** [X]h | **Dependencia:** T01 ⟵T1
+- **Estimación:** [X]h | **Dependencia:** TASK-1-EJEC-01
 
-> NOTA sobre dependencias cross-task:
-> - Dependencia intra-task: "Dependencia: T05" (sin marca, misma task)
-> - Dependencia cross-task: "Dependencia: T01 ⟵T1" (tarea T01 pertenece a task T1)
-> El ejecutor usa la marca ⟵T[N] para validar que la task dependiente esté [EJECUTADA].
+> Las dependencias cross-task son evidentes por el prefijo TASK-N del ID compuesto.
+> No se requieren marcas adicionales — TASK-2-EJEC-01 depende de TASK-1-EJEC-01 (otra task, obvio por prefijo).
 
-### ✅ Validar CAs de T2 → ver refinamiento sección Task [ID-HU]-T2
+### ✅ Validar CAs de TASK-2 → ver refinamiento sección Task [ID-HU]-TASK-2
 
 | CA | Verificado |
 |----|:----------:|
-| CA-T2-01 | [ ] |
+| CA-TASK2-01 | [ ] |
 -->
 
 ---
