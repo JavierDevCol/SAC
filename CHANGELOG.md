@@ -9,12 +9,12 @@
 
 | Componente | Versión Actual | Última Actualización |
 |------------|----------------|----------------------|
-| **Sistema SAC** | 7.18.0 | 2026-04-28 |
-| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.18.0 | 2026-04-28 |
+| **Sistema SAC** | 7.21.0 | 2026-04-28 |
+| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.21.0 | 2026-04-28 |
 | **Configuración Usuario** (`config/CONFIG_USER.template.yaml`) | 7.9.0 | 2026-04-24 |
 | **Roles SAC** (`agentes/*.rol.md`) | 7.17.0 | 2026-04-28 |
-| **Herramientas** (`herramientas/*.tool.yaml`) | 7.18.0 | 2026-04-28 |
-| **Plantillas** (`plantillas/`) | 7.18.0 | 2026-04-28 |
+| **Herramientas** (`herramientas/*.tool.yaml`) | 7.21.0 | 2026-04-28 |
+| **Plantillas** (`plantillas/`) | 7.21.0 | 2026-04-28 |
 | **Guía de Comandos** (`guias/guia_comandos.md`) | 7.15.0 | 2026-04-28 |
 | **Guía de Roles** (`guias/guia_roles_activos.md`) | 3.0 | 2026-01-05 |
 | **Guía Ciclo de Vida** (`guias/guia_ciclo_vida_tareas.md`) | 7.15.0 | 2026-04-28 |
@@ -22,6 +22,157 @@
 ---
 
 ## 🚀 Historial de Versiones
+
+### [7.21.0] - 2026-04-28
+
+#### 📦 Refactor: Nomenclatura jerárquica TASK-N / TASK-N-EJEC-NN + propagación [~] candidato
+
+**Objetivo:** Unificar nomenclatura de tasks funcionales y tareas técnicas con IDs compuestos auto-documentados. Eliminar marcas `⟵T[N]` (redundantes con IDs compuestos). Formalizar cadena de satisfacción ascendente con estado intermedio `[~]` candidato.
+
+**Nomenclatura nueva:**
+| Antes | Ahora | Contexto |
+|-------|-------|----------|
+| `[ID-HU]-T1` | `[ID-HU]-TASK-1` | Task funcional |
+| `T01`, `T02` | `TASK-1-EJEC-01`, `TASK-1-EJEC-02` | Tarea técnica (compuesta, por task) |
+| `CA-T1-01` | `CA-TASK1-01` | CA granular |
+| `T03 ⟵T1` | `TASK-1-EJEC-03` | Dependencia cross-task (auto-documentada) |
+
+**Propagación ascendente:**
+| Estado | Símbolo | Significado |
+|--------|---------|-------------|
+| Pendiente | `[ ]` | No validado aún |
+| Candidato | `[~]` | CAs granulares pasan, pendiente integración |
+| Cumplido | `[X]` | Validado contra código + integración |
+| Fallido | `[!]` | Validación falló |
+
+#### ✅ Cambios en Herramientas
+
+| Cambio | Detalle |
+|--------|--------|
+| `refinar_hu.tool.yaml` | Nomenclatura: `T1`→`TASK-1`, `CA-T1-01`→`CA-TASK1-01`, `[ID-HU]-T[N]-API-01`→`[ID-HU]-TASK-N-API-01` |
+| `refinar_hu.tool.yaml` | Cadena satisfacción: incluye estado `[~]` candidato antes de `[X]` |
+| `validar_hu.tool.yaml` | Nomenclatura: `T[N]`→`TASK-N` en cadena de satisfacción |
+| `planificar_hu.tool.yaml` | Nomenclatura: `T01`→`TASK-N-EJEC-NN` (IDs compuestos por task) |
+| `planificar_hu.tool.yaml` | Eliminadas marcas `⟵T[N]` — IDs compuestos son auto-documentados |
+| `ejecutar_plan.tool.yaml` | Nomenclatura: IDs compuestos en actualización en tiempo real, reanudación, mensajes |
+| `ejecutar_plan.tool.yaml` | Nuevo: CAs granulares pasan a `[~]` candidato (no `[X]` directo) |
+| `validar_ca.tool.yaml` | Nuevo: lógica de propagación ascendente `[ ]→[~]→[X]` con estados formalizados |
+| `validar_ca.tool.yaml` | Nuevo: `--scope integracion` confirma `[~]→[X]` o `[~]→[!]` |
+
+#### ✅ Cambios en Plantillas
+
+| Cambio | Detalle |
+|--------|--------|
+| `refinamiento_hu_plantilla.md` | Tasks: `[ID-HU]-T1`→`[ID-HU]-TASK-1`, CAs: `CA-T1-01`→`CA-TASK1-01` |
+| `refinamiento_hu_plantilla.md` | Desglose: `[ID-HU]-T1-API-01`→`[ID-HU]-TASK-1-API-01` |
+| `refinamiento_hu_plantilla.md` | Cadena satisfacción: incluye `[~]` candidato |
+| `plan_implementacion_plantilla.md` | Tareas técnicas: `T01`→`TASK-1-EJEC-01` (IDs compuestos) |
+| `plan_implementacion_plantilla.md` | Eliminada notación `⟵T[N]` y nota explicativa — reemplazada por nota sobre prefijos |
+| `plan_implementacion_plantilla.md` | CAs: `CA-T1-01`→`CA-TASK1-01` en tablas de verificación |
+| `backlog_desarrollo_plantilla.md` | Índice Rápido: `T1,T2`→`TASK-1,TASK-2` |
+| `backlog_desarrollo_plantilla.md` | Estados [R], [A], [P]: `[ID-HU]-T1`→`[ID-HU]-TASK-1` |
+
+#### ✅ Cambios en Configuración
+
+| Cambio | Detalle |
+|--------|--------|
+| `CONFIG_SYSTEM.yaml` | version 7.20.0 → 7.21.0 |
+
+### [7.20.0] - 2026-04-28
+
+#### 📦 Feat: Plan lean + herramienta >validar_ca — eliminación de redundancia refinamiento↔plan
+
+**Objetivo:** Eliminar la duplicación de CAs entre refinamiento y plan de implementación. El refinamiento es la fuente de verdad de QUÉ se necesita (CAs, tasks, criterios). El plan define CÓMO se implementa (pasos precisos de código, archivos, rutas) y trackea ESTADO de verificación. Nueva herramienta `>validar_ca` valida código implementado contra CAs del refinamiento.
+
+#### ✅ Cambios en Herramientas
+
+| Cambio | Detalle |
+|--------|---------|
+| `validar_ca.tool.yaml` v1.0 (NUEVA) | Herramienta del Desarrollador para validar CAs contra código real y tests |
+| `validar_ca.tool.yaml` | Parámetros: `id_hu`, `task_id` (opcional), `scope` (granulares/integracion/todos) |
+| `validar_ca.tool.yaml` | Lee CAs del refinamiento (fuente de verdad), verifica contra filesystem y tests, marca checkboxes en plan |
+| `validar_ca.tool.yaml` | Soporta validación parcial por task (granulares) y validación completa (integración) |
+| `ejecutar_plan.tool.yaml` | Paso "Validar CAs" refactorizado: delega a `>validar_ca` en vez de validar inline |
+| `ejecutar_plan.tool.yaml` | Nuevo en sección `siguiente`: referencia a `>validar_ca` |
+| `planificar_hu.tool.yaml` | Generación del Plan: NO copia CAs al plan. Genera tabla de estado (ID + resumen) con referencia al refinamiento |
+| `planificar_hu.tool.yaml` | Nuevo campo 'Refinamiento' en Metadata del plan (link al archivo fuente) |
+| `planificar_hu.tool.yaml` | Instrucción explícita: pasos de implementación PRECISOS (archivos, código, rutas exactas) |
+
+#### ✅ Cambios en Plantillas
+
+| Cambio | Detalle |
+|--------|---------|
+| `plan_implementacion_plantilla.md` v3.0 → v4.0 | Metadata: nuevo campo `Refinamiento` (ruta al archivo fuente de verdad) |
+| `plan_implementacion_plantilla.md` | Fase Final: CAs como tabla de estado (ID + resumen + checkbox) en vez de texto completo copiado |
+| `plan_implementacion_plantilla.md` | Sección Particionada: Validar CAs por task como tabla de estado + referencia a `>validar_ca` |
+| `plan_implementacion_plantilla.md` | Notas: eliminada sección Riesgos (ya vive en refinamiento). Solo Decisiones Técnicas |
+| `plan_implementacion_plantilla.md` | Frontmatter: nuevo campo `validado_por: >validar_ca` |
+
+#### ✅ Cambios en Configuración
+
+| Cambio | Detalle |
+|--------|---------|
+| `CONFIG_SYSTEM.yaml` | version 7.19.0 → 7.20.0 |
+
+#### 📊 Principio de diseño: Separación de responsabilidades
+
+| Artefacto | Responsabilidad | NO contiene |
+|---|---|---|
+| **Refinamiento** | QUÉ (CAs, tasks, aceptación, riesgos) | Código, pasos de implementación |
+| **Plan** | CÓMO (pasos precisos, archivos, código, estado) | Texto completo de CAs, riesgos |
+| **>validar_ca** | VERIFICAR (código vs CAs del refinamiento) | Implementación de código |
+
+---
+
+### [7.19.0] - 2026-04-28
+
+#### 📦 Feat: Soporte de ejecución por tasks funcionales en pipeline planificar→ejecutar
+
+**Objetivo:** Completar el soporte end-to-end de HUs particionadas en tasks funcionales. El refinador ya soportaba partición (v7.18.0), pero el planificador y ejecutor no sabían generar ni iterar planes organizados por tasks. Esta versión cierra la brecha: planes conscientes de tasks con dependencias explícitas, ejecución granular por task (completa, task_por_task, task_especifica), y retrocompatibilidad total con HUs planas.
+
+#### ✅ Cambios en Herramientas
+
+| Cambio | Detalle |
+|--------|---------|
+| `ejecutar_plan.tool.yaml` v4.3 → v5.0 | Nuevos `modo_ejecucion`: `task_por_task` (pausa entre tasks) y `task_especifica` (ejecuta solo una task) |
+| `ejecutar_plan.tool.yaml` | Nuevo parámetro `task_id`: ID de task funcional para modo `task_especifica` |
+| `ejecutar_plan.tool.yaml` | Nuevo paso "Resolver Modo de Ejecución": detecta campo Modo del plan, degrada modos incompatibles con aviso (nunca rompe), valida dependencias entre tasks |
+| `ejecutar_plan.tool.yaml` | Paso "Ejecutar Fases" transformado a "Ejecutar Plan según Modo Resuelto": doble estrategia (acciones_modo_plano = comportamiento actual, acciones_modo_particionada = iteración por tasks → fases internas) |
+| `ejecutar_plan.tool.yaml` | Paso "Validar CAs" evolucionado: CAs granulares por task + CAs de integración al final |
+| `ejecutar_plan.tool.yaml` | Paso "Finalización" evolucionado: soporta finalización parcial (task_especifica con tasks pendientes mantiene HU en [E]) |
+| `ejecutar_plan.tool.yaml` | Salida diferenciada: `mensaje_exito_completo` vs `mensaje_exito_task` |
+| `planificar_hu.tool.yaml` v4.1 → v5.0 | Nuevas mandatory: organizar plan por tasks si Modo=Particionada, numeración global de tareas técnicas |
+| `planificar_hu.tool.yaml` | Paso "Secuenciación de Tareas" bifurcado: Modo Plano (sin cambios) vs Modo Particionada (tasks → fases internas, tabla dependencias, numeración global, marca cross-task ⟵T[N]) |
+| `planificar_hu.tool.yaml` | Paso "Generación del Plan" bifurcado: genera campos Modo/Tasks en Metadata, sección Dependencias entre Tasks, progreso por task, sub-fases por task, CAs granulares por task + CAs integración |
+
+#### ✅ Cambios en Plantillas
+
+| Cambio | Detalle |
+|--------|---------|
+| `plan_implementacion_plantilla.md` v2.0 → v3.0 | Metadata: nuevos campos `Modo` (Plano/Particionada) y `Tasks` |
+| `plan_implementacion_plantilla.md` | Progreso General: opción tabla por fases (plano) o por tasks (particionada) |
+| `plan_implementacion_plantilla.md` | Nueva sección condicional "Dependencias entre Tasks" con tabla Task/Depende de/Razón/Ejecutable |
+| `plan_implementacion_plantilla.md` | Estructura dual: Opción A (modo plano, sin cambios) vs Opción B (modo particionada: Task > Fases internas > Tareas técnicas con dependencias cross-task ⟵T[N]) |
+| `plan_implementacion_plantilla.md` | Fase Final: CAs de integración (padre) con nota sobre CAs granulares validados por task |
+| `plan_implementacion_plantilla.md` | Historial de Ejecución: columna Task agregada para modo particionada |
+
+#### ✅ Cambios en Configuración
+
+| Cambio | Detalle |
+|--------|---------|
+| `CONFIG_SYSTEM.yaml` | version 7.18.0 → 7.19.0 |
+
+#### 📊 Tabla de compatibilidad modo_ejecucion
+
+| `modo_ejecucion` | HU Plana | HU Particionada |
+|---|---|---|
+| `completo` | ✅ Igual que antes | ✅ T1→T2→T3 sin pausas |
+| `fase_por_fase` | ✅ Igual que antes | ⚠️→ `task_por_task` con aviso |
+| `tarea_por_tarea` | ✅ Igual que antes | ✅ Pausa en cada tarea técnica |
+| `task_por_task` (nuevo) | ⚠️→ `fase_por_fase` con aviso | ✅ Pausa entre tasks funcionales |
+| `task_especifica` (nuevo) | ⛔ Error claro | ✅ Solo task indicada en task_id |
+
+---
 
 ### [7.18.0] - 2026-04-28
 

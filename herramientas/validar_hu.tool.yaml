@@ -108,7 +108,7 @@ proceso:
       - "SI refinamiento tiene Modo=Particionada:"
       - "  - Verificar que cada CA del padre tiene traza a una Task"
       - "  - Verificar que cada Task tiene CAs granulares verificables de forma aislada"
-      - "  - Verificar cadena de satisfacción: CAs granulares de T[N] → CA-[N] del padre"
+      - "  - Verificar cadena de satisfacción: CAs granulares de TASK-N → CA-[N] del padre"
       - "SI refinamiento tiene Modo=Plano y complejidad >= MEDIO y CAs >= 6:"
       - "  - Sugerir partición: '⚠️ Esta HU tiene [N] CAs y complejidad [nivel]. Considerar partición en tasks con >refinar_hu [ID-HU].'"
       - "  - Esto es una SUGERENCIA, no un bloqueo. El veredicto puede ser APROBADA igualmente."

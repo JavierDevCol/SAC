@@ -1,8 +1,9 @@
 ﻿---
 tipo: plan_implementacion
-version: "2.0"
+version: "4.0"
 generado_por: ">planificar_hu"
 actualizado_por: ">ejecutar_plan"
+validado_por: ">validar_ca"
 ---
 
 #  Plan de Implementación: [ID-HU] - [Título]
@@ -13,36 +14,47 @@ actualizado_por: ">ejecutar_plan"
 |-------|-------|
 | **HU** | [ID-HU] |
 | **Título** | [Título de la HU] |
+| **Refinamiento** | {{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento_[concepto].md |
 | **Arquitectura** | [Hexagonal\|MVC\|Capas\|Script\|Monolito] |
 | **Generado por** | ONAD |
 | **Fecha creación** | [FECHA_ISO_8601] |
 | **Última actualización** | [FECHA_ISO_8601] |
 | **Estimación total** | [X] horas |
 | **Estado** | [PENDIENTE \| EN_PROGRESO \| COMPLETADO \| BLOQUEADO] |
+| **Modo** | [Plano \| Particionada] |
+| **Tasks** | [— \| [ID-HU]-TASK-1, [ID-HU]-TASK-2, ...] |
 
 ## Progreso General
 
 <!--
 INSTRUCCIÓN PARA >planificar_hu:
-Generar filas de fases según arquitectura detectada en contexto_proyecto.md:
 
-SI arquitectura = Hexagonal:
-  Fases: Infraestructura  Dominio  Aplicación  Adaptadores  Testing  Validación
+SI Modo = 'Plano':
+  Generar filas de fases según arquitectura detectada en contexto_proyecto.md:
 
-SI arquitectura = MVC:
-  Fases: Infraestructura  Modelos  Controladores  Vistas  Testing  Validación
+  SI arquitectura = Hexagonal:
+    Fases: Infraestructura  Dominio  Aplicación  Adaptadores  Testing  Validación
 
-SI arquitectura = Capas:
-  Fases: Infraestructura  Datos  Negocio  Presentación  Testing  Validación
+  SI arquitectura = MVC:
+    Fases: Infraestructura  Modelos  Controladores  Vistas  Testing  Validación
 
-SI arquitectura = Script/CLI:
-  Fases: Setup  Lógica Principal  Testing  Validación
+  SI arquitectura = Capas:
+    Fases: Infraestructura  Datos  Negocio  Presentación  Testing  Validación
 
-SI arquitectura = Frontend (React/Vue/Angular):
-  Fases: Setup  Componentes  Hooks/Services  Integración  Testing  Validación
+  SI arquitectura = Script/CLI:
+    Fases: Setup  Lógica Principal  Testing  Validación
 
-DEFAULT:
-  Fases: Preparación  Implementación  Testing  Validación
+  SI arquitectura = Frontend (React/Vue/Angular):
+    Fases: Setup  Componentes  Hooks/Services  Integración  Testing  Validación
+
+  DEFAULT:
+    Fases: Preparación  Implementación  Testing  Validación
+
+  Usar tabla de fases (formato actual).
+
+SI Modo = 'Particionada':
+  Generar tabla agrupada por task funcional (NO por fase arquitectónica).
+  Agregar fila final para Validación CA Integración.
 -->
 
 | Fase | Estado | Progreso |
@@ -53,7 +65,43 @@ DEFAULT:
 | Fase N: Testing | [ESTADO] | [X/Y] tareas |
 | Fase Final: Validación CA | [ESTADO] | [X/Y] criterios |
 
+<!-- OPCIÓN PARTICIONADA: Reemplazar tabla anterior por esta si Modo = Particionada -->
+<!--
+| Task | Descripción | Estado | Progreso |
+|------|-------------|--------|----------|
+| [ID-HU]-TASK-1 | [Título task 1] | [ESTADO] | [X/Y] tareas |
+| [ID-HU]-TASK-2 | [Título task 2] | [ESTADO] | [X/Y] tareas |
+| [ID-HU]-TASK-3 | [Título task 3] | [ESTADO] | [X/Y] tareas |
+| — | Validación CA Integración | [ESTADO] | [X/Y] criterios |
+-->
+
 ---
+
+<!-- ======================================================================== -->
+<!-- SECCIÓN SOLO PARTICIONADA: Dependencias entre Tasks                     -->
+<!-- Incluir SOLO si Modo = Particionada. Eliminar si Modo = Plano.          -->
+<!-- ======================================================================== -->
+<!--
+## Dependencias entre Tasks
+
+| Task | Depende de | Razón | Ejecutable? |
+|------|-----------|-------|:-----------:|
+| [ID-HU]-TASK-1 | — | Sin dependencias | ✅ |
+| [ID-HU]-TASK-2 | [ID-HU]-TASK-1 | [Razón: requiere entidades/ports/endpoints de TASK-1] | ⛔ |
+| [ID-HU]-TASK-3 | [ID-HU]-TASK-1, [ID-HU]-TASK-2 | [Razón: requiere backend completo] | ⛔ |
+
+> 💡 La columna "Ejecutable?" se evalúa en tiempo de ejecución por >ejecutar_plan según el estado actual de cada task.
+-->
+
+---
+
+<!-- ======================================================================== -->
+<!-- ESTRUCTURA MODO PLANO (sin tasks): Usar secciones de fase directas      -->
+<!-- ESTRUCTURA MODO PARTICIONADA: Usar secciones de Task > Fases internas   -->
+<!-- Elegir UNA estructura según el Modo del refinamiento. Eliminar la otra. -->
+<!-- ======================================================================== -->
+
+<!-- ═══ OPCIÓN A: MODO PLANO (eliminar si Modo = Particionada) ═══ -->
 
 ## Fase 1: [NOMBRE_FASE_1]
 
@@ -69,7 +117,7 @@ Frontend: Dependencias, Estructura de carpetas
 
 ### [Subsección 1.1]
 
-#### T01: [Título de la tarea] [PENDIENTE]
+#### EJEC-01: [Título de la tarea] [PENDIENTE]
 - [ ] Paso 1: [Descripción]
 - [ ] Paso 2: [Descripción]
 - **Estimación:** [X]h | **Dependencia:** -
@@ -90,9 +138,9 @@ Frontend: Componentes, Props/State
 
 ### [Subsección 2.1]
 
-#### T02: [Título de la tarea] [PENDIENTE]
+#### EJEC-02: [Título de la tarea] [PENDIENTE]
 - [ ] [Descripción del paso]
-- **Estimación:** [X]h | **Dependencia:** T01
+- **Estimación:** [X]h | **Dependencia:** EJEC-01
 
 ---
 
@@ -110,9 +158,9 @@ Frontend: Hooks, Services, API calls
 
 ### [Subsección 3.1]
 
-#### T03: [Título de la tarea] [PENDIENTE]
+#### EJEC-03: [Título de la tarea] [PENDIENTE]
 - [ ] [Descripción del paso]
-- **Estimación:** [X]h | **Dependencia:** T02
+- **Estimación:** [X]h | **Dependencia:** EJEC-02
 
 ---
 
@@ -120,7 +168,7 @@ Frontend: Hooks, Services, API calls
 
 ### Tests Unitarios
 
-#### T[N]: Tests de [Componente] [PENDIENTE]
+#### EJEC-[N]: Tests de [Componente] [PENDIENTE]
 - [ ] Crear tests para [componente]
 - [ ] Cubrir casos felices
 - [ ] Cubrir casos de borde
@@ -129,23 +177,92 @@ Frontend: Hooks, Services, API calls
 
 ### Tests de Integración
 
-#### T[N+1]: Tests de Integración [PENDIENTE]
+#### EJEC-[N+1]: Tests de Integración [PENDIENTE]
 - [ ] Crear tests de integración
 - [ ] Validar flujo completo
 - **Estimación:** [X]h | **Dependencia:** [dependencias]
+
+<!-- ═══ OPCIÓN B: MODO PARTICIONADA (eliminar Opción A si se usa esta) ═══ -->
+
+<!--
+## Task [ID-HU]-TASK-1: [Título de la task funcional]
+**Traza CA padre:** CA-01
+**Estimación:** [X] SP (~[Y]h)
+**Depende de:** —
+
+### Fase 1: [Nombre fase según arquitectura de la task]
+
+#### TASK-1-EJEC-01: [Título de la tarea] [PENDIENTE]
+- [ ] Paso 1: [Descripción]
+- [ ] Paso 2: [Descripción]
+- **Estimación:** [X]h | **Dependencia:** —
+
+### Fase 2: [Nombre fase]
+
+#### TASK-1-EJEC-02: [Título de la tarea] [PENDIENTE]
+- [ ] [Descripción del paso]
+- **Estimación:** [X]h | **Dependencia:** TASK-1-EJEC-01
+
+### Fase N: Testing
+
+#### TASK-1-EJEC-03: Tests [Componente] [PENDIENTE]
+- [ ] Tests unitarios
+- [ ] Tests integración
+- **Estimación:** [X]h | **Dependencia:** TASK-1-EJEC-01, TASK-1-EJEC-02
+
+### ✅ Validar CAs de TASK-1 → ver refinamiento sección Task [ID-HU]-TASK-1
+
+> Los CAs granulares viven en el refinamiento (fuente de verdad).
+> >validar_ca [ID-HU] --task_id [ID-HU]-TASK-1 --scope granulares
+
+| CA | Verificado |
+|----|:----------:|
+| CA-TASK1-01 | [ ] |
+| CA-TASK1-02 | [ ] |
+
+---
+
+## Task [ID-HU]-TASK-2: [Título de la task funcional]
+**Traza CA padre:** CA-02
+**Estimación:** [X] SP (~[Y]h)
+**Depende de:** [ID-HU]-TASK-1
+
+### Fase 1: [Nombre fase]
+
+#### TASK-2-EJEC-01: [Título de la tarea] [PENDIENTE]
+- [ ] [Descripción del paso]
+- **Estimación:** [X]h | **Dependencia:** TASK-1-EJEC-01
+
+> Las dependencias cross-task son evidentes por el prefijo TASK-N del ID compuesto.
+> No se requieren marcas adicionales — TASK-2-EJEC-01 depende de TASK-1-EJEC-01 (otra task, obvio por prefijo).
+
+### ✅ Validar CAs de TASK-2 → ver refinamiento sección Task [ID-HU]-TASK-2
+
+| CA | Verificado |
+|----|:----------:|
+| CA-TASK2-01 | [ ] |
+-->
 
 ---
 
 ## Fase Final: Validar Criterios de Aceptación
 
->  **IMPORTANTE:** Copiar criterios de aceptación de la HU.
-> Al validar cada criterio, marcarlo aquí Y en la HU.
+> 📌 **Los CAs viven en el refinamiento** (fuente de verdad). Esta sección trackea ESTADO de verificación.
+> Ejecutar: `>validar_ca [ID-HU] --scope integracion` (particionada) o `>validar_ca [ID-HU]` (plana)
 
-### Criterios de Aceptación
+### Estado de Verificación de CAs
 
-- [ ] **CA-01:** [Descripción del criterio de aceptación 1]
-- [ ] **CA-02:** [Descripción del criterio de aceptación 2]
-- [ ] **CA-03:** [Descripción del criterio de aceptación 3]
+<!--
+MODO PLANO: Listar todos los CAs del refinamiento con checkbox de estado.
+MODO PARTICIONADA: Listar solo los CAs de integración (padre).
+NO copiar el texto completo del CA — solo el ID y un resumen corto.
+-->
+
+| CA | Resumen | Verificado |
+|----|---------|:----------:|
+| CA-01 | [Resumen corto del CA] | [ ] |
+| CA-02 | [Resumen corto del CA] | [ ] |
+| CA-03 | [Resumen corto del CA] | [ ] |
 
 ### Validación Final
 
@@ -158,21 +275,23 @@ Frontend: Hooks, Services, API calls
 
 ## Notas de Implementación
 
-### Consideraciones Especiales
-[Agregar notas relevantes para la implementación]
-
 ### Decisiones Técnicas
-[Documentar decisiones tomadas durante la planificación]
+[Documentar decisiones tomadas durante la planificación que NO están en el refinamiento]
 
-### Riesgos Identificados
-| Riesgo | Mitigación |
-|--------|------------|
-| [Riesgo 1] | [Estrategia de mitigación] |
+> 📌 Riesgos y dependencias ya documentados en el refinamiento. No duplicar aquí.
 
 ---
 
 ## Historial de Ejecución
 
+<!-- Modo Plano: usar tabla sin columna Task -->
 | Fecha | Acción | Tarea | Resultado |
 |-------|--------|-------|-----------|
 | [FECHA] | Inicio | - | Plan creado |
+
+<!-- Modo Particionada: usar tabla CON columna Task -->
+<!--
+| Fecha | Acción | Task | Tarea | Resultado |
+|-------|--------|------|-------|-----------|
+| [FECHA] | Inicio | — | — | Plan creado |
+-->
