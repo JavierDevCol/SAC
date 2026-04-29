@@ -9,12 +9,12 @@
 
 | Componente | Versión Actual | Última Actualización |
 |------------|----------------|----------------------|
-| **Sistema SAC** | 7.19.0 | 2026-04-28 |
-| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.19.0 | 2026-04-28 |
+| **Sistema SAC** | 7.20.0 | 2026-04-28 |
+| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.20.0 | 2026-04-28 |
 | **Configuración Usuario** (`config/CONFIG_USER.template.yaml`) | 7.9.0 | 2026-04-24 |
 | **Roles SAC** (`agentes/*.rol.md`) | 7.17.0 | 2026-04-28 |
-| **Herramientas** (`herramientas/*.tool.yaml`) | 7.19.0 | 2026-04-28 |
-| **Plantillas** (`plantillas/`) | 7.19.0 | 2026-04-28 |
+| **Herramientas** (`herramientas/*.tool.yaml`) | 7.20.0 | 2026-04-28 |
+| **Plantillas** (`plantillas/`) | 7.20.0 | 2026-04-28 |
 | **Guía de Comandos** (`guias/guia_comandos.md`) | 7.15.0 | 2026-04-28 |
 | **Guía de Roles** (`guias/guia_roles_activos.md`) | 3.0 | 2026-01-05 |
 | **Guía Ciclo de Vida** (`guias/guia_ciclo_vida_tareas.md`) | 7.15.0 | 2026-04-28 |
@@ -22,6 +22,52 @@
 ---
 
 ## 🚀 Historial de Versiones
+
+### [7.20.0] - 2026-04-28
+
+#### 📦 Feat: Plan lean + herramienta >validar_ca — eliminación de redundancia refinamiento↔plan
+
+**Objetivo:** Eliminar la duplicación de CAs entre refinamiento y plan de implementación. El refinamiento es la fuente de verdad de QUÉ se necesita (CAs, tasks, criterios). El plan define CÓMO se implementa (pasos precisos de código, archivos, rutas) y trackea ESTADO de verificación. Nueva herramienta `>validar_ca` valida código implementado contra CAs del refinamiento.
+
+#### ✅ Cambios en Herramientas
+
+| Cambio | Detalle |
+|--------|---------|
+| `validar_ca.tool.yaml` v1.0 (NUEVA) | Herramienta del Desarrollador para validar CAs contra código real y tests |
+| `validar_ca.tool.yaml` | Parámetros: `id_hu`, `task_id` (opcional), `scope` (granulares/integracion/todos) |
+| `validar_ca.tool.yaml` | Lee CAs del refinamiento (fuente de verdad), verifica contra filesystem y tests, marca checkboxes en plan |
+| `validar_ca.tool.yaml` | Soporta validación parcial por task (granulares) y validación completa (integración) |
+| `ejecutar_plan.tool.yaml` | Paso "Validar CAs" refactorizado: delega a `>validar_ca` en vez de validar inline |
+| `ejecutar_plan.tool.yaml` | Nuevo en sección `siguiente`: referencia a `>validar_ca` |
+| `planificar_hu.tool.yaml` | Generación del Plan: NO copia CAs al plan. Genera tabla de estado (ID + resumen) con referencia al refinamiento |
+| `planificar_hu.tool.yaml` | Nuevo campo 'Refinamiento' en Metadata del plan (link al archivo fuente) |
+| `planificar_hu.tool.yaml` | Instrucción explícita: pasos de implementación PRECISOS (archivos, código, rutas exactas) |
+
+#### ✅ Cambios en Plantillas
+
+| Cambio | Detalle |
+|--------|---------|
+| `plan_implementacion_plantilla.md` v3.0 → v4.0 | Metadata: nuevo campo `Refinamiento` (ruta al archivo fuente de verdad) |
+| `plan_implementacion_plantilla.md` | Fase Final: CAs como tabla de estado (ID + resumen + checkbox) en vez de texto completo copiado |
+| `plan_implementacion_plantilla.md` | Sección Particionada: Validar CAs por task como tabla de estado + referencia a `>validar_ca` |
+| `plan_implementacion_plantilla.md` | Notas: eliminada sección Riesgos (ya vive en refinamiento). Solo Decisiones Técnicas |
+| `plan_implementacion_plantilla.md` | Frontmatter: nuevo campo `validado_por: >validar_ca` |
+
+#### ✅ Cambios en Configuración
+
+| Cambio | Detalle |
+|--------|---------|
+| `CONFIG_SYSTEM.yaml` | version 7.19.0 → 7.20.0 |
+
+#### 📊 Principio de diseño: Separación de responsabilidades
+
+| Artefacto | Responsabilidad | NO contiene |
+|---|---|---|
+| **Refinamiento** | QUÉ (CAs, tasks, aceptación, riesgos) | Código, pasos de implementación |
+| **Plan** | CÓMO (pasos precisos, archivos, código, estado) | Texto completo de CAs, riesgos |
+| **>validar_ca** | VERIFICAR (código vs CAs del refinamiento) | Implementación de código |
+
+---
 
 ### [7.19.0] - 2026-04-28
 
