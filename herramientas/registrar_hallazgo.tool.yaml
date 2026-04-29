@@ -28,7 +28,8 @@ mandatory:
   # === ESPECÃFICAS DE LA HERRAMIENTA ===
   - instruccion: "NUNCA registrar directamente â€” siempre redirigir a >registrar_bug o >registrar_pendiente"
   - instruccion: "SIEMPRE confirmar la clasificaciÃ³n con el usuario antes de redirigir"
-  - instruccion: "Transferir TODO el contexto recopilado a la herramienta destino (la herramienta destino salta su Paso 1)"
+  - instruccion: "Transferir TODO el contexto recopilado a la herramienta destino con origen='dispatcher'. La herramienta destino ejecuta su Paso 1 en MODO ABREVIADO: reutiliza descripción/logs del contexto pero SÍ ejecuta asignación de ID y determinación de nivel"
+  - instruccion: "SIEMPRE validar los prerequisitos de la herramienta destino ANTES de redirigir (ej: backlog existente para >registrar_bug, rol Arquitecto para >registrar_pendiente)"
   - instruccion: "SI el agente activo es Desarrollador y clasifica como pendiente â†’ Informar que >registrar_pendiente es exclusivo del Arquitecto y registrar como bug o anotar para que el Arquitecto lo registre despuÃ©s"
 
 # ============================================
@@ -100,8 +101,11 @@ proceso:
       - "  > ðŸ¤· Â¿Tienes logs, mensajes de error o evidencia para adjuntar?"
       - "  > - ðŸ“Ž [S] SÃ­, los pego a continuaciÃ³n"
       - "  > - âž¡ï¸ [N] No, continuar con lo que tengo"
-      - "SI [S] â†’ Recopilar logs y almacenar como contexto"
-
+      - "SI [S] â†’ Recopilar logs y almacenar como contexto"      - "Preguntar si el hallazgo ya fue corregido:"
+      - "  > 🤷 ¿Este hallazgo ya fue corregido?"
+      - "  > - ✅ [C] Sí, ya está corregido (registro post-mortem)"
+      - "  > - ➡️ [X] No, aún está pendiente"
+      - "SI [C] → Marcar ya_corregido=true en contexto"
   - paso: "ClasificaciÃ³n AutomÃ¡tica"
     obligatorio: true
     acciones:
@@ -142,13 +146,19 @@ proceso:
     acciones:
       - "Preparar paquete de contexto recopilado:"
       - "  contexto_transferido:"
+      - "    origen: dispatcher"
       - "    descripcion: [descripciÃ³n del usuario]"
       - "    proyecto: [proyecto detectado o proporcionado]"
       - "    logs: [logs/evidencia si se adjuntaron]"
+      - "    ya_corregido: [true/false]"
       - "    clasificacion_sugerida: [bug/pendiente/investigacion]"
+      - "    clasificacion_confirmada: true"
+      - "VALIDAR PREREQUISITOS ANTES DE REDIRIGIR:"
+      - "  SI destino = >registrar_bug: Verificar que existe backlog. SI NO existe: Informar y sugerir >refinar_hu."
+      - "  SI destino = >registrar_pendiente: Verificar que agente activo es Arquitecto. SI NO: Aplicar restriccion de rol."
       - "SI respuesta = [B]:"
       - "  Ejecutar >registrar_bug con contexto_transferido"
-      - "  La herramienta destino SALTA su Paso 1 (RecepciÃ³n) y continÃºa desde Paso 2 (ClasificaciÃ³n de Severidad)"
+      - "  La herramienta destino ejecuta Paso 1 en MODO ABREVIADO (reutiliza datos, asigna ID)"
       - "SI respuesta = [P]:"
       - "  SI agente activo = Desarrollador:"
       - "    Informar: 'ðŸ“‹ Los pendientes son responsabilidad del Arquitecto.'"
@@ -158,7 +168,7 @@ proceso:
       - "    SI [N] â†’ Mostrar resumen formateado para copiar al Arquitecto y TERMINAR"
       - "  SI agente activo = Arquitecto:"
       - "    Ejecutar >registrar_pendiente con contexto_transferido"
-      - "    La herramienta destino SALTA su Paso 1 (RecepciÃ³n) y continÃºa desde Paso 2 (EvaluaciÃ³n de Severidad)"
+      - "    La herramienta destino ejecuta Paso 1 en MODO ABREVIADO y SALTA Paso 2 (ya confirmado)"
       - "SI respuesta = [I]:"
       - "  SI agente activo = Arquitecto:"
       - "    Ejecutar >registrar_pendiente con contexto_transferido + categoria='investigacion'"
@@ -170,7 +180,7 @@ salida:
   mensaje_redireccion: |
     â†ªï¸ Redirigiendo a >[herramienta_destino]...
        Contexto transferido: descripciÃ³n âœ… | proyecto âœ… | logs [âœ…/â€”]
-       Continuando desde Paso [N] de >[herramienta_destino]
+       Modo: ABREVIADO (Paso 1 reutiliza contexto, asigna ID)
 
 errores:
   sin_descripcion: {msg: "âŒ Se requiere al menos una descripciÃ³n del hallazgo", accion: "Solicitar descripciÃ³n al usuario"}

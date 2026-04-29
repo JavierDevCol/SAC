@@ -70,6 +70,7 @@ proceso:
   - paso: "RecepciÃ³n del Bug"
     obligatorio: true
     acciones:
+      - "SI origen = dispatcher: MODO ABREVIADO - Reutilizar descripcion/proyecto/logs/ya_corregido del contexto_transferido. Ejecutar solo asignacion de ID autoincremental."
       - "Recopilar informaciÃ³n del bug: descripciÃ³n, proyecto, contexto de detecciÃ³n"
       - "SI faltan datos crÃ­ticos (descripciÃ³n o sÃ­ntoma) â†’ Solicitar al usuario"
       - "Asignar ID autoincremental: escanear {{artifacts.bugs_folder}} para obtener Ãºltimo BUG-NNN y sumar 1"
