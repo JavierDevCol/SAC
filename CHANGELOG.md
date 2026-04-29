@@ -9,10 +9,10 @@
 
 | Componente | Versión Actual | Última Actualización |
 |------------|----------------|----------------------|
-| **Sistema SAC** | 7.21.0 | 2026-04-28 |
-| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.21.0 | 2026-04-28 |
+| **Sistema SAC** | 7.21.1 | 2026-04-29 |
+| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.21.1 | 2026-04-29 |
 | **Configuración Usuario** (`config/CONFIG_USER.template.yaml`) | 7.9.0 | 2026-04-24 |
-| **Roles SAC** (`agentes/*.rol.md`) | 7.17.0 | 2026-04-28 |
+| **Roles SAC** (`agentes/*.rol.md`) | 7.21.1 | 2026-04-29 |
 | **Herramientas** (`herramientas/*.tool.yaml`) | 7.21.0 | 2026-04-28 |
 | **Plantillas** (`plantillas/`) | 7.21.0 | 2026-04-28 |
 | **Guía de Comandos** (`guias/guia_comandos.md`) | 7.15.0 | 2026-04-28 |
@@ -22,6 +22,26 @@
 ---
 
 ## 🚀 Historial de Versiones
+
+### [7.21.1] - 2026-04-29
+
+#### 🐛 Fix: Herramienta `>validar_ca` faltante en rol ArchDev Pro
+
+**Objetivo:** Corregir inconsistencia donde `>validar_ca` era invocada por `>ejecutar_plan` con `chat_agente: "ArchDev Pro"`, pero no estaba declarada en la tabla de herramientas del agente.
+
+#### ✅ Cambios en Roles
+
+| Cambio | Detalle |
+|--------|--------|
+| `archdev_pro.rol.md` | Agregar `>validar_ca` a tabla de Herramientas Disponibles |
+
+#### ✅ Cambios en Configuración
+
+| Cambio | Detalle |
+|--------|--------|
+| `CONFIG_SYSTEM.yaml` | version 7.21.0 → 7.21.1 |
+
+---
 
 ### [7.21.0] - 2026-04-28
 
