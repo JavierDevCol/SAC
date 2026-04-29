@@ -12,7 +12,7 @@
 | **Fecha refinamiento** | [FECHA_ISO_8601] |
 | **Iteración** | [N] |
 | **Modo** | [Plano \| Particionada] |
-| **Tasks** | [— \| [ID-HU]-T1, [ID-HU]-T2, ...] |
+| **Tasks** | [— \| [ID-HU]-TASK-1, [ID-HU]-TASK-2, ...] |
 
 ---
 
@@ -39,8 +39,8 @@ MODO PARTICIONADA (con tasks): CAs de INTEGRACIÓN que resumen el objetivo
 de cada task. La validación detallada se hace contra las CAs de cada task.
 -->
 
-- [ ] **CA-01:** Dado [contexto], cuando [acción], entonces [resultado esperado] <!-- → traza a [ID-HU]-T1 (si particionada) -->
-- [ ] **CA-02:** Dado [contexto], cuando [acción], entonces [resultado esperado] <!-- → traza a [ID-HU]-T2 (si particionada) -->
+- [ ] **CA-01:** Dado [contexto], cuando [acción], entonces [resultado esperado] <!-- → traza a [ID-HU]-TASK-1 (si particionada) -->
+- [ ] **CA-02:** Dado [contexto], cuando [acción], entonces [resultado esperado] <!-- → traza a [ID-HU]-TASK-2 (si particionada) -->
 - [ ] **CA-03:** Dado [contexto], cuando [acción errónea], entonces [manejo de error]
 
 ---
@@ -70,8 +70,9 @@ MODO PARTICIONADA (HU con tasks funcionales):
   Usar sección 4B. Tasks funcionales con CAs granulares y desglose por capa.
   
   Cadena de satisfacción:
-  - Todas las CAs granulares de T[N] completadas → CA-[N] del padre se cumple
-  - Todas las CAs del padre satisfechas → HU completada
+  - Todas las CAs granulares de TASK-N completadas → CA-[N] del padre pasa a [~] candidato
+  - >validar_ca --scope integracion confirma [~] → [X]
+  - Todas las CAs del padre en [X] → HU completada
 ================================================================================
 -->
 
@@ -93,38 +94,38 @@ MODO PARTICIONADA (HU con tasks funcionales):
 <!-- ═══ OPCIÓN 4B: MODO PARTICIONADA (eliminar 4A si se usa esta) ═══ -->
 
 <!--
-### Task [ID-HU]-T1: [Objetivo funcional]
+### Task [ID-HU]-TASK-1: [Objetivo funcional]
 **Traza CA padre:** CA-01
 **Estimación:** [X] SP
 
 #### Criterios de Aceptación (granulares)
-- [ ] **CA-T1-01:** Dado [contexto], cuando [acción], entonces [resultado]
-- [ ] **CA-T1-02:** Dado [contexto], cuando [acción], entonces [resultado]
+- [ ] **CA-TASK1-01:** Dado [contexto], cuando [acción], entonces [resultado]
+- [ ] **CA-TASK1-02:** Dado [contexto], cuando [acción], entonces [resultado]
 
 #### Desglose Técnico
 | ID Tarea | Descripción | Capa | Estimación |
 |----------|-------------|------|------------|
-| [ID-HU]-T1-API-01 | [Descripción] | API | [X]h |
-| [ID-HU]-T1-SVC-01 | [Descripción] | Servicio | [X]h |
-| [ID-HU]-T1-DB-01 | [Descripción] | Persistencia | [X]h |
-| [ID-HU]-T1-TEST-01 | [Descripción] | Testing | [X]h |
+| [ID-HU]-TASK-1-API-01 | [Descripción] | API | [X]h |
+| [ID-HU]-TASK-1-SVC-01 | [Descripción] | Servicio | [X]h |
+| [ID-HU]-TASK-1-DB-01 | [Descripción] | Persistencia | [X]h |
+| [ID-HU]-TASK-1-TEST-01 | [Descripción] | Testing | [X]h |
 
 ---
 
-### Task [ID-HU]-T2: [Objetivo funcional]
+### Task [ID-HU]-TASK-2: [Objetivo funcional]
 **Traza CA padre:** CA-02
 **Estimación:** [X] SP
 
 #### Criterios de Aceptación (granulares)
-- [ ] **CA-T2-01:** Dado [contexto], cuando [acción], entonces [resultado]
-- [ ] **CA-T2-02:** Dado [contexto], cuando [acción], entonces [resultado]
+- [ ] **CA-TASK2-01:** Dado [contexto], cuando [acción], entonces [resultado]
+- [ ] **CA-TASK2-02:** Dado [contexto], cuando [acción], entonces [resultado]
 
 #### Desglose Técnico
 | ID Tarea | Descripción | Capa | Estimación |
 |----------|-------------|------|------------|
-| [ID-HU]-T2-API-01 | [Descripción] | API | [X]h |
-| [ID-HU]-T2-SVC-01 | [Descripción] | Servicio | [X]h |
-| [ID-HU]-T2-TEST-01 | [Descripción] | Testing | [X]h |
+| [ID-HU]-TASK-2-API-01 | [Descripción] | API | [X]h |
+| [ID-HU]-TASK-2-SVC-01 | [Descripción] | Servicio | [X]h |
+| [ID-HU]-TASK-2-TEST-01 | [Descripción] | Testing | [X]h |
 -->
 
 ---
