@@ -31,8 +31,8 @@ reglas_arquitectonicas_requeridas:
 condiciones_entrada:
   - condicion: "HU en estado [A] Aprobada"
     si_no_cumple: "Ejecutar >validar_hu primero"
-  - condicion_alternativa: "HU con Tipo=Bug y severidad Crítica en estado [R] Refinada"
-    si_cumple: "Permitir planificación directa (bypass de validación para bugs críticos)"
+  - condicion_alternativa: "HU con Tipo=Bug en estado [P] Planificable"
+    si_cumple: "Permitir planificación directa — registrar_bug ya documenta causa raíz, archivos afectados y corrección sugerida (equivale a refinamiento)"
 
 parametros:
   requeridos:
@@ -106,12 +106,10 @@ proceso:
       - "Buscar HU en backlog"
       - "Extraer campo '- **Tipo:**' de la HU (SI no existe → asumir Funcional)"
       - "SI Tipo = Bug:"
-      - "  1. Verificar estado mínimo [R] Refinada O [A] Aprobada"
-      - "  2. SI severidad es 🔴 Crítica y estado [R] → Permitir planificación directa (bypass validación)"
-      - "  3. Extraer campo 'Ref_Bug' → Cargar archivo de bug desde {{artifacts.bugs_folder}}/[BUG-NNN]*.md"
-      - "  4. Extraer del archivo bug: Causa Raíz, Archivos Afectados, Corrección (si existe)"
-      - "  5. SI existe sección '🐛 Ajustes por Bug' en refinamiento → Incorporar instrucciones"
-      - "  6. Guardar tipo_hu='Bug' para usar estructura_fases.bugfix"
+      - "  1. Verificar estado mínimo [P] Planificable (bugs saltan refinamiento y validación)"
+      - "  2. Extraer campo 'Ref_Bug' → Cargar archivo de bug desde {{artifacts.bugs_folder}}/[BUG-NNN]*.md"
+      - "  3. Extraer del archivo bug: Causa Raíz, Archivos Afectados, Corrección Sugerida"
+      - "  4. Guardar tipo_hu='Bug' para usar estructura_fases.bugfix"
       - "SI Tipo != Bug:"
       - "  Verificar estado [A] Aprobada (flujo estándar)"
       - "  Guardar tipo_hu='Funcional'"

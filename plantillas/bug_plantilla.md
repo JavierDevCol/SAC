@@ -43,7 +43,8 @@
 
 ## Corrección
 
-[Descripción de la solución aplicada. Incluir fragmentos de código Antes/Después cuando sea relevante]
+[Si ya corregido: Descripción de la solución aplicada. Incluir fragmentos de código Antes/Después]
+[Si NO corregido: SUGERIDA — Instrucciones de alto nivel: qué cambiar, en qué archivo(s), lógica esperada del fix]
 
 ```[lenguaje]
 // Antes

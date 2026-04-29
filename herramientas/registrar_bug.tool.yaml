@@ -117,15 +117,28 @@ proceso:
     acciones:
       - "Agregar nueva entrada en {{archivos.backlog}} con formato:"
       - "  ### HU-[siguiente_ID]: ðŸ› [TÃ­tulo del bug]"
-      - "  Con campos:"
+      - "  Con campos:
       - "    Tipo: Bug"
+      - "    Estado: [P] Planificable"
+      - "    Proyecto: [proyecto detectado o proporcionado]"
       - "    Prioridad: [segÃºn severidad del Paso 2]"
       - "    Ref_Bug: BUG-NNN"
       - "    Detectado_en: [HU-XXX / contexto de detecciÃ³n]"
       - "    DescripciÃ³n: [1-2 lÃ­neas: quÃ© falla y dÃ³nde. Detalle completo en Ref_Bug.]"
       - "    Dependencias: [HU de origen si aplica]"
+      - "  NOTA: Los bugs se crean directamente en [P] porque registrar_bug ya documenta causa raÃ­z, sÃ­ntoma y archivos afectados (equivalente a refinamiento). No requieren pasar por refinar_hu ni validar_hu."
       - "  Registrar en archivo bug la HU creada"
-      - "  Estado del bug: 'ðŸ†• HU-Bug Creada'"
+      - "  Estado del bug: 'ðŸ†• HU-Bug Planificable'"
+
+  - paso: "CorrecciÃ³n Sugerida"
+    obligatorio: true
+    condicion: "SI NO es --ya_corregido"
+    acciones:
+      - "BasÃ¡ndose en la Causa RaÃ­z y Archivos Afectados del Paso 3, proponer correcciÃ³n sugerida"
+      - "Documentar en secciÃ³n CorrecciÃ³n del archivo BUG-NNN.md con prefijo SUGERIDA:"
+      - "  Incluir: quÃ© cambiar, en quÃ© archivo(s), lÃ³gica esperada del fix"
+      - "  NO incluir cÃ³digo â€” solo instrucciones de alto nivel para planificar_hu"
+      - "NOTA: planificar_hu consume esta secciÃ³n para generar tareas tÃ©cnicas del plan bugfix"
 
   - paso: "Documentar CorrecciÃ³n"
     obligatorio: false
@@ -167,11 +180,11 @@ salida:
     
     ðŸ“‹ ID: BUG-[ID]
     ðŸ”´ Severidad: [severidad]
-    ðŸ“Œ Estado: [ðŸ†• HU-Bug Creada / âœ… Corregido]
+    ðŸ“Œ Estado: [ðŸ†• HU-Bug Planificable / âœ… Corregido]
     
     ðŸ“„ Archivo: {{artifacts.bugs_folder}}/BUG-[ID]_[descripcion].md
   siguiente:
-    - { comando: ">planificar_hu", desc: "Planificar resoluciÃ³n del bug (si se creÃ³ HU nueva)", chat_agente: "ArchDev Pro" }
+    - { comando: ">planificar_hu", desc: "Planificar resoluciÃ³n del bug (paso directo â€” sin refinar_hu ni validar_hu)", chat_agente: "ArchDev Pro" }
     - { comando: ">ejecutar_plan", desc: "Ejecutar correcciÃ³n directamente (si ya hay plan)", chat_agente: "Desarrollador" }
 
 errores:
