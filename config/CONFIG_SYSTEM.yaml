@@ -45,6 +45,7 @@ artifacts:
   code_smells_folder: "{project-root}/artifacts/code_smells"
   # Bugs y pendientes
   bugs_folder: "{project-root}/artifacts/bugs"
+  lecciones_aprendidas: "{project-root}/artifacts/lecciones_aprendidas.md"
   pendientes: "{project-root}/artifacts/pendientes.md"
   pendientes_folder: "{project-root}/artifacts/pendientes"
   # Multi-proyecto

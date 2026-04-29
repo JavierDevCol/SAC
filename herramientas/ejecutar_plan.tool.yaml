@@ -33,6 +33,12 @@ reglas_arquitectonicas_requeridas:
       aplicar: "Respetar límites de líneas por método/clase/parámetros"
   si_no_existe: "Usar mejores prácticas estándar del stack detectado"
 
+lecciones_aprendidas:
+  descripcion: "Si existe archivo de lecciones aprendidas, aplicar como contexto preventivo"
+  fuente: "{{artifacts.lecciones_aprendidas}}"
+  uso: "Consultar ANTES de implementar cada tarea para evitar repetir errores conocidos"
+  si_no_existe: "Continuar sin contexto de lecciones"
+
 condiciones_entrada:
   - condicion: "HU en estado [P] Planificada con plan generado"
     si_no_cumple: "Ejecutar >planificar_hu primero"
@@ -89,6 +95,7 @@ proceso:
       - "Buscar plan en {{artifacts.planes_folder}}/[ID-HU]_plan_implementacion.md"
       - "Verificar estructura según {{plantillas.plan_implementacion}}"
       - "Verificar estado [P] Planificada en {{archivos.backlog}}"
+      - "Cargar {{artifacts.lecciones_aprendidas}} (si existe) como contexto de lecciones aprendidas de bugs anteriores"
       - "Extraer campo '- **Proyecto:**' de la HU"
       - "SI Proyecto = 'compartida':"
       - "  1. Leer sección '**Proyectos afectados:**' de la HU (lista de proyectos)"

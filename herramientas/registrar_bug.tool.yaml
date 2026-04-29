@@ -142,6 +142,10 @@ proceso:
     acciones:
       - "Documentar quÃ© se puede hacer para prevenir este tipo de bug en el futuro"
       - "Las recomendaciones deben ser concretas y accionables"
+      - "RESTRICCIÃ“N: La lecciÃ³n debe tener entre 1 y 3 lÃ­neas mÃ¡ximo. Ser directo y puntual."
+      - "Agregar fila en {{artifacts.lecciones_aprendidas}} con formato:"
+      - "  | [NNN] | BUG-[ID] | [lecciÃ³n concisa: 1-3 lÃ­neas] | [acciÃ³n preventiva concisa] |"
+      - "SI NO existe {{artifacts.lecciones_aprendidas}} â†’ Crear usando {{plantillas_folder}}/lecciones_aprendidas_plantilla.md"
 
   - paso: "GeneraciÃ³n de Archivo Bug"
     obligatorio: true
@@ -157,6 +161,7 @@ salida:
     ruta: "{{artifacts.bugs_folder}}/BUG-[ID]_[descripcion].md"
   archivos_actualizados:
     - "{{archivos.backlog}} (HU tipo Bug creada)"
+    - "{{artifacts.lecciones_aprendidas}} (si bug corregido â€” nueva fila agregada)"
   mensaje_exito: |
     ðŸ› BUG REGISTRADO
     
