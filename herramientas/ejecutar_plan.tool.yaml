@@ -217,17 +217,20 @@ proceso:
 
   - paso: "Validar Criterios de Aceptación"
     obligatorio: true
+    descripcion: "Delega validación a >validar_ca — los CAs viven en el refinamiento (fuente de verdad), no en el plan."
     acciones:
-      - "SI Modo = Plano: Para cada CA del plan → Verificar cumplimiento → Marcar [ ] → [X] en plan Y en HU"
+      - "SI Modo = Plano:"
+      - "  Invocar >validar_ca [ID-HU] --scope todos"
+      - ""
       - "SI Modo = Particionada Y modo_ejecucion = task_especifica:"
-      - "  Solo validar CAs granulares de la task ejecutada (ya validados en paso anterior)"
+      - "  Invocar >validar_ca [ID-HU] --task_id [task_id] --scope granulares"
       - "  NO validar CAs de integración (padre) hasta que TODAS las tasks estén [EJECUTADA]"
+      - ""
       - "SI Modo = Particionada Y modo_ejecucion IN [completo, task_por_task]:"
-      - "  1. CAs granulares ya validados por task en paso anterior"
-      - "  2. Validar CAs de integración (padre) en 'Fase Final: Validar CAs de Integración'"
-      - "  3. Marcar [ ] → [X] en plan Y en HU original"
+      - "  1. Por cada task completada: >validar_ca [ID-HU] --task_id [task_id] --scope granulares"
+      - "  2. Al final de todas las tasks: >validar_ca [ID-HU] --scope integracion"
     si_error:
-      criterio_no_cumplido: " DETENER. Criterio [X] no cumplido"
+      criterio_no_cumplido: " DETENER. Criterio [X] no cumplido. Revisar código antes de continuar."
 
   - paso: "Confirmación de Commit"
     obligatorio: true
@@ -294,4 +297,5 @@ errores:
   archivo_existente: {msg: " Archivo ya existe", opciones: [Sobrescribir, Fusionar, Omitir]}
 
 siguiente:
+  - {comando: ">validar_ca [ID-HU]", desc: "Validar CAs contra código (si no se validaron en ejecución)", chat_agente: "ArchDev Pro"}
   - {comando: ">generar_commit", desc: "Documentar cambios realizados", chat_agente: "Cronista de Cambios"}
