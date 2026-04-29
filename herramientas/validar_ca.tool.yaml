@@ -25,7 +25,7 @@ parametros:
   opcionales:
     - nombre: task_id
       tipo: string
-      descripcion: "ID de task funcional específica (ej: HU-012-T1). Si no se especifica, valida según scope."
+      descripcion: "ID de task funcional específica (ej: HU-012-TASK-1). Si no se especifica, valida según scope."
       defecto: null
     - nombre: scope
       tipo: string
@@ -43,7 +43,7 @@ proceso:
       - "Establecer valores por defecto: task_id=null, scope='todos'"
       - "Mostrar resumen:"
       - "  ⚙️ Configuración: scope=[valor] | task_id=[valor]"
-      - "  Personaliza con: >validar_ca [ID-HU] --task_id HU-XXX-T1 --scope granulares"
+      - "  Personaliza con: >validar_ca [ID-HU] --task_id HU-XXX-TASK-1 --scope granulares"
     validaciones:
       - si: "scope=granulares AND task_id=null"
         accion: "⛔ Se requiere --task_id para scope=granulares"
@@ -113,13 +113,24 @@ proceso:
       - "  EDITAR plan: en 'Fase Final: Validar CAs' marcar [ ] → [X] para CAs cumplidos"
       - ""
       - "SI Modo = 'Particionada' Y scope IN [granulares, todos]:"
-      - "  EDITAR plan: en '### Validar CAs de T[N]' marcar [ ] → [X] para CAs cumplidos"
+      - "  EDITAR plan: en '### Validar CAs de TASK-N' marcar [ ] → [X] para CAs cumplidos"
       - ""
       - "SI Modo = 'Particionada' Y scope IN [integracion, todos]:"
-      - "  EDITAR plan: en 'Fase Final: Validar CAs de Integración' marcar [ ] → [X]"
+      - "  EDITAR plan: en 'Fase Final: Validar CAs de Integración' marcar [~] → [X]"
+      - ""
+      - "Propagación ascendente de estados:"
+      - "  1. CAs granulares de TASK-N todos [✅] → CA de integración (padre) correspondiente pasa a [~] candidato"
+      - "  2. >validar_ca --scope integracion confirma [~] → [X] (verificando integración real entre tasks)"
+      - "  3. SI validación de integración falla: [~] → [!] con detalle del fallo"
+      - "  4. Todos los CAs padre en [X] → HU completada"
+      - "Estados de CA:"
+      - "  [ ] Pendiente — no validado aún"
+      - "  [~] Candidato — granulares pasan, pendiente integración"
+      - "  [X] Cumplido — validado contra código + integración confirmada"
+      - "  [!] Fallido — validación falló"
       - ""
       - "EDITAR refinamiento: marcar [ ] → [X] en los CAs validados del refinamiento"
-      - "EDITAR backlog: SI TODOS los CAs padre cumplidos → marcar en HU del backlog"
+      - "EDITAR backlog: SI TODOS los CAs padre en [X] → marcar en HU del backlog"
 
   - paso: "Emitir Reporte"
     obligatorio: true
