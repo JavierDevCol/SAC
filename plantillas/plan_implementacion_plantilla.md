@@ -1,8 +1,9 @@
 ﻿---
 tipo: plan_implementacion
-version: "3.0"
+version: "4.0"
 generado_por: ">planificar_hu"
 actualizado_por: ">ejecutar_plan"
+validado_por: ">validar_ca"
 ---
 
 #  Plan de Implementación: [ID-HU] - [Título]
@@ -13,6 +14,7 @@ actualizado_por: ">ejecutar_plan"
 |-------|-------|
 | **HU** | [ID-HU] |
 | **Título** | [Título de la HU] |
+| **Refinamiento** | {{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento_[concepto].md |
 | **Arquitectura** | [Hexagonal\|MVC\|Capas\|Script\|Monolito] |
 | **Generado por** | ONAD |
 | **Fecha creación** | [FECHA_ISO_8601] |
@@ -208,10 +210,15 @@ Frontend: Hooks, Services, API calls
 - [ ] Tests integración
 - **Estimación:** [X]h | **Dependencia:** T01, T02
 
-### Validar CAs de T1
+### ✅ Validar CAs de T1 → ver refinamiento sección Task [ID-HU]-T1
 
-- [ ] **CA-T1-01:** [Descripción del CA granular 1]
-- [ ] **CA-T1-02:** [Descripción del CA granular 2]
+> Los CAs granulares viven en el refinamiento (fuente de verdad).
+> >validar_ca [ID-HU] --task_id [ID-HU]-T1 --scope granulares
+
+| CA | Verificado |
+|----|:----------:|
+| CA-T1-01 | [ ] |
+| CA-T1-02 | [ ] |
 
 ---
 
@@ -231,23 +238,33 @@ Frontend: Hooks, Services, API calls
 > - Dependencia cross-task: "Dependencia: T01 ⟵T1" (tarea T01 pertenece a task T1)
 > El ejecutor usa la marca ⟵T[N] para validar que la task dependiente esté [EJECUTADA].
 
-### Validar CAs de T2
+### ✅ Validar CAs de T2 → ver refinamiento sección Task [ID-HU]-T2
 
-- [ ] **CA-T2-01:** [Descripción del CA granular 1]
+| CA | Verificado |
+|----|:----------:|
+| CA-T2-01 | [ ] |
 -->
 
 ---
 
 ## Fase Final: Validar Criterios de Aceptación
 
->  **IMPORTANTE:** Copiar criterios de aceptación de la HU.
-> Al validar cada criterio, marcarlo aquí Y en la HU.> En modo Particionada, esta sección contiene los CAs de INTEGRACIÓN (padre).
-> Los CAs granulares se validan dentro de cada task.
-### Criterios de Aceptación
+> 📌 **Los CAs viven en el refinamiento** (fuente de verdad). Esta sección trackea ESTADO de verificación.
+> Ejecutar: `>validar_ca [ID-HU] --scope integracion` (particionada) o `>validar_ca [ID-HU]` (plana)
 
-- [ ] **CA-01:** [Descripción del criterio de aceptación 1]
-- [ ] **CA-02:** [Descripción del criterio de aceptación 2]
-- [ ] **CA-03:** [Descripción del criterio de aceptación 3]
+### Estado de Verificación de CAs
+
+<!--
+MODO PLANO: Listar todos los CAs del refinamiento con checkbox de estado.
+MODO PARTICIONADA: Listar solo los CAs de integración (padre).
+NO copiar el texto completo del CA — solo el ID y un resumen corto.
+-->
+
+| CA | Resumen | Verificado |
+|----|---------|:----------:|
+| CA-01 | [Resumen corto del CA] | [ ] |
+| CA-02 | [Resumen corto del CA] | [ ] |
+| CA-03 | [Resumen corto del CA] | [ ] |
 
 ### Validación Final
 
@@ -260,16 +277,10 @@ Frontend: Hooks, Services, API calls
 
 ## Notas de Implementación
 
-### Consideraciones Especiales
-[Agregar notas relevantes para la implementación]
-
 ### Decisiones Técnicas
-[Documentar decisiones tomadas durante la planificación]
+[Documentar decisiones tomadas durante la planificación que NO están en el refinamiento]
 
-### Riesgos Identificados
-| Riesgo | Mitigación |
-|--------|------------|
-| [Riesgo 1] | [Estrategia de mitigación] |
+> 📌 Riesgos y dependencias ya documentados en el refinamiento. No duplicar aquí.
 
 ---
 
