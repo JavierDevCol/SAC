@@ -1,8 +1,8 @@
 # 🔄 Guía del Ciclo de Vida de Tareas
 
-> **Sistema:** SAC - Sistema Agéntico COCHAS  
-> **Versión:** 7.3.0  
-> **Última Actualización:** 23 de abril de 2026
+> **Sistema:** SAC - Sistema Agéntico COCHAS
+> **Versión:** 7.25.0
+> **Última Actualización:** 27 de junio de 2026
 
 ---
 
@@ -10,10 +10,11 @@
 
 - [Introducción](#introducción)
 - [Estados de las Tareas](#estados-de-las-tareas)
+- [Detección de Estado por Archivos](#detección-de-estado-por-archivos)
 - [Flujo de Validación Secuencial](#flujo-de-validación-secuencial)
-- [El Backlog de Desarrollo](#el-backlog-de-desarrollo)
+- [Estructura de Carpetas HU](#estructura-de-carpetas-hu)
 - [Roles y Responsabilidades](#roles-y-responsabilidades)
-- [Ejemplos Prácticos](#ejemplos-prácticos)
+- [Sub-Agentes](#sub-agentes)
 
 ---
 
@@ -25,9 +26,10 @@ El sistema SAC implementa un **flujo de validación secuencial** para las tareas
 
 1. **Validación Secuencial:** Las tareas deben pasar por estados específicos en orden
 2. **Responsabilidad de Roles:** Solo ciertos roles pueden cambiar estados específicos
-3. **Trazabilidad:** Todo cambio de estado queda registrado en `{{session_state_location}}`
+3. **Trazabilidad:** Todo cambio de estado queda registrado en archivos de la HU
 4. **No Saltar Pasos:** No se puede pasar directamente de Pendiente a Completada
 5. **Bloqueos Explícitos:** Las dependencias no resueltas bloquean el avance
+6. **Estado por Archivos:** El estado se infiere de la existencia de archivos en la carpeta de la HU
 
 ---
 
@@ -63,10 +65,13 @@ El sistema define **7 estados** para el ciclo de vida de una HU/Tarea:
 
 **Ejemplo en backlog:**
 ```markdown
-### ARCHDEV-001: Implementar Auth Service
-- **Estado:** [ ] Pendiente
-- **Por qué:** Necesario para autenticación de usuarios
-- **Origen:** ONAD-001
+| SAC-001 | Implementar Auth Service | [ ] | P0 | Feature | backend |
+```
+
+**Ejemplo en carpeta HU:**
+```
+artifacts/HU/SAC-001/
+└── HU.md  ← Solo existe este archivo
 ```
 
 ---
@@ -82,7 +87,7 @@ El sistema define **7 estados** para el ciclo de vida de una HU/Tarea:
 - Casos de borde considerados
 - Desglose técnico vertical
 
-**Artefacto generado:** `{{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md`
+**Artefacto generado:** `{{artifacts.hu_folder}}/[ID-HU]/Refinamiento.md`
 
 **Responsable de avanzar:** `Arquitecto Onad` mediante `validar_hu`
 
@@ -90,14 +95,15 @@ El sistema define **7 estados** para el ciclo de vida de una HU/Tarea:
 
 **Ejemplo en backlog:**
 ```markdown
-### ARCHDEV-001: Implementar Auth Service
-- **Estado:** [R] Refinada
-- **Refinamiento:** `{{artifacts.hu_refinamientos}}/ARCHDEV-001_refinamiento.md`
-- **Fecha refinamiento:** 2026-01-04T10:00:00
-- **Estimación:** 8 SP / 12 horas
+| SAC-001 | Implementar Auth Service | [R] | P0 | Feature | backend |
+```
 
-**Criterios de Aceptación:**
-✅ Generación de tokens JWT con RS256
+**Ejemplo en carpeta HU:**
+```
+artifacts/HU/SAC-001/
+├── HU.md              ← Metadata de la HU
+└── Refinamiento.md    ← Criterios de aceptación, estimación
+```
 ✅ Validación de tokens en cada request
 ✅ Refresh tokens con expiración de 7 días
 ✅ Tests unitarios con cobertura > 90%
@@ -145,21 +151,23 @@ El sistema define **7 estados** para el ciclo de vida de una HU/Tarea:
 - Tests especificados
 - Checklist de validación por sección
 
-**Artefacto generado:** `{{artifacts.planes_folder}}/[ID-HU]_plan_implementacion.md`
+**Artefacto generado:** `{{artifacts.hu_folder}}/[ID-HU]/Plan.md`
 
-**Responsable de avanzar:** `ArchDev Pro` mediante `ejecutar-plan`
+**Responsable de avanzar:** `ArchDev Pro` mediante `ejecutar_plan`
 
 **Siguiente estado:** `[E]` En Ejecución
 
 **Ejemplo en backlog:**
 ```markdown
-### ARCHDEV-001: Implementar Auth Service
-- **Estado:** [P] Planificada
-- **Plan:** `{{artifacts.planes_folder}}/ARCHDEV-001_plan_implementacion.md`
-- **Fecha planificación:** 2026-01-04T12:00:00
-- **Secciones:** 7
-- **Archivos a modificar:** 8
-- **Tests a crear:** 15
+| SAC-001 | Implementar Auth Service | [P] | P0 | Feature | backend |
+```
+
+**Ejemplo en carpeta HU:**
+```
+artifacts/HU/SAC-001/
+├── HU.md
+├── Refinamiento.md
+└── Plan.md             ← Plan de implementación
 ```
 
 ---
@@ -174,7 +182,7 @@ El sistema define **7 estados** para el ciclo de vida de una HU/Tarea:
 - Progreso porcentual visible
 - Puede retomarse si se interrumpe
 
-**Artefacto generado:** `{{ejecuciones_location}}/ejecucion_[ID-HU]_[timestamp]_EN_PROGRESO.json`
+**Artefacto generado:** `{{artifacts.hu_folder}}/[ID-HU]/Tracking.md`
 
 **Responsable:** `ArchDev Pro` (continúa ejecución)
 
@@ -182,12 +190,16 @@ El sistema define **7 estados** para el ciclo de vida de una HU/Tarea:
 
 **Ejemplo en backlog:**
 ```markdown
-### ARCHDEV-001: Implementar Auth Service
-- **Estado:** [E] En Ejecución
-- **Inicio ejecución:** 2026-01-04T14:00:00
-- **Progreso:** 65% (27/42 pasos)
-- **Sección actual:** 4/7 - Lógica de Aplicación
-- **Tracking:** `{{ejecuciones_location}}/ejecucion_ARCHDEV-001_20260104_140000_EN_PROGRESO.json`
+| SAC-001 | Implementar Auth Service | [E] | P0 | Feature | backend |
+```
+
+**Ejemplo en carpeta HU:**
+```
+artifacts/HU/SAC-001/
+├── HU.md
+├── Refinamiento.md
+├── Plan.md
+└── Tracking.md         ← Historial de ejecución
 ```
 
 ---
@@ -203,7 +215,7 @@ El sistema define **7 estados** para el ciclo de vida de una HU/Tarea:
 - Commit realizado
 - Documentación actualizada
 
-**Artefacto generado:** `{{ejecuciones_location}}/ejecucion_[ID-HU]_[timestamp]_COMPLETADA.json`
+**Artefacto generado:** `{{artifacts.hu_folder}}/[ID-HU]/Tracking.md` (campo Finalización)
 
 **Responsable:** `ArchDev Pro` (al finalizar ejecución)
 
@@ -211,16 +223,16 @@ El sistema define **7 estados** para el ciclo de vida de una HU/Tarea:
 
 **Ejemplo en backlog:**
 ```markdown
-### ARCHDEV-001: Implementar Auth Service
-- **Estado:** [X] Completada
-- **Completado:** 2026-01-04T16:45:00
-- **Duración:** 2h 45min
-- **Commit:** a3f5c21
+| SAC-001 | Implementar Auth Service | [X] | P0 | Feature | backend |
+```
 
-**Implementación:**
-✅ JwtTokenProvider con generación RS256
-✅ 15 tests unitarios + 5 integración
-✅ Cobertura: 95%
+**Ejemplo en carpeta HU:**
+```
+artifacts/HU/SAC-001/
+├── HU.md
+├── Refinamiento.md
+├── Plan.md             ← Estado: COMPLETADO
+└── Tracking.md         ← Estado: FINALIZADO, Commit: a1b2c3d
 ```
 
 ---
@@ -251,18 +263,18 @@ El sistema define **7 estados** para el ciclo de vida de una HU/Tarea:
 | **+ARCHDEV** | ✅ Sí | Dependencia de código de otra HU, API externa no disponible |
 | **+DEVOPS** | ✅ Sí | Infraestructura no disponible, acceso denegado |
 | **+REFINADOR** | ✅ Sí | Requisitos ambiguos que requieren clarificación del PO |
-| **+ARTESANO** | ✅ Sí | Cambios pendientes de otros commits |
 
 **Proceso para marcar como bloqueada:**
 
 ```
 1. ROL detecta impedimento durante su trabajo
-2. ROL documenta el bloqueo:
+2. ROL documenta el bloqueo en Refinamiento.md:
+   - Sección ## Bloqueo de Validación
    - Motivo del bloqueo
    - Tipo de bloqueo (DEPENDENCIA_HU, DECISION_PENDIENTE, etc.)
    - Acción requerida para desbloquear
    - Estado previo al bloqueo
-3. ROL actualiza estado a [B] en session_state.json
+3. ROL actualiza backbone índice a [B]
 4. ROL notifica al usuario sobre el bloqueo
 ```
 
@@ -272,14 +284,14 @@ El sistema define **7 estados** para el ciclo de vida de una HU/Tarea:
 
 **Ejemplo en backlog:**
 ```markdown
-### ARCHDEV-003: Implementar Payment Integration
-- **Estado:** [B] Bloqueada
-- **Estado previo:** [R] Refinada
-- **Bloqueado por:** +ARCHDEV
-- **Motivo:** Dependencia de ARCHDEV-001 (Auth Service) no completada
-- **Tipo:** DEPENDENCIA_HU
-- **Acción requerida:** Completar ARCHDEV-001 primero
-- **Fecha bloqueo:** 2026-01-04T10:30:00
+| SAC-003 | Implementar Payment | [B] | P0 | Feature | backend |
+```
+
+**Ejemplo en carpeta HU:**
+```
+artifacts/HU/SAC-003/
+├── HU.md
+└── Refinamiento.md     ← Contiene ## Bloqueo de Validación
 ```
 
 ---
@@ -397,44 +409,47 @@ El sistema define **7 estados** para el ciclo de vida de una HU/Tarea:
 **Proceso:**
 1. Lee tarea en estado `[ ]` del backlog
 2. Ejecuta `refinar_hu [ID-HU]`
-3. Define criterios de aceptación SMART
-4. Identifica dependencias técnicas
-5. Estima esfuerzo con precisión
-6. Genera artefacto de refinamiento
-7. Actualiza backlog y session_state a `[R]`
+3. Crea carpeta `SAC-XXX/` con HU.md y Refinamiento.md
+4. Define criterios de aceptación SMART
+5. Identifica dependencias técnicas
+6. Estima esfuerzo con precisión
+7. Actualiza backbone índice a `[R]`
 
 ---
 
 ### 🏛️ Arquitecto Onad
 
-**Transiciones:** `[R]` → `[A]` y `[A]` → `[P]`
-**Herramientas:** `validar_hu`, `planificar_hu`
+**Transición:** `[R]` → `[A]`
+**Herramienta:** `validar_hu`
 
-**Proceso de validación:**
-1. Lee tarea en estado `[R]`
-2. Ejecuta `validar-hu [ID-HU]`
+**Proceso:**
+1. Lee HU y Refinamiento desde `SAC-XXX/`
+2. Ejecuta `validar_hu [ID-HU]`
 3. Valida alineación arquitectónica
-4. Actualiza a `[A]`
-
-**Proceso de planificación:**
-1. Lee tarea en estado `[A]`
-2. Ejecuta `planificar-hu [ID-HU]`
-3. Genera plan de implementación detallado
-4. Actualiza a `[P]`
+4. Agrega sección `## Aprobación` en Refinamiento.md
+5. Actualiza backbone índice a `[A]`
 
 ---
 
 ### 💻 ArchDev Pro
 
-**Transiciones:** `[P]` → `[E]` → `[X]`
-**Herramienta:** `ejecutar_plan`
+**Transiciones:** `[A]` → `[P]` → `[E]` → `[X]`
+**Herramientas:** `planificar_hu`, `ejecutar_plan`, `validar_ca`
 
-**Proceso:**
-1. Lee tarea en estado `[P]`
-2. Ejecuta `ejecutar-plan [ID-HU]`
-3. Estado cambia a `[E]` al iniciar
-4. Implementa código según plan
-5. Estado cambia a `[X]` al completar
+**Proceso de planificación:**
+1. Lee HU y Refinamiento desde `SAC-XXX/`
+2. Ejecuta `planificar_hu [ID-HU]`
+3. Crea Plan.md en `SAC-XXX/`
+4. Actualiza backbone índice a `[P]`
+
+**Proceso de ejecución:**
+1. Lee Plan.md desde `SAC-XXX/`
+2. Ejecuta `ejecutar_plan [ID-HU]`
+3. Crea Tracking.md en `SAC-XXX/`
+4. Actualiza backbone índice a `[E]`
+5. Implementa código según plan
+6. Actualiza Tracking.md con progreso
+7. Al completar: actualiza backbone índice a `[X]`
 
 ---
 
@@ -443,17 +458,14 @@ El sistema define **7 estados** para el ciclo de vida de una HU/Tarea:
 ### Ver Estado del Backlog
 
 ```bash
-/cochas status
+>sincronizar_backlog --resumen
 
 # Salida incluye:
-📋 **Tablero de Tareas:**
-- [ ] Pendientes: 2
-- [R] Refinadas: 1
-- [A] Aprobadas: 1
-- [P] Planificadas: 2
-- [E] En Ejecución: 1
-- [X] Completadas: 5
-- [B] Bloqueadas: 1
+📊 Resumen del Backlog
+━━━━━━━━━━━━━━━━━━━━
+[ ] Pendientes: 2 | [R] Refinadas: 1 | [A] Aprobadas: 1
+[P] Planificadas: 2 | [E] En Ejecución: 1 | [X] Completadas: 5 | [B] Bloqueadas: 1
+Total: 12 HUs
 ```
 
 ---
@@ -463,13 +475,13 @@ El sistema define **7 estados** para el ciclo de vida de una HU/Tarea:
 **Flujo secuencial obligatorio (7 estados):**
 ```
 [ ] Pendiente
-  ↓ refinar_hu (REFINADOR)
+  ↓ >refinar_hu (REFINADOR)
 [R] Refinada
-  ↓ validar_hu (ONAD)
+  ↓ >validar_hu (ONAD)
 [A] Aprobada
-  ↓ planificar-hu (ONAD)
+  ↓ >planificar_hu (ARCHDEV)
 [P] Planificada
-  ↓ ejecutar-plan (ARCHDEV)
+  ↓ >ejecutar_plan (ARCHDEV)
 [E] En Ejecución
   ↓ (finaliza)
 [X] Completada
@@ -477,12 +489,30 @@ El sistema define **7 estados** para el ciclo de vida de una HU/Tarea:
 [B] Bloqueada (puede ocurrir en cualquier momento)
 ```
 
-**Archivos centrales:**
-- Workspace: `{{archivos.workspace}}`
-- Backlog: `{{archivos.backlog}}`
-- Contextos: `{{artifacts.contextos_folder}}/`
-- Refinamientos: `{{artifacts.hu_refinamientos}}/`
-- Planes: `{{artifacts.planes_folder}}/`
-- Ejecuciones: `{{artifacts.ejecuciones}}/`
+**Estructura de carpetas:**
+```
+artifacts/HU/
+├── backlog_desarrollo.md     ← Solo índice resumen
+├── SAC-001/                  ← Carpeta de HU
+│   ├── HU.md
+│   ├── Refinamiento.md
+│   ├── Plan.md
+│   └── Tracking.md
+├── SAC-001-TASK-01/          ← Task hija
+│   ├── HU.md
+│   └── Refinamiento.md
+└── deuda_tecnica/            ← Deuda técnica
+    └── DT-XXX_descripcion.md
+```
+
+**Detección de estado por archivos:**
+```
+SAC-XXX/HU.md                      → [ ] Pendiente
+SAC-XXX/HU.md + Refinamiento.md    → [R] Refinada
++ ## Aprobación en Refinamiento.md → [A] Aprobada
++ Plan.md                          → [P] Planificada
++ Tracking.md                      → [E] En Ejecución
+Plan.md Estado: COMPLETADO         → [X] Completada
+```
 
 **Comando útil:** `/cochas status` para ver progreso general
