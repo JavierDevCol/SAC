@@ -2,7 +2,7 @@
 nombre: "Registrar Bug"
 comando: ">registrar_bug"
 alias: [">bug", ">reportar_bug"]
-version: "1.0"
+version: "2.0"
 
 # ============================================
 # REGISTRAR BUG - Herramienta de IA
