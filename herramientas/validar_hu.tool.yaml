@@ -2,13 +2,15 @@
 nombre: "Validar Historia de Usuario"
 comando: ">validar_hu"
 alias: [">validar", ">aprobar_hu"]
-version: "4.2"
+version: "5.0"
 
 mandatory:
   - instruccion: "Verificar alineación con reglas arquitectónicas del proyecto"
   - instruccion: "NO aprobar HU que violen principios arquitectónicos"
   - instruccion: "Documentar razones de rechazo o ajustes requeridos"
   - instruccion: "Verificar dependencias (HUs, APIs, recursos) antes de aprobar"
+  - instruccion: "Leer HU y Refinamiento desde {{artifacts.hu_folder}}/[ID-HU]/"
+  - instruccion: "Delegar validación arquitectónica a sub-agente validador-calidad"
 
 condiciones_entrada:
   - condicion: "HU en estado [R] Refinada"
@@ -54,40 +56,36 @@ proceso:
   - paso: "Cargar HU y Contexto"
     obligatorio: true
     acciones: 
-      - "Buscar HU en backlog"
-      - "Verificar estado [R] Refinada"
+      - "Verificar que existe carpeta {{artifacts.hu_folder}}/[ID-HU]/"
+      - "Leer {{artifacts.hu_folder}}/[ID-HU]/HU.md"
+      - "Leer {{artifacts.hu_folder}}/[ID-HU]/Refinamiento.md"
+      - "Verificar que Refinamiento.md NO tiene sección '## Aprobación' (ya aprobada)"
       - "Extraer campo '- **Tipo:**' de la HU (SI no existe → asumir Funcional)"
       - "SI Tipo = Bug y severidad Crítica:"
       - "  Aplicar nivel_validacion='basico' automáticamente (validación acelerada)"
       - "  Informar: '⚡ Bug crítico detectado — validación acelerada activa'"
       - "Extraer campo '- **Proyecto:**' de la HU"
       - "SI Proyecto = 'compartida':"
-      - "  1. Leer sección '**Proyectos afectados:**' de la HU (lista de proyectos)"
-      - "  2. Para cada proyecto listado → Cargar contexto desde {{artifacts.contextos_folder}}/[proyecto]_contexto.md"
-      - "  3. Cargar reglas arquitectónicas de cada proyecto"
+      - "  1. Cargar contextos de todos los proyectos afectados"
+      - "  2. Cargar reglas arquitectónicas de cada proyecto"
       - "SI Proyecto = [nombre] → Cargar contexto desde {{artifacts.contextos_folder}}/[proyecto]_contexto.md"
-      - "Cargar refinamiento desde {{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md"
       - "SI HU tiene campo ADR_Ref → Cargar ADR referenciado desde {{artifacts.adr_folder}}"
     si_error:
-      no_encontrada: "HU [id_hu] no encontrada en backlog"
-      estado_invalido: "HU debe estar en estado [R] Refinada"
+      no_encontrada: "Carpeta {{artifacts.hu_folder}}/[ID-HU]/ no encontrada"
+      estado_invalido: "Refinamiento.md ya tiene sección '## Aprobación' — HU ya aprobada"
       contexto_no_encontrado: " Contexto del proyecto '[proyecto]' no encontrado"
 
   - paso: "Detección de Ambigüedades"
     obligatorio: true
     descripcion: "NUNCA asumir. Ante cualquier duda, preguntar al usuario."
     acciones:
-      - "Analizar HU y CA buscando: términos vagos, información faltante, contradicciones, casos no cubiertos"
-      - "SI se detectan ambigüedades → Listar preguntas claras y específicas"
+      - "Delegar a sub-agente validador-calidad: 'Analiza estos CAs buscando ambigüedades: [CAs]. Retorna SIN_AMBIGÜEDADES/CON_AMBIGÜEDADES + lista'"
+      - "Si hay ambigüedades → Listar preguntas claras y específicas"
       - "PAUSAR y esperar respuestas del usuario antes de continuar"
       - "Incorporar respuestas al contexto de validación"
     comportamiento:
       si_hay_dudas: "PREGUNTAR y ESPERAR respuesta"
       si_no_hay_dudas: "Continuar al siguiente paso"
-    ejemplo_preguntas:
-      - "El CA dice 'respuesta rápida' — ¿Cuál es el tiempo máximo aceptable en ms?"
-      - "¿El usuario debe estar autenticado para esta funcionalidad?"
-      - "¿Qué debe ocurrir si [caso X] falla?"
 
   - paso: "Validación contra ADR"
     obligatorio: false
@@ -118,10 +116,8 @@ proceso:
     obligatorio: true
     nota: "Valida la HU como REQUISITO, no define implementación (eso es planificar_hu)"
     acciones:
-      - "Verificar que la funcionalidad propuesta encaja en arquitectura existente"
-      - "Detectar si los CA fuerzan implementaciones que violarían patrones"
-      - "Evaluar si la HU introduce responsabilidades que no corresponden a su dominio"
-      - "Aplicar reglas_arquitectonicas si están disponibles"
+      - "Delegar a sub-agente validador-calidad: 'Verifica que la HU [ID] respeta las reglas arquitectónicas: [reglas]. Retorna PASS/FAIL + violaciones'"
+      - "Si FAIL → Agregar violaciones a observaciones de validación"
     checklist:
       - "La funcionalidad respeta la separación de responsabilidades del proyecto"
       - "Los CA no imponen decisiones técnicas que violen la arquitectura"
@@ -158,8 +154,8 @@ proceso:
     obligatorio: true
     condicion: "resultado == APROBADA"
     acciones:
-      - "Abrir archivo {{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento*.md"
-      - "Agregar sección '## Aprobación' al final del archivo (antes de Feedback si existe)"
+      - "Abrir archivo {{artifacts.hu_folder}}/[ID-HU]/Refinamiento.md"
+      - "Agregar sección '## Aprobación' al final del archivo (antes de Historial si existe)"
       - "Rellenar con:"
       - "  | Campo | Valor |"
       - "  |-------|-------|"
@@ -177,18 +173,22 @@ proceso:
       - "  - **Notas adicionales:** [ADRs relevantes, patrones recomendados, consideraciones especiales]"
       - "SI no hay directrices relevantes para algún campo → Omitir ese campo (no usar 'N/A')"
       - "MÍNIMO: al menos un campo debe tener contenido útil; si no hay nada que aportar, usar solo campo 'Notas adicionales' con 'Sin directrices específicas'"
+      - "Actualizar backbone índice: cambiar estado de [R] a [A]"
     nota: "Este marcador permite a >sincronizar_backlog deducir el estado [A] Aprobada desde artefactos. Las directrices son RECOMENDACIONES para >planificar_hu, no mandatos."
 
   - paso: "Persistir Feedback"
     obligatorio: true
     condicion: "resultado == AJUSTES"
-    acciones: ["Agregar sección '## Feedback de Validación' en refinamiento", "Incluir fecha, iteración, observaciones pendientes", "Marcar como [ ] pendientes de resolver"]
+    acciones:
+      - "Agregar sección '## Feedback de Validación' en {{artifacts.hu_folder}}/[ID-HU]/Refinamiento.md"
+      - "Incluir fecha, iteración, observaciones pendientes"
+      - "Marcar como [ ] pendientes de resolver"
 
   - paso: "Persistir Bloqueo"
     obligatorio: true
     condicion: "resultado == BLOQUEADA"
     acciones:
-      - "Abrir archivo {{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento*.md"
+      - "Abrir archivo {{artifacts.hu_folder}}/[ID-HU]/Refinamiento.md"
       - "Agregar sección '## Bloqueo de Validación' al final del archivo"
       - "Rellenar con:"
       - "  | Campo | Valor |"
@@ -198,18 +198,18 @@ proceso:
       - "  | **Bloqueado por** | [Descripción: HU-XXX / endpoint / decisión / recurso] |"
       - "  | **Acción requerida** | [Qué debe ocurrir para desbloquear] |"
       - "  | **Fecha bloqueo** | [FECHA_ISO_8601] |"
-      - "Actualizar estado en backlog a [B] Bloqueada con motivo"
+      - "Actualizar backbone índice: cambiar estado a [B]"
     nota: "Permite a >sincronizar_backlog deducir el estado [B] y el motivo desde artefactos"
 
 salida:
-  archivos_actualizados: ["{{archivos.backlog}}", "{{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md"]
+  archivos_actualizados: ["{{archivos.backlog}}", "{{artifacts.hu_folder}}/[ID-HU]/Refinamiento.md"]
   mensaje_aprobada: |
      HU APROBADA: [ID-HU]
      Validaciones:  CA |  Arquitectura |  Viabilidad
      Siguiente: >planificar_hu [ID-HU]
   mensaje_ajustes: |
      HU REQUIERE AJUSTES: [ID-HU]
-     Feedback en: {{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md
+     Feedback en: {{artifacts.hu_folder}}/[ID-HU]/Refinamiento.md
      Siguiente: >refinar_hu [ID-HU] (Refinador HU)
   mensaje_bloqueada: |
     🚫 HU BLOQUEADA: [ID-HU]
