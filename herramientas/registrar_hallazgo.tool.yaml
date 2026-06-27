@@ -2,7 +2,7 @@
 nombre: "Registrar Hallazgo"
 comando: ">registrar_hallazgo"
 alias: [">hallazgo"]
-version: "1.0"
+version: "2.0"
 
 # ============================================
 # REGISTRAR HALLAZGO - Dispatcher de ClasificaciÃ³n
