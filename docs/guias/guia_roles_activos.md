@@ -1,8 +1,8 @@
 # 👥 Guía de Roles Activos del Sistema
 
-> **Sistema:** COCHAS - Orquestación de Agentes IA  
-> **Versión:** 7.0  
-> **Última Actualización:** 13 de febrero de 2026
+> **Sistema:** COCHAS - Orquestación de Agentes IA
+> **Versión:** 7.25.0
+> **Última Actualización:** 27 de junio de 2026
 
 ---
 
@@ -56,7 +56,10 @@ El sistema COCHAS usa **3 prefijos** para diferentes tipos de acciones:
 - `>init_reglas_arquitectonicas` - Configura reglas arquitectónicas del proyecto
 - `>generar_adr` - Documenta decisiones arquitectónicas importantes
 - `>validar_hu` - Valida viabilidad arquitectónica de HUs
-- `>planificar_hu` - Crea planes de implementación alineados con arquitectura
+- `>registrar_bug` - Registro y triage de bugs detectados
+- `>registrar_pendiente` - Registro de hallazgos de pruebas funcionales
+- `>registrar_hallazgo` - Punto de entrada unificado — clasifica y redirige
+- `>sincronizar_backlog` - Sincronizar estados del backlog con artefactos reales
 
 **Cuándo usarlo:**
 - ✅ Diseñar la arquitectura de un nuevo proyecto
@@ -65,12 +68,12 @@ El sistema COCHAS usa **3 prefijos** para diferentes tipos de acciones:
 - ✅ Validar viabilidad técnica de alto nivel
 - ✅ Documentar decisiones estratégicas (ADRs)
 - ✅ Resolver deuda técnica arquitectónica
+- ✅ Registrar bugs y hallazgos
 
 **Cuándo NO usarlo:**
 - ❌ Implementar código específico (usa **ArchDev Pro**)
 - ❌ Configurar infraestructura (usa **DevOps**)
 - ❌ Refinar historias de usuario (usa **Refinador HU**)
-- ❌ Crear mensajes de commit (usa **Artesano**)
 
 **Principio Cardinal: "No Comer Entero"**
 - Nunca acepta propuestas sin análisis crítico previo
@@ -113,13 +116,19 @@ Interesante. Antes de diseñar la implementación, validemos:
 
 **Herramientas:**
 - `>tomar_contexto` - Analiza el proyecto completo
+- `>planificar_hu` - Crea planes de implementación
 - `>ejecutar_plan` - Ejecuta planes de implementación generados
+- `>validar_ca` - Valida criterios de aceptación contra código
 - `>crear_pruebas` - Genera tests unitarios y de integración
 - `>analizar_code_smells` - Detecta problemas de calidad en el código
 - `>generar_commit` - Documenta cambios con Conventional Commits
+- `>registrar_bug` - Registro de bugs detectados durante desarrollo
+- `>registrar_hallazgo` - Clasificación de hallazgos
+- `>sincronizar_backlog` - Sincronizar estados del backlog
 
 **Cuándo usarlo:**
-- ✅ Implementar código basado en planes de implementación
+- ✅ Planificar e implementar código basado en planes de implementación
+- ✅ Validar criterios de aceptación contra código
 - ✅ Crear tests unitarios y de integración
 - ✅ Detectar y analizar code smells
 - ✅ Aplicar patrones de diseño
@@ -129,7 +138,6 @@ Interesante. Antes de diseñar la implementación, validemos:
 - ❌ Tomar decisiones arquitectónicas estratégicas (usa **ONAD**)
 - ❌ Configurar pipelines CI/CD (usa **DevOps**)
 - ❌ Refinar historias de usuario (usa **Refinador HU**)
-- ❌ Crear mensajes de commit profesionales (usa **Artesano**)
 
 **Flujo típico con ONAD:**
 ```
