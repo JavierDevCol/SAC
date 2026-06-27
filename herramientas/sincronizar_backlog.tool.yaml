@@ -2,7 +2,7 @@
 nombre: "Sincronizar Backlog"
 comando: ">sincronizar_backlog"
 alias: [">sync_backlog", ">sync", ">resumen_backlog"]
-version: "1.0"
+version: "2.0"
 
 mandatory:
   - instruccion: "Seguir el proceso paso a paso en orden secuencial"
