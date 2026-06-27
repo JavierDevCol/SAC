@@ -1,6 +1,6 @@
 # 📝 CHANGELOG - SAC
 
-> **Sistema:** SAC - Sistema Agéntico COCHAS  
+> **Sistema:** SAC - Sistema Agéntico COCHAS
 > **Archivo:** Índice centralizado de versiones de todos los componentes
 
 ---
@@ -9,12 +9,12 @@
 
 | Componente | Versión Actual | Última Actualización |
 |------------|----------------|----------------------|
-| **Sistema SAC** | 7.24.0 | 2026-04-29 |
-| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.24.0 | 2026-04-29 |
+| **Sistema SAC** | 7.25.0 | 2026-06-27 |
+| **Configuración Sistema** (`config/CONFIG_SYSTEM.yaml`) | 7.25.0 | 2026-06-27 |
 | **Configuración Usuario** (`config/CONFIG_USER.template.yaml`) | 7.9.0 | 2026-04-24 |
-| **Roles SAC** (`agentes/*.rol.md`) | 7.21.1 | 2026-04-29 |
-| **Herramientas** (`herramientas/*.tool.yaml`) | 7.24.0 | 2026-04-29 |
-| **Plantillas** (`plantillas/`) | 7.24.0 | 2026-04-29 |
+| **Roles SAC** (`agentes/*.rol.md`) | 7.25.0 | 2026-06-27 |
+| **Herramientas** (`herramientas/*.tool.yaml`) | 7.25.0 | 2026-06-27 |
+| **Plantillas** (`plantillas/`) | 7.25.0 | 2026-06-27 |
 | **Guía de Comandos** (`guias/guia_comandos.md`) | 7.15.0 | 2026-04-28 |
 | **Guía de Roles** (`guias/guia_roles_activos.md`) | 3.0 | 2026-01-05 |
 | **Guía Ciclo de Vida** (`guias/guia_ciclo_vida_tareas.md`) | 7.15.0 | 2026-04-28 |
@@ -22,6 +22,90 @@
 ---
 
 ## 🚀 Historial de Versiones
+
+### [7.25.0] - 2026-06-27
+
+#### 🏗️ Breaking Change: Reestructuración del Backlog y Gestión de HUs
+
+**Objetivo:** Mover las HUs de un archivo backlog monolítico a carpetas individuales con archivos genéricos, mejorar la gestión de estado, delegar validaciones a sub-agentes y simplificar el backlog.
+
+**Estructura nueva:**
+```
+artifacts/
+├── backlog_desarrollo.md        ← Solo índice resumen
+├── SAC-001/                     ← Carpeta de HU
+│   ├── HU.md                    ← Detalle de la HU
+│   ├── Refinamiento.md          ← Criterios de aceptación
+│   ├── Plan.md                  ← Plan de implementación
+│   └── Tracking.md              ← Historial de ejecución
+├── SAC-001-TASK-01/             ← Task hija
+│   ├── HU.md                    ← Campo "Padre: SAC-001"
+│   └── Refinamiento.md
+└── deuda_tecnica/               ← Deuda técnica
+    ├── DT-001_refactorizar_auth.md
+    └── DT-002_optimizar_queries.md
+```
+
+#### ✅ Cambios en Plantillas
+
+| Cambio | Detalle |
+|--------|---------|
+| `plantillas/hu/HU.md` | NUEVA — Plantilla base para HU |
+| `plantillas/hu/Refinamiento.md` | NUEVA — Plantilla de refinamiento |
+| `plantillas/hu/Plan.md` | NUEVA — Plantilla de plan de implementación |
+| `plantillas/hu/Tracking.md` | NUEVA — Plantilla de tracking de ejecución |
+| `backlog_desarrollo_plantilla.md` | Eliminada sección `## 🎯 Historias de Usuario`, simplificada Deuda Técnica |
+
+#### ✅ Cambios en Herramientas
+
+| Cambio | Detalle |
+|--------|---------|
+| `refinar_hu.tool.yaml` v5.0 | Crear carpetas SAC-XXX/ con HU.md y Refinamiento.md, delegar ambigüedades a sub-agente |
+| `validar_hu.tool.yaml` v5.0 | Leer desde SAC-XXX/, delegar validación arquitectónica a sub-agente |
+| `planificar_hu.tool.yaml` v6.0 | Crear Plan.md en SAC-XXX/ |
+| `ejecutar_plan.tool.yaml` v6.0 | Crear/actualizar Tracking.md en SAC-XXX/, delegar compilación/tests a sub-agente |
+| `registrar_bug.tool.yaml` v2.0 | Crear carpetas SAC-XXX/ para bugs |
+| `validar_ca.tool.yaml` v2.0 | Leer desde SAC-XXX/, delegar validación de código a sub-agente |
+| `sincronizar_backlog.tool.yaml` v2.0 | Preparado para escanear carpetas en SAC-XXX/ |
+| `registrar_pendiente.tool.yaml` v3.0 | Agregar instrucciones para deuda_tecnica |
+| `registrar_hallazgo.tool.yaml` v2.0 | Agregar análisis y recomendación de tipo con sub-agente |
+
+#### ✅ Cambios en Configuración
+
+| Cambio | Detalle |
+|--------|---------|
+| `CONFIG_SYSTEM.yaml` | Agregar `plantillas.hu` (HU.md, Refinamiento.md, Plan.md, Tracking.md) |
+| `CONFIG_SYSTEM.yaml` | Agregar `artifacts.deuda_tecnica_folder` |
+| `CONFIG_SYSTEM.yaml` | Eliminar `hu_refinamientos`, `hu_compartidas`, `planes_folder`, `ejecuciones_folder` |
+| `CONFIG_SYSTEM.yaml` | Versión 7.24.0 → 7.25.0 |
+
+#### ✅ Cambios en Roles
+
+| Cambio | Detalle |
+|--------|---------|
+| `_base.rol.md` | Actualizar estrategia de carga: carpetas individuales en vez de secciones |
+
+#### ✅ Nuevos Sub-Agentes
+
+| Sub-agente | Propósito | Permisos |
+|------------|-----------|----------|
+| `validador-calidad` | Validar CAs, alineación arquitectónica, ambigüedades, existencia de archivos | Solo lectura |
+| `validador-compilacion` | Verificar compilación y ejecutar tests | Lectura + bash |
+
+#### 📊 Decisiones de Diseño
+
+| Decisión | Resultado |
+|----------|-----------|
+| Estado de la HU | Inferido por archivos existentes (no campo explícito) |
+| Estado centralizado | Solo en backlog índice (único lugar) |
+| HUs compartidas | Una carpeta + `Impl Proyecto` + particionar en tasks hijas |
+| Campo Proyecto | Siempre presente en HU.md |
+| Deuda Técnica | `artifacts/deuda_tecnica/` + resumen en backlog |
+| Validación de CAs | Contra Refinamiento.md (fuente de verdad) |
+| Sub-agentes | Para tareas de validación (validar_ca, compilar, tests) |
+| Dispatcher hallazgos | Analiza y recomienda tipo (Bug/Feature/Pendiente) |
+
+---
 
 ### [7.24.0] - 2026-04-29
 
