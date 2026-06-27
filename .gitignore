@@ -17,3 +17,9 @@
 
 __pycache__/
 *.pyc
+
+# Manuales y documentación de referencia (no se versionan)
+manuales-opencode/
+
+# Propuestas y discusiones (no se versionan)
+propuestas/
