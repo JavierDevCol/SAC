@@ -5,7 +5,7 @@
 # SAC - Sistema Agéntico COCHAS
 # ============================================
 
-version: "7.24.0"
+version: "7.25.0"
 
 # ============================================
 # CARPETAS PRINCIPALES
@@ -32,15 +32,10 @@ archivos:
 # SUBCARPETAS DE ARTIFACTS
 # ============================================
 artifacts:
-  # Historias de Usuario
+  # Historias de Usuario (carpetas individuales)
   hu_folder: "{project-root}/artifacts/HU"
-  hu_refinamientos: "{project-root}/artifacts/HU/refinamientos"
-  hu_compartidas: "{project-root}/artifacts/HU/compartidas"
   # Arquitectura
   adr_folder: "{project-root}/artifacts/ADR"
-  # Planes y ejecución
-  planes_folder: "{project-root}/artifacts/planes_de_desarrollo"
-  ejecuciones_folder: "{project-root}/artifacts/ejecuciones"
   # Code quality
   code_smells_folder: "{project-root}/artifacts/code_smells"
   # Bugs y pendientes
@@ -48,8 +43,14 @@ artifacts:
   lecciones_aprendidas: "{project-root}/artifacts/lecciones_aprendidas.md"
   pendientes: "{project-root}/artifacts/pendientes.md"
   pendientes_folder: "{project-root}/artifacts/pendientes"
+  # Deuda técnica
+  deuda_tecnica_folder: "{project-root}/artifacts/deuda_tecnica"
   # Multi-proyecto
   contextos_folder: "{project-root}/artifacts/contextos"
+  # ELIMINADO: hu_refinamientos (archivos en carpeta de HU)
+  # ELIMINADO: hu_compartidas (usar tasks hijas)
+  # ELIMINADO: planes_folder (archivos en carpeta de HU)
+  # ELIMINADO: ejecuciones_folder (Tracking.md en carpeta de HU)
 
 # ============================================
 # CONFIGURACIÓN MULTI-PROYECTO
@@ -79,6 +80,12 @@ plantillas:
   plan_implementacion: "{project-root}/.SAC/plantillas/plan_implementacion_plantilla.md"
   refinamiento_hu: "{project-root}/.SAC/plantillas/refinamiento_hu_plantilla.md"
   reglas_arquitectonicas: "{project-root}/.SAC/plantillas/reglas_arquitectonicas_plantilla.md"
+  # Plantillas HU (carpetas individuales)
+  hu:
+    hu: "{project-root}/.SAC/plantillas/hu/HU.md"
+    refinamiento: "{project-root}/.SAC/plantillas/hu/Refinamiento.md"
+    plan: "{project-root}/.SAC/plantillas/hu/Plan.md"
+    tracking: "{project-root}/.SAC/plantillas/hu/Tracking.md"
 
 # ============================================
 # RUTAS DE REGLAS
