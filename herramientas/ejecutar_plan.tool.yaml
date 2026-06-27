@@ -2,7 +2,7 @@
 nombre: "Ejecutar Plan de Implementación"
 comando: ">ejecutar_plan"
 alias: [">ejecutar", ">implementar"]
-version: "5.0"
+version: "6.0"
 
 mandatory:
   - instruccion: "Ejecutar tareas del plan en ORDEN ESTRICTO"
@@ -13,6 +13,9 @@ mandatory:
   - instruccion: "Estados de tareas: [PENDIENTE]  [EN_PROGRESO]  [EJECUTADA]"
   - instruccion: "En HUs particionadas, respetar dependencias entre tasks funcionales antes de ejecutar"
   - instruccion: "Validar campo Modo del plan (Plano|Particionada) para determinar estrategia de ejecución"
+  - instruccion: "Leer plan desde {{artifacts.hu_folder}}/[ID-HU]/Plan.md"
+  - instruccion: "Crear/actualizar Tracking.md en {{artifacts.hu_folder}}/[ID-HU]/"
+  - instruccion: "Delegar compilación y tests a sub-agente validador-compilacion"
 
 reglas_arquitectonicas_requeridas:
   descripcion: "Si hay reglas arquitectónicas cargadas, aplicar:"
@@ -92,20 +95,22 @@ proceso:
   - paso: "Cargar Plan de Implementación"
     obligatorio: true
     acciones:
-      - "Buscar plan en {{artifacts.planes_folder}}/[ID-HU]_plan_implementacion.md"
-      - "Verificar estructura según {{plantillas.plan_implementacion}}"
-      - "Verificar estado [P] Planificada en {{archivos.backlog}}"
+      - "Verificar que existe carpeta {{artifacts.hu_folder}}/[ID-HU]/"
+      - "Leer {{artifacts.hu_folder}}/[ID-HU]/HU.md"
+      - "Leer {{artifacts.hu_folder}}/[ID-HU]/Plan.md"
+      - "Verificar que Plan.md tiene campo 'Estado' = 'PENDIENTE'"
       - "Cargar {{artifacts.lecciones_aprendidas}} (si existe) como contexto de lecciones aprendidas de bugs anteriores"
       - "Extraer campo '- **Proyecto:**' de la HU"
       - "SI Proyecto = 'compartida':"
-      - "  1. Leer sección '**Proyectos afectados:**' de la HU (lista de proyectos)"
+      - "  1. Cargar contextos de todos los proyectos afectados"
       - "  2. Ejecutar tareas en el directorio de cada proyecto según corresponda"
       - "SI Multi-Proyecto → Establecer directorio base del proyecto como CWD"
       - "Cambiar estado HU a [E] En Ejecución"
-      - "Actualizar Metadata del plan: Estado  EN_PROGRESO"
+      - "Actualizar Plan.md: campo Estado → 'EN_PROGRESO'"
+      - "Crear Tracking.md desde {{plantillas.hu.tracking}} si no existe"
     si_error:
-      no_encontrado: " Plan no encontrado. Ejecutar >planificar_hu primero"
-      estado_invalido: " HU debe estar en estado [P] Planificada"
+      no_encontrado: " Plan no encontrado en {{artifacts.hu_folder}}/[ID-HU]/Plan.md. Ejecutar >planificar_hu primero"
+      estado_invalido: " Plan debe estar en estado PENDIENTE"
 
   - paso: "Resolver Modo de Ejecución"
     obligatorio: true
@@ -214,12 +219,13 @@ proceso:
     obligatorio: true
     acciones: [Crear archivos nuevos, Modificar existentes, Aplicar convenciones]
     validaciones:
-      - condicion: "Código compila correctamente"
+      - condicion: "Delegar a sub-agente validador-compilacion: 'Compila el proyecto en [ruta]. Retorna EXITO/FALLA + errores'"
         si_no_cumple: "DETENER y reportar error de compilación"
 
   - paso: "Ejecutar Tests"
     obligatorio: true
-    acciones: ["Ejecutar tests: mvn test / npm test / pytest", "Verificar todos pasan"]
+    acciones:
+      - "Delegar a sub-agente validador-compilacion: 'Ejecuta tests del proyecto en [ruta]. Retorna PASSED/FAILED + detalle'"
     si_error:
       tests_fallidos: " DETENER. Revisar lógica o actualizar tests"
 
@@ -248,7 +254,7 @@ proceso:
   - paso: "Finalización"
     obligatorio: true
     acciones:
-      - "VERIFICAR: Leer archivo del plan y confirmar que TODAS las tareas están en [EJECUTADA] y TODOS los pasos en [X]"
+      - "VERIFICAR: Leer {{artifacts.hu_folder}}/[ID-HU]/Plan.md y confirmar que TODAS las tareas están en [EJECUTADA]"
       - "SI hay discrepancias: EDITAR ARCHIVO del plan para corregir estados pendientes ANTES de continuar"
       - "SI Modo = Particionada Y modo_ejecucion = task_especifica:"
       - "  - Verificar si TODAS las tasks del plan están [EJECUTADA]"
@@ -257,27 +263,30 @@ proceso:
       - "    '▶️ Siguiente: >ejecutar_plan [ID-HU] --modo_ejecucion task_especifica --task_id [siguiente_task]'"
       - "  - SI todas las tasks completadas → Continuar con finalización completa"
       - "EDITAR ARCHIVO del plan: cambiar campo Estado en tabla Metadata → 'COMPLETADO'"
-      - "Cambiar estado HU a [X] Completada en {{archivos.backlog}}"
-      - "SI Multi-Proyecto → Actualizar contadores en sección 'Resumen por Proyecto'"
-      - "Agregar entrada final en Historial de Ejecución (incluir columna Proyecto)"
+      - "Actualizar Tracking.md: cambiar campo Estado → 'FINALIZADO', agregar Commit final"
+      - "Actualizar backbone índice: cambiar estado a [X]"
+      - "Agregar entrada final en Historial de Ejecución"
 
 actualizacion_tiempo_real:
-  descripcion: "El archivo .md del plan DEBE ser editado (escritura en disco) en cada transición. NO es una anotación mental — es una operación de edición de archivo."
+  descripcion: "El archivo Plan.md DEBE ser editado (escritura en disco) en cada transición. NO es una anotación mental — es una operación de edición de archivo."
   instrucciones_imperativas:
-    - "EDITAR ARCHIVO del plan al iniciar tarea: reemplazar texto '[PENDIENTE]' → '[EN_PROGRESO]' en la línea #### TASK-N-EJEC-NN"
-    - "EDITAR ARCHIVO del plan al completar paso: reemplazar texto '- [ ]' → '- [X]' en la línea del paso"
-    - "EDITAR ARCHIVO del plan al completar tarea: reemplazar texto '[EN_PROGRESO]' → '[EJECUTADA]' en la línea #### TASK-N-EJEC-NN"
-    - "EDITAR ARCHIVO del plan al error: reemplazar estado actual → '[ERROR]' en la línea #### TASK-N-EJEC-NN"
-    - "EDITAR ARCHIVO del plan al finalizar: cambiar campo Estado en tabla Metadata a 'COMPLETADO'"
+    - "EDITAR Plan.md al iniciar tarea: reemplazar '[PENDIENTE]' → '[EN_PROGRESO]'"
+    - "EDITAR Plan.md al completar paso: reemplazar '- [ ]' → '- [X]'"
+    - "EDITAR Plan.md al completar tarea: reemplazar '[EN_PROGRESO]' → '[EJECUTADA]'"
+    - "EDITAR Plan.md al error: reemplazar estado actual → '[ERROR]'"
+    - "EDITAR Plan.md al finalizar: cambiar campo Estado a 'COMPLETADO'"
+    - "ACTUALIZAR Tracking.md: agregar fila en Historial de Ejecución"
   frecuencia: "Después de CADA tarea, NO al final de todas las fases"
   verificacion: "Si al leer el plan las marcas no coinciden con lo ejecutado, DETENER y corregir antes de continuar"
 
 salida:
   archivos_actualizados:
-    - ruta: "{{artifacts.planes_folder}}/[ID-HU]_plan_implementacion.md"
-    - ruta: "{{archivos.backlog}}"
-    - descripcion: "Archivos de código según plan"
-  estado_hu_final_completo: "[C] Completada"
+    - "{{artifacts.hu_folder}}/[ID-HU]/Plan.md"
+    - "{{artifacts.hu_folder}}/[ID-HU]/Tracking.md"
+    - "{{archivos.backlog}}"
+  archivos_generados:
+    - "{{artifacts.hu_folder}}/[ID-HU]/Tracking.md (si no existía)"
+  estado_hu_final_completo: "[X] Completada"
   estado_hu_final_task_parcial: "[E] En Ejecución (tasks pendientes)"
   mensaje_exito_completo: |
      IMPLEMENTACIÓN COMPLETADA: [ID-HU]
@@ -298,8 +307,8 @@ salida:
     ▶️ Siguiente: >ejecutar_plan [ID-HU] --modo_ejecucion task_especifica --task_id [siguiente_task]
 
 errores:
-  plan_no_encontrado: {msg: " Plan no encontrado", accion: "Ejecutar >planificar_hu primero"}
-  estado_incorrecto: {msg: " HU no está en [P] Planificada", accion: "Verificar flujo de estados"}
+  plan_no_encontrado: {msg: " Plan no encontrado en SAC-XXX/Plan.md", accion: "Ejecutar >planificar_hu primero"}
+  estado_incorrecto: {msg: " Plan no está en estado PENDIENTE", accion: "Verificar flujo de estados"}
   compilacion: {msg: " Error de compilación", accion: "Revisar código generado"}
   tests_fallidos: {msg: " Tests fallando", accion: "Revisar lógica o tests"}
   archivo_existente: {msg: " Archivo ya existe", opciones: [Sobrescribir, Fusionar, Omitir]}
