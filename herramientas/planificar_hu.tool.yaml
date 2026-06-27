@@ -2,18 +2,19 @@
 nombre: "Planificar Historia de Usuario"
 comando: ">planificar_hu"
 alias: [">planificar", ">plan_hu"]
-version: "5.0"
+version: "6.0"
 
 mandatory:
   - instruccion: "Generar plan alineado con arquitectura del proyecto"
   - instruccion: "Incluir tareas de testing en el plan"
   - instruccion: "Especificar orden de ejecución y dependencias"
-  - instruccion: "Usar plantilla {{plantillas.plan_implementacion}}"
+  - instruccion: "Usar plantilla {{plantillas.hu.plan}}"
   - instruccion: "Incluir TODOS los criterios de aceptación de la HU en Fase Final"
   - instruccion: "SI campo Tipo no existe en la HU → asumir Tipo=Funcional"
   - instruccion: "SI Tipo=Bug → Cargar archivo de bug referenciado y usar estructura_fases.bugfix"
   - instruccion: "SI Modo=Particionada en refinamiento → Organizar plan por tasks funcionales con fases internas"
   - instruccion: "Numerar tareas técnicas por task con IDs compuestos: TASK-N-EJEC-NN (N=task, NN=secuencial dentro de task)"
+  - instruccion: "Crear Plan.md en {{artifacts.hu_folder}}/[ID-HU]/ desde {{plantillas.hu.plan}}"
 
 reglas_arquitectonicas_requeridas:
   descripcion: "Si hay reglas arquitectónicas cargadas, aplicar:"
@@ -103,23 +104,23 @@ proceso:
   - paso: "Cargar HU y Contexto"
     obligatorio: true
     acciones: 
-      - "Buscar HU en backlog"
+      - "Verificar que existe carpeta {{artifacts.hu_folder}}/[ID-HU]/"
+      - "Leer {{artifacts.hu_folder}}/[ID-HU]/HU.md"
+      - "Leer {{artifacts.hu_folder}}/[ID-HU]/Refinamiento.md"
       - "Extraer campo '- **Tipo:**' de la HU (SI no existe → asumir Funcional)"
       - "SI Tipo = Bug:"
-      - "  1. Verificar estado mínimo [P] Planificable (bugs saltan refinamiento y validación)"
+      - "  1. Verificar que Refinamiento.md NO tiene '## Aprobación' (bugs saltan validación)"
       - "  2. Extraer campo 'Ref_Bug' → Cargar archivo de bug desde {{artifacts.bugs_folder}}/[BUG-NNN]*.md"
       - "  3. Extraer del archivo bug: Causa Raíz, Archivos Afectados, Corrección Sugerida"
       - "  4. Guardar tipo_hu='Bug' para usar estructura_fases.bugfix"
       - "SI Tipo != Bug:"
-      - "  Verificar estado [A] Aprobada (flujo estándar)"
+      - "  Verificar que Refinamiento.md tiene '## Aprobación' con '**Estado** | ✅ Aprobada'"
       - "  Guardar tipo_hu='Funcional'"
       - "Extraer campo '- **Proyecto:**' de la HU"
       - "SI Proyecto = 'compartida':"
-      - "  1. Leer sección '**Proyectos afectados:**' de la HU (lista de proyectos)"
-      - "  2. Para cada proyecto listado → Cargar contexto desde {{artifacts.contextos_folder}}/[proyecto]_contexto.md"
-      - "  3. Planificar tareas agrupadas por proyecto cuando corresponda"
+      - "  1. Cargar contextos de todos los proyectos afectados"
+      - "  2. Planificar tareas agrupadas por proyecto cuando corresponda"
       - "SI Proyecto = [nombre] → Cargar contexto desde {{artifacts.contextos_folder}}/[proyecto]_contexto.md"
-      - "Cargar refinamiento de la HU (contiene decisiones técnicas del ADR si aplica)"
       - "SI existe sección '### Directrices de Planificación' en '## Aprobación' del refinamiento:"
       - "  1. Extraer campos: Fases sugeridas, Componentes clave, Dependencias entre HUs, Riesgos a mitigar, Notas adicionales"
       - "  2. Incorporar como contexto prioritario para selección de fases y componentes"
@@ -234,7 +235,7 @@ proceso:
   - paso: "Generación del Plan"
     obligatorio: true
     acciones:
-      - "Leer plantilla desde {{plantillas.plan_implementacion}}"
+      - "Copiar {{plantillas.hu.plan}} → {{artifacts.hu_folder}}/[ID-HU]/Plan.md"
       - "Rellenar metadata (ID-HU, título, fecha, estimación)"
       - "Rellenar campo 'Refinamiento' con ruta al archivo de refinamiento"
       - "Rellenar campo 'Arquitectura' con estilo de '## 4. Arquitectura'"
@@ -267,28 +268,27 @@ proceso:
       - "  Incluir referencia: '>validar_ca [ID-HU] --scope integracion'"
       - "  RAZON: Los CAs granulares y de integración viven en el refinamiento. El plan solo trackea verificación."
       - ""
-      - "Guardar en {{artifacts.planes_folder}}/[ID-HU]_plan_implementacion.md"
+      - "Actualizar backbone índice: cambiar estado de [A] a [P]"
 
   - paso: "Actualización de Estado"
     obligatorio: true
-    acciones: ["Cambiar estado HU a [P] Planificada en {{archivos.backlog}}", "Agregar referencia al plan en la HU"]
+    acciones: ["Actualizar backbone índice: cambiar estado a [P]"]
 
 salida:
   archivos_generados:
-    ruta: "{{artifacts.planes_folder}}/[ID-HU]_plan_implementacion.md"
-    plantilla: "{{plantillas.plan_implementacion}}"
+    - "{{artifacts.hu_folder}}/[ID-HU]/Plan.md"
   archivos_actualizados: ["{{archivos.backlog}}"]
   estado_hu_final: "[P] Planificada"
   mensaje_exito: |
      PLAN GENERADO: [ID-HU]
-     Artefacto: {{artifacts.planes_folder}}/[ID-HU]_plan_implementacion.md
+     Archivo: {{artifacts.hu_folder}}/[ID-HU]/Plan.md
      Modo: [Plano|Particionada] | Tasks: [N] (si particionada)
      Fases: [N] | Tareas: [M] | Estimación: [X]h | Criterios: [Y]
      Siguiente: >ejecutar_plan [ID-HU]
      Modos disponibles: --modo_ejecucion [completo|task_por_task|task_especifica] (si particionada)
 
 errores:
-  hu_no_aprobada: {msg: " HU no está en estado [A] Aprobada", accion: "Ejecutar >validar_hu primero"}
+  hu_no_aprobada: {msg: " HU no está aprobada", accion: "Ejecutar >validar_hu primero"}
   sin_contexto: {msg: "ℹ Sin contexto de proyecto", accion: "Ejecutar >tomar_contexto para mejor planificación"}
 
 siguiente:
