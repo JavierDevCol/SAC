@@ -1,8 +1,8 @@
 # 📋 Guía Completa de Comandos del Sistema
 
-> **Sistema:** SAC - Sistema Agéntico COCHAS  
-> **Versión:** 7.3.0  
-> **Última Actualización:** 23 de abril de 2026
+> **Sistema:** SAC - Sistema Agéntico COCHAS
+> **Versión:** 7.25.0
+> **Última Actualización:** 27 de junio de 2026
 
 ---
 
@@ -44,10 +44,10 @@ En Copilot Chat escribe `@nombre_agente` para activar un agente SAC.
 
 | Invocación | Agente | Herramientas Disponibles |
 |------------|--------|--------------------------|
-| `@arquitecto` | Arquitecto | `>tomar_contexto`, `>analizar_stack`, `>init_reglas_arquitectonicas`, `>generar_adr`, `>validar_hu` |
-| `@desarrollador` | Desarrollador | `>tomar_contexto`, `>analizar_stack`, `>generar_adr`, `>planificar_hu`, `>ejecutar_plan`, `>crear_pruebas`, `>analizar_code_smells`, `>generar_commit` |
+| `@arquitecto` | Arquitecto | `>tomar_contexto`, `>analizar_stack`, `>init_reglas_arquitectonicas`, `>generar_adr`, `>validar_hu`, `>registrar_bug`, `>registrar_pendiente`, `>registrar_hallazgo`, `>sincronizar_backlog` |
+| `@desarrollador` | Desarrollador | `>tomar_contexto`, `>analizar_stack`, `>generar_adr`, `>planificar_hu`, `>ejecutar_plan`, `>validar_ca`, `>crear_pruebas`, `>analizar_code_smells`, `>generar_commit`, `>registrar_bug`, `>registrar_hallazgo`, `>sincronizar_backlog` |
 | `@devops` | DevOps | `>tomar_contexto`, `>generar_adr`, `>diagnosticar_devops`, `>generar_commit` |
-| `@analista_historias` | Analista de Requisitos | `>tomar_contexto`, `>refinar_hu`, `>generar_commit` |
+| `@analista_historias` | Analista de Requisitos | `>tomar_contexto`, `>refinar_hu`, `>generar_commit`, `>sincronizar_backlog` |
 | `@cronista_de_cambios` | Cronista de Cambios | `>generar_commit` |
 
 ---
@@ -78,21 +78,21 @@ Los comandos con `>` ejecutan herramientas del rol activo.
 **Con @arquitecto activo:**
 ```
 >tomar_contexto
->analizar_stack
->generar_adr ADR-001
+>validar_hu SAC-001
+>registrar_bug "Error en login"
 ```
 
 **Con @desarrollador activo:**
 ```
->crear_pruebas src/services/UserService.java
->analizar_code_smells
+>planificar_hu SAC-001
+>ejecutar_plan SAC-001
+>validar_ca SAC-001
 ```
 
 **Con @analista_historias activo:**
 ```
->refinar_hu HU-001
->validar_hu HU-001
->planificar_hu HU-001
+>refinar_hu SAC-001
+>sincronizar_backlog
 ```
 
 **Con @cronista_de_cambios activo:**
