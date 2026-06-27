@@ -2,7 +2,7 @@
 nombre: "Refinar Historia de Usuario"
 comando: ">refinar_hu"
 alias: [">refinar", ">hu"]
-version: "4.1"
+version: "5.0"
 
 mandatory:
   - instruccion: "Generar archivo de refinamiento ANTES de actualizar estado"
@@ -10,6 +10,9 @@ mandatory:
   - instruccion: "Usar desglose VERTICAL (end-to-end), nunca horizontal"
   - instruccion: "Evaluar partición en tasks funcionales para HUs de complejidad MEDIO o ALTO"
   - instruccion: "NO forzar partición en HUs de complejidad BAJO (2-3 SP)"
+  - instruccion: "Crear carpeta {{artifacts.hu_folder}}/[ID-HU]/ si no existe"
+  - instruccion: "Usar plantillas desde {{plantillas.hu.hu}} y {{plantillas.hu.refinamiento}}"
+  - instruccion: "Delegar detección de ambigüedades a sub-agente validador-calidad"
 
 reglas_arquitectonicas_requeridas:
   descripcion: "Si hay reglas arquitectónicas cargadas, considerar:"
@@ -78,9 +81,9 @@ proceso:
   - paso: "Detectar Modo de Operación"
     obligatorio: true
     acciones:
-      - "Buscar refinamiento existente en {{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento.md"
-      - "Si existe con feedback pendiente → MODO_AJUSTE"
-      - "Si no existe → MODO_NUEVO"
+      - "Verificar si existe carpeta {{artifacts.hu_folder}}/[ID-HU]/"
+      - "SI existe carpeta con Refinamiento.md → MODO_AJUSTE"
+      - "SI no existe → MODO_NUEVO"
       - "Extraer campo '- **Tipo:**' de la HU (SI no existe → asumir Funcional)"
       - "SI Tipo = Bug:"
       - "  1. Extraer campo 'Ref_Bug' de la HU → Cargar archivo de bug desde {{artifacts.bugs_folder}}/[BUG-NNN]*.md"
@@ -123,7 +126,10 @@ proceso:
 
   - paso: "Preguntas de Clarificación"
     obligatorio: true
-    acciones: ["Identificar ambigüedades en narrativa", "Generar preguntas priorizadas (Alta/Media/Baja)", "Alta: afectan estimación | Media: mejoran UX | Baja: detalles impl"]
+    acciones:
+      - "Delegar a sub-agente validador-calidad: 'Analiza este CA buscando ambigüedades: [CA]. Retorna SIN_AMBIGÜEDADES/CON_AMBIGÜEDADES + lista'"
+      - "Si hay ambigüedades → Generar preguntas priorizadas (Alta/Media/Baja)"
+      - "Alta: afectan estimación | Media: mejoran UX | Baja: detalles impl"
 
   - paso: "Refinamiento de Criterios de Aceptación"
     obligatorio: true
@@ -176,68 +182,33 @@ proceso:
     obligatorio: true
     acciones_modo_nuevo:
       - "Crear {{archivos.backlog}} desde {{plantillas.backlog}} si no existe"
-      - "Generar {{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento_[concepto].md desde {{plantillas.refinamiento_hu}}"
-      - "Rellenar Iteración: 1"
-      - "Actualizar estado HU a [R] Refinada"
-      - "SI modo PARTICIONADA → Agregar campo '- **Tasks:** [ID-HU]-TASK-1, [ID-HU]-TASK-2, ...' a la HU en el backlog"
+      - "Crear carpeta {{artifacts.hu_folder}}/[ID-HU]/ si no existe"
+      - "Copiar {{plantillas.hu.hu}} → {{artifacts.hu_folder}}/[ID-HU]/HU.md"
+      - "Copiar {{plantillas.hu.refinamiento}} → {{artifacts.hu_folder}}/[ID-HU]/Refinamiento.md"
+      - "Rellenar Metadata en HU.md (ID, Título, Tipo, Proyecto, Prioridad, etc.)"
+      - "Rellenar Metadata en Refinamiento.md (Iteración: 1)"
+      - "SI modo PARTICIONADA → Agregar campo 'Tasks' en HU.md y Refinamiento.md"
       - "Determinar proyecto de la HU:"
       - "  SI parámetro 'proyecto' especificado → usar ese valor"
       - "  SI Mono-Proyecto → usar nombre del proyecto único"
-      - "  SI Multi-Proyecto sin parámetro → PREGUNTAR al usuario:"
-      - "    '¿A qué proyecto(s) pertenece esta HU?'"
-      - "    Proyectos disponibles:"
-      - "      [1] backend_users"
-      - "      [2] backend_orders"
-      - "      [3] backend_payments"
-      - "      [4] frontend_web"
-      - "      [5] frontend_mobile"
-      - "    Opciones de respuesta:"
-      - "      • Número único: '2' → proyecto específico"
-      - "      • Números separados por coma: '1,3' → proyectos seleccionados manualmente"
-      - "      • 'AP' → analizar impacto en TODOS los proyectos"
-      - "      • Números + AP: '1,2,3 AP' → analizar impacto solo entre los proyectos indicados"
-      - "  Interpretación de respuestas:"
-      - "    '2'       → Proyecto: backend_orders (directo, sin análisis)"
-      - "    '1,3'     → Proyectos: backend_users, backend_payments (directo, compartida)"
-      - "    'AP'      → Ejecutar análisis de impacto en los 5 proyectos"
-      - "    '1,2,3 AP'→ Ejecutar análisis de impacto SOLO en backend_users, backend_orders, backend_payments"
-      - "  SI respuesta contiene 'AP':"
-      - "    1. Determinar scope de análisis:"
-      - "       - Si solo 'AP' → todos los proyectos del workspace"
-      - "       - Si 'N,M,... AP' → solo los proyectos indicados por números"
-      - "    2. Leer contextos de proyectos en scope desde {{artifacts.contextos_folder}}/"
-      - "    3. Analizar sección '## 6. Dependencias de Proyecto' de cada contexto"
-      - "    4. Evaluar la HU contra:"
-      - "       - Dominio/bounded context de cada proyecto"
-      - "       - Stack tecnológico (¿la HU requiere tecnologías de qué proyecto?)"
-      - "       - APIs/interfaces expuestas entre proyectos"
-      - "       - Dependencias declaradas entre proyectos"
-      - "    5. Presentar análisis al usuario:"
-      - "       '📊 Análisis de Impacto para [ID-HU] (scope: [N proyectos]):'"
-      - "       '- [proyecto_1]: ✅ AFECTADO - [razón]'"
-      - "       '- [proyecto_2]: ❌ NO afectado'"
-      - "       '- [proyecto_3]: ⚠️ POSIBLE - [razón de incertidumbre]'"
-      - "    6. PREGUNTAR: '¿Confirmas estos proyectos? (S/N/Editar lista)'"
-      - "  SI respuesta son solo números (sin AP):"
-      - "    - Asignar directamente sin análisis"
-      - "Poblar campo '- **Proyecto:**' con nombre del proyecto o 'compartida'"
-      - "SI es compartida → Agregar sección '**Proyectos afectados:**' con lista de proyectos"
+      - "  SI Multi-Proyecto sin parámetro → PREGUNTAR al usuario"
+      - "Actualizar backbone índice: agregar fila en Índice Rápido con estado [R]"
       - "SI Multi-Proyecto → Actualizar sección 'Resumen por Proyecto' en backlog"
     acciones_modo_ajuste:
-      - "Actualizar refinamiento existente"
+      - "Actualizar {{artifacts.hu_folder}}/[ID-HU]/Refinamiento.md existente"
       - "Incrementar campo Iteración en Metadata"
       - "Marcar observaciones resueltas: [ ] → [x]"
-      - "Agregar entrada en sección '## 7. Ajustes Aplicados'"
 
 salida:
   archivos_generados:
-    ruta: "{{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento_[concepto].md"
-    plantilla: "{{plantillas.refinamiento_hu}}"
+    - "{{artifacts.hu_folder}}/[ID-HU]/HU.md"
+    - "{{artifacts.hu_folder}}/[ID-HU]/Refinamiento.md"
   archivos_actualizados: ["{{archivos.backlog}}"]
   estado_hu_final: "[R] Refinada"
   mensaje_exito: |
      REFINAMIENTO COMPLETADO: [ID-HU]
-     Artefacto: {{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento_[concepto].md
+     Carpeta: {{artifacts.hu_folder}}/[ID-HU]/
+     Archivos: HU.md, Refinamiento.md
      CA: [X] mejorados + [Y] nuevos | SP: [Z] | Riesgos: [N]
      Tasks: [M] tasks funcionales (si particionada) | Sin partición (si plano)
      Siguiente: >validar_hu [ID-HU]
