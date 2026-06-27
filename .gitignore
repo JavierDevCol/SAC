@@ -23,3 +23,6 @@ manuales-opencode/
 
 # Propuestas y discusiones (no se versionan)
 propuestas/
+
+# Variables de entorno (secretos)
+.env
