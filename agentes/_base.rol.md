@@ -51,7 +51,7 @@ Para garantizar una interacción ágil, el agente debe seguir estas reglas al pr
 - Los contextos individuales de cada proyecto se cargan **bajo demanda**
 - Usar enlaces de la tabla de Proyectos en workspace.md para acceder al contexto específico
 - En mono-proyecto: cargar automáticamente el único contexto disponible
-- En multi-proyecto: cargar contexto solo cuando se trabaje en ese proyecto
+- En multi-proyecto: cargar contexto solo cuando se trabaje en ese proyecto o cuando se requiera. 
 
 **Condición:** Si **NO** existe `{{archivos.workspace}}`
 
@@ -81,37 +81,37 @@ Para garantizar una interacción ágil, el agente debe seguir estas reglas al pr
 
 | Artifact | Ruta | Propósito | Estrategia |
 |----------|------|-----------|------------|
-| Backlog (índice) | `{{archivos.backlog}}` | Resumen compacto de todas las HUs | Leer SOLO desde el inicio del archivo hasta la sección `## 🎯 Historias de Usuario` (incluye metadatos, resumen de estados e **Índice Rápido**) |
+| Backlog (índice) | `{{archivos.backlog}}` | Resumen compacto de todas las HUs | Leer SOLO el Índice Rápido y Resumen de Estados |
 
-> **⚠️ IMPORTANTE — Optimización de tokens:** NO leer el backlog completo en la carga inicial. La sección `## 📇 Índice Rápido` contiene una tabla compacta con ID, Título, Estado, Prioridad y Tipo de cada HU. Usar esa tabla como referencia.
+> **⚠️ IMPORTANTE — Optimización de tokens:** NO leer el backlog completo en la carga inicial. La sección `## 📇 Índice Rápido` contiene una tabla compacta con ID, Título, Estado, Prioridad, Tipo y Proyecto de cada HU. Usar esa tabla como referencia.
 
 #### Consulta de HU Específica (búsqueda dirigida)
 
 Cuando se necesite el detalle completo de una HU:
 
-1. Buscar el heading `### [ID-HU]` en `{{archivos.backlog}}` (con grep/search)
-2. Leer desde esa línea hasta el siguiente heading `### ` o fin de archivo
-3. **NUNCA leer el backlog completo para consultar una sola HU**
-
-> El Backlog contiene enlaces a ADRs (`ADR_Ref`), Refinamientos y Planes de cada HU. Usar estas referencias para acceder a artifacts específicos.
+1. Leer `{{artifacts.hu_folder}}/[ID-HU]/HU.md` para metadata básica
+2. Leer `{{artifacts.hu_folder}}/[ID-HU]/Refinamiento.md` si se necesita detalle técnico
+3. Leer `{{artifacts.hu_folder}}/[ID-HU]/Plan.md` si se necesita plan de implementación
+4. **NUNCA leer el backlog completo para consultar una sola HU**
 
 #### Carga Bajo Demanda (solo cuando se necesite)
 
 | Artifact | Ruta | Cargar cuando... |
 |----------|------|------------------|
-| HU específica | `{{artifacts.hu_folder}}` | Se trabaje en esa HU |
-| Refinamiento | `{{artifacts.hu_refinamientos}}` | Se requiera detalle técnico de una HU |
-| ADR | `{{artifacts.adr_folder}}` | Se consulte decisión arquitectónica referenciada |
-| Plan | `{{artifacts.planes_folder}}` | Se ejecute o consulte implementación |
-| Ejecución | `{{artifacts.ejecuciones_folder}}` | Se retome o verifique ejecución previa |
+| HU específica | `{{artifacts.hu_folder}}/[ID-HU]/HU.md` | Se trabaje en esa HU |
+| Refinamiento | `{{artifacts.hu_folder}}/[ID-HU]/Refinamiento.md` | Se requiera detalle técnico |
+| Plan | `{{artifacts.hu_folder}}/[ID-HU]/Plan.md` | Se ejecute o consulte implementación |
+| Tracking | `{{artifacts.hu_folder}}/[ID-HU]/Tracking.md` | Se retome o verifique ejecución |
+| ADR | `{{artifacts.adr_folder}}` | Se consulte decisión arquitectónica |
 | Bugs | `{{artifacts.bugs_folder}}` | Se registre, consulte o resuelva un bug |
-| Pendientes (índice) | `{{artifacts.pendientes}}` | Se consulte deuda técnica o hallazgos de pruebas |
-| Pendientes (detalle) | `{{artifacts.pendientes_folder}}` | Se necesite contexto extendido, logs o evidencia de un pendiente |
+| Pendientes (índice) | `{{artifacts.pendientes}}` | Se consulte deuda técnica o hallazgos |
+| Pendientes (detalle) | `{{artifacts.pendientes_folder}}` | Se necesite contexto extendido |
+| Deuda Técnica | `{{artifacts.deuda_tecnica_folder}}` | Se registre o consulte deuda técnica |
 
 **Flujo recomendado:**
 1. Consultar **Índice Rápido** del Backlog para identificar HU objetivo (ID, estado, prioridad)
-2. Buscar el heading `### [ID-HU]` en el backlog y leer **solo ese bloque** para obtener referencias
-3. Cargar **solo** los artifacts referenciados (`ADR_Ref`, `Plan`, `Refinamiento`) que la tarea requiera
+2. Leer `SAC-XXX/HU.md` para metadata básica de la HU
+3. Cargar **solo** los archivos adicionales (Refinamiento, Plan, Tracking) que la tarea requiera
 
 ### Paso: Cargar Reglas de Dominio (Bajo Demanda)
 
@@ -139,14 +139,14 @@ Tras la inicialización, el agente tiene en memoria:
 
 | Artifact | Ruta | Acceso |
 |----------|------|--------|
-| Backlog (detalle HU) | `{{archivos.backlog}}` | Búsqueda dirigida por `### [ID-HU]` |
-| Reglas de dominio | `{{rutas_reglas.reglas_folder}}` | Cuando la tarea requiera una regla específica |
+| HU (metadata) | `{{artifacts.hu_folder}}/[ID-HU]/HU.md` | Directo por ID |
+| Refinamiento | `{{artifacts.hu_folder}}/[ID-HU]/Refinamiento.md` | Directo por ID |
+| Plan | `{{artifacts.hu_folder}}/[ID-HU]/Plan.md` | Directo por ID |
+| Tracking | `{{artifacts.hu_folder}}/[ID-HU]/Tracking.md` | Directo por ID |
+| Reglas de dominio | `{{rutas_reglas.reglas_folder}}` | Cuando la tarea requiera una regla |
 | Contextos de proyecto | `{{artifacts.contextos_folder}}` | Via tabla de Proyectos en workspace.md |
-| HUs | `{{artifacts.hu_folder}}` | Via Backlog |
-| Refinamientos | `{{artifacts.hu_refinamientos}}` | Via `Refinamiento:` en HU |
 | ADRs | `{{artifacts.adr_folder}}` | Via `ADR_Ref:` en HU |
-| Planes | `{{artifacts.planes_folder}}` | Via `Plan:` en HU |
-| Ejecuciones | `{{artifacts.ejecuciones_folder}}` | Via `Tracking:` en HU |
+| Deuda Técnica | `{{artifacts.deuda_tecnica_folder}}` | Archivos individuales DT-XXX |
 
 **Importante:** Para **crear/guardar archivos**, usar sintaxis `{{seccion.variable}}` para obtener rutas. Para **consultar**, usar referencias del Workspace/Backlog.
 
