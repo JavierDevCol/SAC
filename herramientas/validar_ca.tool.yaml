@@ -2,7 +2,7 @@
 nombre: "Validar Criterios de Aceptación"
 comando: ">validar_ca"
 alias: [">verificar_ca", ">check_ca"]
-version: "1.0"
+version: "2.0"
 
 mandatory:
   - instruccion: "Leer CAs SIEMPRE desde el refinamiento (fuente de verdad), NUNCA del plan"
@@ -10,6 +10,8 @@ mandatory:
   - instruccion: "Marcar estado de verificación en el plan (checkboxes), NO en el refinamiento"
   - instruccion: "DETENER y reportar ante el primer CA no cumplido"
   - instruccion: "Distinguir CAs granulares (por task) de CAs de integración (padre)"
+  - instruccion: "Leer Refinamiento y Plan desde {{artifacts.hu_folder}}/[ID-HU]/"
+  - instruccion: "Delegar validación de código a sub-agente validador-calidad"
 
 condiciones_entrada:
   - condicion: "HU en estado [E] En Ejecución con plan existente"
@@ -53,14 +55,16 @@ proceso:
   - paso: "Cargar Fuentes de Datos"
     obligatorio: true
     acciones:
-      - "Cargar refinamiento desde {{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento*.md"
-      - "Cargar plan desde {{artifacts.planes_folder}}/[ID-HU]_plan_implementacion.md"
+      - "Verificar que existe carpeta {{artifacts.hu_folder}}/[ID-HU]/"
+      - "Cargar refinamiento desde {{artifacts.hu_folder}}/[ID-HU]/Refinamiento.md"
+      - "Cargar plan desde {{artifacts.hu_folder}}/[ID-HU]/Plan.md"
+      - "Cargar HU desde {{artifacts.hu_folder}}/[ID-HU]/HU.md"
       - "Extraer campo 'Modo' del plan: [Plano | Particionada]"
       - "SI Modo = Plano Y task_id != null → ⛔ Error: HU plana no tiene tasks"
       - "Extraer campo '- **Proyecto:**' de la HU para determinar directorio de código"
     si_error:
-      refinamiento_no_encontrado: "⛔ Refinamiento no encontrado para [id_hu]"
-      plan_no_encontrado: "⛔ Plan no encontrado. Ejecutar >planificar_hu primero"
+      refinamiento_no_encontrado: "⛔ Refinamiento no encontrado en {{artifacts.hu_folder}}/[ID-HU]/Refinamiento.md"
+      plan_no_encontrado: "⛔ Plan no encontrado en {{artifacts.hu_folder}}/[ID-HU]/Plan.md. Ejecutar >planificar_hu primero"
 
   - paso: "Determinar CAs a Validar"
     obligatorio: true
@@ -88,49 +92,31 @@ proceso:
     obligatorio: true
     acciones:
       - "Para cada CA en cas_a_validar:"
-      - "  1. Analizar el texto del CA: extraer la condición (Dado), acción (Cuando), resultado (Entonces)"
-      - "  2. Identificar archivos de código relevantes al CA:"
-      - "     - SI CA menciona endpoint → verificar existencia de ruta en controller/routes"
-      - "     - SI CA menciona validación → verificar lógica de validación en código"
-      - "     - SI CA menciona respuesta HTTP → verificar status code en handler"
-      - "     - SI CA menciona cálculo → verificar lógica en entidad/servicio"
-      - "     - SI CA menciona seguridad → verificar middleware auth/authorize"
-      - "     - SI CA menciona UI → verificar componente renderiza elementos esperados"
-      - "  3. Verificar existencia de test que cubra el CA:"
-      - "     - Buscar test cuyo nombre/describe coincida con el comportamiento del CA"
-      - "     - SI no hay test → ⚠️ 'CA-XX sin cobertura de test directa'"
-      - "  4. Emitir veredicto por CA:"
-      - "     - ✅ CUMPLIDO: código implementa lo especificado + test existe"
-      - "     - ⚠️ PARCIAL: código existe pero falta test, o test existe pero lógica incompleta"
-      - "     - ❌ NO CUMPLIDO: código no implementa lo especificado"
+      - "  1. Delegar a sub-agente validador-calidad: 'Valida este CA contra el código: [CA]. Archivos: [rutas]. Tests: [rutas]. Retorna PASS/FAIL + evidencia'"
+      - "  2. Recibir resultado del sub-agente"
+      - "  3. Emitir veredicto por CA:"
+      - "     - ✅ CUMPLIDO: sub-agente retornó PASS"
+      - "     - ⚠️ PARCIAL: sub-agente retornó PASS con observaciones"
+      - "     - ❌ NO CUMPLIDO: sub-agente retornó FAIL"
     si_error:
       ca_no_cumplido: "⛔ DETENER al primer CA con veredicto ❌. Reportar qué falta."
 
   - paso: "Actualizar Estado en Plan"
     obligatorio: true
     acciones:
-      - "SI Modo = 'Plano':"
-      - "  EDITAR plan: en 'Fase Final: Validar CAs' marcar [ ] → [X] para CAs cumplidos"
-      - ""
-      - "SI Modo = 'Particionada' Y scope IN [granulares, todos]:"
-      - "  EDITAR plan: en '### Validar CAs de TASK-N' marcar [ ] → [X] para CAs cumplidos"
-      - ""
-      - "SI Modo = 'Particionada' Y scope IN [integracion, todos]:"
-      - "  EDITAR plan: en 'Fase Final: Validar CAs de Integración' marcar [~] → [X]"
+      - "EDITAR {{artifacts.hu_folder}}/[ID-HU]/Plan.md:"
+      - "  SI Modo = 'Plano': marcar [ ] → [X] en 'Fase Final: Validar CAs'"
+      - "  SI Modo = 'Particionada' Y scope IN [granulares, todos]: marcar [ ] → [X] en '### Validar CAs de TASK-N'"
+      - "  SI Modo = 'Particionada' Y scope IN [integracion, todos]: marcar [~] → [X] en 'Fase Final: Validar CAs de Integración'"
       - ""
       - "Propagación ascendente de estados:"
       - "  1. CAs granulares de TASK-N todos [✅] → CA de integración (padre) correspondiente pasa a [~] candidato"
       - "  2. >validar_ca --scope integracion confirma [~] → [X] (verificando integración real entre tasks)"
       - "  3. SI validación de integración falla: [~] → [!] con detalle del fallo"
       - "  4. Todos los CAs padre en [X] → HU completada"
-      - "Estados de CA:"
-      - "  [ ] Pendiente — no validado aún"
-      - "  [~] Candidato — granulares pasan, pendiente integración"
-      - "  [X] Cumplido — validado contra código + integración confirmada"
-      - "  [!] Fallido — validación falló"
       - ""
-      - "EDITAR refinamiento: marcar [ ] → [X] en los CAs validados del refinamiento"
-      - "EDITAR backlog: SI TODOS los CAs padre en [X] → marcar en HU del backlog"
+      - "EDITAR {{artifacts.hu_folder}}/[ID-HU]/Refinamiento.md: marcar [ ] → [X] en los CAs validados"
+      - "ACTUALIZAR backbone índice: SI TODOS los CAs padre en [X] → cambiar estado a [X]"
 
   - paso: "Emitir Reporte"
     obligatorio: true
@@ -139,12 +125,9 @@ proceso:
 
 salida:
   archivos_actualizados:
-    - ruta: "{{artifacts.planes_folder}}/[ID-HU]_plan_implementacion.md"
-      detalle: "Checkboxes de CAs actualizados"
-    - ruta: "{{artifacts.hu_refinamientos}}/[ID-HU]_refinamiento*.md"
-      detalle: "CAs marcados como verificados"
-    - ruta: "{{archivos.backlog}}"
-      detalle: "CAs de la HU marcados (si todos cumplidos)"
+    - "{{artifacts.hu_folder}}/[ID-HU]/Plan.md"
+    - "{{artifacts.hu_folder}}/[ID-HU]/Refinamiento.md"
+    - "{{archivos.backlog}}"
   mensaje_exito: |
     ✅ VALIDACIÓN DE CAs COMPLETADA: [ID-HU] [scope]
     
@@ -163,8 +146,8 @@ salida:
     - Pendientes CAs integración: ejecutar >validar_ca [ID-HU] --scope integracion cuando todas las tasks estén completas
 
 errores:
-  refinamiento_no_encontrado: {msg: "⛔ Refinamiento no encontrado", accion: "Verificar que la HU fue refinada"}
-  plan_no_encontrado: {msg: "⛔ Plan no encontrado", accion: "Ejecutar >planificar_hu primero"}
+  refinamiento_no_encontrado: {msg: "⛔ Refinamiento no encontrado en SAC-XXX/Refinamiento.md", accion: "Verificar que la HU fue refinada"}
+  plan_no_encontrado: {msg: "⛔ Plan no encontrado en SAC-XXX/Plan.md", accion: "Ejecutar >planificar_hu primero"}
   sin_codigo: {msg: "⛔ No hay código implementado", accion: "Ejecutar >ejecutar_plan primero"}
   tasks_pendientes_integracion: {msg: "⛔ No se pueden validar CAs de integración", accion: "Completar todas las tasks primero"}
 
