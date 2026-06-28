@@ -189,7 +189,9 @@ Perfecto. Voy a analizar el código y aplicar mejoras.
 
 **Herramientas:**
 - `>tomar_contexto` - Analiza el proyecto completo
+- `>generar_adr` - Documenta decisiones arquitectónicas
 - `>diagnosticar_devops` - Analiza infraestructura, pipelines y deployment
+- `>generar_commit` - Documenta cambios con Conventional Commits
 
 **Cuándo usarlo:**
 - ✅ Configurar pipelines CI/CD
@@ -251,6 +253,8 @@ Perfecto. Voy a diagnosticar tu proyecto y proponer un pipeline.
 **Herramientas:**
 - `>tomar_contexto` - Analiza el proyecto completo
 - `>refinar_hu` - Refina historias de usuario con criterios claros
+- `>generar_commit` - Documenta cambios con Conventional Commits
+- `>sincronizar_backlog` - Sincronizar estados del backlog
 
 **Cuándo usarlo:**
 - ✅ Refinar historias de usuario antes del sprint
@@ -334,7 +338,7 @@ Para encontrar rápidamente lo que necesito
 ```
 Usuario: Necesito un commit para los cambios de autenticación
 
-ARTESANO:
+CRONISTA:
 Perfecto. Voy a generar un mensaje de commit profesional.
 
 >generar_commit
@@ -375,7 +379,7 @@ git commit -m "feat(auth): implement JWT-based authentication" -m "..."
 
 ## Matriz de Capacidades
 
-| Capacidad / Rol | ONAD | ARCHDEV | DEVOPS | REFINADOR | ARTESANO |
+| Capacidad / Rol | ONAD | ARCHDEV | DEVOPS | REFINADOR | Cronista de Cambios |
 |-----------------|------|---------|--------|-----------|----------|
 | **Diseñar arquitectura** | ✅ Experto | ⚠️ Básico | ⚠️ Infra | ❌ No | ❌ No |
 | **Implementar código** | ❌ No | ✅ Experto | ⚠️ Scripts | ❌ No | ❌ No |
@@ -412,7 +416,7 @@ git commit -m "feat(auth): implement JWT-based authentication" -m "..."
 → Usa **+REFINADOR** para clarificarlas
 
 **¿Necesitas commitear cambios profesionalmente?**
-→ Usa **+ARTESANO** para documentar correctamente
+→ Usa **+CRONISTA** para documentar correctamente
 
 ---
 
@@ -427,7 +431,7 @@ git commit -m "feat(auth): implement JWT-based authentication" -m "..."
 | Configurar pipeline | **+DEVOPS** | Automatización y deployment |
 | Optimizar infraestructura | **+DEVOPS** | Conocimiento de cloud y ops |
 | Clarificar requisitos | **+REFINADOR** | Análisis de negocio técnico |
-| Documentar cambios en Git | **+ARTESANO** | Conventional Commits |
+| Documentar cambios en Git | **+CRONISTA** | Conventional Commits |
 | Resolver deuda técnica arquitectónica | **+ONAD** | Análisis estratégico |
 | Resolver code smells | **+ARCHDEV** | Refactoring de código |
 | Investigar problema de producción | **+DEVOPS** | Troubleshooting y logs |
@@ -456,7 +460,7 @@ git commit -m "feat(auth): implement JWT-based authentication" -m "..."
 >crear_pruebas
 
 # 4. Documentar cambios
-+ARTESANO
++CRONISTA
 >generar_commit
 ```
 
@@ -477,7 +481,7 @@ git commit -m "feat(auth): implement JWT-based authentication" -m "..."
 >verifica_pruebas
 
 # 3. Documentar refactoring
-+ARTESANO
++CRONISTA
 >generar_commit
 ```
 
@@ -488,16 +492,19 @@ git commit -m "feat(auth): implement JWT-based authentication" -m "..."
 ```bash
 # 1. Clarificar historias
 +REFINADOR
->refinar_hu HU-001
+>refinar_hu SAC-001
 
-# 2. Validar y planificar
+# 2. Validar
 +ONAD
->validar_hu HU-001
->planificar_hu HU-001
+>validar_hu SAC-001
 
-# 3. Estimar esfuerzo
+# 3. Planificar
 +ARCHDEV
-# Revisar plan y estimar
+>planificar_hu SAC-001
+
+# 4. Ejecutar
++ARCHDEV
+>ejecutar_plan SAC-001
 ```
 
 ---
@@ -515,7 +522,7 @@ git commit -m "feat(auth): implement JWT-based authentication" -m "..."
 >diagnosticar_devops
 
 # 3. Documentar release
-+ARTESANO
++CRONISTA
 >generar_commit
 ```
 
@@ -554,21 +561,21 @@ git commit -m "feat(auth): implement JWT-based authentication" -m "..."
 - **Sprint actual (1-2 semanas)** → **+ARCHDEV**
 - **Inmediato (operaciones)** → **+DEVOPS**
 - **Planning** → **+REFINADOR**
-- **Por commit** → **+ARTESANO**
+- **Por commit** → **+CRONISTA**
 
 ### Tip 3: Naturaleza de la Tarea
 - **¿Qué hacer?** → **+ONAD** (estrategia)
 - **¿Cómo implementar?** → **+ARCHDEV** (código)
 - **¿Cómo desplegar?** → **+DEVOPS** (infraestructura)
 - **¿Qué construir exactamente?** → **+REFINADOR** (requisitos)
-- **¿Cómo documentar?** → **+ARTESANO** (commits)
+- **¿Cómo documentar?** → **+CRONISTA** (commits)
 
 ### Tip 4: Nivel de Abstracción
 - **Alto nivel (arquitectura)** → **+ONAD**
 - **Medio nivel (código)** → **+ARCHDEV**
 - **Operaciones (infra)** → **+DEVOPS**
 - **Negocio (requisitos)** → **+REFINADOR**
-- **Documentación (Git)** → **+ARTESANO**
+- **Documentación (Git)** → **+CRONISTA**
 
 ---
 
@@ -590,7 +597,7 @@ Es común necesitar múltiples roles en una sesión. El sistema mantiene el cont
 >diagnosticar_devops
 
 # Crear commit
-+ARTESANO
++CRONISTA
 >generar_commit
 
 # Ver estado
