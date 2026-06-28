@@ -1,13 +1,13 @@
 # 👥 Roles del Sistema SAC
 
-> **Versión:** 7.3.0  
-> **Última actualización:** 23 de abril de 2026
+> **Versión:** 7.25.0
+> **Última actualización:** 27 de junio de 2026
 
 ---
 
 ## 📋 Descripción
 
-Índice oficial de roles/agentes disponibles en el sistema SAC v7.3.0. Cada rol tiene un archivo `.rol.md` con su definición completa.
+Índice oficial de roles/agentes disponibles en el sistema SAC v7.25.0. Cada rol tiene un archivo `.rol.md` con su definición completa.
 
 **Modelo de uso:** Cada agente se invoca con `@nombre` en GitHub Copilot Chat.
 
@@ -35,17 +35,17 @@
 |-------|-------|
 | **Principio** | "No Comer Entero" |
 | **Especialidad** | Arquitectura estratégica, DDD, decisiones técnicas |
-| **Herramientas** | `>tomar_contexto`, `>analizar_stack`, `>validar_hu`, `>generar_adr`, `>init_reglas_arquitectonicas` |
-| **Cuándo usar** | Decisiones arquitectónicas, validación de HUs, planificación, ADRs |
+| **Herramientas** | `>tomar_contexto`, `>analizar_stack`, `>validar_hu`, `>generar_adr`, `>init_reglas_arquitectonicas`, `>registrar_bug`, `>registrar_pendiente`, `>registrar_hallazgo`, `>sincronizar_backlog` |
+| **Cuándo usar** | Decisiones arquitectónicas, validación de HUs, ADRs, bugs, pendientes |
 
 ### @desarrollador (Desarrollador)
 
 | Campo | Valor |
 |-------|-------|
 | **Principio** | "Código con Propósito" |
-| **Especialidad** | Java/Spring Boot, TDD, refactoring, implementación |
-| **Herramientas** | `>tomar_contexto`, `>analizar_stack`, `>generar_adr`, `>planificar_hu`, `>ejecutar_plan`, `>crear_pruebas`, `>analizar_code_smells`, `>generar_commit` |
-| **Cuándo usar** | Planificación de HUs, implementación de código, testing, refactoring |
+| **Especialidad** | Implementación, TDD, refactoring, testing |
+| **Herramientas** | `>tomar_contexto`, `>analizar_stack`, `>generar_adr`, `>planificar_hu`, `>ejecutar_plan`, `>validar_ca`, `>crear_pruebas`, `>analizar_code_smells`, `>generar_commit`, `>registrar_bug`, `>registrar_hallazgo`, `>sincronizar_backlog` |
+| **Cuándo usar** | Planificación, implementación, testing, refactoring, bugs |
 
 ### @devops (DevOps)
 
@@ -62,7 +62,7 @@
 |-------|-------|
 | **Principio** | "Claridad Sobre Velocidad" |
 | **Especialidad** | Refinamiento de HUs, criterios de aceptación, estimación |
-| **Herramientas** | `>tomar_contexto`, `>refinar_hu`, `>generar_commit` |
+| **Herramientas** | `>tomar_contexto`, `>refinar_hu`, `>generar_commit`, `>sincronizar_backlog` |
 | **Cuándo usar** | Refinar historias de usuario, desglose técnico |
 
 ### @cronista_de_cambios (Cronista de Cambios)
@@ -79,13 +79,13 @@
 ## 🚀 Cómo Usar un Rol
 
 1. Abre un **nuevo chat** en tu cliente de IA
-2. Carga el archivo `.agent.md` correspondiente como contexto
+2. Carga el archivo `.rol.md` correspondiente como contexto
 3. El agente se presentará con su personalidad
 4. Usa sus herramientas con el prefijo `>`
 
 ```bash
 # Ejemplo: usar el Analista de Historias
-# 1. Cargar agentes/refinador_hu.agent.md en el chat
+# 1. Cargar agentes/refinador_hu.rol.md en el chat
 # 2. El agente saluda y se presenta
 # 3. Ejecutar herramientas:
 >tomar_contexto
@@ -97,7 +97,7 @@
 ## 🆕 Agregar Nuevo Rol
 
 1. Copiar `plantillas/agente_plantilla.agent.md`
-2. Guardar en `agentes/[nombre].agent.md`
+2. Guardar en `agentes/[nombre].rol.md`
 3. Actualizar esta tabla
 4. Verificar herramientas disponibles en `HERRAMIENTAS.md`
 
@@ -117,5 +117,6 @@
 
 | Versión | Fecha | Cambios |
 |---------|-------|---------|
+| 7.25.0 | 27 jun 2026 | Actualizar herramientas por rol, corregir `>planificar_hu` a ARCHDEV |
 | 4.0 | 6 ene 2026 | Reescritura completa v4.0, movido a raíz, nombres actualizados |
 | 3.0 | 5 ene 2026 | Versión anterior en `agentes/roles-activos.md` |
