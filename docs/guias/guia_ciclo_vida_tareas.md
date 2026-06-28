@@ -305,25 +305,25 @@ artifacts/HU/SAC-003/
 │  Pendiente  │  ← Tarea creada
 │     [ ]     │
 └──────┬──────┘
-       │ refinar_hu (REFINADOR)
+       │ >refinar_hu (REFINADOR)
        ▼
 ┌─────────────┐
 │  Refinada   │  ← Criterios claros, estimación precisa
 │     [R]     │
 └──────┬──────┘
-       │ validar_hu (ONAD)
+       │ >validar_hu (ONAD)
        ▼
 ┌─────────────┐
 │  Aprobada   │  ← Validación arquitectónica
 │     [A]     │
 └──────┬──────┘
-       │ planificar-hu (ONAD)
+       │ >planificar_hu (ARCHDEV)
        ▼
 ┌─────────────┐
 │ Planificada │  ← Plan de implementación generado
 │     [P]     │
 └──────┬──────┘
-       │ ejecutar-plan (ARCHDEV)
+       │ >ejecutar_plan (ARCHDEV)
        ▼
 ┌─────────────┐
 │ En Ejecución│  ← Implementación en progreso
@@ -380,22 +380,10 @@ artifacts/HU/SAC-003/
 
 | Transición | Rol | Herramienta | Comando |
 |------------|-----|-------------|---------|
-| `[ ]` → `[R]` | Refinador HU | `refinar_hu` | `refinar_hu [ID-HU]` |
-| `[R]` → `[A]` | Arquitecto Onad | `validar_hu` | `validar-hu [ID-HU]` |
-| `[A]` → `[P]` | ArchDev Pro | `planificar_hu` | `planificar-hu [ID-HU]` |
-| `[P]` → `[E]` | ArchDev Pro | `ejecutar_plan` | `ejecutar-plan [ID-HU]` |
-        "secciones": 7,
-        "archivos_a_modificar": 8,
-        "tests_a_crear": 15,
-        "completado": true
-      },
-      "ejecucion": null,
-      "bloqueado": false,
-      "dependencias": []
-    }
-  ]
-}
-```
+| `[ ]` → `[R]` | Refinador HU | `refinar_hu` | `>refinar_hu [ID-HU]` |
+| `[R]` → `[A]` | Arquitecto Onad | `validar_hu` | `>validar_hu [ID-HU]` |
+| `[A]` → `[P]` | ArchDev Pro | `planificar_hu` | `>planificar_hu [ID-HU]` |
+| `[P]` → `[E]` | ArchDev Pro | `ejecutar_plan` | `>ejecutar_plan [ID-HU]` |
 
 ---
 
