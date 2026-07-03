@@ -2,13 +2,13 @@
 nombre: "Registrar Bug"
 comando: ">registrar_bug"
 alias: [">bug", ">reportar_bug"]
-version: "2.0"
+version: "3.0"
 
 # ============================================
 # REGISTRAR BUG - Herramienta de IA
 # ============================================
-# Archivo: registrar_bug.tool.md
-# VersiÃ³n: 1.0
+# Archivo: registrar_bug.tool.yaml
+# Versión: 3.0
 # Disponible para: Arquitecto y Desarrollador
 # ============================================
 
@@ -16,19 +16,21 @@ version: "2.0"
 # MANDATORY - INSTRUCCIONES INVIOLABLES
 # ============================================
 mandatory:
-  # === BASE ESTÃNDAR (NO MODIFICAR) ===
+  # === BASE ESTÁNDAR (NO MODIFICAR) ===
   - instruccion: "Seguir el proceso paso a paso en orden secuencial"
   - instruccion: "Validar prerequisitos antes de ejecutar"
   - instruccion: "Los pasos marcados como obligatorio:true NO se pueden omitir"
   - instruccion: "Nunca saltar proceso.paso_final"
-  # === CONFIGURACIÃ“N DE IDIOMA ===
+  # === CONFIGURACIÓN DE IDIOMA ===
   - instruccion: "Generar TODOS los artefactos/documentos en el idioma definido en 'idiomas.documentacion'"
-  # === ESPECÃFICAS DE LA HERRAMIENTA ===
-  - instruccion: "Todo bug DEBE tener contextualizaciÃ³n de origen antes de considerarse procesado"
+  # === ESPECÍFICAS DE LA HERRAMIENTA ===
+  - instruccion: "Todo bug DEBE tener contextualización de origen antes de considerarse procesado"
   - instruccion: "SIEMPRE crear HU tipo Bug en el backlog. Buscar HU de origen para trazabilidad"
-  - instruccion: "Los bugs afectan funcionalidad del sistema â€” priorizar resoluciÃ³n"
-  - instruccion: "El ID del bug sigue el patrÃ³n BUG-NNN (autoincremental basado en archivos existentes en {{artifacts.bugs_folder}})"
-  - instruccion: "Al registrar un bug ya corregido, completar TODAS las secciones incluyendo CorrecciÃ³n y LecciÃ³n Aprendida"
+  - instruccion: "Los bugs afectan funcionalidad del sistema — priorizar resolución"
+  - instruccion: "El ID del bug sigue el patrón BUG-NNN (autoincremental basado en carpetas BUG-* existentes en {{artifacts.hu_folder}} y {{artifacts.bugs_folder}} legacy)"
+  - instruccion: "Al registrar un bug ya corregido, completar TODAS las secciones incluyendo Corrección y Lección Aprendida"
+  - instruccion: "Crear carpeta {{artifacts.hu_folder}}/BUG-NNN/ y copiar plantillas HU.md y RefinamientoBug.md"
+  - instruccion: "NO crear archivo BUG-NNN.md separado — toda la información va en RefinamientoBug.md"
 
 # ============================================
 # PREREQUISITOS
@@ -38,13 +40,13 @@ condiciones_entrada:
     si_no_cumple: "No hay backlog disponible. Ejecutar >refinar_hu para crear el backlog primero."
 
 # ============================================
-# PARÃMETROS
+# PARÁMETROS
 # ============================================
 parametros:
   requeridos:
     - nombre: descripcion
       tipo: string
-      descripcion: "DescripciÃ³n del bug detectado"
+      descripcion: "Descripción del bug detectado"
   opcionales:
     - nombre: proyecto
       tipo: string
@@ -52,13 +54,13 @@ parametros:
       defecto: null
     - nombre: detectado_en
       tipo: string
-      descripcion: "Contexto de detecciÃ³n (ej: HU-010, pruebas funcionales, producciÃ³n)"
+      descripcion: "Contexto de detección (ej: HU-010, pruebas funcionales, producción)"
       defecto: null
     - nombre: severidad
       tipo: string
       valores: [critica, alta, media]
       defecto: null
-      descripcion: "Severidad del bug. Si se omite, se evalÃºa durante el proceso."
+      descripcion: "Severidad del bug. Si se omite, se evalúa durante el proceso."
     - nombre: ya_corregido
       tipo: flag
       descripcion: "Indica que el bug ya fue corregido y se registra post-mortem"
@@ -67,126 +69,138 @@ parametros:
 # PROCESO
 # ============================================
 proceso:
-  - paso: "RecepciÃ³n del Bug"
+  - paso: "Recepción del Bug"
     obligatorio: true
     acciones:
       - "SI origen = dispatcher: MODO ABREVIADO - Reutilizar descripcion/proyecto/logs/ya_corregido del contexto_transferido. Ejecutar solo asignacion de ID autoincremental."
-      - "Recopilar informaciÃ³n del bug: descripciÃ³n, proyecto, contexto de detecciÃ³n"
-      - "SI faltan datos crÃ­ticos (descripciÃ³n o sÃ­ntoma) â†’ Solicitar al usuario"
-      - "Asignar ID autoincremental: escanear {{artifacts.bugs_folder}} para obtener Ãºltimo BUG-NNN y sumar 1"
-      - "SI flag --ya_corregido â†’ Recopilar tambiÃ©n: commit fix, archivos afectados, cÃ³digo antes/despuÃ©s, lecciÃ³n aprendida"
+      - "Recopilar información del bug: descripción, proyecto, contexto de detección"
+      - "SI faltan datos críticos (descripción o síntoma) → Solicitar al usuario"
+      - "Asignar ID autoincremental: escanear {{artifacts.hu_folder}}/BUG-* y {{artifacts.bugs_folder}}/BUG-* (legacy) para obtener último BUG-NNN y sumar 1"
+      - "SI flag --ya_corregido → Recopilar también: commit fix, archivos afectados, código antes/después, lección aprendida"
 
-  - paso: "ClasificaciÃ³n de Severidad"
+  - paso: "Clasificación de Severidad"
     obligatorio: true
     acciones:
-      - "SI el usuario proporcionÃ³ severidad â†’ Usar la indicada"
-      - "SI NO â†’ Evaluar segÃºn criterios:"
-      - "  ðŸ”´ CrÃ­tica: Bloquea funcionalidad core, pÃ©rdida de datos, crash del sistema"
-      - "  ðŸŸ  Alta: Funcionalidad degradada, workaround difÃ­cil, afecta a mÃºltiples usuarios"
-      - "  ðŸŸ¡ Media: Funcionalidad menor afectada, workaround disponible"
-      - "Mostrar clasificaciÃ³n propuesta y confirmar con usuario"
+      - "SI el usuario proporcionó severidad → Usar la indicada"
+      - "SI NO → Evaluar según criterios:"
+      - "  🔴 Crítica: Bloquea funcionalidad core, pérdida de datos, crash del sistema"
+      - "  🟠 Alta: Funcionalidad degradada, workaround difícil, afecta a múltiples usuarios"
+      - "  🟡 Media: Funcionalidad menor afectada, workaround disponible"
+      - "Mostrar clasificación propuesta y confirmar con usuario"
 
-  - paso: "AnÃ¡lisis de Causa RaÃ­z"
+  - paso: "Análisis de Causa Raíz"
     obligatorio: true
     acciones:
-      - "Documentar el sÃ­ntoma observable (quÃ© ve el usuario o el sistema)"
-      - "Identificar la causa raÃ­z tÃ©cnica (por quÃ© ocurre)"
-      - "SI hay inconsistencia entre capas/componentes â†’ Documentar con tabla comparativa"
-      - "Listar archivos afectados con descripciÃ³n del problema en cada uno"
+      - "Documentar el síntoma observable (qué ve el usuario o el sistema)"
+      - "Identificar la causa raíz técnica (por qué ocurre)"
+      - "SI hay inconsistencia entre capas/componentes → Documentar con tabla comparativa"
+      - "Listar archivos afectados con descripción del problema en cada uno"
 
-  - paso: "ContextualizaciÃ³n â€” BÃºsqueda de HU de Origen"
+  - paso: "Contextualización — Búsqueda de HU de Origen"
     obligatorio: true
     condicion: "SI NO es --ya_corregido (bugs ya corregidos registran detectado_en directamente)"
     acciones:
       - "Leer {{archivos.backlog}}"
-      - "Buscar HUs cuyo alcance funcional cubra el mÃ³dulo/componente afectado por el bug"
+      - "Buscar HUs cuyo alcance funcional cubra el módulo/componente afectado por el bug"
       - "SI encuentra HU(s) candidata(s):"
       - "  Mostrar al usuario las HUs encontradas con su estado actual"
       - "  Preguntar:"
-      - "  > ðŸ¤· Â¿Este bug se detectÃ³ probando alguna de estas HUs?"
-      - "  > - [HU-XXX] [TÃ­tulo de la HU]"
-      - "  > - âŒ [N] Ninguna â€” se detectÃ³ en otro contexto"
-      - "  SI selecciona HU â†’ Registrar detectado_en = HU-XXX"
-      - "  SI [N] â†’ Registrar detectado_en = [contexto libre del usuario o parÃ¡metro detectado_en]"
+      - "  > 🤷 ¿Este bug se detectó probando alguna de estas HUs?"
+      - "  > - [HU-XXX] [Título de la HU]"
+      - "  > - ❌ [N] Ninguna — se detectó en otro contexto"
+      - "  SI selecciona HU → Registrar detectado_en = HU-XXX"
+      - "  SI [N] → Registrar detectado_en = [contexto libre del usuario o parámetro detectado_en]"
       - "SI NO encuentra HUs relacionadas:"
-      - "  Registrar detectado_en = [parÃ¡metro detectado_en o contexto proporcionado por el usuario]"
+      - "  Registrar detectado_en = [parámetro detectado_en o contexto proporcionado por el usuario]"
 
-  - paso: "Crear HU tipo Bug en Backlog"
+  - paso: "Crear HU tipo Bug"
     obligatorio: true
-    condicion: "SI NO es --ya_corregido"
     acciones:
-      - "Agregar nueva entrada en {{archivos.backlog}} con formato:"
-      - "  ### HU-[siguiente_ID]: ðŸ› [TÃ­tulo del bug]"
-      - "  Con campos:
-      - "    Tipo: Bug"
-      - "    Estado: [P] Planificable"
-      - "    Proyecto: [proyecto detectado o proporcionado]"
-      - "    Prioridad: [segÃºn severidad del Paso 2]"
-      - "    Ref_Bug: BUG-NNN"
-      - "    Detectado_en: [HU-XXX / contexto de detecciÃ³n]"
-      - "    DescripciÃ³n: [1-2 lÃ­neas: quÃ© falla y dÃ³nde. Detalle completo en Ref_Bug.]"
-      - "    Dependencias: [HU de origen si aplica]"
-      - "  NOTA: Los bugs se crean directamente en [P] porque registrar_bug ya documenta causa raÃ­z, sÃ­ntoma y archivos afectados (equivalente a refinamiento). No requieren pasar por refinar_hu ni validar_hu."
-      - "  Registrar en archivo bug la HU creada"
-      - "  Estado del bug: 'ðŸ†• HU-Bug Planificable'"
+      - "Calcular siguiente BUG-NNN:"
+      - "  Escanear {{artifacts.hu_folder}}/BUG-*"
+      - "  Escanear {{artifacts.bugs_folder}}/BUG-* (legacy)"
+      - "  Tomar el mayor + 1"
+      - "Crear carpeta: mkdir {{artifacts.hu_folder}}/BUG-NNN/"
+      - "Copiar y rellenar HU.md:"
+      - "  Fuente: {{plantillas.hu.hu}}"
+      - "  ID: BUG-NNN"
+      - "  Título: [Título del bug]"
+      - "  Tipo: Bug"
+      - "  Proyecto: [proyecto]"
+      - "  Prioridad: [según severidad: Crítica→P0, Alta→P1, Media→P2]"
+      - "  Complejidad: [inferir de severidad: Crítica→ALTO, Alta→MEDIO, Media→BAJO]"
+      - "  Story Points: [—] (se llena con planificar_hu)"
+      - "  Estimación: [—] (se llena con planificar_hu)"
+      - "  Fecha Creación: [fecha actual ISO 8601]"
+      - "  Creado por: registrar_bug"
+      - "  Detectado_en: [HU-XXX / contexto]"
+      - "Copiar y rellenar RefinamientoBug.md:"
+      - "  Fuente: {{plantillas.hu.refinamiento_bug}}"
+      - "  ID: BUG-NNN"
+      - "  Iteración: 1"
+      - "  CA-01: 'El bug BUG-NNN no se reproduce tras la corrección'"
+      - "  Síntoma: [del paso 3]"
+      - "  Causa Raíz: [del paso 3]"
+      - "  Archivos Afectados: [del paso 3]"
+      - "  Corrección Sugerida: [SUGERIDA: instrucciones de alto nivel]"
+      - "SI es --ya_corregido:"
+      - "  Completar sección 'Corrección Aplicada' con commit fix y código antes/después"
+      - "  Completar sección 'Lección Aprendida' (máx 3 líneas)"
+      - "  Agregar fila en {{artifacts.lecciones_aprendidas}}"
+      - "  Estado del bug: '✅ Corregido'"
+      - "SI NO es --ya_corregido:"
+      - "  Estado del bug: '🆕 HU-Bug Planificable'"
+      - "Agregar fila a tabla 'Índice Rápido' de {{archivos.backlog}}:"
+      - "  | BUG-NNN | [Título] | [P] | [Prioridad] | Bug | [Proyecto] | — |"
+      - "Registrar en RefinamientoBug.md el campo 'HU Creada': BUG-NNN"
 
-  - paso: "CorrecciÃ³n Sugerida"
-    obligatorio: true
-    condicion: "SI NO es --ya_corregido"
-    acciones:
-      - "BasÃ¡ndose en la Causa RaÃ­z y Archivos Afectados del Paso 3, proponer correcciÃ³n sugerida"
-      - "Documentar en secciÃ³n CorrecciÃ³n del archivo BUG-NNN.md con prefijo SUGERIDA:"
-      - "  Incluir: quÃ© cambiar, en quÃ© archivo(s), lÃ³gica esperada del fix"
-      - "  NO incluir cÃ³digo â€” solo instrucciones de alto nivel para planificar_hu"
-      - "NOTA: planificar_hu consume esta secciÃ³n para generar tareas tÃ©cnicas del plan bugfix"
-
-  - paso: "Documentar CorrecciÃ³n"
+  - paso: "Documentar Corrección"
     obligatorio: false
-    condicion: "SI el bug ya fue corregido (--ya_corregido o el usuario indica que ya lo arreglÃ³)"
+    condicion: "SI el bug ya fue corregido (--ya_corregido o el usuario indica que ya lo arregló)"
     acciones:
       - "Registrar el commit fix con su mensaje"
-      - "Documentar la correcciÃ³n con fragmentos de cÃ³digo Antes/DespuÃ©s"
-      - "Estado del bug: 'âœ… Corregido'"
-      - "Incluir fecha de correcciÃ³n"
+      - "Documentar la corrección con fragmentos de código Antes/Después"
+      - "Estado del bug: '✅ Corregido'"
+      - "Incluir fecha de corrección"
 
-  - paso: "LecciÃ³n Aprendida"
+  - paso: "Lección Aprendida"
     obligatorio: false
     condicion: "SI el bug ya fue corregido"
     acciones:
-      - "Documentar quÃ© se puede hacer para prevenir este tipo de bug en el futuro"
+      - "Documentar qué se puede hacer para prevenir este tipo de bug en el futuro"
       - "Las recomendaciones deben ser concretas y accionables"
-      - "RESTRICCIÃ“N: La lecciÃ³n debe tener entre 1 y 3 lÃ­neas mÃ¡ximo. Ser directo y puntual."
+      - "RESTRICCIÓN: La lección debe tener entre 1 y 3 líneas máximo. Ser directo y puntual."
       - "Agregar fila en {{artifacts.lecciones_aprendidas}} con formato:"
-      - "  | [NNN] | BUG-[ID] | [lecciÃ³n concisa: 1-3 lÃ­neas] | [acciÃ³n preventiva concisa] |"
-      - "SI NO existe {{artifacts.lecciones_aprendidas}} â†’ Crear usando {{plantillas_folder}}/lecciones_aprendidas_plantilla.md"
+      - "  | [NNN] | BUG-[ID] | [lección concisa: 1-3 líneas] | [acción preventiva concisa] |"
+      - "SI NO existe {{artifacts.lecciones_aprendidas}} → Crear usando {{plantillas.lecciones_aprendidas}}"
 
-  - paso: "GeneraciÃ³n de Archivo Bug"
-    obligatorio: true
-    acciones:
-      - "Cargar plantilla desde {{plantillas_folder}}/bug_plantilla.md"
-      - "Completar TODAS las secciones aplicables con la informaciÃ³n recopilada"
-      - "Secciones obligatorias: Metadata, DescripciÃ³n, SÃ­ntoma, Causa RaÃ­z, Archivos Afectados"
-      - "Secciones condicionales (si corregido): CorrecciÃ³n, LecciÃ³n Aprendida"
-      - "Guardar en {{artifacts.bugs_folder}}/BUG-[ID]_[descripcion_kebab_case].md"
-
+# ============================================
+# SALIDA
+# ============================================
 salida:
   archivos_generados:
-    ruta: "{{artifacts.bugs_folder}}/BUG-[ID]_[descripcion].md"
+    - ruta: "{{artifacts.hu_folder}}/BUG-NNN/HU.md"
+    - ruta: "{{artifacts.hu_folder}}/BUG-NNN/RefinamientoBug.md"
   archivos_actualizados:
-    - "{{archivos.backlog}} (HU tipo Bug creada)"
-    - "{{artifacts.lecciones_aprendidas}} (si bug corregido â€” nueva fila agregada)"
+    - "{{archivos.backlog}} (fila en Índice Rápido agregada)"
+    - "{{artifacts.lecciones_aprendidas}} (si bug corregido — nueva fila agregada)"
   mensaje_exito: |
-    ðŸ› BUG REGISTRADO
+    🐛 BUG REGISTRADO
     
-    ðŸ“‹ ID: BUG-[ID]
-    ðŸ”´ Severidad: [severidad]
-    ðŸ“Œ Estado: [ðŸ†• HU-Bug Planificable / âœ… Corregido]
+    📋 ID: BUG-NNN
+    🔴 Severidad: [severidad]
+    📌 Estado: [🆕 HU-Bug Planificable / ✅ Corregido]
     
-    ðŸ“„ Archivo: {{artifacts.bugs_folder}}/BUG-[ID]_[descripcion].md
+    📁 Carpeta: {{artifacts.hu_folder}}/BUG-NNN/
+    📄 Archivos: HU.md, RefinamientoBug.md
   siguiente:
-    - { comando: ">planificar_hu", desc: "Planificar resoluciÃ³n del bug (paso directo â€” sin refinar_hu ni validar_hu)", chat_agente: "ArchDev Pro" }
-    - { comando: ">ejecutar_plan", desc: "Ejecutar correcciÃ³n directamente (si ya hay plan)", chat_agente: "Desarrollador" }
+    - { comando: ">planificar_hu BUG-NNN", desc: "Planificar resolución del bug (paso directo — sin refinar_hu ni validar_hu)", chat_agente: "ArchDev Pro" }
+    - { comando: ">ejecutar_plan BUG-NNN", desc: "Ejecutar corrección directamente (si ya hay plan)", chat_agente: "Desarrollador" }
 
+# ============================================
+# ERRORES
+# ============================================
 errores:
-  backlog_no_encontrado: {msg: "âŒ No se encontrÃ³ {{archivos.backlog}}", accion: "Ejecutar >refinar_hu para crear el backlog primero"}
-  bugs_folder_no_existe: {msg: "âš ï¸ La carpeta {{artifacts.bugs_folder}} no existe", accion: "Crear la carpeta automÃ¡ticamente antes de guardar"}
+  backlog_no_encontrado: {msg: "❌ No se encontró {{archivos.backlog}}", accion: "Ejecutar >refinar_hu para crear el backlog primero"}
+  hu_folder_no_existe: {msg: "⚠️ La carpeta {{artifacts.hu_folder}} no existe", accion: "Crear la carpeta automáticamente antes de guardar"}
+  bug_ya_existe: {msg: "⚠️ Ya existe una carpeta BUG-NNN con ese ID", accion: "Incrementar el ID y reintentar"}

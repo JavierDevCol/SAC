@@ -39,7 +39,7 @@ artifacts:
   # Code quality
   code_smells_folder: "{project-root}/artifacts/code_smells"
   # Bugs y pendientes
-  bugs_folder: "{project-root}/artifacts/bugs"
+  bugs_folder: "{project-root}/artifacts/bugs"  # DEPRECATED: nuevos bugs van en hu_folder/BUG-NNN/
   lecciones_aprendidas: "{project-root}/artifacts/lecciones_aprendidas.md"
   pendientes: "{project-root}/artifacts/pendientes.md"
   pendientes_folder: "{project-root}/artifacts/pendientes"
@@ -84,8 +84,14 @@ plantillas:
   hu:
     hu: "{project-root}/.SAC/plantillas/hu/HU.md"
     refinamiento: "{project-root}/.SAC/plantillas/hu/Refinamiento.md"
+    refinamiento_bug: "{project-root}/.SAC/plantillas/hu/RefinamientoBug.md"
     plan: "{project-root}/.SAC/plantillas/hu/Plan.md"
     tracking: "{project-root}/.SAC/plantillas/hu/Tracking.md"
+  # Plantillas de bugs y pendientes
+  bug: "{project-root}/.SAC/plantillas/bug_plantilla.md"
+  lecciones_aprendidas: "{project-root}/.SAC/plantillas/lecciones_aprendidas_plantilla.md"
+  pendientes: "{project-root}/.SAC/plantillas/pendientes_plantilla.md"
+  pendiente_detalle: "{project-root}/.SAC/plantillas/pendiente_detalle_plantilla.md"
 
 # ============================================
 # RUTAS DE REGLAS

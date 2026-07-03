@@ -103,7 +103,7 @@ Cuando se necesite el detalle completo de una HU:
 | Plan | `{{artifacts.hu_folder}}/[ID-HU]/Plan.md` | Se ejecute o consulte implementación |
 | Tracking | `{{artifacts.hu_folder}}/[ID-HU]/Tracking.md` | Se retome o verifique ejecución |
 | ADR | `{{artifacts.adr_folder}}` | Se consulte decisión arquitectónica |
-| Bugs | `{{artifacts.bugs_folder}}` | Se registre, consulte o resuelva un bug |
+| Bugs | `{{artifacts.hu_folder}}/BUG-NNN/` | Se registre, consulte o resuelva un bug |
 | Pendientes (índice) | `{{artifacts.pendientes}}` | Se consulte deuda técnica o hallazgos |
 | Pendientes (detalle) | `{{artifacts.pendientes_folder}}` | Se necesite contexto extendido |
 | Deuda Técnica | `{{artifacts.deuda_tecnica_folder}}` | Se registre o consulte deuda técnica |
