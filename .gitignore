@@ -26,3 +26,10 @@ propuestas/
 
 # Variables de entorno (secretos)
 .env
+
+opencode.json
+
+# Archivos de sistema macOS
+.DS_Store
+
+.opencode/

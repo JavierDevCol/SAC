@@ -121,7 +121,7 @@ proceso:
   - paso: "Registro en Archivo de Pendientes"
     obligatorio: true
     acciones:
-      - "SI NO existe {{artifacts.pendientes}} â†’ Crear archivo usando plantilla {{plantillas_folder}}/pendientes_plantilla.md"
+      - "SI NO existe {{artifacts.pendientes}} â†’ Crear archivo usando plantilla {{plantillas.pendientes}}"
       - "SI existe â†’ Leer archivo actual"
       - "Agregar nueva fila en la tabla de Registro con todos los campos completados"
       - "Guardar {{artifacts.pendientes}}"
@@ -130,7 +130,7 @@ proceso:
     obligatorio: false
     condicion: "SI nivel es DETALLADO (logs adjuntos, descripciÃ³n extensa, o categorÃ­a ðŸ“Ž Con Evidencia)"
     acciones:
-      - "Cargar plantilla desde {{plantillas_folder}}/pendiente_detalle_plantilla.md"
+      - "Cargar plantilla desde {{plantillas.pendiente_detalle}}"
       - "Completar secciones aplicables: Metadata, DescripciÃ³n, Evidencia/Logs, AnÃ¡lisis Previo"
       - "Dejar secciÃ³n ResoluciÃ³n vacÃ­a (se completa al promover/reclasificar/descartar)"
       - "Guardar en {{artifacts.pendientes_folder}}/PND-[ID]_[descripcion_kebab_case].md"

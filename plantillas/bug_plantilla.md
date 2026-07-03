@@ -5,6 +5,8 @@
 | Campo | Valor |
 |-------|-------|
 | **ID** | BUG-[NNN] |
+| **HU Origen** | [HU-XXX / —] |
+| **HU Creada** | [HU-XXX / —] |
 | **Detectado en** | [HU-XXX (contexto) / Pruebas funcionales / Producción] |
 | **Proyecto** | [nombre-proyecto] |
 | **Severidad** | [🔴 Crítica / 🟠 Alta / 🟡 Media] |

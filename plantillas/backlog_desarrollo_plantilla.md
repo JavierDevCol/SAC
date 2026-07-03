@@ -101,13 +101,5 @@ Plan.md Estado: COMPLETADO         → [X] Completada
 
 ---
 
-## 📝 Historial de Cambios
-
-| Fecha | HU | Cambio | Responsable |
-|-------|-----|--------|-------------|
-| [timestamp] | [ID-HU] | [descripción] | [rol] |
-
----
-
 > **Archivo generado por `>sincronizar_backlog`**
 > **Las HUs detalladas viven en `artifacts/HU/[ID-HU]/`**
