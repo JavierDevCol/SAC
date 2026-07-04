@@ -238,11 +238,9 @@ Una vez activado un agente, puedes usar sus herramientas con el prefijo `>`:
 | Ejecutar Plan | `>ejecutar_plan` | ArchDev Pro |
 | Crear Pruebas | `>crear_pruebas` | ArchDev Pro |
 | Analizar Code Smells | `>analizar_code_smells` | ArchDev Pro |
-| Analizar Stack | `>analizar_stack` | Todos |
 | Generar ADR | `>generar_adr` | Arquitecto |
 | Init Reglas Arquitectónicas | `>init_reglas_arquitectonicas` | Arquitecto |
 | Diagnosticar DevOps | `>diagnosticar_devops` | DevOps |
-| Generar Commit | `>generar_commit` | Cronista de Cambios |
 
 ---
 

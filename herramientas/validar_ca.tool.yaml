@@ -1,9 +1,3 @@
-# Herramienta: Validar Criterios de Aceptación
-nombre: "Validar Criterios de Aceptación"
-comando: ">validar_ca"
-alias: [">verificar_ca", ">check_ca"]
-version: "2.0"
-
 mandatory:
   - instruccion: "Leer CAs SIEMPRE desde el refinamiento (fuente de verdad), NUNCA del plan"
   - instruccion: "Verificar cada CA contra el código real en el filesystem y resultados de tests"
@@ -152,5 +146,4 @@ errores:
   tasks_pendientes_integracion: {msg: "⛔ No se pueden validar CAs de integración", accion: "Completar todas las tasks primero"}
 
 siguiente:
-  - {comando: ">generar_commit", desc: "Si todos los CAs pasan, documentar cambios", chat_agente: "Cronista de Cambios"}
   - {comando: ">ejecutar_plan [ID-HU] --modo_ejecucion task_especifica --task_id [siguiente]", desc: "Continuar con siguiente task", chat_agente: "ArchDev Pro"}

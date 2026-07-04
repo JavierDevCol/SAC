@@ -18,7 +18,6 @@ Ejemplos de uso de las herramientas del sistema.
 | `analizar_code_smells_ejemplo.md` | `>analizar_code_smells` | Detección de problemas de diseño |
 | `solucionar_smells_ejemplo.md` | `>analizar_code_smells` | Solución de code smells |
 | `diagnosticar_devops_ejemplo.md` | `>diagnosticar_devops` | Análisis de madurez DevOps |
-| `generar_commit_ejemplo.md` | `>generar_commit` | Creación de mensajes de commit |
 | `verifica_pruebas_ejemplo.md` | `>crear_pruebas` | Verificación de pruebas |
 | `ecommerce_mvp_completo.md` | Varios | Ejemplo completo E-commerce MVP |
 

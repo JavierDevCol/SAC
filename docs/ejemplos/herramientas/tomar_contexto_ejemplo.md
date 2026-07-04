@@ -381,8 +381,7 @@ productos y órdenes de compra. Arquitectura preparada para escalabilidad y mant
 - Única limitante: documentación insuficiente (corregible)
 
 🚀 Próximos Pasos Sugeridos:
-1. Ejecutar `generar_commit` para commits más estructurados
-2. Usar `diagnosticar_devops` para análisis profundo de CI/CD
+1. Usar `diagnosticar_devops` para análisis profundo de CI/CD
 3. Aplicar `define_arquitectura` para documentar patrones detectados
 4. Considerar `crear_pruebas` para completar coverage de testing
 ```

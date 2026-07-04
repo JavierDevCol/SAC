@@ -33,7 +33,7 @@ El sistema COCHAS usa **3 prefijos** para diferentes tipos de acciones:
 |---------|-----------|---------|---------------------|
 | `*` | **Comandos del Orquestador** | `*roles`, `*status`, `*HU` | ❌ No |
 | `+` | **Activar un Rol** | `+ONAD`, `+ARCHDEV` | ❌ No |
-| `>` | **Ejecutar una Herramienta** | `>refinar_hu`, `>generar_commit` | ✅ Sí |
+| `>` | **Ejecutar una Herramienta** | `>refinar_hu`, `>ejecutar_plan` | ✅ Sí |
 
 ---
 
@@ -121,7 +121,6 @@ Interesante. Antes de diseñar la implementación, validemos:
 - `>validar_ca` - Valida criterios de aceptación contra código
 - `>crear_pruebas` - Genera tests unitarios y de integración
 - `>analizar_code_smells` - Detecta problemas de calidad en el código
-- `>generar_commit` - Documenta cambios con Conventional Commits
 - `>registrar_bug` - Registro de bugs detectados durante desarrollo
 - `>registrar_hallazgo` - Clasificación de hallazgos
 - `>sincronizar_backlog` - Sincronizar estados del backlog
@@ -191,7 +190,6 @@ Perfecto. Voy a analizar el código y aplicar mejoras.
 - `>tomar_contexto` - Analiza el proyecto completo
 - `>generar_adr` - Documenta decisiones arquitectónicas
 - `>diagnosticar_devops` - Analiza infraestructura, pipelines y deployment
-- `>generar_commit` - Documenta cambios con Conventional Commits
 
 **Cuándo usarlo:**
 - ✅ Configurar pipelines CI/CD
@@ -253,7 +251,6 @@ Perfecto. Voy a diagnosticar tu proyecto y proponer un pipeline.
 **Herramientas:**
 - `>tomar_contexto` - Analiza el proyecto completo
 - `>refinar_hu` - Refina historias de usuario con criterios claros
-- `>generar_commit` - Documenta cambios con Conventional Commits
 - `>sincronizar_backlog` - Sincronizar estados del backlog
 
 **Cuándo usarlo:**
@@ -320,7 +317,7 @@ Para encontrar rápidamente lo que necesito
 - 📝 **Enfoque:** Conventional Commits y trazabilidad
 
 **Herramientas:**
-- `>generar_commit` - Crea mensajes de commit siguiendo mejores prácticas
+- `>registrar_hallazgo` - Clasifica y registra hallazgos
 
 **Cuándo usarlo:**
 - ✅ Crear mensajes de commit profesionales
@@ -340,8 +337,6 @@ Usuario: Necesito un commit para los cambios de autenticación
 
 CRONISTA:
 Perfecto. Voy a generar un mensaje de commit profesional.
-
->generar_commit
 
 **Mensaje de Commit Generado:**
 
@@ -458,10 +453,6 @@ git commit -m "feat(auth): implement JWT-based authentication" -m "..."
 +ARCHDEV
 >ejecutar_plan
 >crear_pruebas
-
-# 4. Documentar cambios
-+CRONISTA
->generar_commit
 ```
 
 ---
@@ -479,10 +470,6 @@ git commit -m "feat(auth): implement JWT-based authentication" -m "..."
 >analizar_code_smells
 >solucionar_smells
 >verifica_pruebas
-
-# 3. Documentar refactoring
-+CRONISTA
->generar_commit
 ```
 
 ---
@@ -520,10 +507,6 @@ git commit -m "feat(auth): implement JWT-based authentication" -m "..."
 # 2. Preparar deployment
 +DEVOPS
 >diagnosticar_devops
-
-# 3. Documentar release
-+CRONISTA
->generar_commit
 ```
 
 ---
@@ -595,10 +578,6 @@ Es común necesitar múltiples roles en una sesión. El sistema mantiene el cont
 # Configurar deployment
 +DEVOPS
 >diagnosticar_devops
-
-# Crear commit
-+CRONISTA
->generar_commit
 
 # Ver estado
 *status

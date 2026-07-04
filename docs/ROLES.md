@@ -35,7 +35,7 @@
 |-------|-------|
 | **Principio** | "No Comer Entero" |
 | **Especialidad** | Arquitectura estratégica, DDD, decisiones técnicas |
-| **Herramientas** | `>tomar_contexto`, `>analizar_stack`, `>validar_hu`, `>generar_adr`, `>init_reglas_arquitectonicas`, `>registrar_bug`, `>registrar_pendiente`, `>registrar_hallazgo`, `>sincronizar_backlog` |
+| **Herramientas** | `>tomar_contexto`, `>validar_hu`, `>generar_adr`, `>init_reglas_arquitectonicas`, `>registrar_bug`, `>registrar_pendiente`, `>registrar_hallazgo`, `>sincronizar_backlog` |
 | **Cuándo usar** | Decisiones arquitectónicas, validación de HUs, ADRs, bugs, pendientes |
 
 ### @desarrollador (Desarrollador)
@@ -44,7 +44,7 @@
 |-------|-------|
 | **Principio** | "Código con Propósito" |
 | **Especialidad** | Implementación, TDD, refactoring, testing |
-| **Herramientas** | `>tomar_contexto`, `>analizar_stack`, `>generar_adr`, `>planificar_hu`, `>ejecutar_plan`, `>validar_ca`, `>crear_pruebas`, `>analizar_code_smells`, `>generar_commit`, `>registrar_bug`, `>registrar_hallazgo`, `>sincronizar_backlog` |
+| **Herramientas** | `>tomar_contexto`, `>generar_adr`, `>planificar_hu`, `>ejecutar_plan`, `>validar_ca`, `>crear_pruebas`, `>analizar_code_smells`, `>registrar_bug`, `>registrar_hallazgo`, `>sincronizar_backlog` |
 | **Cuándo usar** | Planificación, implementación, testing, refactoring, bugs |
 
 ### @devops (DevOps)
@@ -53,7 +53,7 @@
 |-------|-------|
 | **Principio** | "Seguridad es No Negociable" |
 | **Especialidad** | CI/CD, infraestructura, observabilidad, DevSecOps |
-| **Herramientas** | `>tomar_contexto`, `>generar_adr`, `>diagnosticar_devops`, `>generar_commit` |
+| **Herramientas** | `>tomar_contexto`, `>generar_adr`, `>diagnosticar_devops` |
 | **Cuándo usar** | Pipelines, infraestructura, observabilidad |
 
 ### @analista_historias (Analista de Requisitos)
@@ -62,7 +62,7 @@
 |-------|-------|
 | **Principio** | "Claridad Sobre Velocidad" |
 | **Especialidad** | Refinamiento de HUs, criterios de aceptación, estimación |
-| **Herramientas** | `>tomar_contexto`, `>refinar_hu`, `>generar_commit`, `>sincronizar_backlog` |
+| **Herramientas** | `>tomar_contexto`, `>refinar_hu`, `>sincronizar_backlog` |
 | **Cuándo usar** | Refinar historias de usuario, desglose técnico |
 
 ### @cronista_de_cambios (Cronista de Cambios)
@@ -71,7 +71,7 @@
 |-------|-------|
 | **Principio** | "La Historia Importa" |
 | **Especialidad** | Conventional Commits, documentación de cambios |
-| **Herramientas** | `>generar_commit` |
+| **Herramientas** | `>registrar_hallazgo` |
 | **Cuándo usar** | Crear mensajes de commit profesionales |
 
 ---

@@ -47,9 +47,6 @@ SAC instala en tu proyecto un conjunto de **agentes Copilot** con roles especial
 
 @desarrollador
 >ejecutar_plan HU-001
-
-@cronista_de_cambios
->generar_commit
 ```
 
 ---

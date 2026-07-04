@@ -45,9 +45,6 @@ Invoca un agente desde Copilot Chat y ejecuta herramientas:
 
 @desarrollador
 >ejecutar_plan HU-001
-
-@cronista_de_cambios
->generar_commit
 ```
 
 ---

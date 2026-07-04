@@ -190,7 +190,6 @@ tu-proyecto/
 ```
 >tomar_contexto
 >crear_pruebas
->generar_commit
 ```
 
 ---

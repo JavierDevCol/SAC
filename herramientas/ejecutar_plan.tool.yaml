@@ -1,10 +1,4 @@
-﻿# Herramienta: Ejecutar Plan de Implementación
-nombre: "Ejecutar Plan de Implementación"
-comando: ">ejecutar_plan"
-alias: [">ejecutar", ">implementar"]
-version: "6.0"
-
-mandatory:
+﻿mandatory:
   - instruccion: "Ejecutar tareas del plan en ORDEN ESTRICTO"
   - instruccion: "DETENERSE INMEDIATAMENTE ante cualquier error"
   - instruccion: "Solicitar CONFIRMACIÓN antes de comandos Git"
@@ -196,7 +190,7 @@ proceso:
       - "  5. EDITAR ARCHIVO del plan: cambiar estado de la task en tabla Progreso General"
       - "  6. SI modo_ejecucion = task_por_task → Pausa de confirmación:"
       - "     '✅ Task [ID-HU]-TASK-N completada. [M] tareas ejecutadas.'"
-      - "     '📝 ¿Commit? (>generar_commit) | ▶️ ¿Continuar con TASK-N+1?'"
+      - "     '📝 ¿Continuar con TASK-N+1?'"
       - "  7. SI modo_ejecucion = task_especifica → Finalizar tras completar la task"
     critico: "Los pasos c, d, e y f son BLOQUEANTES — NO avanzar a la siguiente tarea sin haber EDITADO el archivo del plan. Si el archivo no refleja el estado actual, la ejecución es inválida."
     reanudacion:
@@ -249,7 +243,7 @@ proceso:
   - paso: "Confirmación de Commit"
     obligatorio: true
     condicion: "si auto_commit=false"
-    acciones: ["Mostrar resumen de cambios", "Preguntar: ¿Proceder con commit?", "Si NO: pausar para revisión", "Si SÍ: sugerir >generar_commit"]
+    acciones: ["Mostrar resumen de cambios", "Preguntar: ¿Proceder con commit?", "Si NO: pausar para revisión", "Si SÍ: generar mensaje Conventional Commit"]
 
   - paso: "Finalización"
     obligatorio: true
@@ -315,4 +309,3 @@ errores:
 
 siguiente:
   - {comando: ">validar_ca [ID-HU]", desc: "Validar CAs contra código (si no se validaron en ejecución)", chat_agente: "ArchDev Pro"}
-  - {comando: ">generar_commit", desc: "Documentar cambios realizados", chat_agente: "Cronista de Cambios"}

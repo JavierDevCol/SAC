@@ -520,7 +520,6 @@ artifacts/
 | `planificar_hu` — Consumo de directrices | Nuevo bloque en paso "Cargar HU y Contexto": lee `### Directrices de Planificación` del refinamiento como recomendaciones (no mandatos); graceful degradation si no existen |
 | `registrar_bug` — `siguiente` actualizado | `>planificar_hu` apunta a `chat_agente: "ArchDev Pro"` |
 | `sincronizar_backlog` — `siguiente` actualizado | `>planificar_hu` apunta a `chat_agente: "ArchDev Pro"` |
-| `analizar_stack` — `siguiente` actualizado | `>planificar_hu` apunta a `chat_agente: "archdev_pro"` |
 
 #### ✅ Cambios en Roles
 

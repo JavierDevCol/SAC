@@ -23,7 +23,7 @@ El sistema SAC usa **1 prefijo** principal para ejecutar herramientas:
 | Prefijo | Propósito | Requiere Agente Activo | Ejemplos |
 |---------|-----------|----------------------|----------|
 | `@` | **Invocar un Agente** | ❌ No | `@arquitecto`, `@desarrollador` |
-| `>` | **Ejecutar una Herramienta** | ✅ Sí | `>refinar_hu`, `>generar_commit` |
+| `>` | **Ejecutar una Herramienta** | ✅ Sí | `>refinar_hu`, `>ejecutar_plan` |
 
 ### Regla Principal
 
@@ -44,11 +44,11 @@ En Copilot Chat escribe `@nombre_agente` para activar un agente SAC.
 
 | Invocación | Agente | Herramientas Disponibles |
 |------------|--------|--------------------------|
-| `@arquitecto` | Arquitecto | `>tomar_contexto`, `>analizar_stack`, `>init_reglas_arquitectonicas`, `>generar_adr`, `>validar_hu`, `>registrar_bug`, `>registrar_pendiente`, `>registrar_hallazgo`, `>sincronizar_backlog` |
-| `@desarrollador` | Desarrollador | `>tomar_contexto`, `>analizar_stack`, `>generar_adr`, `>planificar_hu`, `>ejecutar_plan`, `>validar_ca`, `>crear_pruebas`, `>analizar_code_smells`, `>generar_commit`, `>registrar_bug`, `>registrar_hallazgo`, `>sincronizar_backlog` |
-| `@devops` | DevOps | `>tomar_contexto`, `>generar_adr`, `>diagnosticar_devops`, `>generar_commit` |
-| `@analista_historias` | Analista de Requisitos | `>tomar_contexto`, `>refinar_hu`, `>generar_commit`, `>sincronizar_backlog` |
-| `@cronista_de_cambios` | Cronista de Cambios | `>generar_commit` |
+| `@arquitecto` | Arquitecto | `>tomar_contexto`, `>init_reglas_arquitectonicas`, `>generar_adr`, `>validar_hu`, `>registrar_bug`, `>registrar_pendiente`, `>registrar_hallazgo`, `>sincronizar_backlog` |
+| `@desarrollador` | Desarrollador | `>tomar_contexto`, `>generar_adr`, `>planificar_hu`, `>ejecutar_plan`, `>validar_ca`, `>crear_pruebas`, `>analizar_code_smells`, `>registrar_bug`, `>registrar_hallazgo`, `>sincronizar_backlog` |
+| `@devops` | DevOps | `>tomar_contexto`, `>generar_adr`, `>diagnosticar_devops` |
+| `@analista_historias` | Analista de Requisitos | `>tomar_contexto`, `>refinar_hu`, `>sincronizar_backlog` |
+| `@cronista_de_cambios` | Cronista de Cambios | `>registrar_hallazgo` |
 
 ---
 
@@ -97,7 +97,7 @@ Los comandos con `>` ejecutan herramientas del rol activo.
 
 **Con @cronista_de_cambios activo:**
 ```
->generar_commit
+>registrar_hallazgo
 ```
 
 **Con @devops activo:**
@@ -115,9 +115,6 @@ Los comandos con `>` ejecutan herramientas del rol activo.
 # Paso 1: Analizar el proyecto con el Arquitecto
 @arquitecto
 >tomar_contexto
-
-# Paso 2: Analizar el stack tecnológico
->analizar_stack
 ```
 
 ---
@@ -156,14 +153,14 @@ Los comandos con `>` ejecutan herramientas del rol activo.
 
 ---
 
-### Caso 4: Generar Commit
+### Caso 4: Registrar Hallazgo
 
 ```bash
-# Activar agente de commits
-@cronista_de_cambios
+# Activar agente de arquitecto
+@arquitecto
 
-# Generar mensaje de commit
->generar_commit
+# Registrar hallazgo
+>registrar_hallazgo "Descripción del hallazgo"
 ```
 
 ---
@@ -226,7 +223,7 @@ Los comandos con `>` ejecutan herramientas del rol activo.
 ❌ La herramienta 'refinar_hu' no está disponible en el rol 'Cronista de Cambios'.
 
 🛠️ Herramientas disponibles para este rol:
-  >generar_commit
+  >registrar_hallazgo
 
 💡 Para usar 'refinar_hu', activa el rol con: +REFINADOR
 ```
@@ -279,8 +276,6 @@ Los comandos con `>` ejecutan herramientas del rol activo.
 >refinar_hu HU-001     # Trabajar la HU
 +ARCHDEV               # Cambiar a desarrollo
 >ejecutar_plan HU-001  # Implementar
-+ARTESANO              # Cambiar a commits
->generar_commit        # Crear commit
 ```
 
 ---

@@ -31,7 +31,6 @@ ia_prompts/
 │           ├── crear_pruebas_ejemplo.md
 │           ├── diagnosticar_devops_ejemplo.md
 │           ├── ecommerce_mvp_completo.md
-│           ├── generar_commit_ejemplo.md
 │           ├── refinar_hu_ejemplo.md
 │           ├── solucionar_smells_ejemplo.md
 │           ├── tomar_contexto_ejemplo.md
@@ -52,12 +51,10 @@ ia_prompts/
 │
 ├── 📁 herramientas/                   # Instrucciones de herramientas para IA
 │   ├── analizar_code_smells.tool.yaml   # >analizar_code_smells
-│   ├── analizar_stack.tool.yaml         # >analizar_stack
 │   ├── crear_pruebas.tool.yaml          # >crear_pruebas
 │   ├── diagnosticar_devops.tool.yaml    # >diagnosticar_devops
 │   ├── ejecutar_plan.tool.yaml          # >ejecutar_plan
 │   ├── generar_adr.tool.yaml            # >generar_adr
-│   ├── generar_commit.tool.yaml         # >generar_commit
 │   ├── init_reglas_arquitectonicas.tool.yaml # >init_reglas_arquitectonicas
 │   ├── planificar_hu.tool.yaml          # >planificar_hu
 │   ├── refinar_hu.tool.yaml             # >refinar_hu
@@ -155,7 +152,6 @@ ia_prompts/
 | Herramienta | Comando | Agente principal |
 |-------------|---------|-----------------|
 | Tomar Contexto | `>tomar_contexto` | Todos |
-| Analizar Stack | `>analizar_stack` | Arquitecto, Desarrollador |
 | Init Reglas Arquitectónicas | `>init_reglas_arquitectonicas` | Arquitecto |
 | Refinar HU | `>refinar_hu` | Analista de Requisitos |
 | Validar HU | `>validar_hu` | Arquitecto |
@@ -165,4 +161,3 @@ ia_prompts/
 | Analizar Code Smells | `>analizar_code_smells` | Desarrollador |
 | Generar ADR | `>generar_adr` | Arquitecto, Desarrollador, DevOps |
 | Diagnosticar DevOps | `>diagnosticar_devops` | DevOps |
-| Generar Commit | `>generar_commit` | Cronista de Cambios |

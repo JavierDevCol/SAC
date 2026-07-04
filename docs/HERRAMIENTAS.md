@@ -16,7 +16,6 @@
 | Herramienta | Comando | Roles Autorizados | Archivo |
 |-------------|---------|-------------------|---------|
 | Tomar Contexto | `>tomar_contexto` | ONAD, ARCHDEV, DEVOPS, REFINADOR | `herramientas/tomar_contexto.tool.yaml` |
-| Analizar Stack | `>analizar_stack` | ONAD, ARCHDEV | `herramientas/analizar_stack.tool.yaml` |
 | Init Reglas Arquitectónicas | `>init_reglas_arquitectonicas` | ONAD | `herramientas/init_reglas_arquitectonicas.tool.yaml` |
 | Generar ADR | `>generar_adr` | ONAD, ARCHDEV, DEVOPS | `herramientas/generar_adr.tool.yaml` |
 | Refinar HU | `>refinar_hu` | REFINADOR | `herramientas/refinar_hu.tool.yaml` |
@@ -27,13 +26,12 @@
 | Crear Pruebas | `>crear_pruebas` | ARCHDEV | `herramientas/crear_pruebas.tool.yaml` |
 | Analizar Code Smells | `>analizar_code_smells` | ARCHDEV | `herramientas/analizar_code_smells.tool.yaml` |
 | Diagnosticar DevOps | `>diagnosticar_devops` | DEVOPS | `herramientas/diagnosticar_devops.tool.yaml` |
-| Generar Commit | `>generar_commit` | ARCHDEV, DEVOPS, REFINADOR, CRONISTA | `herramientas/generar_commit.tool.yaml` |
 | Registrar Bug | `>registrar_bug` | ONAD, ARCHDEV | `herramientas/registrar_bug.tool.yaml` |
 | Registrar Pendiente | `>registrar_pendiente` | ONAD | `herramientas/registrar_pendiente.tool.yaml` |
 | Registrar Hallazgo | `>registrar_hallazgo` | ONAD, ARCHDEV | `herramientas/registrar_hallazgo.tool.yaml` |
 | Sincronizar Backlog | `>sincronizar_backlog` | ONAD, ARCHDEV, REFINADOR | `herramientas/sincronizar_backlog.tool.yaml` |
 
-**Total:** 17 herramientas activas
+**Total:** 15 herramientas activas
 
 ---
 
@@ -44,7 +42,6 @@
 | Herramienta | Comando |
 |-------------|---------|
 | Tomar Contexto | `>tomar_contexto` |
-| Analizar Stack | `>analizar_stack` |
 | Init Reglas Arquitectónicas | `>init_reglas_arquitectonicas` |
 | Generar ADR | `>generar_adr` |
 | Validar HU | `>validar_hu` |
@@ -58,14 +55,12 @@
 | Herramienta | Comando |
 |-------------|---------|
 | Tomar Contexto | `>tomar_contexto` |
-| Analizar Stack | `>analizar_stack` |
 | Generar ADR | `>generar_adr` |
 | Planificar HU | `>planificar_hu` |
 | Ejecutar Plan | `>ejecutar_plan` |
 | Validar CA | `>validar_ca` |
 | Crear Pruebas | `>crear_pruebas` |
 | Analizar Code Smells | `>analizar_code_smells` |
-| Generar Commit | `>generar_commit` |
 | Registrar Bug | `>registrar_bug` |
 | Registrar Hallazgo | `>registrar_hallazgo` |
 | Sincronizar Backlog | `>sincronizar_backlog` |
@@ -77,7 +72,6 @@
 | Tomar Contexto | `>tomar_contexto` |
 | Generar ADR | `>generar_adr` |
 | Diagnosticar DevOps | `>diagnosticar_devops` |
-| Generar Commit | `>generar_commit` |
 
 ### @analista_historias (Analista de Requisitos)
 
@@ -85,14 +79,13 @@
 |-------------|---------|
 | Tomar Contexto | `>tomar_contexto` |
 | Refinar HU | `>refinar_hu` |
-| Generar Commit | `>generar_commit` |
 | Sincronizar Backlog | `>sincronizar_backlog` |
 
 ### @cronista_de_cambios (Cronista de Cambios)
 
 | Herramienta | Comando |
 |-------------|---------|
-| Generar Commit | `>generar_commit` |
+| Registrar Hallazgo | `>registrar_hallazgo` |
 
 ---
 
@@ -111,13 +104,12 @@ Los sub-agentes se configuran a nivel de plataforma (opencode, claude, etc.) y s
 
 | Categoría | Herramientas |
 |-----------|--------------|
-| **Contexto** | `>tomar_contexto`, `>analizar_stack` |
+| **Contexto** | `>tomar_contexto` |
 | **Arquitectura** | `>init_reglas_arquitectonicas`, `>generar_adr` |
 | **Historias de Usuario** | `>refinar_hu`, `>validar_hu`, `>planificar_hu`, `>validar_ca` |
 | **Implementación** | `>ejecutar_plan`, `>crear_pruebas` |
 | **Calidad de Código** | `>analizar_code_smells` |
 | **DevOps** | `>diagnosticar_devops` |
-| **Documentación** | `>generar_commit` |
 | **Bugs y Hallazgos** | `>registrar_bug`, `>registrar_pendiente`, `>registrar_hallazgo` |
 | **Backlog** | `>sincronizar_backlog` |
 
@@ -147,6 +139,6 @@ Los sub-agentes se configuran a nivel de plataforma (opencode, claude, etc.) y s
 | Versión | Fecha | Cambios |
 |---------|-------|---------|
 | 7.25.0 | 27 jun 2026 | Agregadas 7 herramientas, sub-agentes, corregidos roles |
-| 7.2.0 | 23 abr 2026 | Añadidas `>analizar_stack` y `>generar_adr`; tablas por agente con nombres nuevos |
+| 7.2.0 | 23 abr 2026 | Añadida `>generar_adr`; tablas por agente con nombres nuevos |
 | 4.0 | 6 ene 2026 | Reescritura completa v4.0, movido a raíz, eliminadas herramientas inexistentes |
 | 3.1 | 5 ene 2026 | Versión anterior en `herramientas/herramientas-activas.md` |
