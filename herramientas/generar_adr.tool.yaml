@@ -1,14 +1,4 @@
-﻿# Herramienta: Generar Architecture Decision Record (ADR)
-nombre: "Generar Architecture Decision Record (ADR)"
-comando: ">generar_adr"
-alias: [">crear_adr", ">nuevo_adr", ">adr"]
-version: "2.3"
-
-objetivo: |
-  Generar documentación formal de decisiones arquitectónicas siguiendo estándares ADR,
-  soportando múltiples formatos, para mantener trazabilidad de decisiones técnicas críticas.
-
-mandatory:
+﻿mandatory:
   - instruccion: "Validar formato ADR: nygard | madr | y-statement | custom"
   - instruccion: "Título único - no duplicados en carpeta ADRs"
   - instruccion: "ADRs INMUTABLES - nunca modificar existentes, crear nuevos que superseden"

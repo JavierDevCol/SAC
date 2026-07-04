@@ -1,10 +1,4 @@
-﻿# Herramienta: Refinar Historia de Usuario
-nombre: "Refinar Historia de Usuario"
-comando: ">refinar_hu"
-alias: [">refinar", ">hu"]
-version: "5.0"
-
-mandatory:
+﻿mandatory:
   - instruccion: "Generar archivo de refinamiento ANTES de actualizar estado"
   - instruccion: "NUNCA aceptar criterios de aceptación no medibles"
   - instruccion: "Usar desglose VERTICAL (end-to-end), nunca horizontal"

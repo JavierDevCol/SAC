@@ -1,10 +1,4 @@
-﻿# Herramienta: Creación de Pruebas
-nombre: "Creación de Pruebas"
-comando: ">crear_pruebas"
-alias: [">crear-pruebas", ">tests"]
-version: "4.1"
-
-mandatory:
+﻿mandatory:
   - instruccion: "Generar tests ejecutables con patrón AAA (Arrange-Act-Assert)"
   - instruccion: "Incluir casos felices, de borde y de error"
   - instruccion: "Nomenclatura: should[Comportamiento]When[Condicion]()"

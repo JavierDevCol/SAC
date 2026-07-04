@@ -1,21 +1,4 @@
-﻿# Herramienta: Registrar Bug
-nombre: "Registrar Bug"
-comando: ">registrar_bug"
-alias: [">bug", ">reportar_bug"]
-version: "3.0"
-
-# ============================================
-# REGISTRAR BUG - Herramienta de IA
-# ============================================
-# Archivo: registrar_bug.tool.yaml
-# Versión: 3.0
-# Disponible para: Arquitecto y Desarrollador
-# ============================================
-
-# ============================================
-# MANDATORY - INSTRUCCIONES INVIOLABLES
-# ============================================
-mandatory:
+﻿mandatory:
   # === BASE ESTÁNDAR (NO MODIFICAR) ===
   - instruccion: "Seguir el proceso paso a paso en orden secuencial"
   - instruccion: "Validar prerequisitos antes de ejecutar"

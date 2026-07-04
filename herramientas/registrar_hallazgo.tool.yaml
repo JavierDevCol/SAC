@@ -1,26 +1,4 @@
-﻿# Herramienta: Registrar Hallazgo
-nombre: "Registrar Hallazgo"
-comando: ">registrar_hallazgo"
-alias: [">hallazgo"]
-version: "2.0"
-
-# ============================================
-# REGISTRAR HALLAZGO - Dispatcher de ClasificaciÃ³n
-# ============================================
-# Archivo: registrar_hallazgo.tool.md
-# VersiÃ³n: 1.0
-# Disponible para: Arquitecto y Desarrollador
-# ============================================
-# NOTA: Esta herramienta NO tiene proceso propio de registro.
-# Es un dispatcher que recopila informaciÃ³n, clasifica el
-# hallazgo y redirige a >registrar_bug o >registrar_pendiente
-# transfiriendo todo el contexto recopilado.
-# ============================================
-
-# ============================================
-# MANDATORY - INSTRUCCIONES INVIOLABLES
-# ============================================
-mandatory:
+﻿mandatory:
   # === BASE ESTÃNDAR (NO MODIFICAR) ===
   - instruccion: "Seguir el proceso paso a paso en orden secuencial"
   - instruccion: "Validar prerequisitos antes de ejecutar"

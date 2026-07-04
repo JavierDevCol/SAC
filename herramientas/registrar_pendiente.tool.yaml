@@ -1,21 +1,4 @@
-﻿# Herramienta: Registrar Pendiente
-nombre: "Registrar Pendiente"
-comando: ">registrar_pendiente"
-alias: [">pendiente"]
-version: "3.0"
-
-# ============================================
-# REGISTRAR PENDIENTE - Herramienta de IA
-# ============================================
-# Archivo: registrar_pendiente.tool.md
-# VersiÃ³n: 2.0
-# Disponible para: Arquitecto (exclusivo)
-# ============================================
-
-# ============================================
-# MANDATORY - INSTRUCCIONES INVIOLABLES
-# ============================================
-mandatory:
+﻿mandatory:
   # === BASE ESTÃNDAR (NO MODIFICAR) ===
   - instruccion: "Seguir el proceso paso a paso en orden secuencial"
   - instruccion: "Validar prerequisitos antes de ejecutar"

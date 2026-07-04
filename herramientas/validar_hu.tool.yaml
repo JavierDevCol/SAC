@@ -1,10 +1,4 @@
-﻿# Herramienta: Validar Historia de Usuario
-nombre: "Validar Historia de Usuario"
-comando: ">validar_hu"
-alias: [">validar", ">aprobar_hu"]
-version: "5.0"
-
-mandatory:
+﻿mandatory:
   - instruccion: "Verificar alineación con reglas arquitectónicas del proyecto"
   - instruccion: "NO aprobar HU que violen principios arquitectónicos"
   - instruccion: "Documentar razones de rechazo o ajustes requeridos"

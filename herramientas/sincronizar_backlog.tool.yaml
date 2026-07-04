@@ -1,10 +1,4 @@
-﻿# Herramienta: Sincronizar Backlog
-nombre: "Sincronizar Backlog"
-comando: ">sincronizar_backlog"
-alias: [">sync_backlog", ">sync", ">resumen_backlog"]
-version: "2.0"
-
-mandatory:
+﻿mandatory:
   - instruccion: "Seguir el proceso paso a paso en orden secuencial"
   - instruccion: "Validar prerequisitos antes de ejecutar"
   - instruccion: "Los pasos marcados como obligatorio:true NO se pueden omitir"

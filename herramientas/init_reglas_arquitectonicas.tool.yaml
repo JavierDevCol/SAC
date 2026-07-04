@@ -1,10 +1,4 @@
-﻿# Herramienta: Inicializar Reglas ArquitectÃ³nicas
-nombre: "Inicializar Reglas ArquitectÃ³nicas"
-comando: ">init_reglas_arquitectonicas"
-alias: [">reglas", ">init_reglas", ">ra"]
-version: "1.0"
-
-mandatory:
+﻿mandatory:
   - instruccion: "Ejecutar cuestionario PREGUNTA POR PREGUNTA, esperar respuesta antes de continuar"
   - instruccion: "Adaptar preguntas dinÃ¡micamente segÃºn stack detectado en contexto_proyecto"
   - instruccion: "NUNCA generar archivo final sin confirmaciÃ³n explÃ­cita del usuario (OK)"
