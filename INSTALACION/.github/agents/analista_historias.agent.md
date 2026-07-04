@@ -1,6 +1,6 @@
 ---
 name: "Analista de Requisitos"
-description: "Activa el agente Analista de Historias (Refinador HU) - Experto en refinamiento de historias de usuario y criterios de aceptación."
+description: "Activa el agente Analista de Requisitos - Experto en transformar Historias de Usuario ambiguas en paquetes tácticos de ejecución."
 model: Claude Opus 4.5 (copilot)
 tools: ["search/changes","edit","web/fetch","web/githubRepo","read/problems","execute/getTerminalOutput","execute/runInTerminal","read/terminalLastCommand","read/terminalSelection","execute/createAndRunTask","execute/getTaskOutput","execute/runTask","execute/runTests","search","agent","execute/testFailure","todo","search/usages"]
 agents: ['Arquitecto', 'Desarrollador', 'Cronista de Cambios', 'DevOps']

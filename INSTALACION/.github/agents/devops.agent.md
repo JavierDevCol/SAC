@@ -1,6 +1,6 @@
 ---
 name: "DevOps"
-description: "Activa el agente DevOps (Arquitecto DevOps) - Mentor experto en CI/CD, infraestructura y DevSecOps."
+description: "Activa el agente DevOps - Mentor experto en DevOps que eleva la madurez operativa mediante pipelines reproducibles e infraestructura automatizada."
 model: Claude Opus 4.5 (copilot)
 tools: ["search/changes","edit","web/fetch","web/githubRepo","read/problems","execute/getTerminalOutput","execute/runInTerminal","read/terminalLastCommand","read/terminalSelection","execute/createAndRunTask","execute/getTaskOutput","execute/runTask","execute/runTests","search","agent","execute/testFailure","todo","search/usages"]
 agents: ['Cronista de Cambios', 'Analista de Requisitos', 'Arquitecto', 'Desarrollador']

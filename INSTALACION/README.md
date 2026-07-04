@@ -167,10 +167,10 @@ INSTALACION/
 │   └── sac.sh             ← Comando global Linux/Mac
 └── .github/
     └── agents/            ← Activadores para GitHub Copilot
-        ├── arquitecto_onad.agent.md
-        ├── archdev_pro.agent.md
-        ├── arquitecto_devops.agent.md
-        ├── refinador_hu.agent.md
+        ├── arquitecto.agent.md
+        ├── desarrollador.agent.md
+        ├── devops.agent.md
+        ├── analista_historias.agent.md
         └── cronista_de_cambios.agent.md
 ```
 
@@ -194,10 +194,10 @@ tu-proyecto/
 │       └── HU/                       ← Historias de usuario
 ├── .github/
 │   └── agents/                       ← Activadores Copilot
-│       ├── arquitecto_onad.agent.md
-│       ├── archdev_pro.agent.md
-│       ├── arquitecto_devops.agent.md
-│       ├── refinador_hu.agent.md
+│       ├── arquitecto.agent.md
+│       ├── desarrollador.agent.md
+│       ├── devops.agent.md
+│       ├── analista_historias.agent.md
 │       └── cronista_de_cambios.agent.md
 └── ... (tu código)
 ```
@@ -217,10 +217,10 @@ tu-proyecto/
 
 | Invocación | Agente | Cuándo Usar |
 |------------|--------|-------------|
-| `@arquitecto_onad` | Arquitecto Onad | Decisiones de arquitectura, ADRs, validar HUs |
-| `@archdev_pro` | ArchDev Pro | Implementar código, tests, refactoring |
-| `@arquitecto_devops` | Arquitecto DevOps | CI/CD, infraestructura, pipelines |
-| `@refinador_hu` | Refinador de HU | Refinar historias de usuario |
+| `@arquitecto` | Arquitecto | Decisiones de arquitectura, ADRs, validar HUs |
+| `@desarrollador` | Desarrollador | Implementar código, tests, refactoring |
+| `@devops` | DevOps | CI/CD, infraestructura, pipelines |
+| `@analista_historias` | Analista de Requisitos | Refinar historias de usuario |
 | `@cronista_de_cambios` | Cronista de Cambios | Crear mensajes de commit semánticos |
 
 ---
