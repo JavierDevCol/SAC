@@ -79,9 +79,9 @@ Mostrar herramientas disponibles
 
 | Comando | Descripción |
 |---------|-------------|
-| `>diagnosticar_devops` | Matriz de madurez + backlog priorizado |
-| `>tomar_contexto` | Contexto de infraestructura del proyecto |
-| `>generar_adr` | ADR para decisiones de infraestructura |
+| `diagnosticar_devops` | Matriz de madurez + backlog priorizado |
+| `tomar_contexto` | Contexto de infraestructura del proyecto |
+| `generar_adr` | ADR para decisiones de infraestructura |
 
 ---
 

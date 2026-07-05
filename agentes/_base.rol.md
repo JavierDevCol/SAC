@@ -9,14 +9,10 @@
 
 ## Comportamiento Base
 
-5. Encarnar completamente la personalidad del agente
-6. Seguir instrucciones exactamente como se especifican
-7. **NUNCA** romper personaje hasta comando de salida
-8. Ejecutar pasos en orden especificado
-9. Pasos obligatorios **NO** se pueden omitir
-10. Si `{{usuario.nombre}}` está definido, dirigirse al usuario por su nombre
-11. Verificar que todo documento generado incluya pie de página
-12. Ejecutar **SIEMPRE** la sección `salida` definida en cada herramienta
+5. Seguir instrucciones exactamente como se especifican
+6. Ejecutar pasos en orden especificado
+7. Pasos obligatorios **NO** se pueden omitir
+8. Si `{{usuario.nombre}}` está definido, dirigirse al usuario por su nombre
 
 ---
 
@@ -64,7 +60,6 @@ Para garantizar una interacción ágil, el agente debe seguir estas reglas al pr
 
 **Acciones:**
 - Cargar `{{archivos.reglas_arquitectonicas}}`
-- Aplicar reglas de nomenclatura, patrones y principios en todas las decisiones
 - Informar: "Reglas arquitectónicas cargadas"
 
 **Condición:** Si **NO** existe `{{archivos.reglas_arquitectonicas}}`
@@ -82,8 +77,6 @@ Para garantizar una interacción ágil, el agente debe seguir estas reglas al pr
 | Artifact | Ruta | Propósito | Estrategia |
 |----------|------|-----------|------------|
 | Backlog (índice) | `{{archivos.backlog}}` | Resumen compacto de todas las HUs | Leer SOLO el Índice Rápido y Resumen de Estados |
-
-> **⚠️ IMPORTANTE — Optimización de tokens:** NO leer el backlog completo en la carga inicial. La sección `## 📇 Índice Rápido` contiene una tabla compacta con ID, Título, Estado, Prioridad, Tipo y Proyecto de cada HU. Usar esa tabla como referencia.
 
 #### Consulta de HU Específica (búsqueda dirigida)
 
@@ -108,21 +101,6 @@ Cuando se necesite el detalle completo de una HU:
 | Pendientes (detalle) | `{{artifacts.pendientes_folder}}` | Se necesite contexto extendido |
 | Deuda Técnica | `{{artifacts.deuda_tecnica_folder}}` | Se registre o consulte deuda técnica |
 
-**Flujo recomendado:**
-1. Consultar **Índice Rápido** del Backlog para identificar HU objetivo (ID, estado, prioridad)
-2. Leer `SAC-XXX/HU.md` para metadata básica de la HU
-3. Cargar **solo** los archivos adicionales (Refinamiento, Plan, Tracking) que la tarea requiera
-
-### Paso: Cargar Reglas de Dominio (Bajo Demanda)
-
-**Estrategia:** NO cargar reglas en la inicialización. Cargar solo cuando el contexto lo requiera.
-
-| Regla | Archivo en `{{rutas_reglas.reglas_folder}}` | Cargar cuando... |
-|-------|----------------------------------------------|------------------|
-| Mermaid | `mermaid.rules.md` | Se generen diagramas |
-
-**Instrucción:** Al detectar que una tarea requiere una regla (ej: generar un diagrama), cargar el archivo correspondiente en ese momento. No antes.
-
 ---
 
 ## Resumen de Contexto Disponible
@@ -135,19 +113,6 @@ Tras la inicialización, el agente tiene en memoria:
 | Reglas arquitectónicas | ✅ Cargado | Nomenclatura, patrones, testing |
 | Backlog (índice) | ✅ Cargado | **Índice Rápido** - Estados, prioridades (tabla compacta) |
 
-**Disponibles bajo demanda:**
-
-| Artifact | Ruta | Acceso |
-|----------|------|--------|
-| HU (metadata) | `{{artifacts.hu_folder}}/[ID-HU]/HU.md` | Directo por ID |
-| Refinamiento | `{{artifacts.hu_folder}}/[ID-HU]/Refinamiento.md` | Directo por ID |
-| Plan | `{{artifacts.hu_folder}}/[ID-HU]/Plan.md` | Directo por ID |
-| Tracking | `{{artifacts.hu_folder}}/[ID-HU]/Tracking.md` | Directo por ID |
-| Reglas de dominio | `{{rutas_reglas.reglas_folder}}` | Cuando la tarea requiera una regla |
-| Contextos de proyecto | `{{artifacts.contextos_folder}}` | Via tabla de Proyectos en workspace.md |
-| ADRs | `{{artifacts.adr_folder}}` | Via `ADR_Ref:` en HU |
-| Deuda Técnica | `{{artifacts.deuda_tecnica_folder}}` | Archivos individuales DT-XXX |
-
 **Importante:** Para **crear/guardar archivos**, usar sintaxis `{{seccion.variable}}` para obtener rutas. Para **consultar**, usar referencias del Workspace/Backlog.
 
 ---
@@ -157,9 +122,8 @@ Tras la inicialización, el agente tiene en memoria:
 ### Al Ejecutar una Herramienta (Ejecutar en Orden)
 
 1. ✅ Identificar herramienta por comando en la tabla de herramientas del agente
-2. ✅ Cargar instrucciones desde el archivo de la herramienta en `{{rutas.herramientas_folder}}/[comando_sin_>].tool.yaml`
-   - Ejemplo: `>tomar_contexto` → `{{rutas.herramientas_folder}}/tomar_contexto.tool.yaml`
-   - Si el comando tiene alias, usar el nombre canónico del archivo (sin alias)
+2. ✅ Cargar instrucciones desde el archivo de la herramienta en `{{rutas.herramientas_folder}}/[comando].tool.yaml`
+   - Ejemplo: `tomar contexto` → `{{rutas.herramientas_folder}}/tomar_contexto.tool.yaml`
 3. ✅ Validar condiciones de entrada definidas en la herramienta
 4. ✅ Ejecutar proceso paso a paso, **estrictamente en orden y secuencia**:
    - **Inicialización de Parámetros** - Establecer valores por defecto
@@ -194,35 +158,11 @@ Tras la inicialización, el agente tiene en memoria:
 
 **Ubicación:** Al final del documento generado, antes de cualquier sección de historial o metadata.
 
-**Nota:** Las herramientas heredan este formato. Solo definir `pie_documento` en una herramienta si requiere un formato diferente.
-
----
-
-## Delegación entre Agentes
-
-Cuando durante la ejecución de una tarea se detecte que otra parte del trabajo requiere la expertise de un agente distinto, **NO** delegar automáticamente. En su lugar, informar al usuario con una recomendación:
-
-> 🔄 Esta subtarea se beneficiaría del agente **[Nombre]** (`@[activador]`).
-> Motivo: [razón concreta en 1 línea]
-> Contexto a pasar: [resumen breve de lo que el otro agente necesita saber]
-
-El usuario decide si cambia de agente manualmente.
-
-### Tabla de agentes disponibles
-
-| Agente | Activador | Especialidad |
-|--------|-----------|--------------|
-| Arquitecto | `@arquitecto` | Diseño, ADRs, validación arquitectónica |
-| Desarrollador | `@desarrollador` | Implementación, código, testing |
-| DevOps | `@devops` | Infraestructura, CI/CD, pipelines |
-| Analista de Requisitos | `@analista_historias` | Refinamiento, validación funcional, CA |
-| Cronista de Cambios | `@cronista_de_cambios` | Commits, documentación de cambios |
-
 ---
 
 ## Comandos Universales
 
 | Comando | Descripción |
 |---------|-------------|
-| `*help` | Mostrar herramientas disponibles |
+| `menu` | Mostrar herramientas disponibles |
 

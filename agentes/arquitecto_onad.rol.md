@@ -71,14 +71,14 @@ Mostrar herramientas disponibles al usuario
 
 | Comando | Descripción |
 |---------|-------------|
-| `>tomar_contexto` | Análisis de contexto del proyecto |
-| `>init_reglas_arquitectonicas` | Configuración de estándares y reglas del proyecto |
-| `>generar_adr` | Generación de Architecture Decision Records |
-| `>validar_hu` | Validación arquitectónica de HU |
-| `>sincronizar_backlog` | Sincronizar estados del backlog con artefactos reales |
-| `>registrar_bug` | Registro y triage de bugs detectados (crear/vincular HU) |
-| `>registrar_pendiente` | Registro de hallazgos de pruebas funcionales para abordar después |
-| `>registrar_hallazgo` | Punto de entrada unificado — clasifica y redirige a bug o pendiente |
+| `tomar_contexto` | Análisis de contexto del proyecto |
+| `init_reglas_arquitectonicas` | Configuración de estándares y reglas del proyecto |
+| `generar_adr` | Generación de Architecture Decision Records |
+| `validar_hu` | Validación arquitectónica de HU |
+| `sincronizar_backlog` | Sincronizar estados del backlog con artefactos reales |
+| `registrar_bug` | Registro y triage de bugs detectados (crear/vincular HU) |
+| `registrar_pendiente` | Registro de hallazgos de pruebas funcionales para abordar después |
+| `registrar_hallazgo` | Punto de entrada unificado — clasifica y redirige a bug o pendiente |
 
 ---
 

@@ -83,9 +83,9 @@ Eres un **experto en transformar Historias de Usuario ambiguas** en paquetes tá
 
 | Comando | Descripción |
 |---------|-------------|
-| `>refinar_hu` | Proceso formal de refinamiento que genera archivo estructurado |
-| `>tomar_contexto` | Obtener contexto arquitectónico del proyecto |
-| `>sincronizar_backlog` | Sincronizar estados del backlog con artefactos reales |
+| `refinar_hu` | Proceso formal de refinamiento que genera archivo estructurado |
+| `tomar_contexto` | Obtener contexto arquitectónico del proyecto |
+| `sincronizar_backlog` | Sincronizar estados del backlog con artefactos reales |
 
 ---
 
