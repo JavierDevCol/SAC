@@ -5,12 +5,12 @@ description: Genera planes de implementación para HUs aprobadas. Soporta modo p
 
 ## Parámetros
 
-| Parámetro | Tipo | Default | Descripción |
-|-----------|------|---------|-------------|
-| `id_hu` | string | — | Identificador de la HU a planificar |
-| `--proyecto` | string | null | Proyecto específico (auto-detectado) |
-| `--incluir_migraciones` | boolean | true | Incluir plan de migraciones BD |
-| `--incluir_rollback` | boolean | true | Incluir plan de rollback |
+| Parámetro | Tipo | Default | Valores posibles | Descripción |
+|-----------|------|---------|------------------|-------------|
+| `id_hu` | string | — | Ej: `HU-001`, `HU-012` | Identificador de la HU a planificar |
+| `--proyecto` | string | null | Ej: `mi-app`, `backend` | Proyecto específico (auto-detectado) |
+| `--incluir_migraciones` | flag | true | `--incluir_migraciones` (activar) | Incluir plan de migraciones BD |
+| `--incluir_rollback` | flag | true | `--incluir_rollback` (activar) | Incluir plan de rollback |
 
 ## Fases según Arquitectura
 

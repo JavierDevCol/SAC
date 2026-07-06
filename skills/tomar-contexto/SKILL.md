@@ -5,12 +5,12 @@ description: Analiza un proyecto software y genera archivos de contexto. Detecta
 
 ## Parámetros
 
-| Parámetro | Tipo | Default | Descripción |
-|-----------|------|---------|-------------|
-| `--profundidad_analisis` | string | `exhaustivo` | `basico`, `completo`, `exhaustivo` |
-| `--nombre_proyecto` | string | — | Proyecto específico (multi-proyecto) |
-| `--all` | flag | false | Analizar todos los proyectos |
-| `--force` | flag | false | Regenerar aunque exista contexto |
+| Parámetro | Tipo | Default | Valores posibles | Descripción |
+|-----------|------|---------|------------------|-------------|
+| `--profundidad_analisis` | option | `exhaustivo` | `basico`, `completo`, `exhaustivo` | Cuánto analizar del proyecto |
+| `--nombre_proyecto` | string | — | Ej: `mi-app`, `backend` | Proyecto específico (multi-proyecto) |
+| `--all` | flag | false | `--all` (activar) | Analizar todos los proyectos |
+| `--force` | flag | false | `--force` (activar) | Regenerar aunque exista contexto |
 
 ## Instrucciones
 

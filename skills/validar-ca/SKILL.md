@@ -5,11 +5,11 @@ description: Valida criterios de aceptación contra código implementado y tests
 
 ## Parámetros
 
-| Parámetro | Tipo | Default | Descripción |
-|-----------|------|---------|-------------|
-| `id_hu` | string | — | Identificador de la HU a validar |
-| `--task_id` | string | null | ID de task funcional (requerido para scope=granulares) |
-| `--scope` | string | `todos` | `granulares`, `integracion`, `todos` |
+| Parámetro | Tipo | Default | Valores posibles | Descripción |
+|-----------|------|---------|------------------|-------------|
+| `id_hu` | string | — | Ej: `HU-001`, `HU-012` | Identificador de la HU a validar |
+| `--task_id` | string | null | Ej: `HU-001-TASK-1`, `HU-012-TASK-3` | ID de task funcional (requerido para scope=granulares) |
+| `--scope` | option | `todos` | `granulares`, `integracion`, `todos` | Qué CAs validar |
 
 ## Scopes de Validación
 

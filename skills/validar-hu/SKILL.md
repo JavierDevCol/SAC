@@ -5,11 +5,11 @@ description: Valida HUs refinadas contra reglas arquitectónicas, criterios de a
 
 ## Parámetros
 
-| Parámetro | Tipo | Default | Descripción |
-|-----------|------|---------|-------------|
-| `id_hu` | string | — | Identificador de la HU a validar |
-| `--proyecto` | string | null | Proyecto específico (auto-detectado desde HU) |
-| `--nivel_validacion` | string | `completo` | `basico`, `completo`, `exhaustivo` |
+| Parámetro | Tipo | Default | Valores posibles | Descripción |
+|-----------|------|---------|------------------|-------------|
+| `id_hu` | string | — | Ej: `HU-001`, `HU-012` | Identificador de la HU a validar |
+| `--proyecto` | string | null | Ej: `mi-app`, `backend` | Proyecto específico (auto-detectado) |
+| `--nivel_validacion` | option | `completo` | `basico`, `completo`, `exhaustivo` | Profundidad de la validación |
 
 ## Veredictos
 

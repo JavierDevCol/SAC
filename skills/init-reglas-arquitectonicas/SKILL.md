@@ -5,11 +5,11 @@ description: Configura las reglas arquitectónicas del proyecto mediante un cues
 
 ## Parámetros
 
-| Parámetro | Tipo | Default | Descripción |
-|-----------|------|---------|-------------|
-| `--modo` | string | `nuevo` | `nuevo`, `editar`, `mostrar` |
-| `--seccion` | string | — | Sección específica a editar (solo modo=editar) |
-| `--force` | flag | false | Regenerar aunque exista archivo previo |
+| Parámetro | Tipo | Default | Valores posibles | Descripción |
+|-----------|------|---------|------------------|-------------|
+| `--modo` | option | `nuevo` | `nuevo`, `editar`, `mostrar` | Modo de operación |
+| `--seccion` | string | — | Ej: `nomenclatura`, `patrones`, `testing` | Sección específica a editar (solo modo=editar) |
+| `--force` | flag | false | `--force` (activar) | Regenerar aunque exista archivo previo |
 
 ## Instrucciones
 

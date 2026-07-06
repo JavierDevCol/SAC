@@ -5,11 +5,11 @@ description: Analiza calidad de código: detecta code smells clásicos y verific
 
 ## Parámetros
 
-| Parámetro | Tipo | Default | Descripción |
-|-----------|------|---------|-------------|
-| `--scope` | string | `commits` | Qué archivos analizar |
-| `--archivo` | string | — | Ruta específica (requerido si scope=archivo) |
-| `--modo` | string | `todos` | Qué análisis ejecutar |
+| Parámetro | Tipo | Default | Valores posibles | Descripción |
+|-----------|------|---------|------------------|-------------|
+| `--scope` | option | `commits` | `commits`, `project`, `archivo` | Qué archivos analizar |
+| `--archivo` | string | — | Ej: `src/auth/AuthService.java` | Ruta específica (requerido si scope=archivo) |
+| `--modo` | option | `todos` | `smells`, `arquitectura`, `todos` | Qué análisis ejecutar |
 
 ### Scope — Qué archivos analizar
 

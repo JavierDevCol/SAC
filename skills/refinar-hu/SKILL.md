@@ -5,15 +5,15 @@ description: Refina Historias de Usuario con criterios de aceptación SMART, des
 
 ## Parámetros
 
-| Parámetro | Tipo | Default | Descripción |
-|-----------|------|---------|-------------|
-| `id_hu` | string | — | Identificador de la HU a refinar |
-| `--proyecto` | string | null | Proyecto destino (requerido en multi-proyecto) |
-| `--formato_estimacion` | string | `ambos` | `story_points`, `horas`, `ambos` |
-| `--nivel_detalle` | string | `medio` | `alto`, `medio`, `bajo` |
-| `--incluir_riesgos` | boolean | true | Incluir análisis de riesgos |
-| `--generar_tareas` | boolean | true | Generar desglose técnico |
-| `--incluir_testing` | boolean | true | Incluir testing en estimación |
+| Parámetro | Tipo | Default | Valores posibles | Descripción |
+|-----------|------|---------|------------------|-------------|
+| `id_hu` | string | — | Ej: `HU-001`, `HU-012` | Identificador de la HU a refinar |
+| `--proyecto` | string | null | Ej: `mi-app`, `backend` | Proyecto destino (requerido en multi-proyecto) |
+| `--formato_estimacion` | option | `ambos` | `story_points`, `horas`, `ambos` | Formato de estimación |
+| `--nivel_detalle` | option | `medio` | `alto`, `medio`, `bajo` | Nivel de detalle del refinamiento |
+| `--incluir_riesgos` | flag | true | `--incluir_riesgos` (activar) | Incluir análisis de riesgos |
+| `--generar_tareas` | flag | true | `--generar_tareas` (activar) | Generar desglose técnico |
+| `--incluir_testing` | flag | true | `--incluir_testing` (activar) | Incluir testing en estimación |
 
 ## Instrucciones
 

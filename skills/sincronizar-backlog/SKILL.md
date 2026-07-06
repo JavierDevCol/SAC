@@ -5,13 +5,13 @@ description: Sincroniza el backlog con el estado real de los artefactos en disco
 
 ## Parámetros
 
-| Parámetro | Tipo | Default | Descripción |
-|-----------|------|---------|-------------|
-| `id_hu` | string | null | Sincronizar solo una HU específica |
-| `--proyecto` | string | null | Filtrar HUs de un proyecto (multi-proyecto) |
-| `--auto` | flag | false | Aplicar correcciones sin confirmación |
-| `--dry_run` | flag | false | Solo mostrar reporte, no aplicar cambios |
-| `--resumen` | flag | false | Mostrar solo resumen de estados (lectura rápida) |
+| Parámetro | Tipo | Default | Valores posibles | Descripción |
+|-----------|------|---------|------------------|-------------|
+| `id_hu` | string | null | Ej: `HU-001`, `HU-012` | Sincronizar solo una HU específica |
+| `--proyecto` | string | null | Ej: `mi-app`, `backend` | Filtrar HUs de un proyecto (multi-proyecto) |
+| `--auto` | flag | false | `--auto` (activar) | Aplicar correcciones sin confirmación |
+| `--dry_run` | flag | false | `--dry_run` (activar) | Solo mostrar reporte, no aplicar cambios |
+| `--resumen` | flag | false | `--resumen` (activar) | Mostrar solo resumen de estados (lectura rápida) |
 
 ## Reglas de Deducción de Estados
 

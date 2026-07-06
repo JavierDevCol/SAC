@@ -5,13 +5,13 @@ description: Ejecuta planes de implementación para HUs. Soporta modos completo,
 
 ## Parámetros
 
-| Parámetro | Tipo | Default | Descripción |
-|-----------|------|---------|-------------|
-| `id_hu` | string | — | Identificador de la HU a implementar |
-| `--proyecto` | string | null | Proyecto específico |
-| `--modo_ejecucion` | string | `fase_por_fase` | `completo`, `fase_por_fase`, `tarea_por_tarea`, `task_por_task`, `task_especifica` |
-| `--task_id` | string | null | ID de task a ejecutar (solo con `task_especifica`) |
-| `--auto_commit` | boolean | false | Commit automático sin confirmación |
+| Parámetro | Tipo | Default | Valores posibles | Descripción |
+|-----------|------|---------|------------------|-------------|
+| `id_hu` | string | — | Ej: `HU-001`, `HU-012` | Identificador de la HU a implementar |
+| `--proyecto` | string | null | Ej: `mi-app`, `backend` | Proyecto específico (auto-detectado) |
+| `--modo_ejecucion` | option | `fase_por_fase` | `completo`, `fase_por_fase`, `tarea_por_tarea`, `task_por_task`, `task_especifica` | Cómo ejecutar el plan |
+| `--task_id` | string | null | Ej: `HU-001-TASK-1`, `HU-012-TASK-3` | ID de task a ejecutar (solo con `task_especifica`) |
+| `--auto_commit` | flag | false | `--auto_commit` (activar) | Commit automático sin confirmación |
 
 ## Modos de Ejecución
 
@@ -92,7 +92,12 @@ Para cada fase:
 1. Anunciar inicio de fase
 2. Para cada tarea:
    a. EDITAR Plan.md: `[PENDIENTE]` → `[EN_PROGRESO]`
-   b. Ejecutar pasos (crear/modificar código)
+   b. Ejecutar pasos (crear/modificar código) **aplicando reglas arquitectónicas cargadas en paso 1**:
+      - Nomenclatura de clases, métodos, variables
+      - Estructura de carpetas
+      - Patrones obligatorios y prohibidos
+      - Nivel de SOLID
+      - Límites de código
    c. EDITAR Plan.md: `- [ ]` → `- [X]` por cada paso
    d. EDITAR Plan.md: `[EN_PROGRESO]` → `[EJECUTADA]`
    e. **Commit por tarea:** `feat([ID-HU]-EJEC-NN): [descripción de la tarea]`

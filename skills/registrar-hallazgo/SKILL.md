@@ -5,11 +5,11 @@ description: Registra hallazgos encontrados durante el desarrollo. Analiza el ha
 
 ## Parámetros
 
-| Parámetro | Tipo | Default | Descripción |
-|-----------|------|---------|-------------|
-| `descripcion` | string | — | Descripción libre del hallazgo |
-| `--proyecto` | string | null | Proyecto afectado |
-| `--logs` | string | null | Logs, stack traces o evidencia |
+| Parámetro | Tipo | Default | Valores posibles | Descripción |
+|-----------|------|---------|------------------|-------------|
+| `descripcion` | string | — | Ej: "Error en login, no valida email" | Descripción libre del hallazgo |
+| `--proyecto` | string | null | Ej: `mi-app`, `backend` | Proyecto afectado |
+| `--logs` | string | null | Ej: "Error: NullPointerException..." | Logs, stack traces o evidencia |
 
 ## Flujo General
 
