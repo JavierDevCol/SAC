@@ -1,0 +1,167 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "agent": {
+    "validador-ambiguedades": {
+      "description": "Analiza criterios de aceptación buscando ambigüedades, vaguedades o suposiciones. Retorna lista de preguntas clarificadoras.",
+      "mode": "subagent",
+      "hidden": true,
+      "model": "opencode/deepseek-v4-flash-free",
+      "temperature": 0.1,
+      "color": "#FFEB3B",
+      "tools": {
+        "read": true,
+        "search": true,
+        "glob": true,
+        "grep": true,
+        "write": false,
+        "edit": false,
+        "bash": false,
+        "webfetch": false
+      },
+      "permission": {
+        "edit": "deny",
+        "bash": "deny",
+        "webfetch": "deny",
+        "task": {
+          "*": "deny"
+        }
+      },
+      "prompt": "{file:./prompts/validador-ambiguedades.md}"
+    },
+    "validador-arquitectonica": {
+      "description": "Verifica que una HU respeta reglas arquitectónicas como REQUISITO, no define implementación.",
+      "mode": "subagent",
+      "hidden": true,
+      "model": "opencode/deepseek-v4-flash-free",
+      "temperature": 0.1,
+      "color": "#FF9800",
+      "tools": {
+        "read": true,
+        "search": true,
+        "glob": true,
+        "grep": true,
+        "write": false,
+        "edit": false,
+        "bash": false,
+        "webfetch": false
+      },
+      "permission": {
+        "edit": "deny",
+        "bash": "deny",
+        "webfetch": "deny",
+        "task": {
+          "*": "deny"
+        }
+      },
+      "prompt": "{file:./prompts/validador-arquitectonica.md}"
+    },
+    "validador-calidad": {
+      "description": "Valida CAs, alineación arquitectónica y existencia de archivos",
+      "mode": "subagent",
+      "hidden": true,
+      "model": "opencode/deepseek-v4-flash-free",
+      "temperature": 0.1,
+      "color": "#4CAF50",
+      "tools": {
+        "read": true,
+        "search": true,
+        "glob": true,
+        "grep": true,
+        "write": false,
+        "edit": false,
+        "bash": false,
+        "webfetch": false
+      },
+      "permission": {
+        "edit": "deny",
+        "bash": "deny",
+        "webfetch": "deny",
+        "task": {
+          "*": "deny"
+        }
+      },
+      "prompt": "{file:./prompts/validador-calidad.md}"
+    },
+    "validador-compilacion": {
+      "description": "Verifica compilación y tests. Agnóstico al lenguaje: detecta tipo de proyecto y ejecuta comandos apropiados.",
+      "mode": "subagent",
+      "hidden": true,
+      "model": "opencode/deepseek-v4-flash-free",
+      "temperature": 0.1,
+      "color": "#FF9800",
+      "tools": {
+        "read": true,
+        "search": true,
+        "glob": true,
+        "grep": true,
+        "write": false,
+        "edit": false,
+        "bash": true,
+        "webfetch": false
+      },
+      "permission": {
+        "edit": "deny",
+        "bash": "allow",
+        "webfetch": "deny",
+        "task": {
+          "*": "deny"
+        }
+      },
+      "prompt": "{file:./prompts/validador-compilacion.md}"
+    },
+    "validador-smart-cobertura": {
+      "description": "Verifica que cada criterio de aceptación cumple criterios SMART y valida cobertura (errores, validación, performance).",
+      "mode": "subagent",
+      "hidden": true,
+      "model": "opencode/deepseek-v4-flash-free",
+      "temperature": 0.1,
+      "color": "#00BCD4",
+      "tools": {
+        "read": true,
+        "search": true,
+        "glob": true,
+        "grep": true,
+        "write": false,
+        "edit": false,
+        "bash": false,
+        "webfetch": false
+      },
+      "permission": {
+        "edit": "deny",
+        "bash": "deny",
+        "webfetch": "deny",
+        "task": {
+          "*": "deny"
+        }
+      },
+      "prompt": "{file:./prompts/validador-smart-cobertura.md}"
+    },
+    "validador-trazabilidad": {
+      "description": "Verifica cadena de trazabilidad entre CAs padre, tasks y CAs granulares en HUs particionadas.",
+      "mode": "subagent",
+      "hidden": true,
+      "model": "opencode/deepseek-v4-flash-free",
+      "temperature": 0.1,
+      "color": "#9C27B0",
+      "tools": {
+        "read": true,
+        "search": true,
+        "glob": true,
+        "grep": true,
+        "write": false,
+        "edit": false,
+        "bash": false,
+        "webfetch": false
+      },
+      "permission": {
+        "edit": "deny",
+        "bash": "deny",
+        "webfetch": "deny",
+        "task": {
+          "*": "deny"
+        }
+      },
+      "prompt": "{file:./prompts/validador-trazabilidad.md}"
+    }
+  }
+}
